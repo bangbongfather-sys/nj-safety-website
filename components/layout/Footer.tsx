@@ -1,9 +1,17 @@
+'use client';
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import type { Dictionary, Locale } from '@/lib/i18n';
 
 type Props = { locale: Locale; dict: Dictionary };
 
+const PRODUCT_DETAIL_RE = /^\/(?:ko|en)\/products\/[^/]+\/?$/;
+
 export default function Footer({ locale, dict }: Props) {
+  const pathname = usePathname() ?? '';
+  if (PRODUCT_DETAIL_RE.test(pathname)) return null;
+
   return (
     <footer className="footer">
       <div className="wrap">

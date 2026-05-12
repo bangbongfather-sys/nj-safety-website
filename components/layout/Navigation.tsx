@@ -7,6 +7,11 @@ import type { Dictionary, Locale } from '@/lib/i18n';
 
 type Props = { locale: Locale; dict: Dictionary };
 
+// On product detail pages the catalog-app render is full-bleed with its own
+// topnav (paper background, ink type) — the brand-site dark nav clashes
+// visually, so we hide it for that route family. Same for Footer.
+const PRODUCT_DETAIL_RE = /^\/(?:ko|en)\/products\/[^/]+\/?$/;
+
 export default function Navigation({ locale, dict }: Props) {
   const pathname = usePathname() ?? '';
   const [scrolled, setScrolled] = useState(false);
@@ -17,6 +22,8 @@ export default function Navigation({ locale, dict }: Props) {
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  if (PRODUCT_DETAIL_RE.test(pathname)) return null;
 
   // Build the toggle target by swapping the locale prefix
   const otherLocale: Locale = locale === 'ko' ? 'en' : 'ko';

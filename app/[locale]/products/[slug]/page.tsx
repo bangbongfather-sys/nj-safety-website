@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { locales, isLocale, type Locale } from '@/lib/i18n';
+import { locales, isLocale } from '@/lib/i18n';
 import { getAllProductSlugs, getProduct } from '@/lib/products';
-import ProductDetail from '@/components/product/ProductDetail';
+import ProductPage from '@/components/product/ProductPage';
 
 export function generateStaticParams() {
   const slugs = getAllProductSlugs();
@@ -35,10 +35,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function ProductDetailPage({ params }: Props) {
+export default async function ProductDetailRoute({ params }: Props) {
   const { locale, slug } = await params;
   if (!isLocale(locale)) notFound();
   const product = getProduct(slug);
   if (!product) notFound();
-  return <ProductDetail product={product} locale={locale as Locale} />;
+  return <ProductPage data={product} />;
 }

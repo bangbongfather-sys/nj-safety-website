@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 200" preserveAspectRatio="xMidYMid meet">
+  <title>NJ SAFETY</title>
+  <!--
+    Placeholder approximation of the NJ Safety brand mark.
+    Drawn by eye from a screenshot since the original PNG couldn't be
+    extracted from the chat attachment in this build environment.
+    Replace by saving the real artwork to public/brand/logo.svg (or
+    swap the file extension in ProductPage.tsx if you'd rather use a
+    PNG/JPEG).
+  -->
+
+  <!-- ─── Brand mark: stylised "N" inside a square frame ─── -->
+  <g>
+    <!-- Outer dark square -->
+    <rect x="6" y="6" width="188" height="188" fill="#2b2b2b"/>
+
+    <!-- Left and right vertical strokes of the N (cream / off-white) -->
+    <rect x="34"  y="30" width="36" height="140" fill="#f5f3ec"/>
+    <rect x="130" y="30" width="36" height="140" fill="#f5f3ec"/>
+
+    <!-- Orange diagonal band from top of the left stroke to the bottom of
+         the right stroke (the classic N spine). Echoes the orange "tape"
+         in the original mark. -->
+    <polygon points="34,30 70,30 166,170 130,170" fill="#e85d2e"/>
+
+    <!-- Three short cream stripes laid over the orange band, evoking the
+         measuring-tape texture in the original logo. -->
+    <g fill="#f5f3ec" opacity="0.78">
+      <polygon points="56,52  76,52  78,64  58,64"/>
+      <polygon points="82,90  102,90 104,102 84,102"/>
+      <polygon points="108,128 128,128 130,140 110,140"/>
+    </g>
+  </g>
+
+  <!-- ─── Wordmark "NJ SAFETY" ─── -->
+  <text x="230" y="138"
+        font-family="Archivo, 'Arial Black', 'Pretendard Variable', system-ui, sans-serif"
+        font-size="118"
+        font-weight="900"
+        fill="#0d0d0d"
+        letter-spacing="-3">NJ SAFETY</text>
+</svg>

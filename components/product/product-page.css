@@ -1,0 +1,2382 @@
+/* NJ Safety — Product Page (responsive)
+ * Brand: 고급스러운 주황 (#e85d2e) + 다크 그레이 (#14171d)
+ *
+ * Scoped to .nj-page so brand tokens don't leak into the editor app.
+ * --font-display / --font-body / --font-mono override the global
+ * editor variables locally (the editor uses Fraunces/Inter/JetBrains).
+ */
+
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
+
+.nj-page {
+  /* Brand */
+  --orange: #e85d2e;          /* signature accent — used sparingly */
+  --orange-deep: #c44a1f;
+  --orange-soft: #f4a384;
+  --ink: #161a21;             /* slightly cooler charcoal — industrial */
+  --ink-2: #1f252e;
+  --ink-3: #2c333d;
+  --ink-soft: #4a5260;
+  --paper: #e6e4dd;           /* cool industrial off-white (catalog stock) */
+  --paper-2: #d8d5cc;
+  --paper-3: #c5c1b6;
+  --rule: rgba(20,23,29,0.22);
+  --rule-strong: rgba(20,23,29,0.55);
+  --rule-light: rgba(230,228,221,0.22);
+
+  /* Type — --font-archivo is wired via next/font in page.tsx */
+  --font-display: var(--font-archivo, 'Archivo'), 'Pretendard Variable', sans-serif;
+  --font-body: 'Pretendard Variable', 'Pretendard', system-ui, sans-serif;
+  --font-mono: var(--font-archivo, 'Archivo'), sans-serif;
+
+  /* Layout */
+  --gutter: clamp(20px, calc(4 * var(--u)), 60px);
+  --max: 1400px;
+
+  /*
+   * Responsive scale unit. Replaces raw `vw` everywhere in this file.
+   * Locked at 14.4px (= 1vw at a 1440px design width) by default so
+   * font sizes and spacing don't react to Chrome's zoom-driven
+   * viewport reports — Ctrl+zoom on desktop becomes a pure
+   * proportional render-scale instead of a layout-changing event.
+   * Real mobile (≤480px viewport, see media query below) falls back
+   * to fluid 1vw so the page actually fits on a phone.
+   */
+  --u: 14.4px;
+
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+
+  /*
+   * Fixed-canvas behaviour. The user wants browser zoom to act like a
+   * PDF/Figma viewer: pure proportional magnification, no text rewrap.
+   * Just min-width wasn't enough — zooming OUT grows the layout
+   * viewport and `min-width: 1280` happily lets the canvas balloon
+   * with it, which still rewraps the title.
+   *
+   * Pinning width to exactly 1280px means every grid column inside
+   * (.hero 1.05fr/1fr, features 2-col, gallery 12-col, etc.) is
+   * computed off a stable parent regardless of viewport size or zoom
+   * direction. The canvas centers via margin auto so wider screens
+   * see paper-coloured side gutters; narrower viewports get a
+   * horizontal scrollbar — the same behaviour any fixed-canvas site
+   * (Figma, design portfolios, print previews) shows on Ctrl+zoom.
+   *
+   * Real mobile (≤480px) opts out together with --u: 1vw above so
+   * phones still get a properly scaled responsive view.
+   */
+  width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 480px) {
+  .nj-page {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+.nj-page,
+.nj-page * { box-sizing: border-box; }
+.nj-page img { max-width: 100%; display: block; }
+.nj-page em { font-style: normal; color: var(--orange); }
+
+/* Image slot wrapper used by EditableImage (the same component renders
+ * on the public page, the print preview, and the editor preview).
+ * Structural sizing lives here so the slot fills its parent regardless
+ * of which surface loads the page; the editor overlay and hover styles
+ * remain in editor.css, where they belong. Without this, /print/ used
+ * to render the hero/material/gallery slots with zero height and the
+ * photos inside ended up invisible. */
+.nj-page .pp-img-slot {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Real mobile only: fall back to fluid vw so the layout fits on a
+   ≤480px phone. Anything above stays locked at the desktop reference
+   so Ctrl+zoom never crosses through this rule. */
+@media (max-width: 480px) {
+  .nj-page { --u: 1vw; }
+}
+
+.nj-page .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+
+/* ─── Top nav ─── */
+.topnav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px var(--gutter);
+  border-bottom: 1.5px solid var(--ink);
+  position: sticky;
+  top: 0;
+  background: rgba(230,228,221,0.94);
+  backdrop-filter: blur(12px);
+  z-index: 50;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.topnav-l { display: flex; align-items: center; gap: 8px; }
+.topnav .square { width: 10px; height: 10px; background: var(--orange); display: inline-block; }
+.topnav-name { font-weight: 800; letter-spacing: 0.24em; }
+/* Brand logo image. Falls back via JS onError to the .topnav-brand-fallback
+ * sibling if the file at /brand/logo.png isn't deployed yet. Height is
+ * picked to roughly match the original text mark's optical weight. */
+/* Note the .nj-page prefix: needed to out-specify `.nj-page img`
+   (0,1,1) which sets max-width:100% on every descendant image. With
+   that cap inherited the flex parent .topnav-l collapsed the img to
+   0px — flex-children sized by content meeting max-width:100% of a
+   zero-content parent resolves to 0 in Chrome. Pinning max-width:
+   none + flex-shrink: 0 here keeps the logo at its aspect-ratio
+   width. */
+.nj-page .topnav-logo {
+  /* Bumped 36 → 48px after the user said the mark was still small.
+     The horizontal NJ-SAFETY mark is ≈2.6:1, so 48px tall lands at
+     ≈124px wide — solid presence without crowding the right-side
+     MATERIAL / SPEC / INQUIRY links. */
+  height: 48px;
+  width: auto;
+  display: block;
+  max-width: none;
+  flex-shrink: 0;
+}
+.topnav-brand-fallback {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.topnav-r { display: flex; align-items: center; gap: 18px; color: var(--ink-soft); }
+.topnav-r a { color: inherit; text-decoration: none; transition: color .2s; }
+.topnav-r a:hover { color: var(--orange); }
+@media (max-width: 480px) {
+  .topnav-r > *:not(:last-child) { display: none; }
+}
+
+/* ─── Hero ─── */
+.hero {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  border-bottom: 2px solid var(--ink);
+  border-top: 2px solid var(--ink);
+  /* No more min-height: 86vh. With a forced viewport-derived row
+     height the photo column's aspect couldn't match the source
+     photo (6000×7000 ≈ 6:7), so cover had to crop sides. Letting
+     the row auto-size to the photo column's own aspect-ratio (set
+     below) means cover fills the column edge-to-edge with the full
+     model intact. */
+  background: var(--paper);
+}
+@media (max-width: 480px) {
+  .hero { grid-template-columns: 1fr; }
+}
+.hero-left {
+  padding: clamp(36px, calc(6 * var(--u)), 72px) var(--gutter) clamp(36px, calc(6 * var(--u)), 72px);
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--ink);
+}
+@media (max-width: 480px) {
+  .hero-left { border-right: 0; border-bottom: 1px solid var(--ink); }
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--ink);
+  padding: 6px 12px 6px 0;
+  border-top: 1.5px solid var(--ink);
+  margin-bottom: 0;
+}
+.eyebrow .bar { display: none; }
+.eyebrow-mute { color: var(--ink); border-top-color: var(--ink); }
+.eyebrow-light { color: var(--paper); border-top-color: var(--paper); }
+
+.hero-title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(48px, calc(8 * var(--u)), 104px);
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+  margin: 0 0 clamp(24px, calc(4 * var(--u)), 36px);
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+.hero-title .line { display: block; }
+.hero-title .line-orange { color: var(--orange); font-style: italic; }
+
+.hero-lead {
+  font-family: var(--font-mono);
+  font-size: clamp(13px, calc(1.3 * var(--u)), 15px);
+  line-height: 1.65;
+  color: var(--ink-soft);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  max-width: 460px;
+  margin: 0 0 auto;
+}
+
+.hero-counters {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: clamp(36px, calc(5 * var(--u)), 56px);
+  padding-top: 22px;
+  border-top: 1px solid var(--ink);
+}
+.hero-counters > div { display: flex; flex-direction: column; gap: 6px; }
+.c-num {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(32px, calc(4.5 * var(--u)), 56px);
+  line-height: 1;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+}
+.c-num small {
+  font-size: 0.4em;
+  margin-left: 4px;
+  font-weight: 700;
+  color: var(--orange);
+  letter-spacing: 0;
+}
+.c-lbl {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--orange);
+  text-transform: uppercase;
+}
+
+.hero-image {
+  position: relative;
+  background: var(--paper);
+  overflow: hidden;
+  /* Match typical workwear product photo aspect (~6:7, the studio
+     export ratio for the AR series). Combined with object-fit: cover
+     below, the photo fills the box edge-to-edge without cropping the
+     model. If a future photo has a different aspect, cover will trim
+     the smaller mismatch — far less noticeable than the side-cuts
+     the older 2:3-ish column produced. */
+  aspect-ratio: 6 / 7;
+  min-height: 480px;
+}
+.hero-image img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 80%, rgba(0,0,0,0.7) 92%, rgba(0,0,0,0) 100%);
+          mask-image: linear-gradient(to bottom, #000 0%, #000 80%, rgba(0,0,0,0.7) 92%, rgba(0,0,0,0) 100%);
+}
+.hero-img-tag {
+  position: absolute;
+  bottom: 24px; left: 24px;
+  /* Stay above the image and any decorative ::before backdrop the
+     flavor stylesheet might paint behind the photo. The tactical
+     flavor needs to bump the image to z-index: 1 to clear its drafting
+     grid; without an explicit value here that bump would hide the tag. */
+  z-index: 5;
+  background: var(--orange);
+  color: var(--ink);
+  padding: 8px 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.hero-img-corner {
+  position: absolute;
+  top: 24px; right: 24px;
+  z-index: 5;
+  background: var(--paper);
+  color: var(--ink);
+  padding: 6px 10px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+/* ─── Hero image labels — unified badge system ──────────────────────
+ *
+ * Every label that sits on top of the hero photo flows through one
+ * `.hero-badge` element. Three orthogonal class axes shape it:
+ *
+ *   1. .hero-badge                       — base: typography, z-index,
+ *                                          rendering on top of the photo.
+ *   2. .hero-badge-{position}            — anchors to one of four corners.
+ *   3. .hero-badge-style-{stamp|tag|corner}
+ *                                        — visual treatment (filled
+ *                                          orange tag / paper chip /
+ *                                          ink heritage stamp).
+ *
+ * The `style` axis replaces the older one-off .hero-img-tag and
+ * .hero-img-corner blocks; both legacy classes were specific corners
+ * and specific styles glued together, which the user couldn't add or
+ * delete from the UI. Now every label is editable / movable / removable
+ * through the same sidebar Repeater.
+ */
+.hero-badge {
+  z-index: 5;
+  pointer-events: auto;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  /* Style defaults to stamp; specific .hero-badge-style-* rules
+     override below. Keep these declarations as a safety net so any
+     stray badge without a style class still renders as a stamp. */
+  background: var(--ink);
+  color: var(--paper);
+  padding: 8px 14px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.26em;
+}
+
+/* Position anchors. Each badge picks one of four corner classes; when
+ * multiple badges share a corner they stack at the same point — the
+ * editor lets users reposition them via the corner picker.
+ *
+ * top-right is offset 160px from the right so a stamp + a corner-color
+ * chip can both sit at the top-right without overlapping. (The 'corner'
+ * style overrides this offset to 24px so a single corner chip nestles
+ * tight to the edge like the legacy hero.corner did.)
+ */
+.hero-badge-top-left     { position: absolute; top: 24px;    left: 24px; }
+.hero-badge-top-right    { position: absolute; top: 24px;    right: 160px; }
+.hero-badge-bottom-left  { position: absolute; bottom: 64px; left: 24px; }
+.hero-badge-bottom-right { position: absolute; bottom: 24px; right: 24px; }
+
+/* ─── Style: stamp (default heritage stamp) ─── */
+.hero-badge-style-stamp {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 8px 14px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.26em;
+}
+
+/* ─── Style: tag (bold orange FIG label) ─── */
+.hero-badge-style-tag {
+  background: var(--orange);
+  color: var(--ink);
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+/* ─── Style: corner (small paper color chip) ─── */
+.hero-badge-style-corner {
+  background: var(--paper);
+  color: var(--ink);
+  padding: 6px 10px;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+/* When a corner-style badge sits at top-right, hug the edge tighter so
+   it reads as a quiet chip rather than a centred heritage stamp. */
+.hero-badge-style-corner.hero-badge-top-right {
+  right: 24px;
+}
+
+/* ─── Section header ─── */
+.section {
+  padding: clamp(60px, calc(9 * var(--u)), 120px) 0;
+  border-bottom: 1.5px solid var(--ink);
+}
+.section.dark {
+  background: var(--ink);
+  color: var(--paper);
+  border-bottom-color: var(--rule-light);
+}
+.section.orange {
+  background: var(--orange);
+  color: var(--ink);
+}
+.section-h {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(36px, calc(5.5 * var(--u)), 72px);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  margin: 0;
+  text-wrap: pretty;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+/* ─── Statement ─── */
+.statement-h {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(40px, calc(6 * var(--u)), 88px);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  color: var(--paper);
+  margin: 0 0 clamp(36px, calc(5 * var(--u)), 64px);
+  max-width: 16ch;
+  text-wrap: pretty;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+.statement-body {
+  font-size: clamp(14px, calc(1.35 * var(--u)), 17px);
+  line-height: 1.85;
+  color: rgba(244,241,234,0.72);
+  max-width: 60ch;
+  margin: 0;
+  text-wrap: pretty;
+}
+.statement-sign {
+  margin-top: clamp(36px, calc(5 * var(--u)), 56px);
+  padding-top: 18px;
+  border-top: 1px solid rgba(244,241,234,0.18);
+  display: flex;
+  gap: 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  font-weight: 800;
+  color: var(--orange);
+  text-transform: uppercase;
+}
+
+/* ─── Material ─── */
+.material-row {
+  display: grid;
+  grid-template-columns: 0.95fr 1fr;
+  gap: clamp(28px, calc(5 * var(--u)), 64px);
+  align-items: start;
+}
+@media (max-width: 480px) { .material-row { grid-template-columns: 1fr; } }
+.material-text .section-h { margin-bottom: clamp(28px, calc(4 * var(--u)), 44px); }
+.mat-list { display: flex; flex-direction: column; gap: 18px; max-width: 460px; }
+.mat-item {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 14px;
+  padding: 18px 0;
+  border-top: 1px solid var(--rule);
+}
+.mat-item:last-child { border-bottom: 1px solid var(--rule); }
+.mat-num {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 17px;
+  color: var(--orange);
+}
+.mat-item strong { display: block; font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.mat-item small { font-size: 13px; color: var(--ink-soft); line-height: 1.5; }
+
+.material-img {
+  position: relative;
+  background: var(--paper);
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+}
+.material-img img {
+  width: 100%; height: 100%; object-fit: cover; object-position: 65% 45%;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 72%, rgba(0,0,0,0.55) 90%, rgba(0,0,0,0) 100%);
+          mask-image: linear-gradient(to bottom, #000 0%, #000 72%, rgba(0,0,0,0.55) 90%, rgba(0,0,0,0) 100%);
+}
+.img-tagger {
+  position: absolute;
+  width: 36px; height: 36px;
+  background: var(--orange);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 17px;
+}
+.tag-a { top: 8%; left: 5%; }
+.tag-b { top: 38%; right: 7%; }
+.tag-c { bottom: 12%; left: 7%; }
+
+/* ─── Features ─── */
+.feat-h { padding-bottom: clamp(28px, calc(4 * var(--u)), 48px); margin: 0; }
+.features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border-top: 2px solid var(--ink);
+  border-left: 1px solid var(--rule);
+}
+@media (max-width: 480px) { .features { grid-template-columns: 1fr; } }
+.feat {
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: clamp(24px, calc(3 * var(--u)), 36px);
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  transition: background .2s;
+}
+.feat:hover { background: var(--paper-2); }
+.feat.feat-big {
+  grid-column: 1 / -1;
+  background: var(--ink);
+  color: var(--paper);
+  border-right: 1px solid var(--ink);
+}
+.feat.feat-big:hover { background: var(--ink-2); }
+.feat-num {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(32px, calc(4 * var(--u)), 48px);
+  line-height: 1;
+  color: var(--orange);
+  letter-spacing: -0.025em;
+  margin-bottom: 18px;
+}
+.feat-t {
+  font-size: clamp(18px, calc(1.6 * var(--u)), 22px);
+  font-weight: 700;
+  margin-bottom: 10px;
+  line-height: 1.25;
+}
+.feat-big .feat-t { font-size: clamp(22px, calc(2 * var(--u)), 28px); }
+.feat-b {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: 50ch;
+}
+.feat-big .feat-b { color: rgba(244,241,234,0.72); font-size: 15px; }
+
+/* ─── Spec (dark) ─── */
+.spec-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(28px, calc(5 * var(--u)), 64px);
+  margin-bottom: clamp(40px, calc(5 * var(--u)), 72px);
+}
+@media (max-width: 480px) { .spec-row { grid-template-columns: 1fr; } }
+.spec-headline { display: flex; flex-direction: column; }
+.spec-headline .section-h { color: var(--paper); margin-bottom: 32px; }
+.model-card {
+  margin-top: auto;
+  padding: 22px 24px;
+  background: var(--orange);
+  color: var(--ink);
+  align-self: flex-start;
+}
+.model-l {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.model-v {
+  font-family: var(--font-display);
+  font-size: clamp(28px, calc(3 * var(--u)), 40px);
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  margin-top: 6px;
+}
+.spec-table { display: flex; flex-direction: column; }
+.spec-r {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(244,241,234,0.12);
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+.spec-l {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(244,241,234,0.55);
+  flex: 0 0 110px;
+}
+.spec-dots {
+  flex: 1;
+  border-bottom: 1px dotted rgba(244,241,234,0.3);
+  margin-bottom: 5px;
+}
+.spec-v { font-weight: 600; color: var(--paper); flex: 0 0 auto; text-align: right; }
+
+.size-block { padding-top: clamp(32px, calc(4 * var(--u)), 56px); border-top: 1px solid rgba(244,241,234,0.15); }
+.size-h {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  color: var(--orange);
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+.size-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--paper);
+}
+.size-table th {
+  text-align: left;
+  padding: 14px 10px 14px 0;
+  border-top: 2px solid var(--paper);
+  border-bottom: 1px solid rgba(244,241,234,0.4);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.size-table td {
+  padding: 12px 10px 12px 0;
+  border-bottom: 1px solid rgba(244,241,234,0.12);
+}
+.size-table th:first-child, .size-table td:first-child { color: var(--orange); font-weight: 800; }
+
+/* ─── Field ─── */
+.field-h { margin-bottom: clamp(28px, calc(4 * var(--u)), 48px); }
+.field-list { border-top: 2px solid var(--ink); }
+.field-row {
+  display: grid;
+  grid-template-columns: 60px 130px 240px 1fr;
+  gap: 22px;
+  align-items: baseline;
+  padding: clamp(22px, calc(2.5 * var(--u)), 32px) 0;
+  border-bottom: 1px solid var(--rule);
+}
+@media (max-width: 480px) {
+  .field-row { grid-template-columns: 50px 1fr; gap: 14px; }
+  .field-tag { grid-column: 2; }
+  .field-t { grid-column: 2; }
+  .field-b { grid-column: 2; }
+}
+.field-n {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(22px, calc(2.3 * var(--u)), 28px);
+  color: var(--orange);
+}
+.field-tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+}
+.field-tag .bar { width: 18px; height: 3px; background: var(--orange); display: inline-block; }
+.field-t {
+  font-size: clamp(17px, calc(1.5 * var(--u)), 20px);
+  font-weight: 700;
+  line-height: 1.25;
+}
+.field-b {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* ─── Care + Cert ─── */
+.care-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(32px, calc(5 * var(--u)), 64px);
+}
+@media (max-width: 480px) { .care-row { grid-template-columns: 1fr; } }
+.care-h {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(28px, calc(3.5 * var(--u)), 44px);
+  margin: 0 0 24px;
+  letter-spacing: -0.02em;
+}
+.care-list { display: flex; flex-direction: column; }
+.care-item {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 16px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--rule);
+  align-items: center;
+}
+.care-icon {
+  width: 46px; height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 15px;
+}
+.care-icon.warn { background: var(--orange); }
+.care-item strong { display: block; font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+.care-item small { font-size: 13px; color: var(--ink-soft); }
+
+.cert-list { display: flex; flex-direction: column; gap: 12px; }
+.cert {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 16px;
+  align-items: center;
+  padding: 16px 18px;
+  background: var(--paper-2);
+  border-left: 4px solid var(--ink);
+}
+.cert-mark {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 18px;
+  width: 56px; height: 56px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.04em;
+}
+.cert-mark.highlight { background: var(--orange); color: var(--ink); }
+.cert strong { display: block; font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+.cert small {
+  font-size: 12px;
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  letter-spacing: 0.08em;
+}
+
+/* ─── Order (orange) ─── */
+.order-top {
+  display: flex; align-items: center; gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+}
+.order-top .square-dark { width: 10px; height: 10px; background: var(--ink); }
+.order-h {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(40px, calc(6 * var(--u)), 96px);
+  line-height: 1.0;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+  margin: 0 0 clamp(40px, calc(5 * var(--u)), 72px);
+  max-width: 18ch;
+  text-wrap: pretty;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+.order-h em { white-space: nowrap; }
+.order-h em {
+  /* Highlight against the orange section: keep the heavy display weight
+   * but switch the ink to paper (cream) so the emphasised phrase reads
+   * as a softer call-to-action rather than a black pill. */
+  color: var(--paper);
+  background: transparent;
+  padding: 0;
+  font-style: normal;
+}
+.order-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+}
+@media (max-width: 480px) { .order-grid { grid-template-columns: 1fr; } }
+.order-cell {
+  padding: clamp(22px, calc(3 * var(--u)), 32px);
+  border-right: 1px solid rgba(20,23,29,0.3);
+}
+.order-cell:last-child { border-right: 0; }
+@media (max-width: 480px) {
+  .order-cell { border-right: 0; border-bottom: 1px solid rgba(20,23,29,0.3); }
+  .order-cell:last-child { border-bottom: 0; }
+}
+.order-l {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+.order-v {
+  font-family: var(--font-display);
+  font-size: clamp(22px, calc(2.5 * var(--u)), 32px);
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  margin-bottom: 14px;
+  color: var(--ink);
+}
+.order-cell p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(20,23,29,0.78);
+  margin: 0;
+}
+
+.contact-block {
+  margin-top: clamp(36px, calc(5 * var(--u)), 56px);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 6px clamp(22px, calc(3 * var(--u)), 32px);
+}
+.contact-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(244,241,234,0.15);
+  font-family: var(--font-mono);
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.contact-l { flex: 0 0 auto; }
+.contact-v { white-space: nowrap; min-width: 0; }
+.contact-row:last-child { border-bottom: 0; }
+.contact-l {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  color: rgba(244,241,234,0.55);
+  text-transform: uppercase;
+}
+.contact-v {
+  font-size: clamp(16px, calc(1.6 * var(--u)), 20px);
+  font-weight: 700;
+  color: var(--orange);
+  letter-spacing: 0.02em;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ─── Order-section corporate signoff ───────────────────────────────
+ * NJ Enterprise (나정엔터프라이즈) is the parent company; NJ Safety is
+ * its workwear product line. The mark renders at the bottom of the
+ * orange Order panel as a quiet attribution — sized smaller than the
+ * topnav/footer logos so it reads as a corporate footnote, not a
+ * second hero. Tight max-width and centred margins keep it grounded
+ * on the page regardless of viewport width. */
+.order-signoff {
+  margin-top: clamp(32px, calc(4 * var(--u)), 56px);
+  display: flex;
+  justify-content: center;
+}
+.nj-page .order-signoff-logo {
+  /* Bumped from 42px to 80px so the parent-company mark reads at a
+   * glance instead of feeling like a tiny footnote. The signoff is
+   * the literal closing image of the catalog — worth giving it
+   * presence. */
+  height: 80px;
+  width: auto;
+  display: block;
+  max-width: none;
+  flex-shrink: 0;
+  /* Slight transparency to keep the order CTA above it as the lead
+   * focal point — opacity dialled up alongside the size bump so the
+   * mark stays legible at the new dimensions. */
+  opacity: 0.9;
+}
+
+/* Flagship: deeper rust panel, so cream-out the signoff for contrast. */
+.nj-page-flagship .order-signoff-logo {
+  filter: brightness(0) invert(1) sepia(0.4) saturate(2) hue-rotate(15deg);
+  opacity: 0.85;
+}
+
+/* Tactical: orange order panel stays bright, so default styling works
+   — the mark's black text + orange N read fine on the rust-orange
+   background. No override needed. */
+
+/* ─── Footer ─── */
+.footer {
+  padding: 40px var(--gutter);
+  background: var(--ink);
+  color: rgba(244,241,234,0.55);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.footer .square { width: 10px; height: 10px; background: var(--orange); display: inline-block; }
+.footer-fill { flex: 1; height: 1px; background: rgba(244,241,234,0.2); }
+.footer-end { color: var(--paper); }
+/* Brand logo in the dark footer. Original logo art is dark on transparent;
+ * invert it so the strokes stay visible against the dark footer panel. The
+ * orange accent on the mark unfortunately rotates to teal under invert(),
+ * but the cost is small at footer size — a dedicated /brand/logo-light.png
+ * can be swapped in later if the colour shift becomes objectionable. */
+.nj-page .footer-logo {
+  /* Pulls /brand/logo-light.png — same horizontal mark with cream
+     text instead of black, ready for the dark ink footer. No
+     filter:invert here: invert turned the orange N blue, which
+     the user (rightly) flagged. Bumped 28 → 36px to keep the
+     footer proportional with the larger topnav. */
+  height: 36px;
+  width: auto;
+  display: block;
+  /* Same flex-children specificity fix as .topnav-logo. */
+  max-width: none;
+  flex-shrink: 0;
+}
+.footer-brand-fallback {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ─── Gallery ─── */
+.gallery-section {
+  background: var(--paper-2);
+  padding-top: clamp(72px, calc(10 * var(--u)), 140px);
+  border-top: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+}
+.gallery-head { display: grid; grid-template-columns: 1fr auto; gap: 24px 48px; align-items: end; margin-bottom: clamp(40px, calc(5 * var(--u)), 64px); }
+@media (max-width: 480px) { .gallery-head { grid-template-columns: 1fr; } }
+.gallery-h {
+  font-size: clamp(36px, calc(5.5 * var(--u)), 72px);
+  max-width: 14ch;
+  margin-top: 22px;
+}
+.gallery-note {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-align: right;
+  max-width: 30ch;
+  line-height: 1.7;
+  align-self: end;
+  padding-bottom: 8px;
+}
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: clamp(12px, calc(1.4 * var(--u)), 20px);
+}
+.gimg { margin: 0; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.gimg-frame {
+  position: relative;
+  background: var(--paper);
+  overflow: hidden;
+  width: 100%;
+}
+.gimg-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.gimg-xl .gimg-frame img,
+.gimg-l  .gimg-frame img {
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 75%, rgba(0,0,0,0.6) 92%, rgba(0,0,0,0) 100%);
+          mask-image: linear-gradient(to bottom, #000 0%, #000 75%, rgba(0,0,0,0.6) 92%, rgba(0,0,0,0) 100%);
+}
+.gimg-corner {
+  position: absolute;
+  top: 14px; right: 14px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  color: var(--paper);
+  background: rgba(20,23,29,0.55);
+  backdrop-filter: blur(4px);
+  padding: 5px 8px;
+  z-index: 2;
+}
+.gimg-ph {
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(45deg, rgba(255,255,255,0.025) 0 14px, transparent 14px 28px),
+    var(--ink-2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+  text-align: center;
+}
+.gimg-ph::before {
+  content: '';
+  position: absolute;
+  inset: 16px;
+  border: 1px dashed rgba(244,241,234,0.18);
+  pointer-events: none;
+}
+.gimg-ph-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.24em;
+  color: var(--orange);
+  position: relative;
+}
+.gimg-ph-label {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(16px, calc(1.6 * var(--u)), 22px);
+  color: var(--paper);
+  letter-spacing: -0.01em;
+  position: relative;
+  word-break: keep-all;
+}
+.gimg-ph-rec {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: rgba(244,241,234,0.45);
+  position: relative;
+}
+.gimg-cap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 2px;
+}
+.gimg-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  color: var(--orange);
+}
+.gimg-label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+}
+.gimg-desc {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  max-width: 36ch;
+}
+
+/* Span variants — editorial 12-col grid */
+.gimg-xl { grid-column: span 6; }
+.gimg-xl .gimg-frame { aspect-ratio: 4 / 5; }
+.gimg-l  { grid-column: span 6; }
+.gimg-l  .gimg-frame { aspect-ratio: 4 / 5; }
+.gimg-m  { grid-column: span 3; }
+.gimg-m  .gimg-frame { aspect-ratio: 1 / 1; }
+.gimg-s  { grid-column: span 3; }
+.gimg-s  .gimg-frame { aspect-ratio: 1 / 1; }
+.gimg-wide { grid-column: span 12; }
+.gimg-wide .gimg-frame { aspect-ratio: 21 / 9; }
+.gimg-tall { grid-column: span 4; }
+.gimg-tall .gimg-frame { aspect-ratio: 3 / 4; }
+
+@media (max-width: 480px) {
+  .gimg-xl, .gimg-l { grid-column: span 6; }
+  .gimg-m, .gimg-s { grid-column: span 6; }
+  .gimg-tall { grid-column: span 6; }
+}
+@media (max-width: 360px) {
+  .gimg-xl, .gimg-l, .gimg-m, .gimg-s, .gimg-tall, .gimg-wide { grid-column: span 12; }
+}
+
+/* ─── Products index page ────────────────────────────────────────── */
+.index-hero {
+  padding: clamp(48px, calc(7 * var(--u)), 96px) 0 clamp(36px, calc(5 * var(--u)), 64px);
+  border-bottom: 2px solid var(--ink);
+  background:
+    repeating-linear-gradient(0deg, transparent 0 79px, rgba(20,23,29,0.04) 79px 80px),
+    var(--paper);
+}
+.index-hero-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 40px;
+}
+@media (max-width: 480px) { .index-hero-row { grid-template-columns: 1fr; } }
+.index-h {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(48px, calc(8 * var(--u)), 96px);
+  line-height: 0.96;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+  margin: 16px 0 0;
+}
+.index-h em { font-style: italic; color: var(--orange); }
+.index-lead {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  text-align: right;
+  max-width: 28ch;
+  line-height: 1.7;
+}
+@media (max-width: 480px) { .index-lead { text-align: left; } }
+.index-count {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-top: 6px;
+}
+.index-count-n {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 32px;
+  color: var(--orange);
+  letter-spacing: -0.02em;
+}
+
+.index-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-bottom: 2px solid var(--ink);
+}
+@media (max-width: 480px) { .index-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 360px) { .index-grid { grid-template-columns: 1fr; } }
+
+.index-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  background: var(--paper);
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  transition: background .2s;
+  position: relative;
+}
+.index-card:hover { background: var(--paper-2); }
+@media (max-width: 480px) {
+  .index-card:nth-child(2n) { border-right: 0; }
+}
+@media (max-width: 360px) {
+  .index-card { border-right: 0; }
+}
+
+.index-card-image {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--paper-2);
+  border-bottom: 1px solid var(--rule);
+}
+.index-card-image img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: 60% 50%;
+  transition: transform .4s ease;
+}
+.index-card:hover .index-card-image img { transform: scale(1.03); }
+.index-card-tag {
+  position: absolute;
+  top: 14px; left: 14px;
+  background: var(--orange);
+  color: var(--ink);
+  padding: 5px 9px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.index-card-num {
+  position: absolute;
+  top: 14px; right: 14px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  color: var(--paper);
+  background: rgba(20,23,29,0.6);
+  backdrop-filter: blur(4px);
+  padding: 5px 8px;
+}
+
+.index-card-body {
+  padding: clamp(20px, calc(2.5 * var(--u)), 28px);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+.index-card-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+.index-card-name {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(20px, calc(2 * var(--u)), 26px);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--ink);
+  margin: 0;
+  word-break: keep-all;
+}
+.index-card-sub {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin: 0;
+}
+.index-card-foot {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.index-card-model { color: var(--ink); }
+.index-card-arrow {
+  color: var(--orange);
+  letter-spacing: 0;
+  font-size: 14px;
+}
+
+.index-empty {
+  padding: 80px 0;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+ * NJ Safety — AR301 STEADY treatment (.nj-page.nj-page-flagship)
+ * Reference: Carhartt heritage hangtag · Boldist utility · K2 Safety industrial
+ * Direction: warm kraft tan paper + deep brown ink + heavy stamped typography.
+ *
+ * Goal: feel completely different from the industrial blueprint. Where the
+ * default is "blueprint catalog", this flavor is "warehouse hangtag".
+ * Activate by adding `nj-page-flagship` to the .nj-page wrapper.
+ * ════════════════════════════════════════════════════════════════════ */
+
+.nj-page.nj-page-flagship {
+  --kraft: #d6c9a8;
+  --kraft-2: #c4b58f;
+  --kraft-3: #b0a079;
+  --bark: #2a2218;
+  --bark-2: #3a2e1f;
+  --bark-soft: #6b5d47;
+  --rust: #b54a1c;
+  --rust-deep: #8e3914;
+  --ochre: #d68b2a;
+  --cream: #efe5cc;
+
+  --paper: var(--kraft);
+  --paper-2: var(--kraft-2);
+  --paper-3: var(--kraft-3);
+  --ink: var(--bark);
+  --ink-2: var(--bark-2);
+  --ink-soft: var(--bark-soft);
+  --orange: var(--rust);
+  --orange-deep: var(--rust-deep);
+  --rule: rgba(42, 34, 24, 0.30);
+
+  background: var(--kraft);
+  color: var(--bark);
+  /* Subtle paper grain — diagonal noise via repeating gradients */
+  background-image:
+    repeating-linear-gradient(135deg, rgba(42, 34, 24, 0.020) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(45deg,  rgba(42, 34, 24, 0.018) 0 1px, transparent 1px 3px);
+}
+
+/* ─── Top nav: hangtag header ─── */
+.nj-page-flagship .topnav {
+  background: var(--bark);
+  color: var(--kraft);
+  border-bottom: 4px solid var(--rust);
+  padding: 14px var(--gutter);
+}
+.nj-page-flagship .topnav .square { background: var(--rust); }
+.nj-page-flagship .topnav-name { color: var(--kraft); letter-spacing: 0.32em; }
+.nj-page-flagship .topnav-r { color: rgba(239, 229, 204, 0.65); }
+.nj-page-flagship .topnav-r a { color: rgba(239, 229, 204, 0.85); }
+.nj-page-flagship .topnav-r a:hover { color: var(--ochre); }
+
+/* ─── Hero: heavy stamped utility label ─── */
+.nj-page-flagship .hero {
+  position: relative;
+  border-top: 0;
+  border-bottom: 4px solid var(--bark);
+  /* Top dotted stamp is preserved as a flagship signature; the
+   * full-section ruled-paper grid below it was distracting and has
+   * been dropped. */
+  background:
+    repeating-linear-gradient(90deg, var(--bark) 0 8px, transparent 8px 14px) top / 100% 2px no-repeat,
+    var(--kraft);
+}
+.nj-page-flagship .hero-left {
+  border-right: 2px solid var(--bark);
+  padding: clamp(48px, calc(7 * var(--u)), 96px) var(--gutter) clamp(48px, calc(7 * var(--u)), 96px);
+}
+.nj-page-flagship .hero-title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  /* Tightened down a step from 9.5×→7.5× and 144px cap→112px so multi-
+   * word titles like "아라미드 하계 방염자켓" don't crowd into the column
+   * edges. Pair with a roomier line-height below. */
+  font-size: clamp(52px, calc(7.5 * var(--u)), 112px);
+  letter-spacing: -0.045em;
+  /* Was 0.86 — tight enough that descenders + Hangul jongsung kissed the
+   * next line's ascenders, especially in Korean where 받침 sits low.
+   * 1.04 gives a clean lane between rows without breaking the
+   * sledgehammer feel of the flagship treatment. */
+  line-height: 1.04;
+  text-transform: uppercase;
+  color: var(--bark);
+}
+.nj-page-flagship .hero-title .line { display: block; }
+.nj-page-flagship .hero-title .line-orange {
+  color: var(--rust);
+  font-style: italic;
+  text-decoration: underline;
+  text-decoration-thickness: 6px;
+  text-underline-offset: 6px;
+}
+.nj-page-flagship .hero-title em { color: var(--rust); font-style: italic; }
+.nj-page-flagship .hero-lead {
+  font-size: clamp(15px, calc(1.5 * var(--u)), 19px);
+  line-height: 1.7;
+  max-width: 44ch;
+  border-left: 4px solid var(--rust);
+  padding: 6px 0 6px 18px;
+  color: var(--bark);
+}
+
+/* Counters → ammo-box stencil row */
+.nj-page-flagship .hero-counters {
+  border-top: 3px solid var(--bark);
+  border-bottom: 3px solid var(--bark);
+  padding: 26px 0;
+  margin-top: auto;
+  background:
+    linear-gradient(to right, var(--rust) 0 4px, transparent 4px 10px),
+    var(--kraft-2);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  position: relative;
+}
+.nj-page-flagship .hero-counters > div {
+  border-right: 2px solid var(--bark);
+  padding-left: 18px;
+}
+.nj-page-flagship .hero-counters > div:last-child { border-right: 0; }
+.nj-page-flagship .hero-counters .c-num {
+  font-family: var(--font-display);
+  font-size: clamp(38px, calc(4.2 * var(--u)), 60px);
+  font-weight: 900;
+  color: var(--bark);
+  letter-spacing: -0.02em;
+}
+.nj-page-flagship .hero-counters .c-num small {
+  color: var(--rust);
+  font-weight: 800;
+  margin-left: 4px;
+}
+.nj-page-flagship .hero-counters .c-lbl {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.28em;
+  color: var(--bark);
+  margin-top: 6px;
+}
+
+/* Hero image — bark border, no fade. Photo fills the frame edge-to-edge. */
+.nj-page-flagship .hero-image {
+  background: var(--cream);
+  border-left: 2px solid var(--bark);
+  position: relative;
+}
+.nj-page-flagship .hero-image img {
+  -webkit-mask-image: none;
+          mask-image: none;
+  object-fit: cover;
+  object-position: 50% 50%;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  background: transparent;
+}
+.nj-page-flagship .hero-badge-style-tag {
+  background: var(--rust);
+  color: var(--cream);
+  border: 2px solid var(--bark);
+  font-weight: 900;
+  letter-spacing: 0.22em;
+  box-shadow: 3px 3px 0 var(--bark);
+}
+.nj-page-flagship .hero-badge-style-corner {
+  background: var(--bark);
+  color: var(--ochre);
+  border: 2px solid var(--ochre);
+  font-weight: 900;
+}
+.nj-page-flagship .hero-badge-style-stamp {
+  background: var(--bark);
+  color: var(--kraft);
+  border: 2px solid var(--bark);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.32em;
+  padding: 10px 16px;
+  box-shadow: 4px 4px 0 var(--rust);
+}
+
+/* ─── Section base ─── */
+.nj-page-flagship .section { border-bottom: 3px solid var(--bark); }
+
+/* ─── Eyebrow as warehouse stencil ─── */
+.nj-page-flagship .eyebrow {
+  border: 0;
+  border-top: 2px solid var(--bark);
+  padding: 8px 12px 8px 0;
+  font-weight: 900;
+  letter-spacing: 0.30em;
+  color: var(--bark);
+  background: linear-gradient(to right, var(--rust) 0 16px, transparent 16px);
+  padding-left: 24px;
+}
+.nj-page-flagship .eyebrow-light {
+  border-top-color: var(--ochre);
+  color: var(--cream);
+  background: linear-gradient(to right, var(--ochre) 0 16px, transparent 16px);
+}
+
+/* ─── Statement: deep bark with stencil overlay ─── */
+.nj-page-flagship .section.dark {
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba(214, 139, 42, 0.06), transparent 60%),
+    repeating-linear-gradient(0deg, transparent 0 79px, rgba(239, 229, 204, 0.04) 79px 80px),
+    var(--bark);
+  color: var(--cream);
+  position: relative;
+}
+.nj-page-flagship .section.dark::before {
+  content: '— STEADY —';
+  position: absolute;
+  top: 36px; left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.4em;
+  color: var(--ochre);
+}
+.nj-page-flagship .statement-h {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(44px, calc(6.8 * var(--u)), 100px);
+  text-transform: uppercase;
+  letter-spacing: -0.035em;
+  color: var(--cream);
+}
+.nj-page-flagship .statement-h em {
+  color: var(--ochre);
+  font-style: italic;
+  text-decoration: underline wavy;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 8px;
+}
+.nj-page-flagship .statement-body {
+  font-size: clamp(15px, calc(1.5 * var(--u)), 19px);
+  line-height: 1.85;
+  max-width: 52ch;
+  color: rgba(239, 229, 204, 0.85);
+}
+.nj-page-flagship .statement-sign {
+  border-top: 1px solid rgba(239, 229, 204, 0.30);
+  padding-top: 22px;
+  margin-top: 44px;
+  letter-spacing: 0.28em;
+  color: var(--ochre);
+  font-weight: 900;
+}
+
+/* ─── Gallery: hangtag cards on kraft ─── */
+.nj-page-flagship .gallery-section {
+  background: var(--kraft);
+  border-top: 3px solid var(--bark);
+}
+.nj-page-flagship .gallery-h {
+  font-weight: 900;
+  text-transform: uppercase;
+}
+.nj-page-flagship .gallery-h em { color: var(--rust); font-style: italic; }
+.nj-page-flagship .gallery-note { color: var(--bark-soft); font-weight: 800; }
+
+.nj-page-flagship .gimg-frame {
+  background: var(--cream);
+  border: 2px solid var(--bark);
+  box-shadow: 5px 5px 0 var(--bark);
+}
+.nj-page-flagship .gimg-xl .gimg-frame img,
+.nj-page-flagship .gimg-l  .gimg-frame img {
+  -webkit-mask-image: none; mask-image: none;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  background: transparent;
+}
+.nj-page-flagship .gimg-tall .gimg-frame img,
+.nj-page-flagship .gimg-m   .gimg-frame img,
+.nj-page-flagship .gimg-s   .gimg-frame img {
+  object-fit: cover;
+}
+.nj-page-flagship .gimg-corner {
+  background: var(--bark);
+  color: var(--ochre);
+  border: 1px solid var(--ochre);
+  font-weight: 900;
+}
+.nj-page-flagship .gimg-tag { color: var(--rust); }
+.nj-page-flagship .gimg-label { color: var(--bark); font-weight: 900; }
+
+/* ─── Material: three-fiber engineering as ledger ─── */
+.nj-page-flagship .material-img {
+  background: var(--cream);
+  border: 2px solid var(--bark);
+  box-shadow: 6px 6px 0 var(--bark);
+}
+.nj-page-flagship .material-img img {
+  -webkit-mask-image: none; mask-image: none;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  background: transparent;
+}
+.nj-page-flagship .mat-num {
+  color: var(--cream);
+  background: var(--bark);
+  width: 28px; height: 28px;
+  display: flex !important;
+  align-items: center; justify-content: center;
+  font-size: 13px;
+}
+.nj-page-flagship .mat-item {
+  border-top: 2px solid var(--bark);
+  padding: 22px 0;
+  grid-template-columns: 36px 1fr;
+}
+.nj-page-flagship .mat-item:last-child { border-bottom: 2px solid var(--bark); }
+.nj-page-flagship .mat-item strong {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 900;
+  color: var(--bark);
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+}
+.nj-page-flagship .mat-item small { color: var(--bark-soft); }
+
+/* ─── Features: card with kraft tape strip ─── */
+.nj-page-flagship .feat {
+  background: var(--cream);
+  border: 2px solid var(--bark);
+  position: relative;
+}
+.nj-page-flagship .feat::before {
+  content: '';
+  position: absolute;
+  top: -8px; left: 18px;
+  width: 56px; height: 18px;
+  background: var(--rust);
+  opacity: 0.85;
+  transform: rotate(-2deg);
+}
+.nj-page-flagship .feat-num {
+  color: var(--rust);
+  font-weight: 900;
+}
+.nj-page-flagship .feat-t {
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.005em;
+}
+.nj-page-flagship .feat-big {
+  background: var(--bark);
+  color: var(--cream);
+}
+.nj-page-flagship .feat-big::before {
+  background: var(--ochre);
+}
+.nj-page-flagship .feat-big .feat-num { color: var(--ochre); }
+.nj-page-flagship .feat-big .feat-b { color: rgba(239, 229, 204, 0.8); }
+
+/* ─── Spec: ledger / receipt feel ─── */
+.nj-page-flagship .section.dark .spec-table { background: rgba(239, 229, 204, 0.04); padding: 20px; }
+.nj-page-flagship .spec-headline::before {
+  content: 'TECHNICAL HERITAGE · 2014—2026';
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.30em;
+  color: var(--ochre);
+  margin-bottom: 16px;
+}
+.nj-page-flagship .spec-r {
+  border-bottom: 1px dashed rgba(239, 229, 204, 0.25);
+}
+.nj-page-flagship .size-table thead th {
+  background: var(--bark);
+  color: var(--ochre);
+  border: 1px solid var(--ochre);
+  font-weight: 900;
+}
+.nj-page-flagship .size-table td {
+  border: 1px solid rgba(239, 229, 204, 0.18);
+  font-family: var(--font-display);
+  font-weight: 800;
+}
+
+/* ─── Field: hangtag list ─── */
+.nj-page-flagship .field-row {
+  border-top: 2px solid var(--bark);
+  padding: 24px 0;
+}
+.nj-page-flagship .field-n {
+  background: var(--bark);
+  color: var(--cream);
+  width: 44px; height: 44px;
+  display: inline-flex !important;
+  align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 900;
+}
+.nj-page-flagship .field-tag {
+  background: var(--rust);
+  color: var(--cream);
+  padding: 4px 10px;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+}
+.nj-page-flagship .field-tag .bar { display: none; }
+.nj-page-flagship .field-t {
+  font-family: var(--font-display);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.005em;
+}
+
+/* ─── Care + Cert ─── */
+.nj-page-flagship .care-h {
+  font-family: var(--font-display);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--bark);
+  border-bottom: 3px solid var(--bark);
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+}
+.nj-page-flagship .care-icon {
+  background: var(--cream);
+  border: 2px solid var(--bark);
+  color: var(--bark);
+  font-weight: 900;
+}
+.nj-page-flagship .care-icon.warn {
+  background: var(--rust);
+  color: var(--cream);
+}
+.nj-page-flagship .cert {
+  background: var(--cream);
+  border: 2px solid var(--bark);
+  padding: 16px;
+}
+.nj-page-flagship .cert-mark {
+  background: var(--bark);
+  color: var(--ochre);
+  border: 1px solid var(--ochre);
+  font-family: var(--font-display);
+  font-weight: 900;
+}
+.nj-page-flagship .cert-mark.highlight {
+  background: var(--rust);
+  color: var(--cream);
+  border-color: var(--bark);
+}
+
+/* ─── Order: rust orange, deep border ─── */
+.nj-page-flagship .section.orange {
+  background: var(--rust);
+  color: var(--cream);
+  border-top: 6px solid var(--bark);
+  border-bottom: 6px solid var(--bark);
+  position: relative;
+}
+.nj-page-flagship .section.orange::before {
+  content: 'BULK ORDER · STEADY DESK';
+  position: absolute;
+  top: 18px; right: var(--gutter);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.30em;
+  color: var(--cream);
+  background: var(--bark);
+  padding: 6px 10px;
+}
+.nj-page-flagship .order-h {
+  color: var(--cream);
+  text-transform: uppercase;
+  font-weight: 900;
+}
+.nj-page-flagship .order-h em {
+  color: var(--ochre);
+  font-style: italic;
+  background: transparent;
+  padding: 0;
+}
+.nj-page-flagship .order-cell {
+  background: var(--bark);
+  color: var(--cream);
+  border: 2px solid var(--cream);
+  padding: 22px;
+}
+.nj-page-flagship .order-l { color: var(--ochre); font-weight: 900; }
+.nj-page-flagship .order-v {
+  color: var(--cream);
+  font-family: var(--font-display);
+  font-weight: 900;
+}
+.nj-page-flagship .order-cell p { color: rgba(239, 229, 204, 0.8); }
+.nj-page-flagship .contact-row {
+  border-bottom-color: rgba(239, 229, 204, 0.3);
+}
+.nj-page-flagship .contact-l { color: rgba(239, 229, 204, 0.7); }
+.nj-page-flagship .contact-v { color: var(--cream); }
+.nj-page-flagship .order-top {
+  color: var(--cream);
+}
+.nj-page-flagship .square-dark { background: var(--bark); }
+
+/* ─── Footer: stamped barbacoa-deep brown ─── */
+.nj-page-flagship .footer {
+  background: var(--bark);
+  color: rgba(239, 229, 204, 0.6);
+  border-top: 6px solid var(--rust);
+  letter-spacing: 0.28em;
+}
+.nj-page-flagship .footer .square { background: var(--ochre); }
+.nj-page-flagship .footer-end { color: var(--ochre); }
+
+/* ════════════════════════════════════════════════════════════════════
+ * Print stylesheet — paginate the product page cleanly onto A4.
+ *
+ * The on-screen design is one long viewport-tall scroll. When a browser
+ * prints that as-is, vh-based heights blow the hero out to ~250mm tall,
+ * clamp() font sizes are too big for paginated reading, and grid cards
+ * split mid-row across page breaks. The rules below tighten everything
+ * down for paged output: caps the hero, normalises section padding,
+ * forces page breaks between major sections, and tells the renderer
+ * never to split a card / row / table across pages.
+ *
+ * Lives inside product-page.css (next to all the other .nj-page rules)
+ * so it applies whether the user prints from /print, /products/<slug>/,
+ * or the editor preview pane.
+ * ════════════════════════════════════════════════════════════════════ */
+@media print {
+  /* Reset page margins to the same value the print toolbar uses so
+     content has predictable bleed. Browsers also need this to honour
+     our own padding instead of stacking their default ~12mm on top. */
+  @page { margin: 12mm; }
+
+  .nj-page,
+  .nj-page * {
+    /* Preserve our oranges, ink, kraft tones; browsers strip these by
+       default for "ink saving" which murders the design. */
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Sticky topnav becomes static so it doesn't repeat or float. */
+  .nj-page .topnav {
+    position: static !important;
+    backdrop-filter: none !important;
+    /* Page-break-after avoid keeps the nav glued to the hero on page 1. */
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  /* Hero — was min-height: 86vh, which renders as ~85% of A4 height
+     and pushes everything down. Cap it so the title + counters fit on
+     page 1 cleanly with the topnav above. */
+  .nj-page .hero {
+    min-height: 0 !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  .nj-page .hero-left {
+    padding: 14mm 12mm !important;
+  }
+  .nj-page .hero-image {
+    min-height: 120mm !important;
+  }
+  .nj-page .hero-title {
+    font-size: 56px !important;
+    line-height: 0.95 !important;
+  }
+  .nj-page .hero-lead {
+    font-size: 12px !important;
+  }
+  .nj-page .hero-counters {
+    margin-top: 14mm !important;
+    padding-top: 8mm !important;
+  }
+  .nj-page .c-num {
+    font-size: 38px !important;
+  }
+
+  /* Major sections — start each on a fresh page, normalise vertical
+     padding so a section doesn't waste 60mm on whitespace. */
+  .nj-page section.section {
+    padding: 14mm 0 !important;
+    page-break-before: always;
+    break-before: page;
+    page-break-inside: auto;
+  }
+  /* The hero is also a section (kind of) but should NOT force a break
+     before — it's already the top of page 1. The first .section sits
+     after the hero and we DO want a break there. */
+  .nj-page .hero + section.section,
+  .nj-page section.section.gallery-section {
+    /* leave existing page-break-before: always — applied above */
+  }
+
+  /* Section headlines — never leave one stranded at the bottom of a
+     page with its body content on the next. */
+  .nj-page .section-h,
+  .nj-page .statement-h,
+  .nj-page .order-h,
+  .nj-page .care-h,
+  .nj-page .gallery-h,
+  .nj-page .index-h {
+    page-break-after: avoid;
+    break-after: avoid;
+    font-size: 36px !important;
+    line-height: 1.1 !important;
+  }
+  .nj-page .statement-h { font-size: 44px !important; }
+  .nj-page .order-h     { font-size: 44px !important; }
+
+  /* Cards / rows / table rows — never split across pages. */
+  .nj-page .feat,
+  .nj-page .care-item,
+  .nj-page .cert,
+  .nj-page .field-row,
+  .nj-page .gimg,
+  .nj-page .order-cell,
+  .nj-page .mat-item,
+  .nj-page .spec-r,
+  .nj-page .size-table tr,
+  .nj-page .contact-row {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Gallery — the editorial 12-col grid stays, but each figure (cell)
+     keeps its caption on the same page as its image. */
+  .nj-page .gallery-grid {
+    gap: 8mm !important;
+  }
+
+  /* Backgrounds with masks/repeating gradients eat ink in print. Keep
+     them but lower contrast slightly so they don't dominate. */
+  .nj-page .gallery-section {
+    background-size: 25mm 18mm, 25mm 18mm, 100% 100%;
+  }
+
+  /* Drop the scoped editor chrome if it leaks in via /edit print path. */
+  .nj-page .pp-img-overlay,
+  .nj-page .ed-placeholder,
+  .nj-page .no-print {
+    display: none !important;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+ * NJ Safety — TACTICAL treatment (.nj-page.nj-page-tactical)
+ *
+ * Reference: Boldest Workwear 26SS Catalogue (welding/PPE focused
+ * tactical workwear). Deep black canvas, white/cream text, single
+ * tactical-yellow accent. Hero is a centred product shot with horizontal
+ * callout lines pointing to feature labels — that "engineered drawing"
+ * mood is the whole point.
+ *
+ * Activate by adding `nj-page-tactical` to the .nj-page wrapper.
+ * ════════════════════════════════════════════════════════════════════ */
+
+.nj-page.nj-page-tactical {
+  --tac-black: #0e0e0e;
+  --tac-black-2: #1a1a1a;
+  --tac-cream: #ece6d8;
+  --tac-cream-soft: rgba(236, 230, 216, 0.62);
+  --tac-cream-faint: rgba(236, 230, 216, 0.28);
+  /* Brand point colour — NJ Safety refined orange. The variable is
+     still called --tac-gold for historic reasons (was #f5c842 in the
+     first Boldest-inspired pass) but it now resolves to the same
+     orange used everywhere else in the brand system. */
+  --tac-gold: #e85d2e;
+  --tac-gold-deep: #c44a1f;
+  --tac-rule: rgba(236, 230, 216, 0.18);
+  --tac-rule-strong: rgba(236, 230, 216, 0.50);
+
+  --paper: var(--tac-black);
+  --paper-2: var(--tac-black-2);
+  --paper-3: var(--tac-black-2);
+  --ink: var(--tac-cream);
+  --ink-2: var(--tac-cream);
+  --ink-soft: var(--tac-cream-soft);
+  --orange: var(--tac-gold);
+  --orange-deep: var(--tac-gold-deep);
+  --rule: var(--tac-rule);
+
+  background: var(--tac-black);
+  color: var(--tac-cream);
+}
+
+/* ─── Top nav: black on black with gold marker ─── */
+.nj-page-tactical .topnav {
+  background: rgba(14, 14, 14, 0.94);
+  color: var(--tac-cream);
+  border-bottom: 1px solid var(--tac-rule);
+}
+.nj-page-tactical .topnav .square { background: var(--tac-gold); }
+.nj-page-tactical .topnav-name { color: var(--tac-cream); letter-spacing: 0.30em; }
+.nj-page-tactical .topnav-r { color: var(--tac-cream-soft); }
+/* Invert the dark-on-transparent logo so it reads against the tactical
+ * topnav's black background. Same caveat as the footer — orange rotates
+ * to teal; swap in a light-version logo file later if needed. */
+/* Tactical mode swaps the img src to /brand/logo-light.png in
+   the Topnav component itself (see ProductPage.tsx), so no
+   filter:invert is needed here. The orange N stays orange; the
+   black text is pre-recoloured to cream in the light variant. */
+.nj-page-tactical .topnav-r a { color: var(--tac-cream-soft); }
+.nj-page-tactical .topnav-r a:hover { color: var(--tac-gold); }
+
+/* ─── Hero: centred product on black, callout-line aesthetic ─── */
+.nj-page-tactical .hero {
+  border-top: 1px solid var(--tac-rule);
+  border-bottom: 1px solid var(--tac-rule);
+  background:
+    radial-gradient(ellipse 60% 60% at 50% 45%, rgba(232, 93, 46, 0.05), transparent 70%),
+    var(--tac-black);
+}
+.nj-page-tactical .hero-left {
+  border-right: 1px solid var(--tac-rule);
+}
+.nj-page-tactical .eyebrow {
+  border-top-color: var(--tac-rule-strong);
+  color: var(--tac-cream);
+}
+.nj-page-tactical .eyebrow-light {
+  border-top-color: var(--tac-rule-strong);
+  color: var(--tac-cream);
+}
+.nj-page-tactical .hero-title {
+  color: var(--tac-cream);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+.nj-page-tactical .hero-title .line-orange {
+  color: var(--tac-gold);
+  font-style: normal;
+}
+.nj-page-tactical .hero-title em {
+  color: var(--tac-gold);
+  font-style: normal;
+}
+.nj-page-tactical .hero-lead {
+  color: var(--tac-cream-soft);
+  border-left: 2px solid var(--tac-gold);
+  padding: 4px 0 4px 16px;
+  max-width: 44ch;
+}
+.nj-page-tactical .hero-counters {
+  border-top: 1px solid var(--tac-rule);
+}
+.nj-page-tactical .hero-counters > div {
+  position: relative;
+  padding-left: 18px;
+}
+.nj-page-tactical .hero-counters > div::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 8px; bottom: 8px;
+  width: 2px;
+  background: var(--tac-gold);
+}
+.nj-page-tactical .c-num {
+  color: var(--tac-cream);
+}
+.nj-page-tactical .c-num small { color: var(--tac-gold); }
+.nj-page-tactical .c-lbl {
+  color: var(--tac-cream-soft);
+  letter-spacing: 0.22em;
+}
+
+.nj-page-tactical .hero-image {
+  background: var(--tac-black);
+  position: relative;
+}
+.nj-page-tactical .hero-image::before {
+  /* Tactical drawing-grid backdrop — subtle, evokes engineered drafts. */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(236, 230, 216, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(236, 230, 216, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+.nj-page-tactical .hero-image img {
+  position: relative;
+  z-index: 1;
+  -webkit-mask-image: none;
+          mask-image: none;
+  /* Match Editorial / Flagship — cover the photo column edge-to-edge
+   * instead of contain-ing inside it with negative space. The drawing-
+   * grid backdrop drawn by .hero-image::before still shows around the
+   * photo via the column's own padding, just no longer breathes inside
+   * the photo's own box. */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+  background: transparent;
+}
+.nj-page-tactical .hero-badge-style-tag {
+  background: var(--tac-gold);
+  color: var(--tac-black);
+  font-weight: 900;
+  letter-spacing: 0.20em;
+}
+.nj-page-tactical .hero-badge-style-corner {
+  background: var(--tac-black);
+  color: var(--tac-cream);
+  border: 1px solid var(--tac-rule-strong);
+  letter-spacing: 0.18em;
+}
+.nj-page-tactical .hero-badge-style-stamp {
+  background: var(--tac-black);
+  color: var(--tac-gold);
+  border: 1px solid var(--tac-gold);
+  font-weight: 900;
+  letter-spacing: 0.32em;
+  padding: 8px 14px;
+}
+
+/* ─── Sections: dark base, no paper bleed ─── */
+.nj-page-tactical .section { border-bottom: 1px solid var(--tac-rule); }
+.nj-page-tactical .section.dark {
+  background: var(--tac-black);
+  border-top: 1px solid var(--tac-rule);
+}
+.nj-page-tactical .section.orange {
+  background: var(--tac-gold);
+  color: var(--tac-black);
+}
+
+/* ─── Statement: wide white headline on black ─── */
+.nj-page-tactical .statement-h {
+  color: var(--tac-cream);
+  text-transform: uppercase;
+  letter-spacing: -0.04em;
+}
+.nj-page-tactical .statement-h em {
+  color: var(--tac-gold);
+  font-style: normal;
+}
+.nj-page-tactical .statement-body { color: var(--tac-cream-soft); }
+.nj-page-tactical .statement-sign {
+  border-top: 1px solid var(--tac-rule);
+  color: var(--tac-gold);
+  letter-spacing: 0.28em;
+}
+
+/* ─── Material: callout drawing feel ─── */
+.nj-page-tactical .material-img {
+  background: var(--tac-black);
+  border: 1px solid var(--tac-rule);
+}
+.nj-page-tactical .material-img img {
+  -webkit-mask-image: none; mask-image: none;
+  object-fit: cover;
+}
+.nj-page-tactical .img-tagger {
+  background: var(--tac-gold);
+  color: var(--tac-black);
+}
+.nj-page-tactical .mat-num { color: var(--tac-gold); }
+.nj-page-tactical .mat-item {
+  border-top: 1px solid var(--tac-rule);
+}
+.nj-page-tactical .mat-item:last-child {
+  border-bottom: 1px solid var(--tac-rule);
+}
+.nj-page-tactical .mat-item strong {
+  color: var(--tac-cream);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.nj-page-tactical .mat-item small { color: var(--tac-cream-soft); }
+
+/* ─── Features: bordered cells on black ─── */
+.nj-page-tactical .features {
+  border-top: 1px solid var(--tac-rule-strong);
+  border-left: 1px solid var(--tac-rule);
+}
+.nj-page-tactical .feat {
+  background: var(--tac-black);
+  border-right: 1px solid var(--tac-rule);
+  border-bottom: 1px solid var(--tac-rule);
+}
+.nj-page-tactical .feat:hover { background: var(--tac-black-2); }
+.nj-page-tactical .feat.feat-big {
+  background: var(--tac-gold);
+  color: var(--tac-black);
+  border-right: 1px solid var(--tac-rule);
+}
+.nj-page-tactical .feat.feat-big:hover {
+  background: var(--tac-gold-deep);
+}
+.nj-page-tactical .feat-num { color: var(--tac-gold); }
+.nj-page-tactical .feat-big .feat-num { color: var(--tac-black); }
+.nj-page-tactical .feat-t {
+  color: var(--tac-cream);
+  text-transform: uppercase;
+  letter-spacing: -0.005em;
+}
+.nj-page-tactical .feat-big .feat-t { color: var(--tac-black); }
+.nj-page-tactical .feat-b { color: var(--tac-cream-soft); }
+.nj-page-tactical .feat-big .feat-b { color: rgba(14, 14, 14, 0.78); }
+
+/* ─── Spec: gold + cream ledger ─── */
+.nj-page-tactical .spec-headline .section-h { color: var(--tac-cream); }
+.nj-page-tactical .model-card {
+  background: var(--tac-gold);
+  color: var(--tac-black);
+}
+.nj-page-tactical .spec-r {
+  border-bottom: 1px dashed var(--tac-rule);
+}
+.nj-page-tactical .spec-l { color: var(--tac-cream-soft); }
+.nj-page-tactical .spec-dots {
+  border-bottom: 1px dotted var(--tac-rule);
+}
+.nj-page-tactical .spec-v { color: var(--tac-cream); }
+.nj-page-tactical .size-h { color: var(--tac-gold); }
+.nj-page-tactical .size-table thead th {
+  color: var(--tac-gold);
+  border-top-color: var(--tac-gold);
+  border-bottom-color: var(--tac-rule-strong);
+}
+.nj-page-tactical .size-table td {
+  color: var(--tac-cream);
+  border-bottom-color: var(--tac-rule);
+}
+.nj-page-tactical .size-table th:first-child,
+.nj-page-tactical .size-table td:first-child { color: var(--tac-gold); }
+
+/* ─── Field: numbered tactical list ─── */
+.nj-page-tactical .field-list { border-top: 1px solid var(--tac-rule-strong); }
+.nj-page-tactical .field-row { border-bottom: 1px solid var(--tac-rule); }
+.nj-page-tactical .field-n { color: var(--tac-gold); }
+.nj-page-tactical .field-tag {
+  color: var(--tac-cream);
+}
+.nj-page-tactical .field-tag .bar { background: var(--tac-gold); }
+.nj-page-tactical .field-t { color: var(--tac-cream); }
+.nj-page-tactical .field-b { color: var(--tac-cream-soft); }
+
+/* ─── Care + Cert ─── */
+.nj-page-tactical .care-h {
+  color: var(--tac-cream);
+  border-bottom: 1px solid var(--tac-rule-strong);
+  padding-bottom: 8px;
+  margin-bottom: 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.nj-page-tactical .care-item {
+  border-bottom: 1px solid var(--tac-rule);
+}
+.nj-page-tactical .care-icon {
+  background: var(--tac-black);
+  color: var(--tac-cream);
+  border: 1px solid var(--tac-rule-strong);
+}
+.nj-page-tactical .care-icon.warn {
+  background: var(--tac-gold);
+  color: var(--tac-black);
+  border-color: var(--tac-gold);
+}
+.nj-page-tactical .care-item strong { color: var(--tac-cream); }
+.nj-page-tactical .care-item small { color: var(--tac-cream-soft); }
+
+.nj-page-tactical .cert {
+  background: var(--tac-black);
+  border: 1px solid var(--tac-rule);
+  border-left: 3px solid var(--tac-gold);
+}
+.nj-page-tactical .cert-mark {
+  background: var(--tac-black-2);
+  color: var(--tac-cream);
+  border: 1px solid var(--tac-rule-strong);
+}
+.nj-page-tactical .cert-mark.highlight {
+  background: var(--tac-gold);
+  color: var(--tac-black);
+  border-color: var(--tac-gold);
+}
+.nj-page-tactical .cert strong { color: var(--tac-cream); }
+.nj-page-tactical .cert small { color: var(--tac-cream-soft); }
+
+/* ─── Order: gold panel like the rest of the brand ─── */
+.nj-page-tactical .section.orange {
+  background: var(--tac-gold);
+  color: var(--tac-black);
+  border-top: none;
+  border-bottom: none;
+}
+.nj-page-tactical .order-top { color: var(--tac-black); }
+.nj-page-tactical .order-h {
+  color: var(--tac-black);
+  text-transform: uppercase;
+  letter-spacing: -0.035em;
+}
+.nj-page-tactical .order-h em {
+  background: var(--tac-black);
+  color: var(--tac-gold);
+  padding: 0 0.2em;
+  font-style: normal;
+}
+.nj-page-tactical .order-grid {
+  border-top: 1px solid rgba(14, 14, 14, 0.40);
+  border-bottom: 1px solid rgba(14, 14, 14, 0.40);
+}
+.nj-page-tactical .order-cell {
+  border-right: 1px solid rgba(14, 14, 14, 0.30);
+}
+.nj-page-tactical .order-l { color: var(--tac-black); }
+.nj-page-tactical .order-v { color: var(--tac-black); }
+.nj-page-tactical .order-cell p { color: rgba(14, 14, 14, 0.78); }
+
+.nj-page-tactical .contact-block {
+  background: var(--tac-black);
+  color: var(--tac-cream);
+}
+.nj-page-tactical .contact-row {
+  border-bottom-color: var(--tac-rule);
+}
+.nj-page-tactical .contact-l { color: var(--tac-cream-soft); }
+.nj-page-tactical .contact-v { color: var(--tac-gold); }
+
+/* ─── Footer ─── */
+.nj-page-tactical .footer {
+  background: var(--tac-black);
+  color: var(--tac-cream-soft);
+  border-top: 1px solid var(--tac-rule);
+  letter-spacing: 0.28em;
+}
+.nj-page-tactical .footer .square { background: var(--tac-gold); }
+.nj-page-tactical .footer-end { color: var(--tac-gold); }
+
+/* ─── Gallery: contact-sheet on black ─── */
+.nj-page-tactical .gallery-section {
+  background: var(--tac-black);
+  border-top: 1px solid var(--tac-rule);
+  border-bottom: 1px solid var(--tac-rule);
+}
+.nj-page-tactical .gallery-h em {
+  color: var(--tac-gold);
+  font-style: normal;
+}
+.nj-page-tactical .gallery-note { color: var(--tac-cream-soft); }
+.nj-page-tactical .gimg-frame {
+  background: var(--tac-black);
+  border: 1px solid var(--tac-rule);
+}
+.nj-page-tactical .gimg-xl .gimg-frame img,
+.nj-page-tactical .gimg-l .gimg-frame img,
+.nj-page-tactical .gimg-tall .gimg-frame img,
+.nj-page-tactical .gimg-m .gimg-frame img,
+.nj-page-tactical .gimg-s .gimg-frame img,
+.nj-page-tactical .gimg-wide .gimg-frame img {
+  -webkit-mask-image: none; mask-image: none;
+  object-fit: cover;
+}
+.nj-page-tactical .gimg-corner {
+  background: var(--tac-black);
+  color: var(--tac-gold);
+  border: 1px solid var(--tac-gold);
+}
+.nj-page-tactical .gimg-tag { color: var(--tac-gold); }
+.nj-page-tactical .gimg-label { color: var(--tac-cream); }
+.nj-page-tactical .gimg-desc { color: var(--tac-cream-soft); }
