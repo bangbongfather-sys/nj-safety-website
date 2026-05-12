@@ -1,0 +1,397 @@
+{
+  "slug": "njs-av100",
+  "model": "NJSSV#YY",
+  "category": "ARAMID FR SERIES · SUMMER mesh utility VEST",
+  "name": "아라미드 <span style=\"color: rgb(198, 90, 30);\">매쉬</span><br><span style=\"color: rgb(198, 90, 30);\">유틸리티</span> 조끼",
+  "subtitle": "여름 현장의 가벼움과 기능성, 그 사이의 균형",
+  "tagline": "전·후면 메쉬 통기 구조 + 4구 플랩 포켓 + 리플렉티브. 한여름 외근에도 단정한 실루엣을 유지하는 NJ Safety의 ARAMID 방염 조끼.",
+  "flavor": "tactical",
+  "hero": {
+    "image": "/api/images/njs-av100-hero-image-1778499453556-e88d64d8637f.png",
+    "imageAlt": "아라미드 하계 조끼 — 정면 차콜 네이비",
+    "badges": [
+      {
+        "text": "ENGINEERED FOR SUMMER · NJ SAFETY",
+        "position": "bottom-right"
+      },
+      {
+        "text": "aramid mesh utility vest",
+        "position": "top-left",
+        "style": "corner"
+      }
+    ],
+    "counters": [
+      {
+        "value": "62.3",
+        "unit": "%",
+        "label": "POCKETS"
+      },
+      {
+        "value": "36.6",
+        "unit": "%",
+        "label": "FR Rayon"
+      },
+      {
+        "value": "1.1",
+        "unit": "%",
+        "label": "Anti-Static fiber"
+      }
+    ]
+  },
+  "gallery": {
+    "eyebrow": "PRODUCT VIEWS",
+    "headline": "구석구석, <em>정직한 디테일</em>.",
+    "note": "스튜디오 촬영 · 실물 컬러는 모니터에 따라 차이가 있을 수 있습니다.",
+    "items": [
+      {
+        "image": "/api/images/njs-av100-gallery-items-0-image-1778511680395-1ba7718558cd.jpg",
+        "tag": "FIG. 01 · FRONT",
+        "label": "정면 — 풀 컷",
+        "caption": "차콜 네이비 + 그레이 인서트 · 스플릿 컬러 블록.",
+        "span": "xl"
+      },
+      {
+        "image": "/products/njs-av100/back.jpg",
+        "tag": "FIG. 02 · BACK",
+        "label": "후면 — 풀 컷",
+        "caption": "그레이 상단 + 등판 리플렉티브 라인. 단정한 등 실루엣.",
+        "span": "xl"
+      },
+      {
+        "image": "/products/njs-av100/upper.jpg",
+        "tag": "FIG. 03 · UPPER",
+        "label": "상단 패널 + 라벨",
+        "caption": "ARAMID 케어 라벨 + 'NJ SAFETY' 리플렉티브 테이프.",
+        "span": "l"
+      },
+      {
+        "image": "/products/njs-av100/reflective.jpg",
+        "tag": "FIG. 04 · REFLECTIVE",
+        "label": "리플렉티브 라인",
+        "caption": "3M Scotchlite™ 트윈 라인. 야간 시인성 확보.",
+        "span": "l"
+      },
+      {
+        "image": "/products/njs-av100/chest.jpg",
+        "tag": "FIG. 05 · CHEST",
+        "label": "체스트 포켓",
+        "caption": "왼쪽 가슴 플랩 포켓 + 화이트 PVC 식별 라벨.",
+        "span": "tall"
+      },
+      {
+        "image": "/products/njs-av100/bottom-pocket.jpg",
+        "tag": "FIG. 07 · LOWER",
+        "label": "하단 카고 포켓",
+        "caption": "공구·계측기 수납이 가능한 깊이의 카고형 플랩 포켓.",
+        "span": "tall"
+      },
+      {
+        "image": "/products/njs-av100/inside.jpg",
+        "tag": "FIG. 08 · INSIDE",
+        "label": "안감 — 메쉬 통기 구조",
+        "caption": "전·후면 풀 메쉬 안감. 한여름에도 등판이 들러붙지 않습니다.",
+        "span": "tall"
+      }
+    ]
+  },
+  "statement": {
+    "eyebrow": "ENGINEERED FOR SUMMER",
+    "headline": "여름 현장은 <em>가벼움</em>이 곧 안전입니다.",
+    "body": "한여름 외근, 정전기 정비, 옥외 보수 — 두꺼운 자켓을 입을 수 없는 환경에서도 케어 라벨과 리플렉티브, 그리고 기능성 포켓은 포기할 수 없습니다. AV100은 메쉬 안감으로 통기성을 확보하면서도 4구 플랩 포켓·아라미드 케어 라벨·트윈 리플렉티브의 모든 기능을 그대로 담았습니다. NJ Safety가 여름을 위해 다시 그린 워크 조끼입니다.",
+    "sign": "NJ SAFETY PRODUCT TEAM"
+  },
+  "material": {
+    "eyebrow": "FABRIC LAYOUT",
+    "headline": "<em>두 가지 원단</em>이 만드는 한 벌의 조끼.",
+    "image": "/products/njs-av100/inside.jpg",
+    "callouts": [
+      {
+        "tag": "A",
+        "title": "<span style=\"letter-spacing: 0.04em;\">Upper Panel · 그레이</span>",
+        "body": "<span style=\"letter-spacing: -0.08px;\">그레이 인서트로 컬러 블록 — 'NJ SAFETY' 리플렉티브 라벨이 위치</span>"
+      },
+      {
+        "tag": "B",
+        "title": "<span style=\"letter-spacing: 0.04em;\">Front Panel · 본체</span>",
+        "body": "<span style=\"letter-spacing: -0.08px;\">차콜 네이비 워크 트윌. 4구 플랩 포켓을 지지하는 메인 패널</span>."
+      },
+      {
+        "tag": "C",
+        "title": "Mesh Lining · 안감",
+        "body": "전·후면 풀 메쉬 안감. 통기와 무게 모두 챙긴 여름 전용 구성."
+      }
+    ]
+  },
+  "features": {
+    "eyebrow": "WHY THIS VEST",
+    "headline": "현장에서 살아남는 <em>여섯</em> 가지 장치.",
+    "items": [
+      {
+        "n": "01",
+        "title": "메쉬 안감 통기",
+        "body": "전·후면 풀 메쉬. 한여름 야외 작업 최적화."
+      },
+      {
+        "n": "02",
+        "title": "4구 플랩 포켓",
+        "body": "체스트 2 + 하단 2. 공구·필기구·계측기 분리 수납.",
+        "featured": true
+      },
+      {
+        "n": "03",
+        "title": "트윈 브랜드 리플렉티브",
+        "body": "NJ SAFETY 브랜드 반사 테이핑 트윈 라인. 야간 시인성 확보."
+      },
+      {
+        "n": "04",
+        "title": "PVC 식별 라벨",
+        "body": "각 포켓 플랩에 화이트 PVC 라벨. 어둠에서도 위치 파악."
+      },
+      {
+        "n": "05",
+        "title": "라운드 헴",
+        "body": "둥근 밑단으로 의자에 앉을 때도 단정함 유지."
+      },
+      {
+        "n": "06",
+        "title": "pk 티셔츠의 수납을 보완.",
+        "body": "아라미드 PK 티셔츠와 세트로 구성해 수납을 보완 및 작업 최적화."
+      }
+    ]
+  },
+  "spec": {
+    "eyebrow": "TECHNICAL SHEET",
+    "headline": "한 페이지에 담은 <em>스펙</em>.",
+    "rows": [
+      {
+        "label": "원단 구성",
+        "value": "Aramid 65% / Polyester 33% / Antistatic 2%"
+      },
+      {
+        "label": "조직",
+        "value": "Plain Weave · Mesh Lining"
+      },
+      {
+        "label": "중량",
+        "value": "110 g/m²"
+      },
+      {
+        "label": "컬러",
+        "value": "MELANGE GRAY / NAVY"
+      },
+      {
+        "label": "사이즈",
+        "value": "90 / 95 / 100 / 105 / 110 / 115/120"
+      },
+      {
+        "label": "포켓",
+        "value": "4 EA · 플랩 + PVC 식별 라벨"
+      },
+      {
+        "label": "리플렉티브",
+        "value": "브랜드 네이밍 · 트윈 라인"
+      },
+      {
+        "label": "지퍼",
+        "value": "매트 블랙"
+      },
+      {
+        "label": "원산지",
+        "value": "Made in Korea"
+      },
+      {
+        "label": "인증",
+        "value": "시험 성적서"
+      }
+    ],
+    "sizeTable": {
+      "unit": "cm",
+      "headers": [
+        "SIZE",
+        "가슴",
+        "어깨",
+        "총장"
+      ],
+      "rows": [
+        [
+          "90",
+          "53",
+          "42",
+          "62"
+        ],
+        [
+          "95",
+          "55",
+          "44",
+          "63"
+        ],
+        [
+          "100",
+          "57",
+          "46",
+          "65"
+        ],
+        [
+          "105",
+          "59",
+          "48",
+          "67"
+        ],
+        [
+          "110",
+          "61",
+          "50",
+          "68"
+        ],
+        [
+          "115",
+          "63",
+          "52",
+          "70"
+        ],
+        [
+          "120",
+          "65",
+          "54",
+          "72"
+        ]
+      ]
+    }
+  },
+  "field": {
+    "eyebrow": "WHERE IT LIVES",
+    "headline": "여름 현장의 <em>일상</em>을 위해.",
+    "items": [
+      {
+        "n": "01",
+        "tag": "PLANT",
+        "title": "정유·화학 플랜트",
+        "body": "여수·울산 단지의 한여름 정기 점검에서 통기성과 식별성을 동시에."
+      },
+      {
+        "n": "02",
+        "tag": "MAINT.",
+        "title": "기계 정비 현장",
+        "body": "공구·계측기 분리 수납이 필요한 회전체 정비 작업."
+      },
+      {
+        "n": "03",
+        "tag": "ELEC.",
+        "title": "전기 공사",
+        "body": "정전기 방지사 2% 함유 — 전기 작업의 일상복으로 안전."
+      },
+      {
+        "n": "04",
+        "tag": "OUTDOOR",
+        "title": "옥외 외근",
+        "body": "한여름 야외 측정·검수 업무에서 등판이 들러붙지 않는 메쉬 안감."
+      }
+    ]
+  },
+  "care": {
+    "eyebrow": "KEEP IT SAFE",
+    "items": [
+      {
+        "title": "손세탁 권장",
+        "body": "세탁은 중성세제로 손세탁으로 하고 가볍게 털어서 응달에 건조.",
+        "icon": "세탁"
+      },
+      {
+        "icon": "✕",
+        "title": "표백제 및 건조기 금지",
+        "body": "아라미드 섬유 손상 방지",
+        "warn": true
+      },
+      {
+        "icon": "↓",
+        "title": "저온 텀블 / 자연건조",
+        "body": "그늘 건조 권장"
+      },
+      {
+        "icon": "≡",
+        "title": "중간 온도 다림질",
+        "body": "다림질은 울 종류나 면 종류의 온도로 가능."
+      }
+    ]
+  },
+  "certs": [
+    {
+      "mark": "TEST",
+      "title": "시험 성적서",
+      "sub": "혼용률 및 방염성 시험",
+      "highlight": true
+    },
+    {
+      "mark": "UL",
+      "title": "UL 국제 인증",
+      "sub": "NFPA 2112"
+    },
+    {
+      "mark": "FR",
+      "title": "난연 시험",
+      "sub": "시험 성적서 표기"
+    }
+  ],
+  "order": {
+    "headline": "공식 대리점에서 <br><span style=\"color: rgb(255, 255, 255);\">판매 안내 및 출고 </span>가능합니다.",
+    "cells": [
+      {
+        "label": "서비스",
+        "value": "특정사이즈 및 수선 제작.",
+        "body": "*소형 및 대형 사이즈 제작, 소매길이 추가 가능."
+      },
+      {
+        "label": "납기",
+        "value": "재고 확인 후 출고",
+        "body": "재고 보유 사이즈 기준 / 가공 시 +7일."
+      },
+      {
+        "label": "대리점",
+        "value": "전국 대리점 안내",
+        "body": "유선 및 메일 문의 시 안내."
+      }
+    ],
+    "contact": [
+      {
+        "label": "tel.",
+        "value": "02-777-3079"
+      },
+      {
+        "label": "FAX.",
+        "value": "02-774-1841"
+      },
+      {
+        "label": "WEB",
+        "value": "www.njfashion.co.kr"
+      },
+      {
+        "label": "Email.",
+        "value": "njsafety91@naver.com"
+      }
+    ]
+  },
+  "styles": {
+    "tagline": {
+      "width": "121%"
+    },
+    "name": {
+      "size": "0.90em"
+    },
+    "gallery.note": {
+      "width": "82%",
+      "align": "left"
+    },
+    "gallery.eyebrow": {
+      "color": "#c65a1e"
+    },
+    "hero.counters[0].value": {
+      "size": "0.95em"
+    },
+    "hero.counters[1].value": {
+      "size": "0.95em"
+    },
+    "hero.counters[2].value": {
+      "size": "0.95em"
+    }
+  }
+}
