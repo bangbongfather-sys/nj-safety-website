@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "nj-safety-website",
+  "compatibility_date": "2025-04-01",
+
+  // Pure-static deployment: serve `out/` produced by `next build` (output: 'export').
+  // No Worker script — Cloudflare's Static Assets feature handles routing.
+  "assets": {
+    "directory": "./out",
+    "not_found_handling": "404-page"
+  },
+
+  // Build runs in Cloudflare's CI before deploy.
+  "observability": {
+    "enabled": true
+  }
+}

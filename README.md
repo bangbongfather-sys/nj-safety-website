@@ -62,23 +62,23 @@ out/
 
 ---
 
-## 공개 미리보기 배포 — Cloudflare Pages
+## 공개 미리보기 배포 — Cloudflare Workers + Static Assets
 
-본 배포(`njfashion.co.kr` / 가비아)는 사이트 최종 완성 후 진행. 그 전까지는 **Cloudflare Pages 무료 도메인**(`nj-safety-website.pages.dev`)으로 공개 미리보기를 유지하고 main 브랜치 push마다 자동 재배포됩니다.
+본 배포(`njfashion.co.kr` / 가비아)는 사이트 최종 완성 후 진행. 그 전까지는 **Cloudflare 무료 도메인**(`nj-safety-website.<account>.workers.dev`)으로 공개 미리보기를 유지하고 main 브랜치 push마다 자동 재배포됩니다.
+
+> Cloudflare가 최근 UI를 통합하면서 "Pages" 카테고리가 "Workers + Static Assets"으로 합쳐졌습니다. 정적 사이트도 Worker 프로젝트로 배포되고, `wrangler.jsonc`의 `[assets]` 블록이 `out/` 폴더를 그대로 정적 서빙합니다.
 
 ### 최초 1회 설정
 
-1. [dash.cloudflare.com](https://dash.cloudflare.com) → **Workers & Pages** → **Create application** → **Pages** → **Connect to Git**
-2. GitHub 인증 후 `bangbongfather-sys/nj-safety-website` 저장소 선택 → **Begin setup**
-3. 빌드 설정:
+1. [dash.cloudflare.com](https://dash.cloudflare.com) → **Workers & Pages** → **Create application** → **Connect to Git**
+2. GitHub 인증 후 `bangbongfather-sys/nj-safety-website` 저장소 선택
+3. Setup 화면에서 다음대로:
    - **Project name**: `nj-safety-website`
-   - **Production branch**: `main`
-   - **Framework preset**: `Next.js (Static HTML Export)`
    - **Build command**: `npm run build`
-   - **Build output directory**: `out`
-   - **Root directory**: (비워두기)
-   - Environment variables: 없음
-4. **Save and Deploy** → 1~2분 후 배포 완료 → `https://nj-safety-website.pages.dev` 활성화
+   - **Deploy command**: `npx wrangler deploy` (기본값)
+4. **Deploy** → 1~2분 후 배포 완료. 도메인은 프로젝트 상단에 표시됩니다.
+
+`wrangler.jsonc`가 repo에 있어야 deploy 성공합니다. 빠진 상태로 deploy하면 wrangler가 entry point를 못 찾아 실패합니다.
 
 ### 이후 워크플로
 
