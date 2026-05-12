@@ -1,0 +1,171 @@
+{
+  "meta": {
+    "title": "NJ SAFETY — Industrial Safety Wear",
+    "description": "Aramid-engineered flame-resistant workwear for extreme industrial environments. NFPA 2112 · HRC2 · EN ISO 11612 certified. Since 1992 by Najung Enterprise."
+  },
+  "nav": {
+    "about": "About",
+    "products": "Products",
+    "certifications": "Certifications",
+    "clients": "Clients",
+    "news": "News",
+    "contact": "Contact",
+    "quoteCta": "Get a quote"
+  },
+  "hero": {
+    "eyebrow": "Industrial Safety Wear · Since 1992",
+    "headlineLine1": "Built",
+    "headlineLine2Pre": "to ",
+    "headlineLine2Em": "outlast.",
+    "tagline": "극한의 현장, 검증된 보호.",
+    "sub": "Aramid-engineered flame-resistant workwear for extreme industrial environments. NFPA 2112 · HRC2 · EN ISO 11612 certified.",
+    "ctaPrimary": "View products",
+    "ctaSecondary": "Request quote",
+    "scroll": "Scroll to explore",
+    "locatorName": "Najung Enterprise",
+    "locatorSub": "Industrial safety wear · est. 1992"
+  },
+  "products": {
+    "eyebrow": "— Products",
+    "titlePre": "Product ",
+    "titleEm": "lineup.",
+    "viewAll": "View all 24 products →",
+    "summer": {
+      "en": "Aramid · Summer Season",
+      "ko": "Aramid Summer Season",
+      "weight": "230 g/m²",
+      "use": "Hot & humid summer work",
+      "fit": "Ventilated panels / lightweight"
+    },
+    "sf": {
+      "en": "Aramid · Spring / Fall",
+      "ko": "Aramid Spring / Fall Season",
+      "weight": "280 g/m²",
+      "use": "Standard sites / all-season",
+      "fit": "Standard cut / multi-pocket",
+      "testTag": "Test Report"
+    },
+    "winter": {
+      "en": "Aramid · Winter Season",
+      "ko": "Aramid Winter Season",
+      "weight": "400 g/m²",
+      "use": "Cold / outdoor winter work",
+      "fit": "3-layer insulation / hood opt."
+    },
+    "viewSeries": "View series",
+    "lineupLabel": "Aramid Season Lineup · 3 Series",
+    "fullCatalogue": "Full catalogue →",
+    "specKeys": {
+      "weight": "WT",
+      "use": "USE",
+      "fit": "FIT"
+    }
+  },
+  "showcase": {
+    "eyebrow": "— In the field",
+    "headlineLine1": "Proven",
+    "headlineLine2": "on site.",
+    "sub": "Tested on 500+ active sites — from POSCO blast furnaces to HD Hyundai dry docks."
+  },
+  "manifesto": {
+    "eyebrow": "— Manifesto",
+    "quotePre": "We don't make",
+    "quoteMain": "workwear.",
+    "quoteEm": "We engineer protection systems",
+    "quoteMid": " that",
+    "quoteEnd": "preserve life.",
+    "sigNumber": "No. 1992 — 2026",
+    "sigName": "— NJ Safety, Najung Enterprise Co., Ltd."
+  },
+  "certifications": {
+    "eyebrow": "— Certifications / 05",
+    "titleEm": "Certified",
+    "titleSuffix": "to protect.",
+    "sub": "Eight international safety standards are renewed on a fixed schedule by both our in-house lab and accredited third-party labs. Every fabric lot is ATPV, HTI and LOI tested before shipment.",
+    "meta": "All standards renewed · 2025",
+    "items": [
+      { "id": "NFPA · US", "name": "NFPA 2112", "note": "Flash Fire Protection" },
+      { "id": "NFPA · US", "name": "HRC Level 2", "note": "Arc Rating ≥ 8 cal" },
+      { "id": "KR · Accredited", "name": "Test Report", "note": "3rd-party lab issued" }
+    ]
+  },
+  "clients": {
+    "eyebrow": "— Clients / 06",
+    "headline": "Trusted by industry leaders across shipbuilding, steel, energy & chemicals.",
+    "logos": [
+      "KEPCO Partner", "SK", "LG Chem", "CLIENT 04", "CLIENT 05", "CLIENT 06",
+      "CLIENT 07", "CLIENT 08", "CLIENT 09", "CLIENT 10", "CLIENT 11", "CLIENT 12"
+    ],
+    "stats": [
+      { "label": "— Heritage / since 1992", "num": "34", "sup": "YRS", "desc": "Single-category focus on industrial safety wear" },
+      { "label": "— Active partnerships", "num": "500", "sup": "+", "desc": "Industrial sites supplied, domestic & overseas" },
+      { "label": "— Export reach", "num": "50", "sup": "+", "desc": "Countries shipped to, across 4 continents" }
+    ]
+  },
+  "insights": {
+    "eyebrow": "— Journal / 07",
+    "titlePre": "Field ",
+    "titleEm": "insights.",
+    "all": "All articles →",
+    "items": [
+      {
+        "cat": "Technical · 04 min",
+        "date": "04 / 18 / 2026",
+        "title": "How arc flash penetrates workwear",
+        "excerpt": "ATPV vs EBT, and a guide to choosing the right rating for your site."
+      },
+      {
+        "cat": "Standards · 06 min",
+        "date": "04 / 02 / 2026",
+        "title": "What sets NFPA 2112 apart",
+        "excerpt": "The 3-second exposure, 50% body burn benchmark — explained with real test data."
+      },
+      {
+        "cat": "Materials · 03 min",
+        "date": "03 / 21 / 2026",
+        "title": "Breathable FR fabric for summer sites",
+        "excerpt": "A 230 gsm lightweight solution built from Lenzing FR® lyocell and aramid blends."
+      }
+    ]
+  },
+  "cta": {
+    "eyebrow": "— Contact / 08",
+    "titleLine1": "Start your project with",
+    "titleLine2Em": "expert consultation",
+    "titleLine2End": " on protective wear.",
+    "sub": "Custom quote · Material consultation · Sample request",
+    "button": "Request a quote"
+  },
+  "company": {
+    "tel": "02-545-1992",
+    "fax": "02-545-1993",
+    "email": "sales@njsafety.co.kr",
+    "hours": "Mon–Fri · 09:00 – 18:00 KST",
+    "addressShort": "142 Sandan-ro, Heungdeok-gu, Cheongju",
+    "addressFull": "142 Sandan-ro, Heungdeok-gu, Cheongju — Najung Tower",
+    "brn": "BRN 123-45-67890",
+    "copyright": "© 2026 NAJUNG ENTERPRISE CO., LTD."
+  },
+  "footer": {
+    "brandDesc": "Najung Enterprise has manufactured industrial safety wear since 1992. We supply OEM/ODM production with NFPA, EN and KS certifications, sourcing premium fabrics globally to protect workers in the harshest industrial environments.",
+    "productsHead": "Products",
+    "companyHead": "Company",
+    "connectHead": "Connect",
+    "products": ["FR Jacket", "Aramid Suit", "Welding Gear", "Hi-Vis Series", "Accessories"],
+    "company": ["About", "Certifications", "Newsroom", "Careers", "Contact"],
+    "social": "SOCIAL",
+    "addrKey": "ADDR",
+    "telKey": "TEL",
+    "faxKey": "FAX",
+    "mailKey": "MAIL",
+    "legal": { "privacy": "Privacy", "terms": "Terms", "sitemap": "Sitemap" }
+  },
+  "skeleton": {
+    "about":          { "eyebrow": "— About",          "titlePre": "Since 1992, ",  "titleEm": "one focus.",         "body": "The full About page is launching shortly. It will cover Najung Enterprise's 34 years of industrial safety wear expertise, production facilities and global partnerships." },
+    "products":       { "eyebrow": "— Products",       "titlePre": "The full ",      "titleEm": "lineup.",            "body": "The full product catalogue page is under construction. We will publish the seasonal lineup, spec sheets and downloadable certifications shortly." },
+    "certifications": { "eyebrow": "— Certifications", "titlePre": "International ", "titleEm": "standards.",         "body": "The certifications page is launching shortly. It will cover the testing criteria and reports for our 8 standards including NFPA 2112, HRC Level 2 and EN ISO 11612." },
+    "clients":        { "eyebrow": "— Clients",        "titlePre": "Trust, ",        "titleEm": "proven on site.",    "body": "The clients page is under construction. We will publish industry-by-industry supply history and on-site case studies." },
+    "news":           { "eyebrow": "— Newsroom",       "titlePre": "Field ",         "titleEm": "Insights.",          "body": "The newsroom is launching shortly. It will publish regular content on safety standards, new product development and technical reference material." },
+    "contact":        { "eyebrow": "— Contact",        "titlePre": "Start with ",    "titleEm": "expert consultation.","body": "The contact page is under construction. Quote, sample request and fabric consultation forms will be available shortly. In the meantime, please reach us at sales@njsafety.co.kr or +82-2-545-1992." }
+  }
+}

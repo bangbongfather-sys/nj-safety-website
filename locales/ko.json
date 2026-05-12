@@ -1,0 +1,171 @@
+{
+  "meta": {
+    "title": "NJ SAFETY — 산업 안전복 전문",
+    "description": "아라미드 원단으로 설계된 산업용 방염 작업복. NFPA 2112 · HRC2 · EN ISO 11612 국제 인증. 1992년부터 나정엔터프라이즈."
+  },
+  "nav": {
+    "about": "회사소개",
+    "products": "제품",
+    "certifications": "인증",
+    "clients": "실적",
+    "news": "뉴스",
+    "contact": "문의",
+    "quoteCta": "견적 문의"
+  },
+  "hero": {
+    "eyebrow": "산업 안전복 · 1992년부터",
+    "headlineLine1": "극한의 현장,",
+    "headlineLine2Pre": "검증된 ",
+    "headlineLine2Em": "보호.",
+    "tagline": "BUILT TO OUTLAST.",
+    "sub": "아라미드 원단으로 설계된 산업용 방염 작업복. NFPA 2112 · HRC2 · EN ISO 11612 국제 인증.",
+    "ctaPrimary": "제품 보기",
+    "ctaSecondary": "견적 문의",
+    "scroll": "Scroll to explore",
+    "locatorName": "Najung Enterprise",
+    "locatorSub": "Industrial safety wear · est. 1992"
+  },
+  "products": {
+    "eyebrow": "— Products",
+    "titlePre": "제품 ",
+    "titleEm": "라인업.",
+    "viewAll": "View all 24 products →",
+    "summer": {
+      "en": "Aramid · Summer Season",
+      "ko": "아라미드 하계 시즌",
+      "weight": "230 g/m²",
+      "use": "고온·다습 하계 작업",
+      "fit": "통기성 패널 / 경량"
+    },
+    "sf": {
+      "en": "Aramid · Spring / Fall",
+      "ko": "아라미드 봄·가을 시즌",
+      "weight": "280 g/m²",
+      "use": "표준 산업 현장 / 사계절",
+      "fit": "표준 컷 / 멀티 포켓",
+      "testTag": "시험성적서"
+    },
+    "winter": {
+      "en": "Aramid · Winter Season",
+      "ko": "아라미드 동계 시즌",
+      "weight": "400 g/m²",
+      "use": "한랭·옥외 동계 작업",
+      "fit": "3-레이어 보온 / 후드 옵션"
+    },
+    "viewSeries": "시리즈 보기",
+    "lineupLabel": "아라미드 시즌 라인업 · 3 시리즈",
+    "fullCatalogue": "전체 카탈로그 →",
+    "specKeys": {
+      "weight": "WT",
+      "use": "USE",
+      "fit": "FIT"
+    }
+  },
+  "showcase": {
+    "eyebrow": "— In the field",
+    "headlineLine1": "현장에서",
+    "headlineLine2": "증명됩니다.",
+    "sub": "500개 이상의 현장에서 검증되었습니다 — POSCO 용광로부터 HD현대 드라이도크까지."
+  },
+  "manifesto": {
+    "eyebrow": "— Manifesto",
+    "quotePre": "우리는",
+    "quoteMain": "작업복을 만들지 않습니다.",
+    "quoteEm": "생명을 지키는 보호 시스템",
+    "quoteMid": "을",
+    "quoteEnd": "설계합니다.",
+    "sigNumber": "No. 1992 — 2026",
+    "sigName": "— NJ Safety, Najung Enterprise Co., Ltd."
+  },
+  "certifications": {
+    "eyebrow": "— Certifications / 05",
+    "titleEm": "Certified",
+    "titleSuffix": "to protect.",
+    "sub": "8개 국제 안전 인증을 자체 시험실과 제3자 시험기관에서 정기 갱신합니다. 모든 원단 로트는 출하 전 ATPV·HTI·LOI 시험을 거칩니다.",
+    "meta": "All standards renewed · 2025",
+    "items": [
+      { "id": "NFPA · US", "name": "NFPA 2112", "note": "Flash Fire Protection" },
+      { "id": "NFPA · US", "name": "HRC Level 2", "note": "Arc Rating ≥ 8 cal" },
+      { "id": "KR · 공인기관", "name": "시험성적서", "note": "제3자 시험기관 발급" }
+    ]
+  },
+  "clients": {
+    "eyebrow": "— Clients / 06",
+    "headline": "조선, 철강, 에너지, 화학 산업의 리더들이 신뢰합니다.",
+    "logos": [
+      "한전 협력사", "SK", "LG 화학", "CLIENT 04", "CLIENT 05", "CLIENT 06",
+      "CLIENT 07", "CLIENT 08", "CLIENT 09", "CLIENT 10", "CLIENT 11", "CLIENT 12"
+    ],
+    "stats": [
+      { "label": "— Heritage / since 1992", "num": "34", "sup": "YRS", "desc": "산업안전복 단일 카테고리 집중" },
+      { "label": "— Active partnerships", "num": "500", "sup": "+", "desc": "국내외 산업 현장 공급사" },
+      { "label": "— Export reach", "num": "50", "sup": "+", "desc": "수출 국가 (4개 대륙)" }
+    ]
+  },
+  "insights": {
+    "eyebrow": "— Journal / 07",
+    "titlePre": "Field ",
+    "titleEm": "insights.",
+    "all": "All articles →",
+    "items": [
+      {
+        "cat": "Technical · 04 min",
+        "date": "04 / 18 / 2026",
+        "title": "아크 플래시는 어떻게 작업복을 뚫는가",
+        "excerpt": "ATPV 등급과 EBT의 차이, 그리고 현장 환경별 적정 등급 선택 가이드."
+      },
+      {
+        "cat": "Standards · 06 min",
+        "date": "04 / 02 / 2026",
+        "title": "NFPA 2112 인증, 무엇이 다른가",
+        "excerpt": "3초 노출 후 50% body burn 기준 — 실제 시험 데이터로 살펴보는 인증의 의미."
+      },
+      {
+        "cat": "Materials · 03 min",
+        "date": "03 / 21 / 2026",
+        "title": "여름 현장을 위한 통기성 FR 원단",
+        "excerpt": "Lenzing FR® 리오셀과 아라미드 혼방으로 만드는 230 gsm 경량 솔루션."
+      }
+    ]
+  },
+  "cta": {
+    "eyebrow": "— Contact / 08",
+    "titleLine1": "프로젝트에 맞는 안전 솔루션,",
+    "titleLine2Em": "전문 컨설팅",
+    "titleLine2End": "으로 시작하세요.",
+    "sub": "Custom quote · Material consultation · Sample request",
+    "button": "견적 문의하기"
+  },
+  "company": {
+    "tel": "02-545-1992",
+    "fax": "02-545-1993",
+    "email": "sales@njsafety.co.kr",
+    "hours": "Mon–Fri · 09:00 – 18:00 KST",
+    "addressShort": "청주시 흥덕구 산단로 142",
+    "addressFull": "청주시 흥덕구 산단로 142, 나정타워",
+    "brn": "BRN 123-45-67890",
+    "copyright": "© 2026 NAJUNG ENTERPRISE CO., LTD."
+  },
+  "footer": {
+    "brandDesc": "나정엔터프라이즈는 1992년 설립된 산업안전복 전문 제조사입니다. NFPA·EN·KS 인증 기반의 OEM/ODM 생산과 글로벌 프리미엄 원단 공급을 통해 극한의 산업 현장을 보호합니다.",
+    "productsHead": "Products",
+    "companyHead": "Company",
+    "connectHead": "Connect",
+    "products": ["FR Jacket", "Aramid Suit", "Welding Gear", "Hi-Vis Series", "Accessories"],
+    "company": ["About", "Certifications", "Newsroom", "Careers", "Contact"],
+    "social": "SOCIAL",
+    "addrKey": "ADDR",
+    "telKey": "TEL",
+    "faxKey": "FAX",
+    "mailKey": "MAIL",
+    "legal": { "privacy": "Privacy", "terms": "Terms", "sitemap": "Sitemap" }
+  },
+  "skeleton": {
+    "about":          { "eyebrow": "— About / 회사소개",      "titlePre": "1992년부터, ",       "titleEm": "한 가지에 집중.",        "body": "회사소개 페이지는 곧 공개됩니다. 나정엔터프라이즈의 34년 산업안전복 전문성, 생산 시설, 글로벌 파트너십을 다룰 예정입니다." },
+    "products":       { "eyebrow": "— Products / 제품 카탈로그", "titlePre": "전 제품 ",            "titleEm": "라인업.",                "body": "전체 제품 카탈로그 페이지는 준비 중입니다. 시즌별 라인업, 스펙 시트, 인증서 다운로드를 제공할 예정입니다." },
+    "certifications": { "eyebrow": "— Certifications / 인증",  "titlePre": "국제 ",              "titleEm": "인증 체계.",            "body": "인증 상세 페이지는 곧 공개됩니다. NFPA 2112, HRC Level 2, EN ISO 11612 등 8개 인증의 시험 기준과 성적서를 다룹니다." },
+    "clients":        { "eyebrow": "— Clients / 실적",         "titlePre": "현장에서 ",          "titleEm": "검증된 신뢰.",          "body": "고객사 실적 페이지는 준비 중입니다. 산업별 공급 이력과 현장 적용 사례를 정리하여 공개할 예정입니다." },
+    "news":           { "eyebrow": "— Newsroom / 뉴스",        "titlePre": "Field ",             "titleEm": "Insights.",              "body": "뉴스룸은 곧 공개됩니다. 산업 안전 표준, 신제품 개발, 기술 자료 등 정기 콘텐츠를 발행할 예정입니다." },
+    "contact":        { "eyebrow": "— Contact / 문의",         "titlePre": "전문 컨설팅으로 ",   "titleEm": "시작하세요.",            "body": "문의 페이지는 준비 중입니다. 견적, 샘플 요청, 원단 상담 양식을 곧 제공할 예정입니다. 그동안에는 sales@njsafety.co.kr 또는 02-545-1992로 연락 주세요." }
+  }
+}
