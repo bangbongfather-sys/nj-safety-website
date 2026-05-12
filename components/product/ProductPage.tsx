@@ -537,8 +537,18 @@ function Footer({ model }: { model?: string }) {
 
 // ─── Top-level page ─────────────────────────────────────────────────
 export default function ProductPage({ data }: { data: ProductPageData }) {
+  // Mirror catalog-app/src/app/products/[slug]/page.tsx — flavor on the
+  // wrapper picks the visual treatment. CSS rules for the two non-default
+  // flavors live in product-page.css under .nj-page.nj-page-flagship
+  // (kraft hangtag) and .nj-page.nj-page-tactical (black + yellow accent).
+  const flavorClass =
+    data.flavor === 'flagship'
+      ? ' nj-page-flagship'
+      : data.flavor === 'tactical'
+        ? ' nj-page-tactical'
+        : '';
   return (
-    <div className="nj-page">
+    <div className={`nj-page${flavorClass}`}>
       <StyleInjector styles={data.styles} />
       <Topnav model={data.model} flavor={data.flavor} />
       <Hero data={data} />
