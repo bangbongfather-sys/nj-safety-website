@@ -62,7 +62,38 @@ out/
 
 ---
 
-## 가비아 FTP 배포 방법
+## 공개 미리보기 배포 — Cloudflare Pages
+
+본 배포(`njfashion.co.kr` / 가비아)는 사이트 최종 완성 후 진행. 그 전까지는 **Cloudflare Pages 무료 도메인**(`nj-safety-website.pages.dev`)으로 공개 미리보기를 유지하고 main 브랜치 push마다 자동 재배포됩니다.
+
+### 최초 1회 설정
+
+1. [dash.cloudflare.com](https://dash.cloudflare.com) → **Workers & Pages** → **Create application** → **Pages** → **Connect to Git**
+2. GitHub 인증 후 `bangbongfather-sys/nj-safety-website` 저장소 선택 → **Begin setup**
+3. 빌드 설정:
+   - **Project name**: `nj-safety-website`
+   - **Production branch**: `main`
+   - **Framework preset**: `Next.js (Static HTML Export)`
+   - **Build command**: `npm run build`
+   - **Build output directory**: `out`
+   - **Root directory**: (비워두기)
+   - Environment variables: 없음
+4. **Save and Deploy** → 1~2분 후 배포 완료 → `https://nj-safety-website.pages.dev` 활성화
+
+### 이후 워크플로
+
+```bash
+# 로컬에서 작업
+git add -A
+git commit -m "..."
+git push          # main에 push하면 Cloudflare Pages가 자동 빌드 + 배포
+```
+
+브랜치 push는 자동으로 preview deployment (별도 URL) 생성. PR 미리보기로 사용 가능.
+
+---
+
+## 가비아 FTP 배포 방법 (사이트 완성 후 본배포)
 
 1. 로컬에서 `npm run build` 실행.
 2. `out/` 폴더의 **전체 내용**을 가비아 웹호스팅의 web root에 업로드.
