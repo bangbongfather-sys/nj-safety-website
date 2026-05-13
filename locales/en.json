@@ -84,22 +84,59 @@
     "sub": "Eight international safety standards are renewed on a fixed schedule by both our in-house lab and accredited third-party labs. Every fabric lot is ATPV, HTI and LOI tested before shipment.",
     "meta": "All standards renewed · 2025",
     "items": [
-      { "id": "NFPA · US", "name": "NFPA 2112", "note": "Flash Fire Protection" },
-      { "id": "NFPA · US", "name": "HRC Level 2", "note": "Arc Rating ≥ 8 cal" },
-      { "id": "KR · Accredited", "name": "Test Report", "note": "3rd-party lab issued" }
+      {
+        "id": "NFPA · US",
+        "name": "NFPA 2112",
+        "note": "Flash Fire Protection"
+      },
+      {
+        "id": "NFPA · US",
+        "name": "HRC Level 2",
+        "note": "Arc Rating ≥ 8 cal"
+      },
+      {
+        "id": "KR · Accredited",
+        "name": "Test Report",
+        "note": "3rd-party lab issued"
+      }
     ]
   },
   "clients": {
     "eyebrow": "— Clients / 06",
     "headline": "Trusted by industry leaders across shipbuilding, steel, energy & chemicals.",
     "logos": [
-      "KEPCO Partner", "SK", "LG Chem", "CLIENT 04", "CLIENT 05", "CLIENT 06",
-      "CLIENT 07", "CLIENT 08", "CLIENT 09", "CLIENT 10", "CLIENT 11", "CLIENT 12"
+      "KEPCO Partner",
+      "SK",
+      "LG Chem",
+      "CLIENT 04",
+      "CLIENT 05",
+      "CLIENT 06",
+      "CLIENT 07",
+      "CLIENT 08",
+      "CLIENT 09",
+      "CLIENT 10",
+      "CLIENT 11",
+      "CLIENT 12"
     ],
     "stats": [
-      { "label": "— Heritage / since 1992", "num": "34", "sup": "YRS", "desc": "Single-category focus on industrial safety wear" },
-      { "label": "— Active partnerships", "num": "500", "sup": "+", "desc": "Industrial sites supplied, domestic & overseas" },
-      { "label": "— Export reach", "num": "50", "sup": "+", "desc": "Countries shipped to, across 4 continents" }
+      {
+        "label": "— Heritage / since 1992",
+        "num": "34",
+        "sup": "YRS",
+        "desc": "Single-category focus on industrial safety wear"
+      },
+      {
+        "label": "— Active partnerships",
+        "num": "500",
+        "sup": "+",
+        "desc": "Industrial sites supplied, domestic & overseas"
+      },
+      {
+        "label": "— Export reach",
+        "num": "50",
+        "sup": "+",
+        "desc": "Countries shipped to, across 4 continents"
+      }
     ]
   },
   "insights": {
@@ -151,21 +188,81 @@
     "productsHead": "Products",
     "companyHead": "Company",
     "connectHead": "Connect",
-    "products": ["FR Jacket", "Aramid Suit", "Welding Gear", "Hi-Vis Series", "Accessories"],
-    "company": ["About", "Certifications", "Newsroom", "Careers", "Contact"],
+    "products": [
+      "FR Jacket",
+      "Aramid Suit",
+      "Welding Gear",
+      "Hi-Vis Series",
+      "Accessories"
+    ],
+    "company": [
+      "About",
+      "Certifications",
+      "Newsroom",
+      "Careers",
+      "Contact"
+    ],
     "social": "SOCIAL",
     "addrKey": "ADDR",
     "telKey": "TEL",
     "faxKey": "FAX",
     "mailKey": "MAIL",
-    "legal": { "privacy": "Privacy", "terms": "Terms", "sitemap": "Sitemap" }
+    "legal": {
+      "privacy": "Privacy",
+      "terms": "Terms",
+      "sitemap": "Sitemap"
+    }
   },
   "skeleton": {
-    "about":          { "eyebrow": "— About",          "titlePre": "Since 1992, ",  "titleEm": "one focus.",         "body": "The full About page is launching shortly. It will cover Najung Enterprise's 34 years of industrial safety wear expertise, production facilities and global partnerships." },
-    "products":       { "eyebrow": "— Products",       "titlePre": "The full ",      "titleEm": "lineup.",            "body": "The full product catalogue page is under construction. We will publish the seasonal lineup, spec sheets and downloadable certifications shortly." },
-    "certifications": { "eyebrow": "— Certifications", "titlePre": "International ", "titleEm": "standards.",         "body": "The certifications page is launching shortly. It will cover the testing criteria and reports for our 8 standards including NFPA 2112, HRC Level 2 and EN ISO 11612." },
-    "clients":        { "eyebrow": "— Clients",        "titlePre": "Trust, ",        "titleEm": "proven on site.",    "body": "The clients page is under construction. We will publish industry-by-industry supply history and on-site case studies." },
-    "news":           { "eyebrow": "— Newsroom",       "titlePre": "Field ",         "titleEm": "Insights.",          "body": "The newsroom is launching shortly. It will publish regular content on safety standards, new product development and technical reference material." },
-    "contact":        { "eyebrow": "— Contact",        "titlePre": "Start with ",    "titleEm": "expert consultation.","body": "The contact page is under construction. Quote, sample request and fabric consultation forms will be available shortly. In the meantime, please reach us at sales@njsafety.co.kr or +82-2-545-1992." }
+    "about": {
+      "eyebrow": "— About",
+      "titlePre": "Since 1992, ",
+      "titleEm": "one focus.",
+      "body": "The full About page is launching shortly. It will cover Najung Enterprise's 34 years of industrial safety wear expertise, production facilities and global partnerships."
+    },
+    "products": {
+      "eyebrow": "— Products",
+      "titlePre": "The full ",
+      "titleEm": "lineup.",
+      "body": "The full product catalogue page is under construction. We will publish the seasonal lineup, spec sheets and downloadable certifications shortly."
+    },
+    "certifications": {
+      "eyebrow": "— Certifications",
+      "titlePre": "International ",
+      "titleEm": "standards.",
+      "body": "The certifications page is launching shortly. It will cover the testing criteria and reports for our 8 standards including NFPA 2112, HRC Level 2 and EN ISO 11612."
+    },
+    "clients": {
+      "eyebrow": "— Clients",
+      "titlePre": "Trust, ",
+      "titleEm": "proven on site.",
+      "body": "The clients page is under construction. We will publish industry-by-industry supply history and on-site case studies."
+    },
+    "news": {
+      "eyebrow": "— Newsroom",
+      "titlePre": "Field ",
+      "titleEm": "Insights.",
+      "body": "The newsroom is launching shortly. It will publish regular content on safety standards, new product development and technical reference material."
+    },
+    "contact": {
+      "eyebrow": "— Contact",
+      "titlePre": "Start with ",
+      "titleEm": "expert consultation.",
+      "body": "The contact page is under construction. Quote, sample request and fabric consultation forms will be available shortly. In the meantime, please reach us at sales@njsafety.co.kr or +82-2-545-1992."
+    }
+  },
+  "styles": {
+    "hero.headlineLine1": {
+      "size": "0.90em"
+    },
+    "hero.headlineLine2Em": {
+      "size": "0.90em",
+      "width": "90%"
+    },
+    "hero.tagline": {
+      "size": "1.10em",
+      "weight": "900",
+      "width": "50%"
+    }
   }
 }
