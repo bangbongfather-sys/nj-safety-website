@@ -14,10 +14,10 @@
   },
   "hero": {
     "eyebrow": "산업 안전복 · 1992년부터",
-    "headlineLine1": "극한의 현장,",
-    "headlineLine2Pre": "검증된 ",
-    "headlineLine2Em": "보호.",
-    "tagline": "BUILT TO OUTLAST.",
+    "headlineLine1": "아라미드의 견고함.",
+    "headlineLine2Pre": "",
+    "headlineLine2Em": "안전, 그 이상의 확신.",
+    "tagline": "Your Flame Shield for Safer Work.",
     "sub": "아라미드 원단으로 설계된 산업용 방염 작업복. NFPA 2112 · HRC2 · EN ISO 11612 국제 인증.",
     "ctaPrimary": "제품 보기",
     "ctaSecondary": "견적 문의",
@@ -84,22 +84,59 @@
     "sub": "8개 국제 안전 인증을 자체 시험실과 제3자 시험기관에서 정기 갱신합니다. 모든 원단 로트는 출하 전 ATPV·HTI·LOI 시험을 거칩니다.",
     "meta": "All standards renewed · 2025",
     "items": [
-      { "id": "NFPA · US", "name": "NFPA 2112", "note": "Flash Fire Protection" },
-      { "id": "NFPA · US", "name": "HRC Level 2", "note": "Arc Rating ≥ 8 cal" },
-      { "id": "KR · 공인기관", "name": "시험성적서", "note": "제3자 시험기관 발급" }
+      {
+        "id": "NFPA · US",
+        "name": "NFPA 2112",
+        "note": "Flash Fire Protection"
+      },
+      {
+        "id": "NFPA · US",
+        "name": "HRC Level 2",
+        "note": "Arc Rating ≥ 8 cal"
+      },
+      {
+        "id": "KR · 공인기관",
+        "name": "시험성적서",
+        "note": "제3자 시험기관 발급"
+      }
     ]
   },
   "clients": {
     "eyebrow": "— Clients / 06",
     "headline": "조선, 철강, 에너지, 화학 산업의 리더들이 신뢰합니다.",
     "logos": [
-      "한전 협력사", "SK", "LG 화학", "CLIENT 04", "CLIENT 05", "CLIENT 06",
-      "CLIENT 07", "CLIENT 08", "CLIENT 09", "CLIENT 10", "CLIENT 11", "CLIENT 12"
+      "한전 협력사",
+      "SK",
+      "LG 화학",
+      "CLIENT 04",
+      "CLIENT 05",
+      "CLIENT 06",
+      "CLIENT 07",
+      "CLIENT 08",
+      "CLIENT 09",
+      "CLIENT 10",
+      "CLIENT 11",
+      "CLIENT 12"
     ],
     "stats": [
-      { "label": "— Heritage / since 1992", "num": "34", "sup": "YRS", "desc": "산업안전복 단일 카테고리 집중" },
-      { "label": "— Active partnerships", "num": "500", "sup": "+", "desc": "국내외 산업 현장 공급사" },
-      { "label": "— Export reach", "num": "50", "sup": "+", "desc": "수출 국가 (4개 대륙)" }
+      {
+        "label": "— Heritage / since 1992",
+        "num": "34",
+        "sup": "YRS",
+        "desc": "산업안전복 단일 카테고리 집중"
+      },
+      {
+        "label": "— Active partnerships",
+        "num": "500",
+        "sup": "+",
+        "desc": "국내외 산업 현장 공급사"
+      },
+      {
+        "label": "— Export reach",
+        "num": "50",
+        "sup": "+",
+        "desc": "수출 국가 (4개 대륙)"
+      }
     ]
   },
   "insights": {
@@ -151,21 +188,81 @@
     "productsHead": "Products",
     "companyHead": "Company",
     "connectHead": "Connect",
-    "products": ["FR Jacket", "Aramid Suit", "Welding Gear", "Hi-Vis Series", "Accessories"],
-    "company": ["About", "Certifications", "Newsroom", "Careers", "Contact"],
+    "products": [
+      "FR Jacket",
+      "Aramid Suit",
+      "Welding Gear",
+      "Hi-Vis Series",
+      "Accessories"
+    ],
+    "company": [
+      "About",
+      "Certifications",
+      "Newsroom",
+      "Careers",
+      "Contact"
+    ],
     "social": "SOCIAL",
     "addrKey": "ADDR",
     "telKey": "TEL",
     "faxKey": "FAX",
     "mailKey": "MAIL",
-    "legal": { "privacy": "Privacy", "terms": "Terms", "sitemap": "Sitemap" }
+    "legal": {
+      "privacy": "Privacy",
+      "terms": "Terms",
+      "sitemap": "Sitemap"
+    }
   },
   "skeleton": {
-    "about":          { "eyebrow": "— About / 회사소개",      "titlePre": "1992년부터, ",       "titleEm": "한 가지에 집중.",        "body": "회사소개 페이지는 곧 공개됩니다. 나정엔터프라이즈의 34년 산업안전복 전문성, 생산 시설, 글로벌 파트너십을 다룰 예정입니다." },
-    "products":       { "eyebrow": "— Products / 제품 카탈로그", "titlePre": "전 제품 ",            "titleEm": "라인업.",                "body": "전체 제품 카탈로그 페이지는 준비 중입니다. 시즌별 라인업, 스펙 시트, 인증서 다운로드를 제공할 예정입니다." },
-    "certifications": { "eyebrow": "— Certifications / 인증",  "titlePre": "국제 ",              "titleEm": "인증 체계.",            "body": "인증 상세 페이지는 곧 공개됩니다. NFPA 2112, HRC Level 2, EN ISO 11612 등 8개 인증의 시험 기준과 성적서를 다룹니다." },
-    "clients":        { "eyebrow": "— Clients / 실적",         "titlePre": "현장에서 ",          "titleEm": "검증된 신뢰.",          "body": "고객사 실적 페이지는 준비 중입니다. 산업별 공급 이력과 현장 적용 사례를 정리하여 공개할 예정입니다." },
-    "news":           { "eyebrow": "— Newsroom / 뉴스",        "titlePre": "Field ",             "titleEm": "Insights.",              "body": "뉴스룸은 곧 공개됩니다. 산업 안전 표준, 신제품 개발, 기술 자료 등 정기 콘텐츠를 발행할 예정입니다." },
-    "contact":        { "eyebrow": "— Contact / 문의",         "titlePre": "전문 컨설팅으로 ",   "titleEm": "시작하세요.",            "body": "문의 페이지는 준비 중입니다. 견적, 샘플 요청, 원단 상담 양식을 곧 제공할 예정입니다. 그동안에는 sales@njsafety.co.kr 또는 02-545-1992로 연락 주세요." }
+    "about": {
+      "eyebrow": "— About / 회사소개",
+      "titlePre": "1992년부터, ",
+      "titleEm": "한 가지에 집중.",
+      "body": "회사소개 페이지는 곧 공개됩니다. 나정엔터프라이즈의 34년 산업안전복 전문성, 생산 시설, 글로벌 파트너십을 다룰 예정입니다."
+    },
+    "products": {
+      "eyebrow": "— Products / 제품 카탈로그",
+      "titlePre": "전 제품 ",
+      "titleEm": "라인업.",
+      "body": "전체 제품 카탈로그 페이지는 준비 중입니다. 시즌별 라인업, 스펙 시트, 인증서 다운로드를 제공할 예정입니다."
+    },
+    "certifications": {
+      "eyebrow": "— Certifications / 인증",
+      "titlePre": "국제 ",
+      "titleEm": "인증 체계.",
+      "body": "인증 상세 페이지는 곧 공개됩니다. NFPA 2112, HRC Level 2, EN ISO 11612 등 8개 인증의 시험 기준과 성적서를 다룹니다."
+    },
+    "clients": {
+      "eyebrow": "— Clients / 실적",
+      "titlePre": "현장에서 ",
+      "titleEm": "검증된 신뢰.",
+      "body": "고객사 실적 페이지는 준비 중입니다. 산업별 공급 이력과 현장 적용 사례를 정리하여 공개할 예정입니다."
+    },
+    "news": {
+      "eyebrow": "— Newsroom / 뉴스",
+      "titlePre": "Field ",
+      "titleEm": "Insights.",
+      "body": "뉴스룸은 곧 공개됩니다. 산업 안전 표준, 신제품 개발, 기술 자료 등 정기 콘텐츠를 발행할 예정입니다."
+    },
+    "contact": {
+      "eyebrow": "— Contact / 문의",
+      "titlePre": "전문 컨설팅으로 ",
+      "titleEm": "시작하세요.",
+      "body": "문의 페이지는 준비 중입니다. 견적, 샘플 요청, 원단 상담 양식을 곧 제공할 예정입니다. 그동안에는 sales@njsafety.co.kr 또는 02-545-1992로 연락 주세요."
+    }
+  },
+  "styles": {
+    "hero.headlineLine1": {
+      "size": "0.90em"
+    },
+    "hero.headlineLine2Em": {
+      "size": "0.90em",
+      "width": "90%"
+    },
+    "hero.tagline": {
+      "size": "1.10em",
+      "weight": "900",
+      "width": "50%"
+    }
   }
 }
