@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useAdmin } from '@/components/admin/AdminContext';
 import type { EditorApi } from '@/components/admin/EditableText';
 import FloatingToolbar, { type FocusInfo } from '@/components/admin/FloatingToolbar';
@@ -187,6 +187,62 @@ export default function EditHomePage() {
     setSave({ status: 'idle' });
   }, [load]);
 
+  // ── Autosave: 3s after the last edit, push to GitHub automatically. ──
+  // Manual "변경사항 게시" still works for immediate flush.
+  const [autoSavedAt, setAutoSavedAt] = useState<Date | null>(null);
+  const [, tickRender] = useState(0); // for ticking the "X seconds ago" label
+  const handleSaveRef = useRef(handleSave);
+  useEffect(() => { handleSaveRef.current = handleSave; }, [handleSave]);
+
+  useEffect(() => {
+    if (!dirty) return;
+    if (save.status === 'saving') return;
+    const t = setTimeout(() => {
+      void (async () => {
+        await handleSaveRef.current();
+        setAutoSavedAt(new Date());
+      })();
+    }, 3000);
+    return () => clearTimeout(t);
+  }, [koDraft, enDraft, dirty, save.status]);
+
+  // Tick once per 10 seconds so the "Xs ago" label stays roughly current
+  // without re-rendering the whole page on every animation frame.
+  useEffect(() => {
+    const i = setInterval(() => tickRender((x) => x + 1), 10_000);
+    return () => clearInterval(i);
+  }, []);
+
+  function fmtAgo(t: Date | null): string {
+    if (!t) return '';
+    const sec = Math.max(0, Math.floor((Date.now() - t.getTime()) / 1000));
+    if (sec < 5) return '방금';
+    if (sec < 60) return `${sec}초 전`;
+    const m = Math.floor(sec / 60);
+    if (m < 60) return `${m}분 전`;
+    const h = Math.floor(m / 60);
+    return `${h}시간 전`;
+  }
+
+  let statusLabel = '변경사항 없음';
+  let statusClass = 'ed-status-clean';
+  if (save.status === 'saving') {
+    statusLabel = '💾 자동 게시 중...';
+    statusClass = 'ed-status-saving';
+  } else if (save.status === 'error') {
+    statusLabel = `⚠ 게시 실패`;
+    statusClass = 'ed-status-error';
+  } else if (dirty) {
+    statusLabel = '● 편집 중 · 3초 후 자동 게시';
+    statusClass = 'ed-status-dirty';
+  } else if (autoSavedAt) {
+    statusLabel = `✓ 자동 게시됨 · ${fmtAgo(autoSavedAt)}`;
+    statusClass = 'ed-status-saved';
+  } else if (save.status === 'done') {
+    statusLabel = `✓ 게시됨 · commit ${save.sha.slice(0, 7)}`;
+    statusClass = 'ed-status-saved';
+  }
+
   if (load.status === 'loading') return <div className="ed-loading">로케일 로드 중...</div>;
   if (load.status === 'error') return <div className="ed-loading ed-loading-err">로드 실패: {load.message}</div>;
   if (!koDraft || !enDraft) return null;
@@ -199,8 +255,8 @@ export default function EditHomePage() {
       <div className="ed-bar">
         <div className="ed-bar-l">
           <Link href="/admin" className="ed-bar-back">← Admin</Link>
-          <span className="ed-bar-mode">WYSIWYG · 인라인 편집</span>
-          <span className="ed-bar-hint">텍스트 클릭 → 수정 / 옆 박스에서 스타일 변경</span>
+          <span className="ed-bar-mode">WYSIWYG</span>
+          <span className={`ed-status ${statusClass}`}>{statusLabel}</span>
         </div>
         <div className="ed-bar-r">
           <div className="ed-lang">
@@ -208,18 +264,15 @@ export default function EditHomePage() {
             <span className="sep">/</span>
             <button type="button" className={active === 'en' ? 'on' : ''} onClick={() => setActive('en')} disabled={save.status === 'saving'}>EN</button>
           </div>
-          <button type="button" className="btn ghost small" onClick={handleDiscard} disabled={!dirty || save.status === 'saving'}>되돌리기</button>
-          <button type="button" className="btn primary small" onClick={() => void handleSave()} disabled={!dirty || save.status === 'saving'}>
-            {save.status === 'saving' ? '게시 중...' : dirty ? '● 변경사항 게시' : '변경사항 없음'}
+          <button type="button" className="btn ghost small" onClick={handleDiscard} disabled={!dirty || save.status === 'saving'} title="저장되지 않은 변경사항을 되돌립니다">
+            되돌리기
+          </button>
+          <button type="button" className="btn primary small" onClick={() => void handleSave()} disabled={!dirty || save.status === 'saving'} title="3초 기다리지 않고 즉시 게시">
+            {save.status === 'saving' ? '게시 중...' : '즉시 게시'}
           </button>
         </div>
       </div>
 
-      {save.status === 'done' ? (
-        <div className="ed-toast ed-toast-ok">
-          ✓ 게시 완료 — commit <code>{save.sha.slice(0, 7)}</code>. ~1~2분 뒤 사이트에 반영됩니다.
-        </div>
-      ) : null}
       {save.status === 'error' ? <div className="ed-toast ed-toast-err">에러: {save.message}</div> : null}
 
       <div className="ed-page">

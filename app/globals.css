@@ -1862,6 +1862,25 @@ section { position: relative; }
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.ed-status {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .04em;
+  padding: 4px 10px;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+.ed-status-clean  { color: var(--muted-2); }
+.ed-status-dirty  { color: var(--accent); background: rgba(255,107,26,.12); border: 1px solid rgba(255,107,26,.4); animation: edPulse 1.2s ease-in-out infinite; }
+.ed-status-saving { color: #ffd066; background: rgba(255,208,102,.12); border: 1px solid rgba(255,208,102,.45); }
+.ed-status-saved  { color: #6bcf6b; background: rgba(107,207,107,.10); border: 1px solid rgba(107,207,107,.35); }
+.ed-status-error  { color: #ff6b6b; background: rgba(255,107,107,.12); border: 1px solid rgba(255,107,107,.45); }
+
+@keyframes edPulse {
+  0%,100% { opacity: 1; }
+  50%     { opacity: .55; }
+}
 .ed-bar-r { display: flex; align-items: center; gap: 10px; }
 
 .ed-lang {
