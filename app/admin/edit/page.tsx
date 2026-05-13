@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useAdmin } from '@/components/admin/AdminContext';
 import type { EditorApi } from '@/components/admin/EditableText';
 import FloatingToolbar, { type FocusInfo } from '@/components/admin/FloatingToolbar';
+import ResizeHandle from '@/components/admin/ResizeHandle';
 import StyleInjector from '@/components/admin/StyleInjector';
 import { ghGetFile, ghPutFile } from '@/lib/admin/github';
 import type { Dictionary, FieldStyle, Locale } from '@/lib/i18n';
@@ -296,6 +297,10 @@ export default function EditHomePage() {
         currentStyle={currentStyle}
         onPatchStyle={onPatchStyle}
         onClose={() => setFocused(null)}
+      />
+      <ResizeHandle
+        focused={focused}
+        onPatchStyle={(_k, v) => onPatchStyle('width', v)}
       />
     </div>
   );

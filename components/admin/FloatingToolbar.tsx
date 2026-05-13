@@ -21,9 +21,7 @@ const COLOR_PRESETS: { label: string; value: string }[] = [
 ];
 
 const WIDTH_PRESETS: { label: string; value: string }[] = [
-  { label: '50%',  value: '50%'  },
-  { label: '75%',  value: '75%'  },
-  { label: '90%',  value: '90%'  },
+  { label: '50%', value: '50%' },
   { label: '100%', value: '100%' },
 ];
 
@@ -38,6 +36,12 @@ function parseEm(s: string | undefined): number {
   if (!s) return 1.0;
   const m = s.match(/^([\d.]+)em$/);
   return m ? Number(m[1]) : 1.0;
+}
+
+function parsePct(s: string | undefined): number {
+  if (!s) return 100;
+  const m = s.match(/^([\d.]+)%$/);
+  return m ? Number(m[1]) : 100;
 }
 
 export default function FloatingToolbar({ focused, currentStyle, onPatchStyle, onClose }: Props) {
@@ -136,6 +140,17 @@ export default function FloatingToolbar({ focused, currentStyle, onPatchStyle, o
 
       <div className="ed-toolbar-row">
         <span className="ed-toolbar-label">너비</span>
+        <input
+          type="range"
+          min={10}
+          max={100}
+          step={1}
+          value={parsePct(currentStyle.width)}
+          onChange={(e) => onPatchStyle('width', `${e.target.value}%`)}
+          className="ed-slider"
+          title="너비 슬라이더 — 텍스트 우측의 핸들을 드래그해도 됩니다"
+        />
+        <span className="ed-toolbar-value">{parsePct(currentStyle.width).toFixed(0)}%</span>
         {WIDTH_PRESETS.map((w) => (
           <button
             key={w.value}

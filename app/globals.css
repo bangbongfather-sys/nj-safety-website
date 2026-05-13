@@ -2098,6 +2098,74 @@ section { position: relative; }
   color: #ff6b6b;
 }
 
+/* ---------- Width slider in toolbar ---------- */
+.ed-slider {
+  flex: 1;
+  min-width: 100px;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  outline: none;
+}
+.ed-slider::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: ew-resize;
+  border: 0;
+  box-shadow: 0 0 0 2px rgba(255, 107, 26, .25);
+}
+.ed-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: ew-resize;
+  border: 0;
+  box-shadow: 0 0 0 2px rgba(255, 107, 26, .25);
+}
+.ed-slider::-webkit-slider-runnable-track {
+  background: var(--border);
+  height: 4px;
+  border-radius: 2px;
+}
+.ed-slider::-moz-range-track {
+  background: var(--border);
+  height: 4px;
+  border-radius: 2px;
+}
+
+/* ---------- Right-edge drag handle on focused editable ---------- */
+.ed-resize-handle {
+  width: 8px;
+  background: var(--accent);
+  cursor: ew-resize;
+  border-radius: 2px;
+  opacity: .55;
+  box-shadow: 0 0 0 1px rgba(13, 13, 14, .6);
+  transition: opacity .15s, width .15s;
+}
+.ed-resize-handle:hover { opacity: 1; width: 10px; }
+.ed-resize-handle.is-dragging { opacity: 1; width: 10px; background: #ff8a3a; }
+
+.ed-resize-label {
+  background: rgba(13, 13, 14, .96);
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .08em;
+  padding: 4px 8px;
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
 /* ---------- Skeleton subpages ---------- */
 .skeleton-page {
   min-height: 100vh;
