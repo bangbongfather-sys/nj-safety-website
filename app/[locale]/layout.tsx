@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { locales, isLocale, getDictionary, type Locale } from '@/lib/i18n';
 import Navigation from '@/components/layout/Navigation';
 import Footer from '@/components/layout/Footer';
+import StyleInjector from '@/components/admin/StyleInjector';
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -32,6 +33,7 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <>
+      <StyleInjector styles={dict.styles} />
       <Navigation locale={locale} dict={dict} />
       <main>{children}</main>
       <Footer locale={locale} dict={dict} />

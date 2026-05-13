@@ -4,8 +4,10 @@ import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAdmin } from '@/components/admin/AdminContext';
 import type { EditorApi } from '@/components/admin/EditableText';
+import FloatingToolbar, { type FocusInfo } from '@/components/admin/FloatingToolbar';
+import StyleInjector from '@/components/admin/StyleInjector';
 import { ghGetFile, ghPutFile } from '@/lib/admin/github';
-import type { Dictionary, Locale } from '@/lib/i18n';
+import type { Dictionary, FieldStyle, Locale } from '@/lib/i18n';
 
 import Navigation from '@/components/layout/Navigation';
 import Footer from '@/components/layout/Footer';
@@ -32,7 +34,6 @@ function parsePath(p: string): (string | number)[] {
       continue;
     }
     out.push(m[1]);
-    // Pull array index suffixes.
     const idxs = part.matchAll(/\[(\d+)\]/g);
     for (const im of idxs) out.push(Number(im[1]));
   }
@@ -68,7 +69,32 @@ export default function EditHomePage() {
   const [enDraft, setEnDraft] = useState<Dictionary | null>(null);
   const [active, setActive] = useState<Locale>('ko');
   const [save, setSave] = useState<Save>({ status: 'idle' });
+  const [focused, setFocused] = useState<FocusInfo | null>(null);
 
+  // ── Track which editable element has focus so the toolbar can target it ──
+  useEffect(() => {
+    const onFocusIn = (e: FocusEvent) => {
+      const el = e.target as HTMLElement | null;
+      const path = el?.dataset?.editPath;
+      if (path) setFocused({ path });
+    };
+    const onFocusOut = (e: FocusEvent) => {
+      const next = (e as FocusEvent & { relatedTarget?: EventTarget | null }).relatedTarget as HTMLElement | null;
+      // Don't close when focus moves into the toolbar (e.g. clicking a button).
+      if (next && next.closest('.ed-toolbar')) return;
+      // Don't close when focus moves to another editable (handled by next focusin).
+      if (next && (next as HTMLElement).dataset?.editPath) return;
+      setTimeout(() => setFocused(null), 150);
+    };
+    document.addEventListener('focusin', onFocusIn);
+    document.addEventListener('focusout', onFocusOut);
+    return () => {
+      document.removeEventListener('focusin', onFocusIn);
+      document.removeEventListener('focusout', onFocusOut);
+    };
+  }, []);
+
+  // ── Load both locales on mount ──
   useEffect(() => {
     if (!pat) return;
     let cancelled = false;
@@ -104,6 +130,28 @@ export default function EditHomePage() {
     },
   }), [active]);
 
+  // ── Style patches sync across both locales (visuals are language-agnostic) ──
+  const onPatchStyle = useCallback((key: keyof FieldStyle, value: string | null) => {
+    if (!focused) return;
+    const fp = focused.path;
+    function apply(d: Dictionary): Dictionary {
+      const styles = { ...(d.styles ?? {}) } as Record<string, FieldStyle>;
+      // Cast to a mutable record so we can assign string values to any field;
+      // align's narrowed union is the only thing TS rejects on a plain assign.
+      const cur = { ...(styles[fp] ?? {}) } as Record<string, string | undefined>;
+      if (value == null) {
+        delete cur[key];
+      } else {
+        cur[key] = value;
+      }
+      if (Object.keys(cur).length === 0) delete styles[fp];
+      else styles[fp] = cur as FieldStyle;
+      return { ...d, styles };
+    }
+    setKoDraft((d) => (d ? apply(d) : d));
+    setEnDraft((d) => (d ? apply(d) : d));
+  }, [focused]);
+
   const handleSave = useCallback(async () => {
     if (load.status !== 'ready' || !koDraft || !enDraft || !pat) return;
     setSave({ status: 'saving' });
@@ -122,7 +170,6 @@ export default function EditHomePage() {
         lastSha = r.commitSha;
       }
       setSave({ status: 'done', sha: lastSha });
-      // Refresh SHAs for subsequent saves.
       const [ko2, en2] = await Promise.all([ghGetFile(pat, KO_PATH), ghGetFile(pat, EN_PATH)]);
       if (ko2 && en2) {
         setLoad({ status: 'ready', ko: JSON.parse(ko2.content), en: JSON.parse(en2.content), koSha: ko2.sha, enSha: en2.sha });
@@ -145,50 +192,24 @@ export default function EditHomePage() {
   if (!koDraft || !enDraft) return null;
 
   const activeDict = active === 'ko' ? koDraft : enDraft;
+  const currentStyle: FieldStyle = focused ? (activeDict.styles?.[focused.path] ?? {}) : {};
 
   return (
     <div className="ed-stage">
-      {/* ===== Top edit bar — always above the page ===== */}
       <div className="ed-bar">
         <div className="ed-bar-l">
           <Link href="/admin" className="ed-bar-back">← Admin</Link>
           <span className="ed-bar-mode">WYSIWYG · 인라인 편집</span>
-          <span className="ed-bar-hint">텍스트 위에 마우스 → 클릭 → 수정 → 다른 곳 클릭으로 저장</span>
+          <span className="ed-bar-hint">텍스트 클릭 → 수정 / 옆 박스에서 스타일 변경</span>
         </div>
         <div className="ed-bar-r">
           <div className="ed-lang">
-            <button
-              type="button"
-              className={active === 'ko' ? 'on' : ''}
-              onClick={() => setActive('ko')}
-              disabled={save.status === 'saving'}
-            >
-              KO
-            </button>
+            <button type="button" className={active === 'ko' ? 'on' : ''} onClick={() => setActive('ko')} disabled={save.status === 'saving'}>KO</button>
             <span className="sep">/</span>
-            <button
-              type="button"
-              className={active === 'en' ? 'on' : ''}
-              onClick={() => setActive('en')}
-              disabled={save.status === 'saving'}
-            >
-              EN
-            </button>
+            <button type="button" className={active === 'en' ? 'on' : ''} onClick={() => setActive('en')} disabled={save.status === 'saving'}>EN</button>
           </div>
-          <button
-            type="button"
-            className="btn ghost small"
-            onClick={handleDiscard}
-            disabled={!dirty || save.status === 'saving'}
-          >
-            되돌리기
-          </button>
-          <button
-            type="button"
-            className="btn primary small"
-            onClick={() => void handleSave()}
-            disabled={!dirty || save.status === 'saving'}
-          >
+          <button type="button" className="btn ghost small" onClick={handleDiscard} disabled={!dirty || save.status === 'saving'}>되돌리기</button>
+          <button type="button" className="btn primary small" onClick={() => void handleSave()} disabled={!dirty || save.status === 'saving'}>
             {save.status === 'saving' ? '게시 중...' : dirty ? '● 변경사항 게시' : '변경사항 없음'}
           </button>
         </div>
@@ -199,12 +220,10 @@ export default function EditHomePage() {
           ✓ 게시 완료 — commit <code>{save.sha.slice(0, 7)}</code>. ~1~2분 뒤 사이트에 반영됩니다.
         </div>
       ) : null}
-      {save.status === 'error' ? (
-        <div className="ed-toast ed-toast-err">에러: {save.message}</div>
-      ) : null}
+      {save.status === 'error' ? <div className="ed-toast ed-toast-err">에러: {save.message}</div> : null}
 
-      {/* ===== Live page render with editor wired ===== */}
       <div className="ed-page">
+        <StyleInjector styles={activeDict.styles} />
         <Navigation locale={active} dict={activeDict} editor={editor} />
         <main>
           <Hero locale={active} dict={activeDict} editor={editor} />
@@ -218,6 +237,13 @@ export default function EditHomePage() {
         </main>
         <Footer locale={active} dict={activeDict} editor={editor} />
       </div>
+
+      <FloatingToolbar
+        focused={focused}
+        currentStyle={currentStyle}
+        onPatchStyle={onPatchStyle}
+        onClose={() => setFocused(null)}
+      />
     </div>
   );
 }

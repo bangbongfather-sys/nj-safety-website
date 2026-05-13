@@ -173,12 +173,12 @@ p { line-height: 1.65; }
   font-size: clamp(56px, 8.8vw, 132px);
   font-weight: 900;
   letter-spacing: -0.045em;
-  line-height: .94;
+  line-height: 1.05;
   color: #fff;
   max-width: 1100px;
   text-wrap: balance;
 }
-.hero-headline .line { display: block; overflow: hidden; }
+.hero-headline .line { display: block; overflow: visible; padding: 2px 0; }
 .hero-headline em { font-style: normal; color: var(--accent); }
 .hero-tagline {
   margin-top: 36px;
@@ -1906,36 +1906,178 @@ section { position: relative; }
 
 .ed-page { background: var(--bg); }
 
-/* ---------- The editable affordance ---------- */
-/*
- * The hover / focus rings are *inset* and use outline so they don't
- * push surrounding text around (the original margin/padding stays
- * identical between read and edit states).
+/* ---------- The editable affordance ----------
+ * Outline-only so it doesn't paint a filled rectangle on top of the
+ * text (the filled-bg version stacked into the next line on tight
+ * line-height headlines and made copy look cramped). Hover = dashed,
+ * focus = solid. No background tint anywhere.
  */
 .ed-editable {
   outline: 1px dashed transparent;
-  outline-offset: 2px;
-  transition: outline-color .15s, background-color .15s;
+  outline-offset: 3px;
+  border-radius: 2px;
+  transition: outline-color .15s;
   cursor: text;
   position: relative;
 }
-.ed-editable:hover {
-  outline-color: rgba(255,107,26,.55);
-  background-color: rgba(255,107,26,.06);
+.ed-editable:hover { outline-color: rgba(255,107,26,.55); }
+.ed-editable:focus,
+.ed-editable:focus-visible {
+  outline: 2px solid var(--accent) !important;
+  outline-offset: 3px;
 }
-.ed-editable:focus {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-  background-color: rgba(255,107,26,.12);
-  /* contentEditable adds a default border outline on focus — we replace it */
-}
-.ed-editable:focus-visible { outline: 2px solid var(--accent); }
-/* Suppress browser default contentEditable focus ring */
-.ed-editable:focus { outline: 2px solid var(--accent) !important; }
-
-/* Some text lives inside <a> / <button> / nested spans — make sure the
- * outline still shows above sibling decorations. */
 .ed-editable { box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+
+/* ---------- Floating format toolbar ---------- */
+.ed-toolbar {
+  position: fixed;
+  z-index: 1100;
+  min-width: 320px;
+  max-width: 440px;
+  background: rgba(13, 13, 14, .96);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, .5);
+  padding: 10px 12px;
+  font-family: var(--sans);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ed-toolbar-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border-soft);
+}
+.ed-toolbar-path {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .12em;
+  color: var(--accent);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 320px;
+}
+.ed-toolbar-close {
+  background: none;
+  border: 0;
+  color: var(--muted);
+  font-size: 18px;
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  line-height: 1;
+  font-family: inherit;
+}
+.ed-toolbar-close:hover { color: var(--accent); }
+
+.ed-toolbar-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.ed-toolbar-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .18em;
+  color: var(--muted-2);
+  text-transform: uppercase;
+  width: 32px;
+  flex-shrink: 0;
+}
+.ed-toolbar-value {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text);
+  min-width: 38px;
+  text-align: center;
+  letter-spacing: .04em;
+}
+
+.ed-tb-btn {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .04em;
+  padding: 5px 9px;
+  cursor: pointer;
+  transition: background .15s, border-color .15s, color .15s;
+  line-height: 1.2;
+}
+.ed-tb-btn:hover { border-color: var(--accent); color: var(--accent); }
+.ed-tb-btn.is-on {
+  background: var(--accent);
+  color: #0d0d0e;
+  border-color: var(--accent);
+}
+.ed-tb-btn.reset {
+  margin-left: auto;
+  border-color: var(--border-soft);
+  color: var(--muted-2);
+  font-size: 12px;
+  padding: 3px 8px;
+}
+.ed-tb-btn.reset:hover { border-color: var(--muted); color: var(--text); }
+
+.ed-color {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  padding: 0;
+  background: transparent;
+  transition: transform .12s, border-color .12s;
+}
+.ed-color:hover { transform: scale(1.1); }
+.ed-color.is-on {
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 0 2px rgba(255, 107, 26, .25);
+}
+
+.ed-color-pick {
+  width: 28px;
+  height: 24px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.ed-color-pick::-webkit-color-swatch-wrapper { padding: 2px; }
+.ed-color-pick::-webkit-color-swatch { border: 0; border-radius: 2px; }
+
+.ed-toolbar-foot {
+  padding-top: 4px;
+  border-top: 1px solid var(--border-soft);
+}
+.ed-tb-btn-clear {
+  width: 100%;
+  text-align: center;
+  background: rgba(255, 107, 107, .08);
+  border-color: rgba(255, 107, 107, .35);
+  color: #ff9a9a;
+  font-size: 10px;
+  letter-spacing: .1em;
+  padding: 7px;
+}
+.ed-tb-btn-clear:hover {
+  background: rgba(255, 107, 107, .15);
+  border-color: #ff6b6b;
+  color: #ff6b6b;
+}
 
 /* ---------- Skeleton subpages ---------- */
 .skeleton-page {
