@@ -3,12 +3,13 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { Dictionary, Locale } from '@/lib/i18n';
+import EditableText, { type EditorApi } from '@/components/admin/EditableText';
 
-type Props = { locale: Locale; dict: Dictionary };
+type Props = { locale: Locale; dict: Dictionary; editor?: EditorApi };
 
 const PRODUCT_DETAIL_RE = /^\/(?:ko|en)\/products\/[^/]+\/?$/;
 
-export default function Footer({ locale, dict }: Props) {
+export default function Footer({ locale, dict, editor }: Props) {
   const pathname = usePathname() ?? '';
   if (PRODUCT_DETAIL_RE.test(pathname)) return null;
 
@@ -22,38 +23,40 @@ export default function Footer({ locale, dict }: Props) {
               <span className="nj">NJ</span>
               <span className="sf">SAFETY</span>
             </Link>
-            <p>{dict.footer.brandDesc}</p>
+            <EditableText as="p" path="footer.brandDesc" value={dict.footer.brandDesc} editor={editor} multiline />
           </div>
 
           <div>
-            <h4>{dict.footer.productsHead}</h4>
+            <EditableText as="h4" path="footer.productsHead" value={dict.footer.productsHead} editor={editor} />
             <ul>
               {dict.footer.products.map((label, i) => (
                 <li key={i}>
-                  <Link href={`/${locale}/products`}>{label}</Link>
+                  <Link href={`/${locale}/products`}>
+                    <EditableText path={`footer.products[${i}]`} value={label} editor={editor} />
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
 
           <div>
-            <h4>{dict.footer.companyHead}</h4>
+            <EditableText as="h4" path="footer.companyHead" value={dict.footer.companyHead} editor={editor} />
             <ul>
-              <li><Link href={`/${locale}/about`}>{dict.footer.company[0]}</Link></li>
-              <li><Link href={`/${locale}/certifications`}>{dict.footer.company[1]}</Link></li>
-              <li><Link href={`/${locale}/news`}>{dict.footer.company[2]}</Link></li>
-              <li><Link href={`/${locale}/about`}>{dict.footer.company[3]}</Link></li>
-              <li><Link href={`/${locale}/contact`}>{dict.footer.company[4]}</Link></li>
+              <li><Link href={`/${locale}/about`}><EditableText path="footer.company[0]" value={dict.footer.company[0]} editor={editor} /></Link></li>
+              <li><Link href={`/${locale}/certifications`}><EditableText path="footer.company[1]" value={dict.footer.company[1]} editor={editor} /></Link></li>
+              <li><Link href={`/${locale}/news`}><EditableText path="footer.company[2]" value={dict.footer.company[2]} editor={editor} /></Link></li>
+              <li><Link href={`/${locale}/about`}><EditableText path="footer.company[3]" value={dict.footer.company[3]} editor={editor} /></Link></li>
+              <li><Link href={`/${locale}/contact`}><EditableText path="footer.company[4]" value={dict.footer.company[4]} editor={editor} /></Link></li>
             </ul>
           </div>
 
           <div>
-            <h4>{dict.footer.connectHead}</h4>
+            <EditableText as="h4" path="footer.connectHead" value={dict.footer.connectHead} editor={editor} />
             <div className="connect-list">
-              <div><span className="k">{dict.footer.addrKey}</span>{dict.company.addressFull}</div>
-              <div><span className="k">{dict.footer.telKey}</span>{dict.company.tel}</div>
-              <div><span className="k">{dict.footer.faxKey}</span>{dict.company.fax}</div>
-              <div><span className="k">{dict.footer.mailKey}</span>{dict.company.email}</div>
+              <div><span className="k">{dict.footer.addrKey}</span><EditableText path="company.addressFull" value={dict.company.addressFull} editor={editor} /></div>
+              <div><span className="k">{dict.footer.telKey}</span><EditableText path="company.tel" value={dict.company.tel} editor={editor} /></div>
+              <div><span className="k">{dict.footer.faxKey}</span><EditableText path="company.fax" value={dict.company.fax} editor={editor} /></div>
+              <div><span className="k">{dict.footer.mailKey}</span><EditableText path="company.email" value={dict.company.email} editor={editor} /></div>
               <div style={{ marginTop: 14 }}>
                 <span className="k">{dict.footer.social}</span>
                 <a href="#" style={{ color: '#fff' }}>Instagram</a> · <a href="#" style={{ color: '#fff' }}>LinkedIn</a>
@@ -63,11 +66,11 @@ export default function Footer({ locale, dict }: Props) {
         </div>
 
         <div className="footer-bar">
-          <span>{dict.company.copyright} · {dict.company.brn}</span>
+          <span><EditableText path="company.copyright" value={dict.company.copyright} editor={editor} /> · <EditableText path="company.brn" value={dict.company.brn} editor={editor} /></span>
           <div className="legal">
-            <Link href="#">{dict.footer.legal.privacy}</Link>
-            <Link href="#">{dict.footer.legal.terms}</Link>
-            <Link href="#">{dict.footer.legal.sitemap}</Link>
+            <Link href="#"><EditableText path="footer.legal.privacy" value={dict.footer.legal.privacy} editor={editor} /></Link>
+            <Link href="#"><EditableText path="footer.legal.terms" value={dict.footer.legal.terms} editor={editor} /></Link>
+            <Link href="#"><EditableText path="footer.legal.sitemap" value={dict.footer.legal.sitemap} editor={editor} /></Link>
           </div>
         </div>
       </div>

@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import type { Dictionary, Locale } from '@/lib/i18n';
+import EditableText, { type EditorApi } from '@/components/admin/EditableText';
 
-type Props = { locale: Locale; dict: Dictionary };
+type Props = { locale: Locale; dict: Dictionary; editor?: EditorApi };
 
-export default function Products({ locale, dict }: Props) {
+export default function Products({ locale, dict, editor }: Props) {
   const p = dict.products;
   const sKeys = p.specKeys;
 
@@ -12,14 +13,16 @@ export default function Products({ locale, dict }: Props) {
       <div className="wrap">
         <div className="section-head">
           <div className="l">
-            <span className="eyebrow">{p.eyebrow}</span>
+            <EditableText as="span" className="eyebrow" path="products.eyebrow" value={p.eyebrow} editor={editor} />
             <h2 className="title">
-              {p.titlePre}
-              <em>{p.titleEm}</em>
+              <EditableText path="products.titlePre" value={p.titlePre} editor={editor} />
+              <em>
+                <EditableText path="products.titleEm" value={p.titleEm} editor={editor} />
+              </em>
             </h2>
           </div>
           <Link href={`/${locale}/products`} className="r">
-            {p.viewAll}
+            <EditableText path="products.viewAll" value={p.viewAll} editor={editor} />
           </Link>
         </div>
 
@@ -45,16 +48,15 @@ export default function Products({ locale, dict }: Props) {
                   <path d="M170 360 q80 -20 160 0" strokeDasharray="2 4" />
                   <path d="M170 420 q80 -20 160 0" strokeDasharray="2 4" />
                 </g>
-                <text x="250" y="600" textAnchor="middle">ARAMID · SUMMER COVERALL</text>
               </svg>
             </div>
             <div className="meta">
-              <span className="en">{p.summer.en}</span>
-              <span className="ko">{p.summer.ko}</span>
+              <EditableText as="span" className="en" path="products.summer.en" value={p.summer.en} editor={editor} />
+              <EditableText as="span" className="ko" path="products.summer.ko" value={p.summer.ko} editor={editor} />
               <ul className="spec">
-                <li><span className="k">{sKeys.weight}</span><span className="v">{p.summer.weight}</span></li>
-                <li><span className="k">{sKeys.use}</span><span className="v">{p.summer.use}</span></li>
-                <li><span className="k">{sKeys.fit}</span><span className="v">{p.summer.fit}</span></li>
+                <li><EditableText as="span" className="k" path="products.specKeys.weight" value={sKeys.weight} editor={editor} /><EditableText as="span" className="v" path="products.summer.weight" value={p.summer.weight} editor={editor} /></li>
+                <li><EditableText as="span" className="k" path="products.specKeys.use" value={sKeys.use} editor={editor} /><EditableText as="span" className="v" path="products.summer.use" value={p.summer.use} editor={editor} /></li>
+                <li><EditableText as="span" className="k" path="products.specKeys.fit" value={sKeys.fit} editor={editor} /><EditableText as="span" className="v" path="products.summer.fit" value={p.summer.fit} editor={editor} /></li>
               </ul>
               <div className="cert-tags">
                 <span>NFPA 2112</span>
@@ -62,7 +64,7 @@ export default function Products({ locale, dict }: Props) {
               </div>
             </div>
             <div className="arr-row">
-              <span>{p.viewSeries}</span>
+              <EditableText path="products.viewSeries" value={p.viewSeries} editor={editor} />
               <span className="arr">→</span>
             </div>
           </Link>
@@ -87,25 +89,24 @@ export default function Products({ locale, dict }: Props) {
                   <rect x="175" y="330" width="60" height="70" strokeDasharray="3 3" />
                   <rect x="265" y="330" width="60" height="70" strokeDasharray="3 3" />
                 </g>
-                <text x="250" y="600" textAnchor="middle">ARAMID · SPRING / FALL</text>
               </svg>
             </div>
             <div className="meta">
-              <span className="en">{p.sf.en}</span>
-              <span className="ko">{p.sf.ko}</span>
+              <EditableText as="span" className="en" path="products.sf.en" value={p.sf.en} editor={editor} />
+              <EditableText as="span" className="ko" path="products.sf.ko" value={p.sf.ko} editor={editor} />
               <ul className="spec">
-                <li><span className="k">{sKeys.weight}</span><span className="v">{p.sf.weight}</span></li>
-                <li><span className="k">{sKeys.use}</span><span className="v">{p.sf.use}</span></li>
-                <li><span className="k">{sKeys.fit}</span><span className="v">{p.sf.fit}</span></li>
+                <li><span className="k">{sKeys.weight}</span><EditableText as="span" className="v" path="products.sf.weight" value={p.sf.weight} editor={editor} /></li>
+                <li><span className="k">{sKeys.use}</span><EditableText as="span" className="v" path="products.sf.use" value={p.sf.use} editor={editor} /></li>
+                <li><span className="k">{sKeys.fit}</span><EditableText as="span" className="v" path="products.sf.fit" value={p.sf.fit} editor={editor} /></li>
               </ul>
               <div className="cert-tags">
                 <span>NFPA 2112</span>
                 <span>HRC 2</span>
-                <span>{p.sf.testTag}</span>
+                <EditableText as="span" path="products.sf.testTag" value={p.sf.testTag} editor={editor} />
               </div>
             </div>
             <div className="arr-row">
-              <span>{p.viewSeries}</span>
+              <EditableText path="products.viewSeries" value={p.viewSeries} editor={editor} />
               <span className="arr">→</span>
             </div>
           </Link>
@@ -129,16 +130,15 @@ export default function Products({ locale, dict }: Props) {
                   <line x1="250" y1="190" x2="250" y2="550" />
                   <ellipse cx="250" cy="180" rx="45" ry="22" strokeDasharray="3 3" />
                 </g>
-                <text x="250" y="600" textAnchor="middle">ARAMID · WINTER LAYERED</text>
               </svg>
             </div>
             <div className="meta">
-              <span className="en">{p.winter.en}</span>
-              <span className="ko">{p.winter.ko}</span>
+              <EditableText as="span" className="en" path="products.winter.en" value={p.winter.en} editor={editor} />
+              <EditableText as="span" className="ko" path="products.winter.ko" value={p.winter.ko} editor={editor} />
               <ul className="spec">
-                <li><span className="k">{sKeys.weight}</span><span className="v">{p.winter.weight}</span></li>
-                <li><span className="k">{sKeys.use}</span><span className="v">{p.winter.use}</span></li>
-                <li><span className="k">{sKeys.fit}</span><span className="v">{p.winter.fit}</span></li>
+                <li><span className="k">{sKeys.weight}</span><EditableText as="span" className="v" path="products.winter.weight" value={p.winter.weight} editor={editor} /></li>
+                <li><span className="k">{sKeys.use}</span><EditableText as="span" className="v" path="products.winter.use" value={p.winter.use} editor={editor} /></li>
+                <li><span className="k">{sKeys.fit}</span><EditableText as="span" className="v" path="products.winter.fit" value={p.winter.fit} editor={editor} /></li>
               </ul>
               <div className="cert-tags">
                 <span>NFPA 2112</span>
@@ -146,16 +146,16 @@ export default function Products({ locale, dict }: Props) {
               </div>
             </div>
             <div className="arr-row">
-              <span>{p.viewSeries}</span>
+              <EditableText path="products.viewSeries" value={p.viewSeries} editor={editor} />
               <span className="arr">→</span>
             </div>
           </Link>
         </div>
 
         <div className="products-foot">
-          <span className="label">{p.lineupLabel}</span>
+          <EditableText as="span" className="label" path="products.lineupLabel" value={p.lineupLabel} editor={editor} />
           <Link href={`/${locale}/products`} className="link">
-            {p.fullCatalogue}
+            <EditableText path="products.fullCatalogue" value={p.fullCatalogue} editor={editor} />
           </Link>
         </div>
       </div>

@@ -123,10 +123,15 @@ export default function DashboardPage() {
       <section className="admin-section">
         <h2>빠른 작업</h2>
         <div className="admin-action-grid">
+          <Link href="/admin/edit" className="admin-action admin-action-feature">
+            <span className="admin-action-icon">✎</span>
+            <strong>인라인 편집 (WYSIWYG)</strong>
+            <span className="admin-action-sub">실제 사이트 화면에서 텍스트 클릭 → 바로 편집</span>
+          </Link>
           <Link href="/admin/text" className="admin-action">
             <span className="admin-action-icon">A</span>
-            <strong>사이트 텍스트 편집</strong>
-            <span className="admin-action-sub">홈페이지 / 푸터 / 회사 정보 등 모든 텍스트</span>
+            <strong>텍스트 편집 (폼 방식)</strong>
+            <span className="admin-action-sub">홈페이지 / 푸터 / 회사 정보 — 폼으로 KO/EN 동시 편집</span>
           </Link>
           <Link href="/admin/products" className="admin-action">
             <span className="admin-action-icon">P</span>

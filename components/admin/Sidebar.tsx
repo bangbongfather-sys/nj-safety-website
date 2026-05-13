@@ -7,10 +7,11 @@ import { useAdmin } from './AdminContext';
 type NavItem = { href: string; label: string; section: 'main' | 'tools' };
 
 const ITEMS: NavItem[] = [
-  { href: '/admin',            label: '대시보드',     section: 'main'  },
-  { href: '/admin/text',       label: '텍스트 편집',  section: 'main'  },
-  { href: '/admin/products',   label: '제품 관리',    section: 'main'  },
-  { href: '/admin/settings',   label: '설정',         section: 'tools' },
+  { href: '/admin',            label: '대시보드',         section: 'main'  },
+  { href: '/admin/edit',       label: '✎ 인라인 편집 (WYSIWYG)', section: 'main'  },
+  { href: '/admin/text',       label: '텍스트 편집 (폼)',  section: 'main'  },
+  { href: '/admin/products',   label: '제품 관리',         section: 'main'  },
+  { href: '/admin/settings',   label: '설정',              section: 'tools' },
 ];
 
 export default function Sidebar() {

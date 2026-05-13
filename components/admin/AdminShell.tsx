@@ -1,12 +1,17 @@
 'use client';
 
 import type { ReactNode } from 'react';
+import { usePathname } from 'next/navigation';
 import { AdminProvider, useAdmin } from './AdminContext';
 import PatLoginForm from './PatLoginForm';
 import Sidebar from './Sidebar';
 
 function Gate({ children }: { children: ReactNode }) {
   const { state } = useAdmin();
+  const pathname = usePathname() ?? '';
+  // The WYSIWYG editor takes the whole viewport — hide the admin chrome
+  // so the live page render isn't squeezed into the side panel.
+  const isFullBleed = pathname.startsWith('/admin/edit');
 
   if (state.status === 'unknown' || state.status === 'verifying') {
     return (
@@ -21,6 +26,8 @@ function Gate({ children }: { children: ReactNode }) {
   if (state.status !== 'authenticated') {
     return <PatLoginForm />;
   }
+
+  if (isFullBleed) return <>{children}</>;
 
   return (
     <div className="admin-app">

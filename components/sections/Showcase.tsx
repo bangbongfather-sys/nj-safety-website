@@ -1,9 +1,9 @@
 import type { Dictionary } from '@/lib/i18n';
+import EditableText, { type EditorApi } from '@/components/admin/EditableText';
 
-type Props = { dict: Dictionary };
+type Props = { dict: Dictionary; editor?: EditorApi };
 
-export default function Showcase({ dict }: Props) {
-  const s = dict.showcase;
+export default function Showcase({ dict, editor }: Props) {
   return (
     <section className="showcase" data-screen-label="03 Showcase">
       <div className="showcase-bg">
@@ -33,23 +33,18 @@ export default function Showcase({ dict }: Props) {
             <path d="M 1500 900 L 1500 150 L 1620 60 L 1620 900 Z" />
             <path d="M 0 480 L 1920 480" />
           </g>
-          <text x="56" y="870" opacity=".35">
-            [ FULL-BLEED FIELD STILL · STEEL MILL / SHIPYARD AT DAWN ]
-          </text>
         </svg>
       </div>
       <div className="showcase-overlay" />
       <div className="showcase-content">
         <div className="wrap">
-          <span className="eyebrow" style={{ display: 'block', marginBottom: 24 }}>
-            {s.eyebrow}
-          </span>
-          <h2 className="showcase-h">
-            {s.headlineLine1}
+          <EditableText as="span" className="eyebrow" path="showcase.eyebrow" value={dict.showcase.eyebrow} editor={editor} />
+          <h2 className="showcase-h" style={{ marginTop: 24 }}>
+            <EditableText path="showcase.headlineLine1" value={dict.showcase.headlineLine1} editor={editor} />
             <br />
-            {s.headlineLine2}
+            <EditableText path="showcase.headlineLine2" value={dict.showcase.headlineLine2} editor={editor} />
           </h2>
-          <p className="showcase-sub">{s.sub}</p>
+          <EditableText as="p" className="showcase-sub" path="showcase.sub" value={dict.showcase.sub} editor={editor} multiline />
         </div>
       </div>
     </section>

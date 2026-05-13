@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import type { Dictionary, Locale } from '@/lib/i18n';
+import EditableText, { type EditorApi } from '@/components/admin/EditableText';
 
-type Props = { locale: Locale; dict: Dictionary };
+type Props = { locale: Locale; dict: Dictionary; editor?: EditorApi };
 
 const FRAMES = [
-  // article 0 — arc flash
   (
     <svg className="ph-svg" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" key="0">
       <rect width="400" height="300" fill="#1a1a1c" />
@@ -21,10 +21,8 @@ const FRAMES = [
         <circle cx="260" cy="180" r="1" />
         <circle cx="320" cy="170" r="1.5" />
       </g>
-      <text x="20" y="285" opacity=".4">[ ARC FLASH PHOTO ]</text>
     </svg>
   ),
-  // article 1 — test lab
   (
     <svg className="ph-svg" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" key="1">
       <rect width="400" height="300" fill="#1f1f21" />
@@ -36,10 +34,8 @@ const FRAMES = [
         <line x1="300" y1="50" x2="300" y2="250" />
         <line x1="360" y1="50" x2="360" y2="250" />
       </g>
-      <text x="20" y="285" opacity=".4">[ TEST LAB · NFPA RIG ]</text>
     </svg>
   ),
-  // article 2 — fabric macro
   (
     <svg className="ph-svg" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" key="2">
       <rect width="400" height="300" fill="#1c1c1e" />
@@ -49,26 +45,27 @@ const FRAMES = [
         <path d="M0 180 Q100 150 200 180 T400 180" fill="none" />
         <path d="M0 240 Q100 210 200 240 T400 240" fill="none" />
       </g>
-      <text x="20" y="285" opacity=".4">[ FABRIC WEAVE MACRO ]</text>
     </svg>
   ),
 ];
 
-export default function Insights({ locale, dict }: Props) {
+export default function Insights({ locale, dict, editor }: Props) {
   const ins = dict.insights;
   return (
     <section className="insights" id="insights" data-screen-label="07 Insights">
       <div className="wrap">
         <div className="section-head">
           <div className="l">
-            <span className="eyebrow">{ins.eyebrow}</span>
+            <EditableText as="span" className="eyebrow" path="insights.eyebrow" value={ins.eyebrow} editor={editor} />
             <h2 className="title">
-              {ins.titlePre}
-              <em>{ins.titleEm}</em>
+              <EditableText path="insights.titlePre" value={ins.titlePre} editor={editor} />
+              <em>
+                <EditableText path="insights.titleEm" value={ins.titleEm} editor={editor} />
+              </em>
             </h2>
           </div>
           <Link href={`/${locale}/news`} className="r">
-            {ins.all}
+            <EditableText path="insights.all" value={ins.all} editor={editor} />
           </Link>
         </div>
 
@@ -76,13 +73,15 @@ export default function Insights({ locale, dict }: Props) {
           {ins.items.map((item, i) => (
             <Link className="article" href={`/${locale}/news`} key={i}>
               <div className="frame">
-                <span className="cat">{item.cat}</span>
+                <EditableText as="span" className="cat" path={`insights.items[${i}].cat`} value={item.cat} editor={editor} />
                 <span className="read">Read →</span>
                 {FRAMES[i] ?? FRAMES[0]}
               </div>
-              <span className="date">{item.date}</span>
-              <h3>{item.title}</h3>
-              <p>{item.excerpt}</p>
+              <EditableText as="span" className="date" path={`insights.items[${i}].date`} value={item.date} editor={editor} />
+              <h3>
+                <EditableText path={`insights.items[${i}].title`} value={item.title} editor={editor} multiline />
+              </h3>
+              <EditableText as="p" path={`insights.items[${i}].excerpt`} value={item.excerpt} editor={editor} multiline />
             </Link>
           ))}
         </div>

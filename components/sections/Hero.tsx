@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import type { Dictionary, Locale } from '@/lib/i18n';
+import EditableText, { type EditorApi } from '@/components/admin/EditableText';
 
-type Props = { locale: Locale; dict: Dictionary };
+type Props = { locale: Locale; dict: Dictionary; editor?: EditorApi };
 
-export default function Hero({ locale, dict }: Props) {
+export default function Hero({ locale, dict, editor }: Props) {
   return (
     <section className="hero" data-screen-label="01 Hero">
       <div className="hero-bg">
@@ -56,9 +57,6 @@ export default function Hero({ locale, dict }: Props) {
             <circle cx="1600" cy="650" r="1" />
             <circle cx="1180" cy="700" r="1" />
           </g>
-          <text x="56" y="1040" opacity=".35">
-            [ HERO · FULL-BLEED FIELD STILL · WELDING SPARKS / STEEL MILL / SHIPYARD AT DUSK ]
-          </text>
         </svg>
       </div>
       <div className="hero-overlay" />
@@ -68,23 +66,29 @@ export default function Hero({ locale, dict }: Props) {
         <div className="wrap">
           <div className="hero-tag">
             <span className="hairline" />
-            <span className="eyebrow">{dict.hero.eyebrow}</span>
+            <EditableText as="span" className="eyebrow" path="hero.eyebrow" value={dict.hero.eyebrow} editor={editor} />
           </div>
           <h1 className="hero-headline">
-            <span className="line">{dict.hero.headlineLine1}</span>
             <span className="line">
-              {dict.hero.headlineLine2Pre}
-              <em>{dict.hero.headlineLine2Em}</em>
+              <EditableText path="hero.headlineLine1" value={dict.hero.headlineLine1} editor={editor} />
+            </span>
+            <span className="line">
+              <EditableText path="hero.headlineLine2Pre" value={dict.hero.headlineLine2Pre} editor={editor} />
+              <em>
+                <EditableText path="hero.headlineLine2Em" value={dict.hero.headlineLine2Em} editor={editor} />
+              </em>
             </span>
           </h1>
-          <p className="hero-tagline">{dict.hero.tagline}</p>
-          <p className="hero-sub">{dict.hero.sub}</p>
+          <EditableText as="p" className="hero-tagline" path="hero.tagline" value={dict.hero.tagline} editor={editor} />
+          <EditableText as="p" className="hero-sub" path="hero.sub" value={dict.hero.sub} editor={editor} multiline />
           <div className="hero-cta">
             <Link href={`/${locale}/products`} className="btn btn-primary">
-              {dict.hero.ctaPrimary} <span className="arr">→</span>
+              <EditableText path="hero.ctaPrimary" value={dict.hero.ctaPrimary} editor={editor} />
+              <span className="arr">→</span>
             </Link>
             <Link href={`/${locale}/contact`} className="btn btn-ghost">
-              {dict.hero.ctaSecondary} <span className="arr">→</span>
+              <EditableText path="hero.ctaSecondary" value={dict.hero.ctaSecondary} editor={editor} />
+              <span className="arr">→</span>
             </Link>
           </div>
         </div>
@@ -92,13 +96,13 @@ export default function Hero({ locale, dict }: Props) {
 
       <div className="hero-meta">
         <div className="scroll">
-          <span>{dict.hero.scroll}</span>
+          <EditableText path="hero.scroll" value={dict.hero.scroll} editor={editor} />
           <span className="scroll-line" />
         </div>
         <div className="hero-locator">
           <div className="col">
-            <span className="v">{dict.hero.locatorName}</span>
-            <span>{dict.hero.locatorSub}</span>
+            <EditableText as="span" className="v" path="hero.locatorName" value={dict.hero.locatorName} editor={editor} />
+            <EditableText as="span" path="hero.locatorSub" value={dict.hero.locatorSub} editor={editor} />
           </div>
         </div>
       </div>

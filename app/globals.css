@@ -1814,6 +1814,129 @@ section { position: relative; }
   .admin-page-head h1 { font-size: 28px; }
 }
 
+/* Featured action card on dashboard — pulls focus toward the inline editor. */
+.admin-action.admin-action-feature {
+  background: linear-gradient(135deg, rgba(255,107,26,.18) 0%, rgba(255,107,26,.04) 100%);
+  border-color: var(--accent);
+}
+.admin-action.admin-action-feature .admin-action-icon { background: var(--accent); color: #0d0d0e; }
+
+/* ============================================================
+   WYSIWYG editor (/admin/edit) — full-bleed shell + inline edit
+   ============================================================ */
+.ed-stage { position: relative; }
+
+.ed-bar {
+  position: sticky; top: 0;
+  z-index: 1000;
+  display: flex; justify-content: space-between; align-items: center; gap: 18px;
+  padding: 10px 20px;
+  background: rgba(13,13,14,.96);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--accent);
+  color: var(--text);
+  font-family: var(--sans);
+}
+.ed-bar-l { display: flex; align-items: center; gap: 18px; min-width: 0; }
+.ed-bar-back {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .14em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.ed-bar-back:hover { color: var(--accent); }
+.ed-bar-mode {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .2em;
+  color: var(--accent);
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 1px solid var(--accent);
+}
+.ed-bar-hint {
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ed-bar-r { display: flex; align-items: center; gap: 10px; }
+
+.ed-lang {
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .12em;
+  color: var(--muted);
+  padding: 0 12px;
+  border-left: 1px solid var(--border-soft);
+  border-right: 1px solid var(--border-soft);
+}
+.ed-lang button {
+  background: none; border: 0; color: var(--muted); cursor: pointer;
+  font-family: inherit; font-size: inherit; padding: 2px 4px;
+}
+.ed-lang button.on { color: var(--text); font-weight: 700; }
+.ed-lang .sep { color: var(--muted-2); }
+
+.ed-toast {
+  position: sticky;
+  top: 44px;
+  z-index: 999;
+  padding: 10px 20px;
+  font-family: var(--mono); font-size: 12px; letter-spacing: .08em;
+  border-bottom: 1px solid var(--border-soft);
+}
+.ed-toast-ok  { background: rgba(255,107,26,.15); color: var(--accent); }
+.ed-toast-err { background: rgba(255,107,107,.12); color: #ff9a9a; }
+.ed-toast code { font-family: var(--mono); }
+
+.ed-loading {
+  min-height: 100vh;
+  display: grid; place-items: center;
+  background: var(--bg);
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: .12em;
+}
+.ed-loading-err { color: #ff6b6b; }
+
+.ed-page { background: var(--bg); }
+
+/* ---------- The editable affordance ---------- */
+/*
+ * The hover / focus rings are *inset* and use outline so they don't
+ * push surrounding text around (the original margin/padding stays
+ * identical between read and edit states).
+ */
+.ed-editable {
+  outline: 1px dashed transparent;
+  outline-offset: 2px;
+  transition: outline-color .15s, background-color .15s;
+  cursor: text;
+  position: relative;
+}
+.ed-editable:hover {
+  outline-color: rgba(255,107,26,.55);
+  background-color: rgba(255,107,26,.06);
+}
+.ed-editable:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  background-color: rgba(255,107,26,.12);
+  /* contentEditable adds a default border outline on focus — we replace it */
+}
+.ed-editable:focus-visible { outline: 2px solid var(--accent); }
+/* Suppress browser default contentEditable focus ring */
+.ed-editable:focus { outline: 2px solid var(--accent) !important; }
+
+/* Some text lives inside <a> / <button> / nested spans — make sure the
+ * outline still shows above sibling decorations. */
+.ed-editable { box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+
 /* ---------- Skeleton subpages ---------- */
 .skeleton-page {
   min-height: 100vh;

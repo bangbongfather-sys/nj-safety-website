@@ -4,15 +4,16 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import type { Dictionary, Locale } from '@/lib/i18n';
+import EditableText, { type EditorApi } from '@/components/admin/EditableText';
 
-type Props = { locale: Locale; dict: Dictionary };
+type Props = { locale: Locale; dict: Dictionary; editor?: EditorApi };
 
 // On product detail pages the catalog-app render is full-bleed with its own
 // topnav (paper background, ink type) — the brand-site dark nav clashes
 // visually, so we hide it for that route family. Same for Footer.
 const PRODUCT_DETAIL_RE = /^\/(?:ko|en)\/products\/[^/]+\/?$/;
 
-export default function Navigation({ locale, dict }: Props) {
+export default function Navigation({ locale, dict, editor }: Props) {
   const pathname = usePathname() ?? '';
   const [scrolled, setScrolled] = useState(false);
 
@@ -30,13 +31,13 @@ export default function Navigation({ locale, dict }: Props) {
   const rest = pathname.replace(/^\/(ko|en)/, '') || '/';
   const toggleHref = `/${otherLocale}${rest === '/' ? '' : rest}`;
 
-  const links: { href: string; label: string }[] = [
-    { href: `/${locale}/about`,          label: dict.nav.about },
-    { href: `/${locale}/products`,       label: dict.nav.products },
-    { href: `/${locale}/certifications`, label: dict.nav.certifications },
-    { href: `/${locale}/clients`,        label: dict.nav.clients },
-    { href: `/${locale}/news`,           label: dict.nav.news },
-    { href: `/${locale}/contact`,        label: dict.nav.contact },
+  const links: { href: string; key: keyof typeof dict.nav }[] = [
+    { href: `/${locale}/about`,          key: 'about' },
+    { href: `/${locale}/products`,       key: 'products' },
+    { href: `/${locale}/certifications`, key: 'certifications' },
+    { href: `/${locale}/clients`,        key: 'clients' },
+    { href: `/${locale}/news`,           key: 'news' },
+    { href: `/${locale}/contact`,        key: 'contact' },
   ];
 
   return (
@@ -55,7 +56,7 @@ export default function Navigation({ locale, dict }: Props) {
               href={l.href}
               className={pathname.startsWith(l.href) ? 'active' : undefined}
             >
-              {l.label}
+              <EditableText path={`nav.${l.key}`} value={dict.nav[l.key]} editor={editor} />
             </Link>
           ))}
         </div>
@@ -67,7 +68,8 @@ export default function Navigation({ locale, dict }: Props) {
             <span className={locale === 'en' ? 'on' : undefined}>EN</span>
           </Link>
           <Link href={`/${locale}/contact`} className="btn-quote">
-            {dict.nav.quoteCta} <span>→</span>
+            <EditableText path="nav.quoteCta" value={dict.nav.quoteCta} editor={editor} />
+            <span>→</span>
           </Link>
         </div>
       </div>
