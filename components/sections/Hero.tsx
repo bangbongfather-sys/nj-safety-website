@@ -8,58 +8,17 @@ export default function Hero({ locale, dict, editor }: Props) {
   return (
     <section className="hero" data-screen-label="01 Hero">
       <div className="hero-bg">
-        <svg
-          className="ph-svg"
-          viewBox="0 0 1920 1080"
-          preserveAspectRatio="xMidYMid slice"
-          xmlns="http://www.w3.org/2000/svg"
+        <img
+          className="hero-img"
+          src="/hero.jpg"
+          alt=""
           aria-hidden
-        >
-          <defs>
-            <linearGradient id="hbg" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#1a1a1c" />
-              <stop offset=".55" stopColor="#0e0e10" />
-              <stop offset="1" stopColor="#050506" />
-            </linearGradient>
-            <radialGradient id="emb" cx=".72" cy=".62" r=".55">
-              <stop offset="0" stopColor="#ff6b1a" stopOpacity=".22" />
-              <stop offset=".4" stopColor="#ff6b1a" stopOpacity=".08" />
-              <stop offset="1" stopColor="#ff6b1a" stopOpacity="0" />
-            </radialGradient>
-          </defs>
-          <rect width="1920" height="1080" fill="url(#hbg)" />
-          <g className="stripes" strokeOpacity=".35">
-            <line x1="0"    y1="780" x2="1920" y2="640" />
-            <line x1="0"    y1="820" x2="1920" y2="680" />
-            <line x1="0"    y1="860" x2="1920" y2="720" />
-            <line x1="0"    y1="900" x2="1920" y2="760" />
-            <line x1="0"    y1="940" x2="1920" y2="800" />
-            <line x1="1200" y1="0"   x2="1350" y2="1080" />
-            <line x1="1380" y1="0"   x2="1520" y2="1080" />
-            <line x1="1560" y1="0"   x2="1690" y2="1080" />
-          </g>
-          <g opacity=".18" fill="#fff">
-            <rect x="1100" y="100" width="2" height="980" />
-            <rect x="1280" y="100" width="2" height="980" />
-            <rect x="1460" y="100" width="2" height="980" />
-            <rect x="1640" y="100" width="2" height="980" />
-          </g>
-          <rect width="1920" height="1080" fill="url(#emb)" />
-          <g fill="#ff8a3a">
-            <circle cx="1340" cy="640" r="3" />
-            <circle cx="1380" cy="612" r="2" />
-            <circle cx="1420" cy="660" r="2.5" />
-            <circle cx="1300" cy="690" r="1.5" />
-            <circle cx="1460" cy="600" r="2" />
-            <circle cx="1500" cy="630" r="1.5" />
-            <circle cx="1240" cy="720" r="2" />
-            <circle cx="1560" cy="680" r="1.5" />
-            <circle cx="1600" cy="650" r="1" />
-            <circle cx="1180" cy="700" r="1" />
-          </g>
-        </svg>
+          loading="eager"
+          decoding="async"
+        />
       </div>
       <div className="hero-overlay" />
+      <div className="hero-accent" />
       <div className="hero-grain" />
 
       <div className="hero-content">

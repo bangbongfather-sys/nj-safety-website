@@ -28,7 +28,7 @@ export type FieldStyle = {
 
 type RawDict = typeof ko;
 
-export type Dictionary = RawDict & {
+export type Dictionary = Omit<RawDict, 'styles'> & {
   /** Per-field style overrides. Optional — most dicts won't have this. */
   styles?: Record<string, FieldStyle>;
 };
