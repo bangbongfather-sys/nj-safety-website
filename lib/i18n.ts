@@ -47,8 +47,13 @@ export type SiteConfig = {
 
 type RawDict = typeof ko;
 
-export type Dictionary = Omit<RawDict, 'styles'> & {
-  /** Per-field style overrides. Optional — most dicts won't have this. */
+// Both `styles` and `siteConfig` need to be Omit'd from RawDict because
+// every save the editor performs further specialises the JSON-inferred
+// shape of these fields. Without the Omit the intersection narrows them
+// past the open shape we want, and code that does `delete d.siteConfig`
+// or spreads a Record fails to type-check.
+export type Dictionary = Omit<RawDict, 'styles' | 'siteConfig'> & {
+  /** Per-field style overrides keyed by `data-fp` path. */
   styles?: Record<string, FieldStyle>;
   /** Site-wide visual config (hero filter etc.), edited via admin. */
   siteConfig?: SiteConfig;
