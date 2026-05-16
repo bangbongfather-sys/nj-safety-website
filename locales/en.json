@@ -122,7 +122,20 @@
       "CLIENT 11",
       "CLIENT 12"
     ],
-    "logoImages": ["", "", "", "", "", "", "", "", "", "", "", ""],
+    "logoImages": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "stats": [
       {
         "label": "— Heritage / since 1992",
@@ -272,6 +285,9 @@
       "size": "1.10em",
       "weight": "900",
       "width": "50%"
+    },
+    "manifesto.quoteEm": {
+      "color": "#ff6b1a"
     }
   },
   "siteConfig": {
