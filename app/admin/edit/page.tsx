@@ -306,8 +306,24 @@ export default function EditHomePage() {
           <button type="button" className="btn ghost small" onClick={handleDiscard} disabled={!dirty || save.status === 'saving'} title="저장되지 않은 변경사항을 되돌립니다">
             되돌리기
           </button>
-          <button type="button" className="btn primary small" onClick={() => void handleSave()} disabled={!dirty || save.status === 'saving'} title="3초 기다리지 않고 즉시 게시">
-            {save.status === 'saving' ? '게시 중...' : '즉시 게시'}
+          <button
+            type="button"
+            className={`btn ${dirty ? 'primary' : 'ghost'} small`}
+            onClick={() => void handleSave()}
+            disabled={!dirty || save.status === 'saving'}
+            title={
+              save.status === 'saving'
+                ? '게시 중...'
+                : dirty
+                  ? '3초 기다리지 않고 지금 즉시 GitHub에 게시합니다'
+                  : '아직 변경사항이 없거나 자동 저장이 이미 끝났습니다 (텍스트 / 필터 편집 후 활성화)'
+            }
+          >
+            {save.status === 'saving'
+              ? '💾 게시 중...'
+              : dirty
+                ? '● 즉시 게시'
+                : '변경사항 없음'}
           </button>
         </div>
       </div>
