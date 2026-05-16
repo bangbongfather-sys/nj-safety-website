@@ -247,13 +247,19 @@ export default function EditHomePage() {
     setSave({ status: 'idle' });
   }, [load]);
 
-  // ── Autosave: 3s after the last edit, push to GitHub automatically. ──
+  // ── Autosave: 15s after the last edit, push to GitHub automatically. ──
   // Manual "변경사항 게시" still works for immediate flush.
   const [autoSavedAt, setAutoSavedAt] = useState<Date | null>(null);
   const [, tickRender] = useState(0); // for ticking the "X seconds ago" label
   const handleSaveRef = useRef(handleSave);
   useEffect(() => { handleSaveRef.current = handleSave; }, [handleSave]);
 
+  // Autosave debounce: longer is better here, because every commit triggers
+  // a separate Cloudflare build (≈1–2 min each). A 3 s window made it easy
+  // to queue 5+ builds during a normal editing burst — site got stuck
+  // behind a slow deploy chain. 15 s coalesces typical bursts into one
+  // commit while still feeling "live" to the user; the "즉시 게시" button
+  // still flushes immediately for impatient moments.
   useEffect(() => {
     if (!dirty) return;
     if (save.status === 'saving') return;
@@ -262,7 +268,7 @@ export default function EditHomePage() {
         await handleSaveRef.current();
         setAutoSavedAt(new Date());
       })();
-    }, 3000);
+    }, 15000);
     return () => clearTimeout(t);
   }, [koDraft, enDraft, dirty, save.status]);
 
@@ -293,7 +299,7 @@ export default function EditHomePage() {
     statusLabel = `⚠ 게시 실패`;
     statusClass = 'ed-status-error';
   } else if (dirty) {
-    statusLabel = '● 편집 중 · 3초 후 자동 게시';
+    statusLabel = '● 편집 중 · 15초 후 자동 게시';
     statusClass = 'ed-status-dirty';
   } else if (autoSavedAt) {
     statusLabel = `✓ 자동 게시됨 · ${fmtAgo(autoSavedAt)}`;
@@ -344,7 +350,7 @@ export default function EditHomePage() {
               save.status === 'saving'
                 ? '게시 중...'
                 : dirty
-                  ? '3초 기다리지 않고 지금 즉시 GitHub에 게시합니다'
+                  ? '15초 기다리지 않고 지금 즉시 GitHub에 게시합니다'
                   : '아직 변경사항이 없거나 자동 저장이 이미 끝났습니다 (텍스트 / 필터 편집 후 활성화)'
             }
           >
