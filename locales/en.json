@@ -264,5 +264,12 @@
       "weight": "900",
       "width": "50%"
     }
+  },
+  "siteConfig": {
+    "heroFilter": {
+      "brightness": 1,
+      "contrast": 1,
+      "saturate": 0.76
+    }
   }
 }
