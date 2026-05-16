@@ -257,7 +257,7 @@
     },
     "hero.headlineLine2Em": {
       "size": "0.90em",
-      "width": "90%"
+      "width": "100.0%"
     },
     "hero.tagline": {
       "size": "1.10em",
