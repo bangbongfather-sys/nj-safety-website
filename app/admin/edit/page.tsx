@@ -342,6 +342,7 @@ export default function EditHomePage() {
       />
       <HeroBgPanel
         open={heroBgPanelOpen}
+        pat={pat}
         filter={activeDict.siteConfig?.heroFilter ?? {}}
         onPatch={onPatchHero}
         onClose={() => setHeroBgPanelOpen(false)}

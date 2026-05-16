@@ -104,6 +104,45 @@ export async function ghPutFile(
   return { commitSha: data.commit?.sha ?? '' };
 }
 
+/**
+ * Same as ghPutFile but takes a Blob — used for images / other binaries
+ * where we shouldn't run the bytes through TextEncoder. Reads the blob,
+ * base64-encodes the raw bytes, and PUTs.
+ */
+export async function ghPutBlob(
+  pat: string,
+  filePath: string,
+  blob: Blob,
+  commitMessage: string,
+  sha: string | null,
+): Promise<{ commitSha: string }> {
+  const bytes = new Uint8Array(await blob.arrayBuffer());
+  let binary = '';
+  // Walk in chunks so very large files don't blow the call stack via apply.
+  const CHUNK = 0x8000;
+  for (let i = 0; i < bytes.length; i += CHUNK) {
+    binary += String.fromCharCode.apply(null, Array.from(bytes.subarray(i, i + CHUNK)));
+  }
+  const content = btoa(binary);
+  const body: Record<string, string> = {
+    message: commitMessage,
+    content,
+    branch: REPO_BRANCH,
+  };
+  if (sha) body.sha = sha;
+  const r = await fetch(api(`/contents/${encodeURIComponent(filePath)}`), {
+    method: 'PUT',
+    headers: { ...headers(pat), 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  if (!r.ok) {
+    const errText = await r.text();
+    throw new Error(`PUT blob failed: ${r.status} — ${errText.slice(0, 400)}`);
+  }
+  const data = await r.json();
+  return { commitSha: data.commit?.sha ?? '' };
+}
+
 /** Delete a file. Requires the current SHA. */
 export async function ghDeleteFile(
   pat: string,

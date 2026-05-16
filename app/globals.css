@@ -2194,8 +2194,54 @@ section { position: relative; }
   font-size: 10px;
   color: var(--muted-2);
   font-family: var(--mono);
-  letter-spacing: .08em;
+  letter-spacing: .04em;
+  line-height: 1.5;
 }
+
+.ed-bg-section { display: flex; flex-direction: column; gap: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--border-soft); }
+.ed-bg-section:last-of-type { border-bottom: 0; padding-bottom: 0; }
+.ed-bg-section-head {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .22em;
+  color: var(--muted-2);
+  text-transform: uppercase;
+  padding: 2px 0;
+}
+.ed-bg-drop { padding: 24px 16px; }
+.ed-bg-drop strong { font-size: 13px; }
+.ed-bg-drop .sub { font-size: 10px; }
+
+.ed-bg-preview {
+  width: 100%;
+  height: 120px;
+  background: #1a1a1c;
+  border: 1px solid var(--border-soft);
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.ed-bg-preview img { width: 100%; height: 100%; object-fit: cover; }
+.ed-bg-preview-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: .06em;
+  word-break: break-all;
+  line-height: 1.5;
+}
+.ed-bg-preview-meta code { color: var(--text); }
+.ed-bg-actions { display: flex; gap: 6px; }
+.ed-bg-actions .btn { flex: 1; justify-content: center; }
+.ed-bg-status {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .08em;
+  color: var(--muted);
+  padding: 8px 0;
+}
+.ed-bg-status code { color: var(--accent); }
+.ed-bg-ok  { color: #6bcf6b; }
+.ed-bg-err { color: #ff6b6b; }
 
 /* Active state for the "배경 조정" toolbar toggle button */
 .btn.ghost.is-on {
