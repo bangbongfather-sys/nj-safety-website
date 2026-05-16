@@ -6,6 +6,8 @@ import { useAdmin } from '@/components/admin/AdminContext';
 import type { EditorApi } from '@/components/admin/EditableText';
 import FloatingToolbar, { type FocusInfo } from '@/components/admin/FloatingToolbar';
 import ResizeHandle from '@/components/admin/ResizeHandle';
+import HeroBgPanel from '@/components/admin/HeroBgPanel';
+import type { HeroFilter } from '@/lib/i18n';
 import StyleInjector from '@/components/admin/StyleInjector';
 import { ghGetFile, ghPutFile } from '@/lib/admin/github';
 import type { Dictionary, FieldStyle, Locale } from '@/lib/i18n';
@@ -71,6 +73,7 @@ export default function EditHomePage() {
   const [active, setActive] = useState<Locale>('ko');
   const [save, setSave] = useState<Save>({ status: 'idle' });
   const [focused, setFocused] = useState<FocusInfo | null>(null);
+  const [heroBgPanelOpen, setHeroBgPanelOpen] = useState(false);
 
   // ── Track which editable element has focus so the toolbar can target it ──
   useEffect(() => {
@@ -152,6 +155,33 @@ export default function EditHomePage() {
     setKoDraft((d) => (d ? apply(d) : d));
     setEnDraft((d) => (d ? apply(d) : d));
   }, [focused]);
+
+  // ── Hero background filter patches also sync across ko + en. ──
+  // Empty `next` (no keys) clears the filter entirely, letting the
+  // globals.css default kick back in.
+  const onPatchHero = useCallback((next: HeroFilter) => {
+    function apply(d: Dictionary): Dictionary {
+      const cleaned: HeroFilter = {};
+      if (next.brightness != null) cleaned.brightness = next.brightness;
+      if (next.contrast != null) cleaned.contrast = next.contrast;
+      if (next.saturate != null) cleaned.saturate = next.saturate;
+
+      if (Object.keys(cleaned).length === 0) {
+        const sc = { ...(d.siteConfig ?? {}) };
+        delete sc.heroFilter;
+        const out: Dictionary = { ...d };
+        if (Object.keys(sc).length === 0) delete out.siteConfig;
+        else out.siteConfig = sc;
+        return out;
+      }
+      return {
+        ...d,
+        siteConfig: { ...(d.siteConfig ?? {}), heroFilter: cleaned },
+      };
+    }
+    setKoDraft((d) => (d ? apply(d) : d));
+    setEnDraft((d) => (d ? apply(d) : d));
+  }, []);
 
   const handleSave = useCallback(async () => {
     if (load.status !== 'ready' || !koDraft || !enDraft || !pat) return;
@@ -265,6 +295,14 @@ export default function EditHomePage() {
             <span className="sep">/</span>
             <button type="button" className={active === 'en' ? 'on' : ''} onClick={() => setActive('en')} disabled={save.status === 'saving'}>EN</button>
           </div>
+          <button
+            type="button"
+            className={`btn ghost small${heroBgPanelOpen ? ' is-on' : ''}`}
+            onClick={() => setHeroBgPanelOpen((v) => !v)}
+            title="히어로 배경 사진의 밝기/대비/채도 조절"
+          >
+            🌓 배경 조정
+          </button>
           <button type="button" className="btn ghost small" onClick={handleDiscard} disabled={!dirty || save.status === 'saving'} title="저장되지 않은 변경사항을 되돌립니다">
             되돌리기
           </button>
@@ -301,6 +339,12 @@ export default function EditHomePage() {
       <ResizeHandle
         focused={focused}
         onPatchStyle={(_k, v) => onPatchStyle('width', v)}
+      />
+      <HeroBgPanel
+        open={heroBgPanelOpen}
+        filter={activeDict.siteConfig?.heroFilter ?? {}}
+        onPatch={onPatchHero}
+        onClose={() => setHeroBgPanelOpen(false)}
       />
     </div>
   );

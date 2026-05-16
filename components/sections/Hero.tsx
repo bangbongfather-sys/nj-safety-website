@@ -1,8 +1,21 @@
 import Link from 'next/link';
+import type { CSSProperties } from 'react';
 import type { Dictionary, Locale } from '@/lib/i18n';
 import EditableText, { type EditorApi } from '@/components/admin/EditableText';
 
 type Props = { locale: Locale; dict: Dictionary; editor?: EditorApi };
+
+// When admin has set custom filter values, emit inline CSS that
+// overrides the static rule in globals.css. When siteConfig is missing
+// we leave inline style empty so the CSS default applies.
+function heroImgStyle(dict: Dictionary): CSSProperties | undefined {
+  const f = dict.siteConfig?.heroFilter;
+  if (!f || (f.brightness == null && f.contrast == null && f.saturate == null)) return undefined;
+  const b = f.brightness ?? 0.55;
+  const c = f.contrast ?? 1.15;
+  const s = f.saturate ?? 0.6;
+  return { filter: `brightness(${b}) contrast(${c}) saturate(${s})` };
+}
 
 export default function Hero({ locale, dict, editor }: Props) {
   return (
@@ -15,6 +28,7 @@ export default function Hero({ locale, dict, editor }: Props) {
           aria-hidden
           loading="eager"
           decoding="async"
+          style={heroImgStyle(dict)}
         />
       </div>
       <div className="hero-overlay" />

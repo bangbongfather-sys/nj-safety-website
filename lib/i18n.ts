@@ -26,11 +26,32 @@ export type FieldStyle = {
   align?: 'left' | 'center' | 'right';
 };
 
+/**
+ * Hero background CSS filter values, set via the admin edit panel.
+ * Each value is a CSS filter coefficient (1.0 = unchanged):
+ *   brightness — 0 (black) to 1 (original); we cap UI at 1.0
+ *   contrast   — 0.5 (flat) to 2.0 (strong)
+ *   saturate   — 0 (greyscale) to 1.5 (vivid)
+ * When `siteConfig.heroFilter` is missing on a Dictionary the CSS
+ * fallback in globals.css applies instead.
+ */
+export type HeroFilter = {
+  brightness?: number;
+  contrast?: number;
+  saturate?: number;
+};
+
+export type SiteConfig = {
+  heroFilter?: HeroFilter;
+};
+
 type RawDict = typeof ko;
 
 export type Dictionary = Omit<RawDict, 'styles'> & {
   /** Per-field style overrides. Optional — most dicts won't have this. */
   styles?: Record<string, FieldStyle>;
+  /** Site-wide visual config (hero filter etc.), edited via admin. */
+  siteConfig?: SiteConfig;
 };
 
 export function getDictionary(locale: Locale): Dictionary {

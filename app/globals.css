@@ -2117,6 +2117,93 @@ section { position: relative; }
   color: #ff6b6b;
 }
 
+/* ---------- Hero background adjust panel (top-right floating) ---------- */
+.ed-bg-panel {
+  position: fixed;
+  top: 60px;
+  right: 16px;
+  z-index: 1100;
+  width: 320px;
+  background: rgba(13,13,14,.96);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  box-shadow: 0 20px 40px rgba(0,0,0,.5);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-family: var(--sans);
+  color: var(--text);
+}
+.ed-bg-panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-soft);
+}
+.ed-bg-panel-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .14em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.ed-bg-panel-close {
+  background: none; border: 0;
+  color: var(--muted);
+  font-size: 18px;
+  width: 22px; height: 22px;
+  display: grid; place-items: center;
+  cursor: pointer; line-height: 1;
+  font-family: inherit;
+}
+.ed-bg-panel-close:hover { color: var(--accent); }
+.ed-bg-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.ed-bg-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .14em;
+  color: var(--muted-2);
+  text-transform: uppercase;
+  width: 40px;
+  flex-shrink: 0;
+}
+.ed-bg-value {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text);
+  min-width: 44px;
+  text-align: right;
+  letter-spacing: .04em;
+}
+.ed-bg-panel-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-soft);
+}
+.ed-bg-hint {
+  font-size: 10px;
+  color: var(--muted-2);
+  font-family: var(--mono);
+  letter-spacing: .08em;
+}
+
+/* Active state for the "배경 조정" toolbar toggle button */
+.btn.ghost.is-on {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(255,107,26,.08);
+}
+
 /* ---------- Width slider in toolbar ---------- */
 .ed-slider {
   flex: 1;
