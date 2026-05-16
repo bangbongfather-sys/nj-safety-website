@@ -29,23 +29,26 @@ type Props = {
   children?: ReactNode;
 };
 
-// Browsers (Chrome / Safari) insert `&nbsp;` for many spaces and a trailing
-// `<br>` to keep the caret at end-of-line. We strip those so saved values
-// are clean text.
+// Input comes from innerText, so HTML entities are already decoded and tags
+// don't appear — we only need to clean a few whitespace gremlins. Critically,
+// we DO NOT collapse runs of spaces and DO NOT trim, so the user can
+// intentionally type things like "A , B" or trailing spaces and see them
+// preserved exactly. Earlier passes that did `\s+ -> ' '` and `.trim()` were
+// silently undoing user edits every time a field blurred.
 function normalise(raw: string, multiline: boolean): string {
   let s = raw;
-  // Decode common entities.
-  s = s.replace(/&nbsp;/gi, ' ').replace(/ /g, ' ');
-  // Drop trailing <br>.
-  s = s.replace(/<br\s*\/?>\s*$/i, '');
+  // Non-breaking space (U+00A0) → regular space (browsers insert it silently
+  // when the user types two consecutive spaces).
+  s = s.replace(/ /g, ' ');
+  // Tab / vertical-tab / form-feed → space (defensive against paste).
+  s = s.replace(/[\t\v\f]/g, ' ');
   if (!multiline) {
-    s = s.replace(/<\/?(div|p)[^>]*>/gi, ' ').replace(/<br\s*\/?>/gi, ' ');
+    // Single-line fields don't take line breaks; any stray newline -> space.
+    s = s.replace(/[\r\n]+/g, ' ');
+  } else {
+    s = s.replace(/\r\n?/g, '\n');
   }
-  // Strip remaining tags (we round-trip via innerText so this is belt-and-braces).
-  s = s.replace(/<[^>]+>/g, '');
-  // Collapse internal whitespace runs to one space.
-  if (!multiline) s = s.replace(/\s+/g, ' ');
-  return s.trim();
+  return s;
 }
 
 export default function EditableText({
