@@ -35,7 +35,8 @@
       "ko": "Aramid Summer Season",
       "weight": "230 g/m²",
       "use": "Hot & humid summer work",
-      "fit": "Ventilated panels / lightweight"
+      "fit": "Ventilated panels / lightweight",
+      "image": ""
     },
     "sf": {
       "en": "Aramid · Spring / Fall",
@@ -43,14 +44,16 @@
       "weight": "280 g/m²",
       "use": "Standard sites / all-season",
       "fit": "Standard cut / multi-pocket",
-      "testTag": "Test Report"
+      "testTag": "Test Report",
+      "image": ""
     },
     "winter": {
       "en": "Aramid · Winter Season",
       "ko": "Aramid Winter Season",
       "weight": "400 g/m²",
       "use": "Cold / outdoor winter work",
-      "fit": "3-layer insulation / hood opt."
+      "fit": "3-layer insulation / hood opt.",
+      "image": ""
     },
     "viewSeries": "View series",
     "lineupLabel": "Aramid Season Lineup · 3 Series",
@@ -65,7 +68,8 @@
     "eyebrow": "— In the field",
     "headlineLine1": "Proven",
     "headlineLine2": "on site.",
-    "sub": "Tested on 500+ active sites — from POSCO blast furnaces to HD Hyundai dry docks."
+    "sub": "Tested on 500+ active sites — from POSCO blast furnaces to HD Hyundai dry docks.",
+    "bgImage": ""
   },
   "manifesto": {
     "eyebrow": "— Manifesto",
@@ -118,6 +122,7 @@
       "CLIENT 11",
       "CLIENT 12"
     ],
+    "logoImages": ["", "", "", "", "", "", "", "", "", "", "", ""],
     "stats": [
       {
         "label": "— Heritage / since 1992",
@@ -149,19 +154,22 @@
         "cat": "Technical · 04 min",
         "date": "04 / 18 / 2026",
         "title": "How arc flash penetrates workwear",
-        "excerpt": "ATPV vs EBT, and a guide to choosing the right rating for your site."
+        "excerpt": "ATPV vs EBT, and a guide to choosing the right rating for your site.",
+        "image": ""
       },
       {
         "cat": "Standards · 06 min",
         "date": "04 / 02 / 2026",
         "title": "What sets NFPA 2112 apart",
-        "excerpt": "The 3-second exposure, 50% body burn benchmark — explained with real test data."
+        "excerpt": "The 3-second exposure, 50% body burn benchmark — explained with real test data.",
+        "image": ""
       },
       {
         "cat": "Materials · 03 min",
         "date": "03 / 21 / 2026",
         "title": "Breathable FR fabric for summer sites",
-        "excerpt": "A 230 gsm lightweight solution built from Lenzing FR® lyocell and aramid blends."
+        "excerpt": "A 230 gsm lightweight solution built from Lenzing FR® lyocell and aramid blends.",
+        "image": ""
       }
     ]
   },

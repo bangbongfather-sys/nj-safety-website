@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { Dictionary, Locale } from '@/lib/i18n';
 import EditableText, { type EditorApi } from '@/components/admin/EditableText';
+import EditableImage from '@/components/admin/EditableImage';
 
 type Props = { locale: Locale; dict: Dictionary; editor?: EditorApi };
 
@@ -70,20 +71,30 @@ export default function Insights({ locale, dict, editor }: Props) {
         </div>
 
         <div className="insights-grid">
-          {ins.items.map((item, i) => (
-            <Link className="article" href={`/${locale}/news`} key={i}>
-              <div className="frame">
-                <EditableText as="span" className="cat" path={`insights.items[${i}].cat`} value={item.cat} editor={editor} />
-                <span className="read">Read →</span>
-                {FRAMES[i] ?? FRAMES[0]}
-              </div>
-              <EditableText as="span" className="date" path={`insights.items[${i}].date`} value={item.date} editor={editor} />
-              <h3>
-                <EditableText path={`insights.items[${i}].title`} value={item.title} editor={editor} multiline />
-              </h3>
-              <EditableText as="p" path={`insights.items[${i}].excerpt`} value={item.excerpt} editor={editor} multiline />
-            </Link>
-          ))}
+          {ins.items.map((item, i) => {
+            const itemImage = (item as { image?: string }).image ?? '';
+            return (
+              <Link className="article" href={`/${locale}/news`} key={i}>
+                <div className="frame">
+                  <EditableText as="span" className="cat" path={`insights.items[${i}].cat`} value={item.cat} editor={editor} />
+                  <span className="read">Read →</span>
+                  <EditableImage
+                    path={`insights.items[${i}].image`}
+                    src={itemImage}
+                    alt={item.title}
+                    className="article-img"
+                    fallback={FRAMES[i] ?? FRAMES[0]}
+                    editor={editor}
+                  />
+                </div>
+                <EditableText as="span" className="date" path={`insights.items[${i}].date`} value={item.date} editor={editor} />
+                <h3>
+                  <EditableText path={`insights.items[${i}].title`} value={item.title} editor={editor} multiline />
+                </h3>
+                <EditableText as="p" path={`insights.items[${i}].excerpt`} value={item.excerpt} editor={editor} multiline />
+              </Link>
+            );
+          })}
         </div>
       </div>
     </section>

@@ -7,6 +7,7 @@ import type { EditorApi } from '@/components/admin/EditableText';
 import FloatingToolbar, { type FocusInfo } from '@/components/admin/FloatingToolbar';
 import ResizeHandle from '@/components/admin/ResizeHandle';
 import HeroBgPanel from '@/components/admin/HeroBgPanel';
+import ImageSlotPanel from '@/components/admin/ImageSlotPanel';
 import type { HeroFilter } from '@/lib/i18n';
 import StyleInjector from '@/components/admin/StyleInjector';
 import { ghGetFile, ghPutFile } from '@/lib/admin/github';
@@ -74,6 +75,7 @@ export default function EditHomePage() {
   const [save, setSave] = useState<Save>({ status: 'idle' });
   const [focused, setFocused] = useState<FocusInfo | null>(null);
   const [heroBgPanelOpen, setHeroBgPanelOpen] = useState(false);
+  const [imageSlot, setImageSlot] = useState<{ path: string } | null>(null);
 
   // ── Track which editable element has focus so the toolbar can target it ──
   useEffect(() => {
@@ -125,6 +127,14 @@ export default function EditHomePage() {
            JSON.stringify(enDraft) !== JSON.stringify(load.en);
   }, [load, koDraft, enDraft]);
 
+  // Image URLs are language-agnostic — patch both ko + en drafts at once.
+  const applyImagePatch = useCallback((pathStr: string, value: string | null) => {
+    const path = parsePath(pathStr);
+    const v = value ?? '';
+    setKoDraft((d) => (d ? (setIn(d, path, v) as Dictionary) : d));
+    setEnDraft((d) => (d ? (setIn(d, path, v) as Dictionary) : d));
+  }, []);
+
   const editor: EditorApi = useMemo(() => ({
     locale: active,
     onPatch: (pathStr, value) => {
@@ -132,7 +142,26 @@ export default function EditHomePage() {
       if (active === 'ko') setKoDraft((d) => (d ? (setIn(d, path, value) as Dictionary) : d));
       else setEnDraft((d) => (d ? (setIn(d, path, value) as Dictionary) : d));
     },
-  }), [active]);
+    onImagePatch: applyImagePatch,
+    onImageClick: (pathStr) => setImageSlot({ path: pathStr }),
+  }), [active, applyImagePatch]);
+
+  // Resolve the current image URL at a path so the ImageSlotPanel can
+  // show "현재" alongside the new preview.
+  const imageSlotCurrentSrc = useMemo(() => {
+    if (!imageSlot || !koDraft) return null;
+    // Walk the dict using the same parsePath logic — simpler to read via
+    // generic getter than to special-case each path.
+    const path = parsePath(imageSlot.path);
+    let cur: unknown = koDraft;
+    for (const key of path) {
+      if (cur == null) return null;
+      if (Array.isArray(cur)) cur = cur[Number(key)];
+      else if (typeof cur === 'object') cur = (cur as Record<string, unknown>)[String(key)];
+      else return null;
+    }
+    return typeof cur === 'string' && cur ? cur : null;
+  }, [imageSlot, koDraft]);
 
   // ── Style patches sync across both locales (visuals are language-agnostic) ──
   const onPatchStyle = useCallback((key: keyof FieldStyle, value: string | null) => {
@@ -362,6 +391,13 @@ export default function EditHomePage() {
         filter={activeDict.siteConfig?.heroFilter ?? {}}
         onPatch={onPatchHero}
         onClose={() => setHeroBgPanelOpen(false)}
+      />
+      <ImageSlotPanel
+        slot={imageSlot}
+        pat={pat}
+        currentSrc={imageSlotCurrentSrc}
+        onPatch={applyImagePatch}
+        onClose={() => setImageSlot(null)}
       />
     </div>
   );

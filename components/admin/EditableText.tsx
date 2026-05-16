@@ -3,8 +3,12 @@
 import type { ElementType, ReactNode } from 'react';
 
 export type EditorApi = {
-  /** Apply a text patch at a dotted locale path. */
+  /** Apply a text patch at a dotted locale path (single-locale). */
   onPatch: (path: string, value: string) => void;
+  /** Apply an image URL patch — synced across both ko + en. */
+  onImagePatch?: (path: string, value: string | null) => void;
+  /** Open the image upload panel for the given slot path. */
+  onImageClick?: (path: string) => void;
   /** Current display locale (for visual hint only — paths are language-agnostic). */
   locale: 'ko' | 'en';
 };

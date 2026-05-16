@@ -35,7 +35,8 @@
       "ko": "아라미드 하계 시즌",
       "weight": "230 g/m²",
       "use": "고온·다습 하계 작업",
-      "fit": "통기성 패널 / 경량"
+      "fit": "통기성 패널 / 경량",
+      "image": ""
     },
     "sf": {
       "en": "Aramid · Spring / Fall",
@@ -43,14 +44,16 @@
       "weight": "280 g/m²",
       "use": "표준 산업 현장 / 사계절",
       "fit": "표준 컷 / 멀티 포켓",
-      "testTag": "시험성적서"
+      "testTag": "시험성적서",
+      "image": ""
     },
     "winter": {
       "en": "Aramid · Winter Season",
       "ko": "아라미드 동계 시즌",
       "weight": "400 g/m²",
       "use": "한랭·옥외 동계 작업",
-      "fit": "3-레이어 보온 / 후드 옵션"
+      "fit": "3-레이어 보온 / 후드 옵션",
+      "image": ""
     },
     "viewSeries": "시리즈 보기",
     "lineupLabel": "아라미드 시즌 라인업 · 3 시리즈",
@@ -65,7 +68,8 @@
     "eyebrow": "— In the field",
     "headlineLine1": "현장에서",
     "headlineLine2": "증명됩니다.",
-    "sub": "500개 이상의 현장에서 검증되었습니다 — POSCO 용광로부터 HD현대 드라이도크까지."
+    "sub": "500개 이상의 현장에서 검증되었습니다 — POSCO 용광로부터 HD현대 드라이도크까지.",
+    "bgImage": ""
   },
   "manifesto": {
     "eyebrow": "— Manifesto",
@@ -118,6 +122,7 @@
       "CLIENT 11",
       "CLIENT 12"
     ],
+    "logoImages": ["", "", "", "", "", "", "", "", "", "", "", ""],
     "stats": [
       {
         "label": "— Heritage / since 1992",
@@ -149,19 +154,22 @@
         "cat": "Technical · 04 min",
         "date": "04 / 18 / 2026",
         "title": "아크 플래시는 어떻게 작업복을 뚫는가",
-        "excerpt": "ATPV 등급과 EBT의 차이, 그리고 현장 환경별 적정 등급 선택 가이드."
+        "excerpt": "ATPV 등급과 EBT의 차이, 그리고 현장 환경별 적정 등급 선택 가이드.",
+        "image": ""
       },
       {
         "cat": "Standards · 06 min",
         "date": "04 / 02 / 2026",
         "title": "NFPA 2112 인증, 무엇이 다른가",
-        "excerpt": "3초 노출 후 50% body burn 기준 — 실제 시험 데이터로 살펴보는 인증의 의미."
+        "excerpt": "3초 노출 후 50% body burn 기준 — 실제 시험 데이터로 살펴보는 인증의 의미.",
+        "image": ""
       },
       {
         "cat": "Materials · 03 min",
         "date": "03 / 21 / 2026",
         "title": "여름 현장을 위한 통기성 FR 원단",
-        "excerpt": "Lenzing FR® 리오셀과 아라미드 혼방으로 만드는 230 gsm 경량 솔루션."
+        "excerpt": "Lenzing FR® 리오셀과 아라미드 혼방으로 만드는 230 gsm 경량 솔루션.",
+        "image": ""
       }
     ]
   },
