@@ -333,7 +333,8 @@
       "size": "1.10em"
     },
     "showcase.sub": {
-      "width": "44.7%"
+      "width": "44.7%",
+      "color": "#6b6b70"
     },
     "showcase.eyebrow": {
       "weight": "900"
