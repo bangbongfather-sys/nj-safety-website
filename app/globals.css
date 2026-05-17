@@ -1639,6 +1639,102 @@ section { position: relative; }
   letter-spacing: .2em;
   color: var(--muted-2);
 }
+/* Side-by-side card image upload slots (메인 / 호버) on the
+ * /admin/products list cards. */
+.admin-card-slots {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border-soft);
+  border-bottom: 1px solid var(--border-soft);
+}
+.admin-card-slot {
+  background: var(--card);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.admin-card-slot-head {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.admin-card-slot-head strong {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .14em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.admin-card-slot-head small {
+  font-size: 10px;
+  color: var(--muted-2);
+}
+.admin-card-slot-zone {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  background: #1a1a1c;
+  border: 1.5px dashed var(--border);
+  border-radius: 2px;
+  padding: 0;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color .15s ease, background .15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.admin-card-slot-zone:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: #1f1f22;
+}
+.admin-card-slot-zone.has-image {
+  border-style: solid;
+  border-color: var(--border-soft);
+}
+.admin-card-slot-zone.is-busy { opacity: .6; cursor: wait; }
+.admin-card-slot-zone img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.admin-card-slot-empty {
+  font-family: var(--mono);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--muted-2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.admin-card-slot-empty small {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .12em;
+}
+.admin-card-slot-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(13, 13, 14, .55);
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity .15s ease;
+}
+.admin-card-slot-zone:hover .admin-card-slot-overlay,
+.admin-card-slot-zone.is-busy .admin-card-slot-overlay {
+  opacity: 1;
+}
+
 .admin-product-body { padding: 16px; display: flex; flex-direction: column; gap: 6px; }
 .admin-product-row { display: flex; justify-content: space-between; align-items: center; }
 .admin-product-slug code { font-family: var(--mono); font-size: 11px; color: var(--muted-2); letter-spacing: .1em; }
