@@ -95,18 +95,22 @@ p { line-height: 1.65; }
   max-width: 1600px; margin: 0 auto;
 }
 .logo {
-  font-family: var(--display); font-weight: 900;
-  letter-spacing: -0.02em; font-size: 18px;
-  display: flex; gap: 6px; align-items: center;
+  display: inline-flex; align-items: center;
+  text-decoration: none;
 }
-.logo .nj { color: var(--text); }
-.logo .sf { color: var(--accent); }
-.logo .mark {
-  width: 14px; height: 14px;
-  border: 1.5px solid var(--accent);
-  transform: rotate(45deg);
-  margin-right: 10px;
+/* The JPG logo has a white background. On the dark nav we render it on a
+ * subtle white pill so it reads as an intentional badge instead of a stray
+ * white rectangle. Swap to a transparent PNG later to drop the pill. */
+.logo-img {
+  height: 36px;
+  width: auto;
+  display: block;
+  background: #ffffff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: transform .2s ease;
 }
+.logo:hover .logo-img { transform: translateY(-1px); }
 .menu { display: flex; gap: 38px; }
 .menu a {
   font-size: 13px; font-weight: 500;
@@ -728,7 +732,8 @@ section { position: relative; }
   font-weight: 500;
   margin-bottom: 24px;
 }
-.footer .brand-foot .logo { font-size: 22px; margin-bottom: 24px; }
+.footer .brand-foot .logo { margin-bottom: 24px; }
+.footer .brand-foot .logo-img { height: 44px; }
 .footer .brand-foot p {
   font-size: 13px;
   line-height: 1.7;

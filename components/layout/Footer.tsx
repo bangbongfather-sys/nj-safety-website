@@ -18,10 +18,8 @@ export default function Footer({ locale, dict, editor }: Props) {
       <div className="wrap">
         <div className="footer-grid">
           <div className="brand-foot">
-            <Link href={`/${locale}`} className="logo">
-              <span className="mark" />
-              <span className="nj">NJ</span>
-              <span className="sf">SAFETY</span>
+            <Link href={`/${locale}`} className="logo" aria-label="NJ SAFETY 홈으로">
+              <img src="/nj-logo.jpg" alt="NJ SAFETY" className="logo-img" />
             </Link>
             <EditableText as="p" path="footer.brandDesc" value={dict.footer.brandDesc} editor={editor} multiline />
           </div>
