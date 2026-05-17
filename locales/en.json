@@ -58,7 +58,8 @@
         "tagline": "COMING SOON.",
         "sub": "여기에 새 슬라이드 본문을 입력하세요.",
         "ctaPrimary": "자세히 보기",
-        "ctaSecondary": "문의"
+        "ctaSecondary": "문의",
+        "linkHref": ""
       }
     ]
   },
