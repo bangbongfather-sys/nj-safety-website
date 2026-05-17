@@ -2422,14 +2422,41 @@ section { position: relative; }
   padding: 4px 8px;
   border-radius: 2px;
   cursor: pointer;
-  opacity: 0;
-  transition: opacity .15s, background .15s;
+  /* Always semi-visible so users discover the affordance; full opacity on hover. */
+  opacity: .7;
+  transition: opacity .15s, background .15s, transform .15s;
   white-space: nowrap;
 }
 .ed-img-wrap:hover .ed-img-btn { opacity: 1; }
-.ed-img-btn:hover { background: var(--accent); color: #0d0d0e; }
+.ed-img-btn:hover { background: var(--accent); color: #0d0d0e; transform: scale(1.04); }
 .ed-img-btn-add {
   background: rgba(255, 107, 26, .12);
+}
+
+/* Hero-scoped override: the brand nav (z-index 100) covers the top of the
+ * hero, so the default top:8px position hides the button. Pin it below the
+ * 72 px nav, make it bigger / solid orange, and pin it permanently visible
+ * so it's findable on the busiest section of the page. */
+.hero .ed-img-btn {
+  opacity: 1;
+  top: 92px;
+  right: 24px;
+  z-index: 50;
+  padding: 10px 16px;
+  font-size: 12px;
+  letter-spacing: .14em;
+  font-weight: 700;
+  background: var(--accent);
+  color: #0d0d0e;
+  border-color: var(--accent);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .45);
+  border-radius: 4px;
+}
+.hero .ed-img-btn:hover {
+  background: #ff8a3a;
+  border-color: #ff8a3a;
+  color: #0d0d0e;
+  transform: scale(1.05);
 }
 
 /* ---------- ImageSlotPanel ---------- */

@@ -54,7 +54,7 @@ export default function EditableImage({
           }}
           title={hasImage ? '이미지 교체' : '이미지 추가'}
         >
-          {hasImage ? '📷 교체' : '+ 이미지'}
+          {hasImage ? '🖼️ 사진 교체' : '+ 사진 추가'}
         </button>
       ) : null}
     </div>
