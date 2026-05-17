@@ -81,6 +81,15 @@ function uploadTargetFor(slot: string): { repoPath: string; publicUrl: string; m
     };
   }
 
+  // about.ceo.portraitImage → JPG (4:5 portrait, ~1200px)
+  if (slot === 'about.ceo.portraitImage') {
+    return {
+      repoPath: 'public/about/ceo-portrait.jpg',
+      publicUrl: '/about/ceo-portrait.jpg',
+      mime: 'image/jpeg',
+    };
+  }
+
   // Fallback: slugified upload bucket
   const safe = slot.replace(/[^a-z0-9]/gi, '-').toLowerCase();
   return { repoPath: `public/uploads/${safe}.jpg`, publicUrl: `/uploads/${safe}.jpg`, mime: 'image/jpeg' };

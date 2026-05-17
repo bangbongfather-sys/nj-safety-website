@@ -14,6 +14,7 @@ function Gate({ children }: { children: ReactNode }) {
   // the side panel.
   const isFullBleed =
     pathname.startsWith('/admin/edit') ||
+    pathname.startsWith('/admin/about/edit') ||
     /^\/admin\/products\/[^/]+\/edit\/?$/.test(pathname);
 
   if (state.status === 'unknown' || state.status === 'verifying') {
