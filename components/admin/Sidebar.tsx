@@ -27,13 +27,9 @@ export default function Sidebar() {
   return (
     <aside className="admin-sidebar">
       <div className="admin-brand">
-        <Link href="/admin" className="admin-brand-logo">
-          <span className="mark" />
-          <span>
-            <span className="nj">NJ</span>
-            <span className="sf">SAFETY</span>
-            <span className="admin-tag">ADMIN</span>
-          </span>
+        <Link href="/admin" className="admin-brand-logo" aria-label="NJ SAFETY 어드민 홈">
+          <img src="/nj-logo.png" alt="NJ SAFETY" className="admin-brand-img" />
+          <span className="admin-tag">ADMIN</span>
         </Link>
       </div>
 

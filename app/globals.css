@@ -1267,31 +1267,35 @@ section { position: relative; }
   position: sticky; top: 0;
   height: 100vh;
 }
-.admin-brand { padding: 0 24px 28px; border-bottom: 1px solid var(--border-soft); }
+.admin-brand { padding: 0 24px 24px; border-bottom: 1px solid var(--border-soft); }
 .admin-brand-logo {
-  display: flex; align-items: center; gap: 4px;
+  display: flex; align-items: center; gap: 10px;
   font-family: var(--display);
   font-weight: 900;
   font-size: 16px;
   letter-spacing: -0.02em;
+  text-decoration: none;
   color: var(--text);
 }
-.admin-brand-logo .mark {
-  width: 12px; height: 12px;
-  border: 1.5px solid var(--accent);
-  transform: rotate(45deg);
-  margin-right: 10px;
+/* Image logo (same processed PNG as the public site). Slightly smaller
+ * than the public nav since the sidebar is only ~240px wide. */
+.admin-brand-logo .admin-brand-img {
+  height: 56px;
+  width: auto;
+  display: block;
+  transition: transform .2s ease;
 }
-.admin-brand-logo .nj { color: var(--text); }
-.admin-brand-logo .sf { color: var(--accent); margin-right: 8px; }
+.admin-brand-logo:hover .admin-brand-img { transform: translateY(-1px); }
 .admin-brand-logo .admin-tag {
   font-family: var(--mono);
   font-size: 9px;
   letter-spacing: .18em;
-  color: var(--muted-2);
-  padding-left: 8px;
-  border-left: 1px solid var(--border);
+  color: var(--accent);
+  padding: 3px 6px;
+  border: 1px solid var(--accent);
+  border-radius: 2px;
   font-weight: 500;
+  align-self: center;
 }
 
 .admin-nav {
