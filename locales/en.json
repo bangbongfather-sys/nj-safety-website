@@ -308,6 +308,12 @@
     },
     "manifesto.quoteEm": {
       "color": "#ff6b1a"
+    },
+    "hero.slides[0].headlineLine1": {
+      "size": "0.90em"
+    },
+    "hero.slides[0].headlineLine2Em": {
+      "size": "0.90em"
     }
   },
   "siteConfig": {
