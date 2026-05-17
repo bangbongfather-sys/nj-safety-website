@@ -1,7 +1,36 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ghGetFileSha, ghPutBlob } from '@/lib/admin/github';
+
+// Worker endpoint that auths the upload (against the admin's GitHub PAT) and
+// writes the binary to R2. Same origin as the admin page so no CORS, but
+// the absolute URL also works from anywhere.
+const UPLOAD_ENDPOINT = '/api/admin/upload-image';
+
+async function uploadToR2(
+  pat: string,
+  key: string,
+  blob: Blob,
+  contentType: string,
+): Promise<{ publicUrl: string; key: string; size: number }> {
+  const r = await fetch(`${UPLOAD_ENDPOINT}?key=${encodeURIComponent(key)}`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `token ${pat}`,
+      'Content-Type': contentType,
+    },
+    body: blob,
+  });
+  if (!r.ok) {
+    const err = await r.text().catch(() => `${r.status}`);
+    throw new Error(`R2 upload failed: ${r.status} — ${err.slice(0, 300)}`);
+  }
+  const data = (await r.json()) as { ok: boolean; publicUrl: string; key: string; size: number };
+  if (!data.ok || !data.publicUrl) {
+    throw new Error('R2 upload returned malformed response');
+  }
+  return { publicUrl: data.publicUrl, key: data.key, size: data.size };
+}
 
 /**
  * Map a dict path → (a) the path we PUT to in the repo, (b) the public URL
@@ -216,20 +245,15 @@ export default function ImageSlotPanel({ slot, pat, currentSrc, onPatch, onClose
     setUpload({ status: 'uploading' });
     try {
       const target = uploadTargetFor(slot.path);
-      const sha = await ghGetFileSha(pat, target.repoPath);
-      const { commitSha } = await ghPutBlob(
-        pat,
-        target.repoPath,
-        upload.blob,
-        `chore(image): ${slot.path} via admin`,
-        sha,
-      );
+      // R2 key = repoPath minus the leading "public/" (R2 doesn't need it).
+      const key = target.repoPath.replace(/^public\//, '');
+      const { publicUrl } = await uploadToR2(pat, key, upload.blob, target.mime);
       // Cache-bust the URL so the browser + Cloudflare CDN refetch the
-      // fresh bytes the moment the build deploys. Without this, the same
-      // path = same cache key, and visitors see the OLD photo for hours
-      // (Cloudflare static asset cache is aggressive for images).
-      const urlWithBust = `${target.publicUrl}?v=${Date.now()}`;
-      setUpload({ status: 'done', previewUrl: upload.previewUrl, commitSha, publicUrl: urlWithBust });
+      // fresh bytes the moment R2 acknowledges. R2 is content-addressable
+      // but visitors' browsers and the CDN still cache by URL — the ?v=
+      // forces them to fetch the new asset immediately.
+      const urlWithBust = `${publicUrl}?v=${Date.now()}`;
+      setUpload({ status: 'done', previewUrl: upload.previewUrl, commitSha: 'R2', publicUrl: urlWithBust });
       onPatch(slot.path, urlWithBust);
     } catch (e: unknown) {
       setUpload({ status: 'error', message: e instanceof Error ? e.message : String(e) });
@@ -288,17 +312,17 @@ export default function ImageSlotPanel({ slot, pat, currentSrc, onPatch, onClose
       ) : upload.status === 'done' ? (
         <>
           <div className="ed-bg-status ed-bg-ok">
-            ✓ GitHub 커밋 완료 — <code>{upload.commitSha.slice(0, 7)}</code>
+            ✓ R2 업로드 완료 — <strong>즉시 반영</strong>
           </div>
           <div className="ed-bg-preview">
             <img src={upload.previewUrl} alt="just uploaded" />
           </div>
           <div className="ed-bg-hint">
-            <strong>방금 올린 사진은 위 미리보기로 확인하실 수 있어요.</strong>
+            R2 직접 업로드 방식이라 <strong>빌드 대기 없이 바로 라이브</strong>됩니다.
             <br />
-            실제 사이트(<code>/ko/</code>)에 반영되려면 <strong>Cloudflare 재배포 1~2분</strong> 필요합니다.
+            ↗ <a href={upload.publicUrl} target="_blank" rel="noreferrer" style={{ color: 'var(--accent)' }}>업로드된 이미지 직접 보기</a>
             <br />
-            이번 URL은 <code>?v=…</code> 캐시버스터가 붙어서 빌드 끝나면 즉시 새 사진을 가져옵니다.
+            이 dict 변경은 평소대로 15초 후 자동 게시됩니다 (텍스트 commit과 동일).
           </div>
           <button type="button" className="btn ghost small" onClick={onClose} style={{ marginTop: 8 }}>
             닫기

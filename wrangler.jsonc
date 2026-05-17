@@ -3,14 +3,40 @@
   "name": "nj-safety-website",
   "compatibility_date": "2025-04-01",
 
-  // Pure-static deployment: serve `out/` produced by `next build` (output: 'export').
-  // No Worker script — Cloudflare's Static Assets feature handles routing.
+  // Worker entry — handles /api/admin/upload-image, falls back to static
+  // assets for everything else. Until we ship the upload feature this
+  // Worker is essentially a passthrough.
+  "main": "worker/index.ts",
+
+  // Static export (`out/`) served via the ASSETS binding. The Worker
+  // delegates to env.ASSETS.fetch(req) for any path it doesn't handle.
   "assets": {
     "directory": "./out",
+    "binding": "ASSETS",
     "not_found_handling": "404-page"
   },
 
-  // Build runs in Cloudflare's CI before deploy.
+  // R2 bucket for admin-uploaded images. Bucket MUST be created in the
+  // Cloudflare dashboard first (Workers & Pages → R2 → Create bucket
+  // → name: `nj-images`) and have Public Access enabled. Until then
+  // upload requests will fail at runtime but the rest of the site
+  // (static pages, text edits) keeps working.
+  "r2_buckets": [
+    {
+      "binding": "IMAGES_R2",
+      "bucket_name": "nj-images"
+    }
+  ],
+
+  // Public-facing R2 URL. After the bucket's Public Access is enabled,
+  // copy the `https://pub-<hash>.r2.dev` URL from the bucket Settings
+  // and replace the placeholder below (or set it via dashboard
+  // Environment Variables instead — dashboard wins over wrangler.jsonc).
+  "vars": {
+    "R2_PUBLIC_BASE": "https://pub-PLACEHOLDER.r2.dev",
+    "ADMIN_GH_LOGIN": "bangbongfather-sys"
+  },
+
   "observability": {
     "enabled": true
   }
