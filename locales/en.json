@@ -23,7 +23,31 @@
     "ctaSecondary": "Request quote",
     "scroll": "Scroll to explore",
     "locatorName": "Najung Enterprise",
-    "locatorSub": "Industrial safety wear · est. 1992"
+    "locatorSub": "Industrial safety wear · est. 1992",
+    "slides": [
+      {
+        "image": "",
+        "eyebrow": "Industrial Safety Wear · Since 1992",
+        "headlineLine1": "Built",
+        "headlineLine2Pre": "to ",
+        "headlineLine2Em": "outlast.",
+        "tagline": "극한의 현장, 검증된 보호.",
+        "sub": "Aramid-engineered flame-resistant workwear for extreme industrial environments. NFPA 2112 · HRC2 · EN ISO 11612 certified.",
+        "ctaPrimary": "View products",
+        "ctaSecondary": "Request quote"
+      },
+      {
+        "image": "",
+        "eyebrow": "— NEW · 2026",
+        "headlineLine1": "신제품",
+        "headlineLine2Pre": "",
+        "headlineLine2Em": "출시.",
+        "tagline": "COMING SOON.",
+        "sub": "여기에 새 슬라이드 본문을 입력하세요.",
+        "ctaPrimary": "자세히 보기",
+        "ctaSecondary": "문의"
+      }
+    ]
   },
   "products": {
     "eyebrow": "— Products",
