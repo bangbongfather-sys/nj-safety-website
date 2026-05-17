@@ -396,7 +396,7 @@
   },
   "shopHeader": {
     "images": [
-      "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njs-av100/hero-image.jpg?v=1779013219466",
+      "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njs-av100/shopheader-images-0.jpg?v=1779013941120",
       "/api/images/njs-av100-gallery-items-0-image-1778511680395-1ba7718558cd.jpg",
       "/products/njs-av100/back.jpg",
       "/products/njs-av100/upper.jpg",
@@ -410,7 +410,7 @@
     "category": "ARAMID FR SERIES · SUMMER MESH UTILITY VEST",
     "name": "아라미드 메쉬 유틸리티 조끼",
     "subtitle": "여름 현장의 가벼움과 기능성, 그 사이의 균형",
-    "tagline": "전·후면 메쉬 통기 구조 + 4구 플랩 포켓 + 리플렉티브. 한여름 외근에도 단정한 실루엣을 유지하는 NJ Safety의 ARAMID 방염 조끼.",
+    "tagline": "\n",
     "summarySpecs": [
       {
         "label": "원단 구성",
@@ -447,7 +447,7 @@
         "value": "njsafety91@naver.com"
       },
       {
-        "label": "made in",
+        "label": "MADE IN",
         "value": "Korea"
       }
     ]
