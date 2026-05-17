@@ -9,6 +9,11 @@
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
 
 .nj-page {
+  /* Push the entire page below the fixed site nav (112px tall) so the
+   * shop header photo isn't sliced by the bar. Without this, .psh
+   * starts at y=0 and the top of the model's face slides under nav. */
+  padding-top: 112px;
+
   /* Brand */
   --orange: #e85d2e;          /* signature accent — used sparingly */
   --orange-deep: #c44a1f;
@@ -2680,7 +2685,10 @@
 }
 .nj-page .pdt-bar {
   position: sticky;
-  top: 0;
+  /* Stick BELOW the fixed site nav (112px tall) so the tab buttons
+   * aren't hidden behind it once the user scrolls past the shop
+   * header. Drop the offset to 0 if the site nav ever goes static. */
+  top: 112px;
   z-index: 20;
   background: var(--paper);
   border-top: 1px solid var(--rule);
