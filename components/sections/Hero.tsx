@@ -94,7 +94,7 @@ export default function Hero({ locale, dict, editor }: Props) {
 
   return (
     <section
-      className="hero"
+      className={`hero${!editor && resolvedLink ? ' hero--linked' : ''}`}
       data-screen-label="01 Hero"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}

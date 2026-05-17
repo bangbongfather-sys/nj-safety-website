@@ -163,6 +163,10 @@ p { line-height: 1.65; }
 }
 .hero-overlay {
   position: absolute; inset: 0;
+  /* Purely decorative — let clicks pass through to .hero-bg / .hero-bg-link
+   * underneath. Without this the dark gradient swallowed every click on
+   * the image area and the per-slide link never fired. */
+  pointer-events: none;
   background:
     /* left → right: heavy dark on text side, still keeps moody darkness on the right */
     linear-gradient(90deg, rgba(13,13,14,.96) 0%, rgba(13,13,14,.85) 25%, rgba(13,13,14,.62) 50%, rgba(13,13,14,.45) 75%, rgba(13,13,14,.55) 100%),
@@ -2159,11 +2163,26 @@ section { position: relative; }
   position: absolute;
   inset: 0;
   cursor: pointer;
+  /* Sits on top of the static <img> inside so the anchor itself receives
+   * the click; the image is purely visual. */
+  z-index: 1;
 }
 .hero-bg-link:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: -4px;
 }
+
+/* When the active slide has a click-through link AND we're in public mode,
+ * the foreground text container would block clicks on its (mostly empty)
+ * area because it's an `inset: 0` flex box. Disable pointer events on
+ * the container so clicks pass through to .hero-bg-link, but re-enable
+ * them on the actual interactive elements (CTA buttons) so those still
+ * receive their own click handlers. Edit mode never gets `.hero--linked`,
+ * so all the contentEditable text stays clickable for the admin. */
+.hero.hero--linked .hero-content { pointer-events: none; }
+.hero.hero--linked .hero-cta,
+.hero.hero--linked .hero-cta a,
+.hero.hero--linked .hero-cta button { pointer-events: auto; }
 
 /* ---------- Floating format toolbar ---------- */
 .ed-toolbar {
