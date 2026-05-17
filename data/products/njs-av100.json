@@ -2,7 +2,7 @@
   "slug": "njs-av100",
   "model": "NJSSV#YY",
   "category": "ARAMID FR SERIES · SUMMER mesh utility VEST",
-  "name": "아라미드 <span style=\"color: rgb(198, 90, 30);\">메</span><span style=\"color: rgb(198, 90, 30);\">쉬</span><br><span style=\"color: rgb(198, 90, 30);\">유틸리티</span> 조끼",
+  "name": "아라미드 메쉬 유틸리티 조끼",
   "subtitle": "여름 현장의 가벼움과 기능성, 그 사이의 균형",
   "tagline": "전·후면 메쉬 통기 구조 + 4구 플랩 포켓 + 리플렉티브. 한여름 외근에도 단정한 실루엣을 유지하는 NJ Safety의 ARAMID 방염 조끼.",
   "flavor": "tactical",
@@ -375,7 +375,8 @@
       "width": "121%"
     },
     "name": {
-      "size": "0.90em"
+      "size": "0.90em",
+      "color": "#ffffff"
     },
     "gallery.note": {
       "width": "82%",
