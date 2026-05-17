@@ -44,7 +44,7 @@ export default function Navigation({ locale, dict, editor }: Props) {
     <nav className={`nav${scrolled ? ' scrolled' : ''}`} id="nav">
       <div className="nav-inner">
         <Link href={`/${locale}`} className="logo" aria-label="NJ SAFETY 홈으로">
-          <img src="/nj-logo.jpg" alt="NJ SAFETY" className="logo-img" />
+          <img src="/nj-logo.png" alt="NJ SAFETY" className="logo-img" />
         </Link>
 
         <div className="menu">

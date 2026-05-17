@@ -98,16 +98,14 @@ p { line-height: 1.65; }
   display: inline-flex; align-items: center;
   text-decoration: none;
 }
-/* The JPG logo has a white background. On the dark nav we render it on a
- * subtle white pill so it reads as an intentional badge instead of a stray
- * white rectangle. Swap to a transparent PNG later to drop the pill. */
+/* Transparent PNG sourced from the original brand JPG (see
+ * scripts/process-logo.mjs). White background dropped, dark text repainted
+ * off-white so it reads cleanly against the dark nav; brand orange
+ * preserved. No background pill needed. */
 .logo-img {
   height: 36px;
   width: auto;
   display: block;
-  background: #ffffff;
-  padding: 4px 8px;
-  border-radius: 4px;
   transition: transform .2s ease;
 }
 .logo:hover .logo-img { transform: translateY(-1px); }
