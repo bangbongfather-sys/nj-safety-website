@@ -52,7 +52,7 @@
         "eyebrow": "— NEW · 2026",
         "headlineLine1": "2026년형",
         "headlineLine2Pre": "",
-        "headlineLine2Em": "출시.",
+        "headlineLine2Em": "아라미드 PK티셔츠.",
         "tagline": "COMING SOON.",
         "sub": "여기에 새 슬라이드 본문을 입력하세요.",
         "ctaPrimary": "자세히 보기",
@@ -324,6 +324,9 @@
       "size": "0.90em"
     },
     "hero.slides[0].headlineLine2Em": {
+      "size": "0.90em"
+    },
+    "hero.slides[2].headlineLine2Em": {
       "size": "0.90em"
     }
   },
