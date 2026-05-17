@@ -80,11 +80,18 @@ p { line-height: 1.65; }
 .nav {
   position: fixed; top: 0; left: 0; right: 0;
   z-index: 100;
+  /* Solid-ish dark backdrop from the start so the white logo + menu
+   * stay legible whatever hero photo sits behind. We still bump
+   * opacity + add a border once scrolled, but the resting state is
+   * no longer fully transparent. */
+  background: rgba(13, 13, 14, .72);
+  backdrop-filter: saturate(120%) blur(10px);
+  -webkit-backdrop-filter: saturate(120%) blur(10px);
   transition: background .3s ease, border-color .3s ease;
   border-bottom: 1px solid transparent;
 }
 .nav.scrolled {
-  background: rgba(28, 28, 30, .88);
+  background: rgba(13, 13, 14, .92);
   backdrop-filter: saturate(140%) blur(14px);
   -webkit-backdrop-filter: saturate(140%) blur(14px);
   border-bottom-color: var(--border-soft);
@@ -112,14 +119,14 @@ p { line-height: 1.65; }
 /* Nav shrinks on scroll — pull the logo down proportionally so it still
  * sits clear of the top/bottom edges instead of dominating the bar. */
 .nav.scrolled .logo-img { height: 60px; }
-.menu { display: flex; gap: 38px; }
+.menu { display: flex; gap: 44px; }
 .menu a {
-  font-size: 13px; font-weight: 500;
+  font-size: 16px; font-weight: 600;
   letter-spacing: -0.005em; color: var(--text);
-  opacity: .85; position: relative;
-  transition: opacity .2s;
+  opacity: .88; position: relative;
+  transition: opacity .2s, color .2s;
 }
-.menu a:hover { opacity: 1; }
+.menu a:hover { opacity: 1; color: var(--accent); }
 .menu a:hover::after {
   content: ""; position: absolute;
   left: 0; right: 0; bottom: -22px;
@@ -129,7 +136,7 @@ p { line-height: 1.65; }
 .nav-right { display: flex; align-items: center; gap: 22px; }
 .lang {
   display: flex; gap: 8px; align-items: center;
-  font-family: var(--mono); font-size: 11px;
+  font-family: var(--mono); font-size: 13px;
   letter-spacing: .1em; color: var(--muted);
   cursor: pointer; user-select: none;
 }
@@ -139,9 +146,9 @@ p { line-height: 1.65; }
   background: var(--accent);
   color: #0d0d0e;
   font-weight: 700;
-  font-size: 12px;
+  font-size: 14px;
   letter-spacing: .04em;
-  padding: 11px 18px;
+  padding: 13px 22px;
   border-radius: 2px;
   display: inline-flex;
   align-items: center;
