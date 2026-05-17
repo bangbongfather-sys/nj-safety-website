@@ -21,7 +21,9 @@ import type { HTMLAttributes } from 'react';
 import { sanitizeHtml } from '@/lib/sanitize';
 import type {
   FieldStyle,
+  HeroBadge,
   ProductPageData,
+  ProductHero,
   ProductGallery,
   ProductStatement,
   ProductMaterial,
@@ -85,6 +87,86 @@ function StyleInjector({ styles }: { styles?: Record<string, FieldStyle> }) {
   }
   if (!rules.length) return null;
   return <style dangerouslySetInnerHTML={{ __html: rules.join('\n') }} />;
+}
+
+// ─── Hero (catalog-app original) ────────────────────────────────────
+// Restored inside the 상품상세정보 tab so the catalog-app render still
+// arrives "as a whole" — the new shop header at the very top is a
+// separate B2B-style summary; the original cinematic hero with the
+// big two-line title + counters + badged image still lives in here.
+function resolveBadges(hero: ProductHero): HeroBadge[] {
+  if (hero.badges && hero.badges.length) return hero.badges;
+  const synth: HeroBadge[] = [];
+  if (hero.tag) synth.push({ text: hero.tag, position: 'bottom-left', style: 'tag' });
+  if (hero.corner) synth.push({ text: hero.corner, position: 'top-right', style: 'corner' });
+  if (hero.badge) synth.push({ text: hero.badge, position: 'top-right', style: 'stamp' });
+  return synth;
+}
+
+function Hero({ data }: { data: ProductPageData }) {
+  const hero: ProductHero = data.hero ?? {};
+  const counters = hero.counters ?? [];
+  const rawName = data.name ?? '';
+  const nameHasHtml = /[<&]/.test(rawName);
+  const titleWords = nameHasHtml ? [] : rawName.split(/\s+/).filter(Boolean);
+
+  return (
+    <section className="hero">
+      <div className="hero-left">
+        <div className="eyebrow">
+          <span className="bar" />
+          <span {...richProps('category', data.category ?? '')} />
+        </div>
+        {nameHasHtml ? (
+          <h1 className="hero-title">
+            <span className="line" {...richProps('name', rawName)} />
+          </h1>
+        ) : (
+          <h1 className="hero-title">
+            {titleWords.map((w, i) => (
+              <span key={i} className={'line' + (i === 1 ? ' line-orange' : '')}>
+                {w}
+              </span>
+            ))}
+          </h1>
+        )}
+        <p
+          className="hero-lead"
+          {...richProps('tagline', data.tagline ?? data.subtitle ?? '')}
+        />
+        {counters.length > 0 ? (
+          <div className="hero-counters">
+            {counters.map((c, i) => (
+              <div key={i}>
+                <span className="c-num">
+                  <span {...richProps(`hero.counters[${i}].value`, c.value)} />
+                  {c.unit ? <small {...richProps(`hero.counters[${i}].unit`, c.unit)} /> : null}
+                </span>
+                <span className="c-lbl" {...richProps(`hero.counters[${i}].label`, c.label)} />
+              </div>
+            ))}
+          </div>
+        ) : null}
+      </div>
+      <div className="hero-image">
+        <ImageOrPlaceholder
+          src={hero.image}
+          alt={hero.imageAlt ?? data.name ?? ''}
+        />
+        {resolveBadges(hero).map((b, i) => {
+          const style = b.style ?? 'stamp';
+          const position = b.position ?? 'top-right';
+          return (
+            <div
+              key={i}
+              className={`hero-badge hero-badge-${position} hero-badge-style-${style}`}
+              {...richProps(`hero.badges[${i}].text`, b.text ?? '')}
+            />
+          );
+        })}
+      </div>
+    </section>
+  );
 }
 
 // ─── Gallery ────────────────────────────────────────────────────────
@@ -471,6 +553,7 @@ export default function ProductPage({
   //   3. 시험성적서   — list of PDF reports uploaded to R2
   const detailContent = (
     <>
+      <Hero data={data} />
       <Gallery gallery={data.gallery} />
       <Statement statement={data.statement} />
       <Material material={data.material} />

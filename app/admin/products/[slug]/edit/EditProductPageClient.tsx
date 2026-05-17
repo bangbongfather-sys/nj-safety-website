@@ -24,8 +24,11 @@ import { useParams } from 'next/navigation';
 import { useAdmin } from '@/components/admin/AdminContext';
 import type { EditorApi } from '@/components/admin/EditableText';
 import ImageSlotPanel from '@/components/admin/ImageSlotPanel';
+import FloatingToolbar, { type FocusInfo } from '@/components/admin/FloatingToolbar';
+import ResizeHandle from '@/components/admin/ResizeHandle';
+import type { FieldStyle as HomepageFieldStyle } from '@/lib/i18n';
 import { ghGetFile, ghPutFile } from '@/lib/admin/github';
-import type { ProductPageData } from '@/lib/product-page-types';
+import type { ProductPageData, FieldStyle } from '@/lib/product-page-types';
 import ProductPage from '@/components/product/ProductPage';
 
 // Identical implementation to the homepage editor — kept inline because
@@ -88,6 +91,32 @@ export default function EditProductPage() {
   const [draft, setDraft] = useState<ProductPageData | null>(null);
   const [save, setSave] = useState<Save>({ status: 'idle' });
   const [imageSlot, setImageSlot] = useState<{ path: string } | null>(null);
+  const [focused, setFocused] = useState<FocusInfo | null>(null);
+
+  // ── Track which editable element has focus so the toolbar can target it ──
+  // Same pattern as /admin/edit: every EditableText renders
+  // data-edit-path on its host element; we pick that off focusin and
+  // hand it to FloatingToolbar so font/color/size/width sliders know
+  // which field they're modifying.
+  useEffect(() => {
+    const onFocusIn = (e: FocusEvent) => {
+      const el = e.target as HTMLElement | null;
+      const path = el?.dataset?.editPath;
+      if (path) setFocused({ path });
+    };
+    const onFocusOut = (e: FocusEvent) => {
+      const next = (e as FocusEvent & { relatedTarget?: EventTarget | null }).relatedTarget as HTMLElement | null;
+      if (next && next.closest('.ed-toolbar')) return;
+      if (next && (next as HTMLElement).dataset?.editPath) return;
+      setTimeout(() => setFocused(null), 150);
+    };
+    document.addEventListener('focusin', onFocusIn);
+    document.addEventListener('focusout', onFocusOut);
+    return () => {
+      document.removeEventListener('focusin', onFocusIn);
+      document.removeEventListener('focusout', onFocusOut);
+    };
+  }, []);
 
   // ── Load JSON on mount ────────────────────────────────────────────
   useEffect(() => {
@@ -133,6 +162,29 @@ export default function EditProductPage() {
     const cur = getIn(draft, parsePath(imageSlot.path));
     return typeof cur === 'string' && cur ? cur : null;
   }, [imageSlot, draft]);
+
+  // ── Style overrides (font / color / size / align / width / bg) ────
+  // Mirrors /admin/edit's onPatchStyle but writes into draft.styles
+  // (top-level on ProductPageData) instead of dict.styles. The renderer
+  // (StyleInjector inside ProductPage) reads from the same place.
+  const currentStyle: FieldStyle = focused ? (draft?.styles?.[focused.path] ?? {}) : {};
+  const onPatchStyle = useCallback((key: keyof FieldStyle, value: string | null) => {
+    if (!focused) return;
+    const fp = focused.path;
+    setDraft((d) => {
+      if (!d) return d;
+      const all = { ...(d.styles ?? {}) } as Record<string, FieldStyle>;
+      const cur: FieldStyle = { ...(all[fp] ?? {}) };
+      if (value == null || value === '') delete cur[key];
+      else (cur as Record<string, string>)[key] = value;
+      if (Object.keys(cur).length === 0) delete all[fp];
+      else all[fp] = cur;
+      const next: ProductPageData = { ...d };
+      if (Object.keys(all).length === 0) delete next.styles;
+      else next.styles = all;
+      return next;
+    });
+  }, [focused]);
 
   // ── Save ──────────────────────────────────────────────────────────
   const handleSave = useCallback(async () => {
@@ -292,6 +344,20 @@ export default function EditProductPage() {
         }}
         keyPrefix={`products/${slug}`}
         onClose={() => setImageSlot(null)}
+      />
+
+      <FloatingToolbar
+        focused={focused}
+        // Product FieldStyle is a superset of the homepage one (adds `font`
+        // + `background` keys). FloatingToolbar only touches the overlapping
+        // size/color/weight/width/align — safe to widen the assertion.
+        currentStyle={currentStyle as unknown as HomepageFieldStyle}
+        onPatchStyle={(k, v) => onPatchStyle(k as keyof FieldStyle, v)}
+        onClose={() => setFocused(null)}
+      />
+      <ResizeHandle
+        focused={focused}
+        onPatchStyle={(_k, v) => onPatchStyle('width', v)}
       />
     </div>
   );
