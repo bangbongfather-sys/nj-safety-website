@@ -146,6 +146,12 @@ export default function ProductsListPage() {
                 {row.category ? <p className="admin-product-cat">{row.category}</p> : null}
 
                 <div className="admin-product-actions">
+                  <Link
+                    href={`/admin/products/${row.slug}/edit`}
+                    className="btn primary small"
+                  >
+                    ✎ 편집
+                  </Link>
                   <a
                     href={`${SITE_PREVIEW_BASE}/ko/products/${row.slug}/`}
                     target="_blank"

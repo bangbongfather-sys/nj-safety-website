@@ -9,9 +9,12 @@ import Sidebar from './Sidebar';
 function Gate({ children }: { children: ReactNode }) {
   const { state } = useAdmin();
   const pathname = usePathname() ?? '';
-  // The WYSIWYG editor takes the whole viewport — hide the admin chrome
-  // so the live page render isn't squeezed into the side panel.
-  const isFullBleed = pathname.startsWith('/admin/edit');
+  // The WYSIWYG editors (homepage + per-product) take the whole viewport
+  // — hide the admin chrome so the live page render isn't squeezed into
+  // the side panel.
+  const isFullBleed =
+    pathname.startsWith('/admin/edit') ||
+    /^\/admin\/products\/[^/]+\/edit\/?$/.test(pathname);
 
   if (state.status === 'unknown' || state.status === 'verifying') {
     return (

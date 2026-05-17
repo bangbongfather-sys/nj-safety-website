@@ -34,6 +34,7 @@ import type {
 } from '@/lib/product-page-types';
 import { fontStackFor } from '@/lib/product-page-types';
 import type { Locale } from '@/lib/i18n';
+import type { EditorApi } from '@/components/admin/EditableText';
 import ImageOrPlaceholder from './ImageOrPlaceholder';
 import ProductShopHeader from './ProductShopHeader';
 import ProductDetailTabs, { type ProductTab } from './ProductDetailTabs';
@@ -436,9 +437,12 @@ function Order({ order }: { order?: ProductOrder }) {
 export default function ProductPage({
   data,
   locale,
+  editor,
 }: {
   data: ProductPageData;
   locale: Locale;
+  /** When provided, the shop header switches to inline-edit mode. */
+  editor?: EditorApi;
 }) {
   // `flavor` on the wrapper picks the visual treatment. CSS rules for the
   // two non-default flavors live in product-page.css under
@@ -451,7 +455,10 @@ export default function ProductPage({
         ? ' nj-page-tactical'
         : '';
 
-  // Tab content. Each tab's content can be null/false to self-hide.
+  // One tab — the entire catalog-app render sits inside 상품상세정보 as a
+  // single scrolling pane. (Earlier we split into detail / care / order,
+  // but the admin wanted the full catalog page kept intact so it scrolls
+  // top-to-bottom exactly like the original.)
   const detailContent = (
     <>
       <Gallery gallery={data.gallery} />
@@ -460,24 +467,18 @@ export default function ProductPage({
       <Features features={data.features} />
       <Spec spec={data.spec} model={data.model} />
       <Field field={data.field} />
+      <CareCert care={data.care} certs={data.certs} />
+      <Order order={data.order} />
     </>
   );
-  const careCertContent =
-    data.care || (data.certs && data.certs.length > 0)
-      ? <CareCert care={data.care} certs={data.certs} />
-      : null;
-  const orderContent = data.order ? <Order order={data.order} /> : null;
-
   const tabs: ProductTab[] = [
     { key: 'detail', label: '상품상세정보', content: detailContent },
-    { key: 'care',   label: '인증 · 관리',  content: careCertContent },
-    { key: 'order',  label: '발주 안내',    content: orderContent },
   ];
 
   return (
     <div className={`nj-page${flavorClass}`}>
       <StyleInjector styles={data.styles} />
-      <ProductShopHeader data={data} locale={locale} />
+      <ProductShopHeader data={data} locale={locale} editor={editor} />
       <ProductDetailTabs tabs={tabs} />
     </div>
   );

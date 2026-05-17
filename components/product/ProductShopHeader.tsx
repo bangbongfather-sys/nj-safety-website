@@ -10,45 +10,50 @@
  * (brand line, model code, name, tagline, key specs, action buttons).
  *
  * B2B adaptation: no price, no cart. The primary action is a 견적 문의
- * link to /<locale>/contact?product=<slug>; the secondaries are a spec
- * sheet download placeholder and Web Share API share button.
+ * link to /<locale>/contact?product=<slug>; the secondary is a Web Share
+ * API share button (clipboard fallback).
+ *
+ * Editor mode: when an EditorApi is provided (admin route at
+ * /admin/products/<slug>/edit wires this), the text fields render as
+ * <EditableText> and the main image becomes an <EditableImage> tile so
+ * the admin can upload a new photo through the standard R2 panel.
+ * Without an editor, everything renders as plain read-only HTML.
  */
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { sanitizeHtml } from '@/lib/sanitize';
 import type { Locale } from '@/lib/i18n';
 import type { ProductPageData } from '@/lib/product-page-types';
+import EditableText, { type EditorApi } from '@/components/admin/EditableText';
+import EditableImage from '@/components/admin/EditableImage';
 import ImageOrPlaceholder from './ImageOrPlaceholder';
 
 type Props = {
   data: ProductPageData;
   locale: Locale;
+  /** When provided, the header switches to inline-edit mode. */
+  editor?: EditorApi;
 };
 
-// Lift up to 4 spec rows into the header summary. We intentionally show a
-// small subset (원단 / 중량 / 사이즈 / 원산지 friendly) so the right column
-// stays scannable and the full table lives in the detail tab below.
+// Lift up to 6 spec rows into the header summary. The labels admin can
+// edit by editing the underlying spec table in the detail tab (or via
+// /admin/text); the header just mirrors whatever's there.
 const SUMMARY_KEYS = ['원단 구성', '중량', '컬러', '사이즈', '원산지', '인증'];
 
 function pickSummarySpecs(rows: { label: string; value: string }[] | undefined) {
   if (!rows) return [];
-  // Preserve the order defined in SUMMARY_KEYS but only keep what actually
-  // exists on this product — different products may surface different
-  // shorthand rows in the future.
   return SUMMARY_KEYS
     .map((k) => rows.find((r) => r.label.trim() === k))
     .filter((r): r is { label: string; value: string } => !!r)
-    .slice(0, 4);
+    .slice(0, 5);
 }
 
 function stripTags(s: string | undefined | null): string {
   return (s ?? '').replace(/<[^>]+>/g, '').trim();
 }
 
-export default function ProductShopHeader({ data, locale }: Props) {
+export default function ProductShopHeader({ data, locale, editor }: Props) {
   const galleryImages = useMemo(() => {
-    // First image candidate: hero, then each gallery item with an image.
-    // Falling back to hero ensures we always have at least one frame.
     const items: string[] = [];
     if (data.hero?.image) items.push(data.hero.image);
     for (const it of data.gallery?.items ?? []) {
@@ -92,18 +97,33 @@ export default function ProductShopHeader({ data, locale }: Props) {
           {/* ── Left column: main image + thumbnail strip ───────── */}
           <div className="psh-media">
             <div className="psh-main">
-              <ImageOrPlaceholder
-                src={mainSrc}
-                alt={data.hero?.imageAlt ?? stripTags(data.name)}
-                className="psh-main-img"
-              />
-              {galleryImages.length > 1 ? (
+              {editor ? (
+                <EditableImage
+                  path="hero.image"
+                  src={mainSrc}
+                  alt={data.hero?.imageAlt ?? stripTags(data.name)}
+                  className="psh-main-img-editable"
+                  editor={editor}
+                  fallback={
+                    <div className="psh-main-empty">
+                      <span>+ 메인 사진 추가</span>
+                    </div>
+                  }
+                />
+              ) : (
+                <ImageOrPlaceholder
+                  src={mainSrc}
+                  alt={data.hero?.imageAlt ?? stripTags(data.name)}
+                  className="psh-main-img"
+                />
+              )}
+              {!editor && galleryImages.length > 1 ? (
                 <div className="psh-count">
                   {active + 1} / {galleryImages.length}
                 </div>
               ) : null}
             </div>
-            {galleryImages.length > 1 ? (
+            {!editor && galleryImages.length > 1 ? (
               <div className="psh-thumbs" role="tablist" aria-label="제품 사진">
                 {galleryImages.map((src, i) => (
                   <button
@@ -120,51 +140,88 @@ export default function ProductShopHeader({ data, locale }: Props) {
                 ))}
               </div>
             ) : null}
+            {editor ? (
+              <p className="psh-edit-hint">
+                💡 갤러리(아래 상품상세정보 안)에 사진 추가하면 썸네일이 자동으로 채워집니다.
+              </p>
+            ) : null}
           </div>
 
           {/* ── Right column: info + actions ────────────────────── */}
           <div className="psh-info">
             <div className="psh-brand">
               <span className="psh-brand-name">NJ SAFETY</span>
-              {data.model ? <span className="psh-model">{data.model}</span> : null}
+              <EditableText
+                as="span"
+                className="psh-model"
+                path="model"
+                value={data.model ?? ''}
+                editor={editor}
+              />
             </div>
 
-            {data.category ? (
-              <div
-                className="psh-category"
-                dangerouslySetInnerHTML={{ __html: sanitizeHtml(data.category) }}
-              />
-            ) : null}
-
-            <h1
-              className="psh-name"
-              dangerouslySetInnerHTML={{ __html: sanitizeHtml(data.name ?? '') }}
+            <EditableText
+              as="div"
+              className="psh-category"
+              path="category"
+              value={data.category ?? ''}
+              editor={editor}
             />
 
-            {data.subtitle ? (
-              <p
-                className="psh-subtitle"
-                dangerouslySetInnerHTML={{ __html: sanitizeHtml(data.subtitle) }}
+            {editor ? (
+              <EditableText
+                as="h1"
+                className="psh-name"
+                path="name"
+                value={stripTags(data.name)}
+                editor={editor}
               />
-            ) : null}
+            ) : (
+              <h1
+                className="psh-name"
+                dangerouslySetInnerHTML={{ __html: sanitizeHtml(data.name ?? '') }}
+              />
+            )}
 
-            {data.tagline ? (
-              <p
-                className="psh-tagline"
-                dangerouslySetInnerHTML={{ __html: sanitizeHtml(data.tagline) }}
-              />
-            ) : null}
+            <EditableText
+              as="p"
+              className="psh-subtitle"
+              path="subtitle"
+              value={data.subtitle ?? ''}
+              editor={editor}
+            />
+
+            <EditableText
+              as="p"
+              className="psh-tagline"
+              path="tagline"
+              value={data.tagline ?? ''}
+              editor={editor}
+              multiline
+            />
 
             {summary.length > 0 ? (
               <dl className="psh-summary">
-                {summary.map((row) => (
-                  <div key={row.label} className="psh-summary-row">
-                    <dt>{row.label}</dt>
-                    <dd
-                      dangerouslySetInnerHTML={{ __html: sanitizeHtml(row.value) }}
-                    />
-                  </div>
-                ))}
+                {summary.map((row) => {
+                  const i = (data.spec?.rows ?? []).indexOf(row);
+                  return (
+                    <div key={row.label} className="psh-summary-row">
+                      <dt>{row.label}</dt>
+                      <dd>
+                        {editor && i >= 0 ? (
+                          <EditableText
+                            as="span"
+                            path={`spec.rows[${i}].value`}
+                            value={row.value}
+                            editor={editor}
+                          />
+                        ) : (
+                          <span dangerouslySetInnerHTML={{ __html: sanitizeHtml(row.value) }} />
+                        )}
+                      </dd>
+                    </div>
+                  );
+                })}
               </dl>
             ) : null}
 

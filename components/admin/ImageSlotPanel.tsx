@@ -202,10 +202,17 @@ type Props = {
    * because the admin has just confirmed a visible change.
    */
   onUploadComplete?: () => void;
+  /**
+   * When set, overrides the homepage-style uploadTargetFor mapping and
+   * stores the file under `<keyPrefix>/<flattened-slot-path>.jpg`.
+   * Used by the per-product editor so all uploads from
+   * /admin/products/<slug>/edit land in `products/<slug>/...` on R2.
+   */
+  keyPrefix?: string;
   onClose: () => void;
 };
 
-export default function ImageSlotPanel({ slot, pat, currentSrc, onPatch, onUploadComplete, onClose }: Props) {
+export default function ImageSlotPanel({ slot, pat, currentSrc, onPatch, onUploadComplete, keyPrefix, onClose }: Props) {
   const [upload, setUpload] = useState<UploadState>({ status: 'idle' });
   const [dropActive, setDropActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -225,11 +232,19 @@ export default function ImageSlotPanel({ slot, pat, currentSrc, onPatch, onUploa
       }
       setUpload({ status: 'reading' });
       try {
-        const target = uploadTargetFor(slot.path);
-        const isPng = target.mime === 'image/png';
-        const opts: ResizeOpts = isLandscapeSlot(slot.path)
-          ? { targetAspect: 16 / 9, bgColor: '#0d0d0e' }
-          : {};
+        // In product-editor mode the path doesn't match any homepage slot,
+        // so skip uploadTargetFor entirely — every product image is a JPG
+        // and we don't force any aspect ratio (product photos can be
+        // portrait or landscape and we keep them as shot).
+        let isPng = false;
+        let opts: ResizeOpts = {};
+        if (!keyPrefix) {
+          const target = uploadTargetFor(slot.path);
+          isPng = target.mime === 'image/png';
+          opts = isLandscapeSlot(slot.path)
+            ? { targetAspect: 16 / 9, bgColor: '#0d0d0e' }
+            : {};
+        }
         const { blob, w, h } = await resizeTo(file, isPng ? 'image/png' : 'image/jpeg', isPng ? 1200 : 2000, 0.88, opts);
         setUpload({
           status: 'preview',
@@ -244,17 +259,35 @@ export default function ImageSlotPanel({ slot, pat, currentSrc, onPatch, onUploa
         setUpload({ status: 'error', message: e instanceof Error ? e.message : String(e) });
       }
     },
-    [slot],
+    [slot, keyPrefix],
   );
 
   const handlePublish = useCallback(async () => {
     if (!slot || upload.status !== 'preview' || !pat) return;
     setUpload({ status: 'uploading' });
     try {
-      const target = uploadTargetFor(slot.path);
-      // R2 key = repoPath minus the leading "public/" (R2 doesn't need it).
-      const key = target.repoPath.replace(/^public\//, '');
-      const { publicUrl } = await uploadToR2(pat, key, upload.blob, target.mime);
+      let key: string;
+      let mime: string;
+      if (keyPrefix) {
+        // Product-editor mode: flatten the dotted slot path into a single
+        // filename component and bucket it under the prefix the parent
+        // gave us (e.g. `products/njs-av100`). Keeps per-product R2 trees
+        // tidy without needing to extend uploadTargetFor for every JSON
+        // shape we might edit.
+        const flat = slot.path
+          .replace(/\[(\d+)\]/g, '-$1')
+          .replace(/[^a-zA-Z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '')
+          .toLowerCase();
+        mime = 'image/jpeg';
+        key = `${keyPrefix}/${flat}.jpg`;
+      } else {
+        const target = uploadTargetFor(slot.path);
+        // R2 key = repoPath minus the leading "public/" (R2 doesn't need it).
+        key = target.repoPath.replace(/^public\//, '');
+        mime = target.mime;
+      }
+      const { publicUrl } = await uploadToR2(pat, key, upload.blob, mime);
       // Cache-bust the URL so the browser + Cloudflare CDN refetch the
       // fresh bytes the moment R2 acknowledges. R2 is content-addressable
       // but visitors' browsers and the CDN still cache by URL — the ?v=
@@ -270,7 +303,7 @@ export default function ImageSlotPanel({ slot, pat, currentSrc, onPatch, onUploa
     } catch (e: unknown) {
       setUpload({ status: 'error', message: e instanceof Error ? e.message : String(e) });
     }
-  }, [slot, upload, pat, onPatch, onUploadComplete]);
+  }, [slot, upload, pat, onPatch, onUploadComplete, keyPrefix]);
 
   const handleRemove = useCallback(() => {
     if (!slot) return;
