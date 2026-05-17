@@ -324,7 +324,8 @@
       "color": "#ff6b1a"
     },
     "hero.slides[0].headlineLine1": {
-      "size": "0.90em"
+      "size": "0.90em",
+      "weight": "900"
     },
     "hero.slides[1].sub": {
       "size": "1.10em"
@@ -334,6 +335,16 @@
       "color": "#6b6b70"
     },
     "showcase.eyebrow": {
+      "weight": "900"
+    },
+    "hero.slides[2].headlineLine2Em": {
+      "weight": "900",
+      "size": "0.90em"
+    },
+    "hero.slides[2].headlineLine1": {
+      "weight": "900"
+    },
+    "hero.slides[0].headlineLine2Em": {
       "weight": "900"
     }
   },
