@@ -85,36 +85,51 @@ export default function Hero({ locale, dict, editor }: Props) {
       onMouseLeave={() => setPaused(false)}
     >
       <div className="hero-bg">
-        <EditableImage
-          path={`${basePath}.image`}
-          src={slide.image}
-          alt=""
-          className="hero-bg-edit"
-          fallback={
-            <img
-              className="hero-img"
-              src="/hero.jpg"
-              alt=""
-              aria-hidden
-              loading="eager"
-              decoding="async"
-              style={heroImgStyle(dict)}
-            />
-          }
-          editor={editor}
-        />
         {/*
-         * Apply the filter overlay on top of the image. When EditableImage
-         * is rendering a real <img>, the filter is applied via a sibling
-         * class hook so we don't have to special-case both branches.
+         * All slide images are rendered stacked. The active one fades in
+         * (.is-active → opacity 1) while the others fade out (opacity 0,
+         * pointer-events: none so their EditableImage overlays don't
+         * intercept clicks for hidden slides).
          */}
+        {slides.map((s, i) => {
+          const active = i === idx;
+          const sBase = usingSlides ? `hero.slides[${i}]` : 'hero';
+          return (
+            <div key={i} className={`hero-bg-slide${active ? ' is-active' : ''}`}>
+              <EditableImage
+                path={`${sBase}.image`}
+                src={s.image}
+                alt=""
+                className="hero-bg-edit"
+                fallback={
+                  <img
+                    className="hero-img"
+                    src="/hero.jpg"
+                    alt=""
+                    aria-hidden
+                    loading={active ? 'eager' : 'lazy'}
+                    decoding="async"
+                    style={heroImgStyle(dict)}
+                  />
+                }
+                editor={active ? editor : undefined}
+              />
+            </div>
+          );
+        })}
       </div>
       <div className="hero-overlay" />
       <div className="hero-accent" />
       <div className="hero-grain" />
 
+      {/*
+       * key={idx} on the inner wrap re-mounts the text every slide change,
+       * which re-fires the CSS `hero-content-enter` keyframe so the new
+       * slide's headline / tagline / sub fade-up cleanly. Outer container
+       * stays mounted so the layout doesn't reflow.
+       */}
       <div className="hero-content">
-        <div className="wrap">
+        <div className="wrap hero-content-anim" key={`slide-text-${idx}`}>
           <div className="hero-tag">
             <span className="hairline" />
             <EditableText as="span" className="eyebrow" path={`${basePath}.eyebrow`} value={slide.eyebrow ?? ''} editor={editor} />

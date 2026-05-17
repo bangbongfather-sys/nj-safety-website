@@ -1979,6 +1979,30 @@ section { position: relative; }
 /* ============================================================
    Hero carousel — multi-slide nav (arrows + dots + admin bar)
    ============================================================ */
+/* Each slide's background image layer. All slides are stacked in .hero-bg,
+ * the active one fades in over ~0.9s while the previous one fades out. */
+.hero-bg-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity .9s ease;
+  pointer-events: none;
+}
+.hero-bg-slide.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Fade + small upward drift on the slide's foreground text. Triggered on
+ * every slide change because the wrap div re-mounts via `key={idx}`. */
+.hero-content-anim {
+  animation: hero-content-enter .7s cubic-bezier(.22, .61, .36, 1) both;
+}
+@keyframes hero-content-enter {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 .hero-nav-arrow {
   position: absolute;
   top: 50%;
