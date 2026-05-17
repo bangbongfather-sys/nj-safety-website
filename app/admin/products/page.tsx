@@ -181,6 +181,14 @@ export default function ProductsListPage() {
     }
   }, [pat, reload]);
 
+  // Per-slug serial queue: two rapid clicks on main + hover used to
+  // race the same JSON file (both started from the same stale SHA, the
+  // loser hit 409 even after one retry). Chaining the PUTs through a
+  // promise keyed by slug guarantees they apply in order — by the
+  // time the hover upload runs, the main upload's commit (and updated
+  // SHA) is already visible to our re-fetch below.
+  const queueBySlug = useRef<Map<string, Promise<void>>>(new Map());
+
   // Upload a card image (main or hover) and persist the URL into the
   // product JSON's shopHeader.images array. Skips the per-product
   // editor entirely so the admin can curate the list-card photos
@@ -194,54 +202,69 @@ export default function ProductsListPage() {
     const key = `${row.slug}:${slot}`;
     setUploading((s) => new Set(s).add(key));
     setErr(null);
-    try {
-      // 1. Upload bytes to R2
-      const publicUrl = await uploadCardImage(pat, row.slug, slot, file);
 
-      // 2. Update the JSON in-place: ensure shopHeader.images is an
-      //    array with at least 2 slots, then set the right index.
-      const next: ProductPageData = JSON.parse(JSON.stringify(row.raw));
-      const sh = next.shopHeader ?? {};
-      const images = [...(sh.images ?? [])];
-      while (images.length < 2) images.push('');
-      images[slot === 'main' ? 0 : 1] = publicUrl;
-      next.shopHeader = { ...sh, images };
+    // Chain onto whatever's currently running for this slug.
+    const prev = queueBySlug.current.get(row.slug) ?? Promise.resolve();
+    const next = prev.then(async () => {
+      try {
+        // 1. Upload bytes to R2 (no GitHub interaction yet — R2 is fast
+        //    and independent so this part can race freely with other
+        //    products' uploads).
+        const publicUrl = await uploadCardImage(pat, row.slug, slot, file);
 
-      // 3. PUT the updated JSON back to GitHub. ghPutFile auto-retries
-      //    on 409 (stale SHA) so we don't need to handle that here.
-      const text = JSON.stringify(next, null, 2) + '\n';
-      const r = await ghPutFile(
-        pat,
-        `data/products/${row.slug}.json`,
-        text,
-        `chore(products): set ${slot} card image for ${row.slug}`,
-        row.sha,
-      );
+        // 2. Re-fetch the JSON's CURRENT state right before we modify
+        //    it. If another tab (or the per-product editor) saved
+        //    between this page's mount and now, row.raw / row.sha are
+        //    stale. Always fetch fresh.
+        const fresh = await ghGetFile(pat, `data/products/${row.slug}.json`);
+        if (!fresh) throw new Error(`data/products/${row.slug}.json 가 사라졌습니다`);
+        const latest = JSON.parse(fresh.content) as ProductPageData;
 
-      // 4. Update the row in place so the thumbnail swaps without a
-      //    full list reload (and the SHA stays valid for the NEXT
-      //    upload to the same product).
-      setRows((cur) => {
-        if (!cur) return cur;
-        return cur.map((r2) =>
-          r2.slug !== row.slug ? r2 : {
-            ...r2,
-            cardMain:  slot === 'main'  ? publicUrl : r2.cardMain,
-            cardHover: slot === 'hover' ? publicUrl : r2.cardHover,
-            sha: r.contentSha || r2.sha,
-            raw: next,
-          },
+        // 3. Patch shopHeader.images at the right index.
+        const merged: ProductPageData = JSON.parse(JSON.stringify(latest));
+        const sh = merged.shopHeader ?? {};
+        const images = [...(sh.images ?? [])];
+        while (images.length < 2) images.push('');
+        images[slot === 'main' ? 0 : 1] = publicUrl;
+        merged.shopHeader = { ...sh, images };
+
+        // 4. PUT with the FRESH SHA. ghPutFile still auto-retries
+        //    once on 409 as a final safety net.
+        const text = JSON.stringify(merged, null, 2) + '\n';
+        const r = await ghPutFile(
+          pat,
+          `data/products/${row.slug}.json`,
+          text,
+          `chore(products): set ${slot} card image for ${row.slug}`,
+          fresh.sha,
         );
-      });
-    } catch (e: unknown) {
-      setErr(e instanceof Error ? e.message : String(e));
-    } finally {
-      setUploading((s) => {
-        const n = new Set(s);
-        n.delete(key);
-        return n;
-      });
-    }
+
+        // 5. Update the row in place so the thumbnail swaps without a
+        //    full list reload.
+        setRows((cur) => {
+          if (!cur) return cur;
+          return cur.map((r2) =>
+            r2.slug !== row.slug ? r2 : {
+              ...r2,
+              cardMain:  slot === 'main'  ? publicUrl : r2.cardMain,
+              cardHover: slot === 'hover' ? publicUrl : r2.cardHover,
+              sha: r.contentSha || fresh.sha,
+              raw: merged,
+            },
+          );
+        });
+      } catch (e: unknown) {
+        setErr(e instanceof Error ? e.message : String(e));
+      } finally {
+        setUploading((s) => {
+          const n = new Set(s);
+          n.delete(key);
+          return n;
+        });
+      }
+    });
+    queueBySlug.current.set(row.slug, next);
+    await next;
   }, [pat]);
 
   return (
