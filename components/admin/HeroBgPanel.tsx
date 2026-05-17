@@ -3,7 +3,7 @@
 import type { HeroFilter } from '@/lib/i18n';
 
 const DEFAULTS: Required<HeroFilter> = {
-  brightness: 0.55,
+  brightness: 0.85,
   contrast: 1.15,
   saturate: 0.6,
 };
@@ -85,7 +85,7 @@ export default function HeroBgPanel({ open, filter, onPatch, onClose }: Props) {
         label="밝기"
         value={b}
         min={0.1}
-        max={1.0}
+        max={1.8}
         step={0.02}
         onChange={setB}
         format={(v) => `${Math.round(v * 100)}%`}

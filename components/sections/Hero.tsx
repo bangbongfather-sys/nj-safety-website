@@ -16,7 +16,7 @@ const AUTO_ROTATE_MS = 7000;
 function heroImgStyle(dict: Dictionary): CSSProperties | undefined {
   const f = dict.siteConfig?.heroFilter;
   if (!f || (f.brightness == null && f.contrast == null && f.saturate == null)) return undefined;
-  const b = f.brightness ?? 0.55;
+  const b = f.brightness ?? 0.85;
   const c = f.contrast ?? 1.15;
   const s = f.saturate ?? 0.6;
   return { filter: `brightness(${b}) contrast(${c}) saturate(${s})` };

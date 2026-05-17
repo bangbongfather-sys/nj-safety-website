@@ -159,7 +159,7 @@ p { line-height: 1.65; }
   object-position: 62% 35%;
   display: block;
   /* darken + desaturate toward neutral cinematic tone (no warm shift — overlays handle accent) */
-  filter: brightness(.55) contrast(1.15) saturate(.6);
+  filter: brightness(.85) contrast(1.15) saturate(.6);
 }
 .hero-overlay {
   position: absolute; inset: 0;
