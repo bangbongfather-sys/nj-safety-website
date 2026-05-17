@@ -2072,8 +2072,8 @@ section { position: relative; }
   transform: translateX(-50%);
   z-index: 40;
   display: flex;
-  align-items: center;
-  gap: 14px;
+  flex-direction: column;
+  gap: 6px;
   padding: 8px 14px;
   background: rgba(13, 13, 14, .92);
   border: 1px solid var(--accent);
@@ -2081,6 +2081,45 @@ section { position: relative; }
   font-family: var(--sans);
   color: var(--text);
   backdrop-filter: blur(10px);
+  min-width: 540px;
+  max-width: 90vw;
+}
+.hero-admin-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.hero-admin-link {
+  border-top: 1px solid rgba(255, 255, 255, .08);
+  padding-top: 6px;
+}
+.hero-admin-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .12em;
+  color: var(--accent);
+  white-space: nowrap;
+}
+.hero-admin-input {
+  flex: 1;
+  min-width: 0;
+  background: rgba(0, 0, 0, .35);
+  color: var(--text);
+  border: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 5px 8px;
+  border-radius: 2px;
+  outline: none;
+  transition: border-color .15s;
+}
+.hero-admin-input:focus { border-color: var(--accent); }
+.hero-admin-input::placeholder { color: var(--muted); opacity: .55; }
+.hero-admin-hint {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  white-space: nowrap;
 }
 .hero-admin-counter {
   font-family: var(--mono);
@@ -2088,6 +2127,7 @@ section { position: relative; }
   letter-spacing: .14em;
   color: var(--muted);
   text-transform: uppercase;
+  margin-right: auto;
 }
 .hero-admin-counter strong {
   color: var(--accent);
@@ -2110,6 +2150,20 @@ section { position: relative; }
 .hero-admin-btn:hover { border-color: var(--accent); color: var(--accent); }
 .hero-admin-btn.danger { border-color: rgba(255, 107, 107, .35); color: #ff9a9a; }
 .hero-admin-btn.danger:hover { background: rgba(255, 107, 107, .12); border-color: #ff6b6b; color: #ff6b6b; }
+
+/* Slide background that's wrapped in a Next Link — give it a subtle
+ * hover affordance so visitors learn the slide is clickable. The cursor
+ * already turns into a pointer because <a> is the host element. */
+.hero-bg-link {
+  display: block;
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+}
+.hero-bg-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -4px;
+}
 
 /* ---------- Floating format toolbar ---------- */
 .ed-toolbar {

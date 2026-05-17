@@ -69,6 +69,13 @@ export type HeroSlide = {
   ctaSecondary?: string;
   /** Per-slide override; defaults to /<locale>/contact when missing. */
   ctaSecondaryHref?: string;
+  /**
+   * Whole-slide click target — when set, clicking the slide background
+   * (anywhere outside the CTA buttons / nav / admin controls) navigates
+   * here. Use to point a slide at the relevant product detail page.
+   * Empty/missing → background is not clickable.
+   */
+  linkHref?: string;
 };
 
 type RawDict = typeof ko;

@@ -77,6 +77,21 @@ export default function Hero({ locale, dict, editor }: Props) {
   const ctaPrimaryHref = slide.ctaPrimaryHref || `/${locale}/products`;
   const ctaSecondaryHref = slide.ctaSecondaryHref || `/${locale}/contact`;
 
+  // Resolve the slide link. We let the admin type either:
+  //   • absolute external: "https://example.com/..."
+  //   • locale-prefixed:   "/ko/products/aramid-pk"
+  //   • shorthand:         "/products/aramid-pk"   → auto-prefix /<locale>
+  // The shorthand keeps the same URL working for both ko + en visitors
+  // without forcing the admin to maintain two values.
+  const rawLink = (slide.linkHref ?? '').trim();
+  let resolvedLink = '';
+  if (rawLink) {
+    if (/^https?:\/\//i.test(rawLink)) resolvedLink = rawLink;
+    else if (/^\/(ko|en)\//.test(rawLink)) resolvedLink = rawLink;
+    else if (rawLink.startsWith('/')) resolvedLink = `/${locale}${rawLink}`;
+    else resolvedLink = `/${locale}/${rawLink}`;
+  }
+
   return (
     <section
       className="hero"
@@ -90,30 +105,58 @@ export default function Hero({ locale, dict, editor }: Props) {
          * (.is-active → opacity 1) while the others fade out (opacity 0,
          * pointer-events: none so their EditableImage overlays don't
          * intercept clicks for hidden slides).
+         *
+         * When the slide has `linkHref` AND we're not in edit mode, the
+         * active image is wrapped in a Next Link so the user can click
+         * the background to open the related product page. The CTA
+         * buttons / nav arrows / dots / admin bar are siblings outside
+         * this Link, so they keep handling their own clicks normally.
          */}
         {slides.map((s, i) => {
           const active = i === idx;
           const sBase = usingSlides ? `hero.slides[${i}]` : 'hero';
+          const inner = (
+            <EditableImage
+              path={`${sBase}.image`}
+              src={s.image}
+              alt=""
+              className="hero-bg-edit"
+              fallback={
+                <img
+                  className="hero-img"
+                  src="/hero.jpg"
+                  alt=""
+                  aria-hidden
+                  loading={active ? 'eager' : 'lazy'}
+                  decoding="async"
+                  style={heroImgStyle(dict)}
+                />
+              }
+              editor={active ? editor : undefined}
+            />
+          );
+          // Only the active slide gets wrapped, and only outside edit
+          // mode — the admin needs un-linked clicks for the EditableImage
+          // "사진 교체" overlay. We resolve the link the same way the
+          // public-side does (handled below via resolvedLink) but that
+          // value is for the *current* active slide. Inactive slides
+          // never receive clicks (opacity 0 + pointer-events: none) so
+          // their link state doesn't matter visually.
+          const slideLink =
+            active && !editor && resolvedLink ? resolvedLink : '';
           return (
             <div key={i} className={`hero-bg-slide${active ? ' is-active' : ''}`}>
-              <EditableImage
-                path={`${sBase}.image`}
-                src={s.image}
-                alt=""
-                className="hero-bg-edit"
-                fallback={
-                  <img
-                    className="hero-img"
-                    src="/hero.jpg"
-                    alt=""
-                    aria-hidden
-                    loading={active ? 'eager' : 'lazy'}
-                    decoding="async"
-                    style={heroImgStyle(dict)}
-                  />
-                }
-                editor={active ? editor : undefined}
-              />
+              {slideLink ? (
+                <Link
+                  href={slideLink}
+                  className="hero-bg-link"
+                  aria-label={s.headlineLine1 || s.eyebrow || '슬라이드 상세 페이지로 이동'}
+                >
+                  {inner}
+                </Link>
+              ) : (
+                inner
+              )}
             </div>
           );
         })}
@@ -211,34 +254,60 @@ export default function Hero({ locale, dict, editor }: Props) {
       {/* Admin slide management bar — only renders in edit mode. */}
       {editor ? (
         <div className="hero-admin-bar">
-          <span className="hero-admin-counter">
-            슬라이드 <strong>{idx + 1}</strong> / {total}
-          </span>
-          <div className="hero-admin-actions">
-            {editor.onAddHeroSlide ? (
-              <button
-                type="button"
-                className="hero-admin-btn"
-                onClick={() => editor.onAddHeroSlide?.()}
-                title="현재 슬라이드 뒤에 새 슬라이드 추가 (양쪽 언어 동시)"
-              >
-                + 새 슬라이드
-              </button>
-            ) : null}
-            {editor.onDeleteHeroSlide && total > 1 ? (
-              <button
-                type="button"
-                className="hero-admin-btn danger"
-                onClick={() => {
-                  if (window.confirm(`슬라이드 ${idx + 1}을(를) 삭제할까요?`)) {
-                    editor.onDeleteHeroSlide?.(idx);
-                  }
-                }}
-                title="이 슬라이드를 양쪽 언어에서 삭제"
-              >
-                현재 슬라이드 삭제
-              </button>
-            ) : null}
+          <div className="hero-admin-row">
+            <span className="hero-admin-counter">
+              슬라이드 <strong>{idx + 1}</strong> / {total}
+            </span>
+            <div className="hero-admin-actions">
+              {editor.onAddHeroSlide ? (
+                <button
+                  type="button"
+                  className="hero-admin-btn"
+                  onClick={() => editor.onAddHeroSlide?.()}
+                  title="현재 슬라이드 뒤에 새 슬라이드 추가 (양쪽 언어 동시)"
+                >
+                  + 새 슬라이드
+                </button>
+              ) : null}
+              {editor.onDeleteHeroSlide && total > 1 ? (
+                <button
+                  type="button"
+                  className="hero-admin-btn danger"
+                  onClick={() => {
+                    if (window.confirm(`슬라이드 ${idx + 1}을(를) 삭제할까요?`)) {
+                      editor.onDeleteHeroSlide?.(idx);
+                    }
+                  }}
+                  title="이 슬라이드를 양쪽 언어에서 삭제"
+                >
+                  현재 슬라이드 삭제
+                </button>
+              ) : null}
+            </div>
+          </div>
+          <div className="hero-admin-row hero-admin-link">
+            <label className="hero-admin-label" htmlFor={`hero-link-${idx}`}>
+              🔗 연결 페이지
+            </label>
+            <input
+              id={`hero-link-${idx}`}
+              type="text"
+              className="hero-admin-input"
+              placeholder="/products/제품ID  또는  https://..."
+              defaultValue={slide.linkHref ?? ''}
+              onBlur={(e) => {
+                const v = e.target.value.trim();
+                // URL is structural — write to both locales so ko + en
+                // visitors land on the same product page. Falls back to
+                // single-locale patch if onImagePatch isn't wired.
+                if (editor.onImagePatch) editor.onImagePatch(`${basePath}.linkHref`, v || null);
+                else editor.onPatch(`${basePath}.linkHref`, v);
+              }}
+              title="슬라이드 배경을 클릭했을 때 이동할 페이지. 비워두면 클릭 불가. 짧게 /products/xxx 처럼 입력하면 언어가 자동으로 붙습니다."
+            />
+            <span className="hero-admin-hint">
+              {slide.linkHref ? '✅ 클릭 가능' : '비어있음 (클릭 불가)'}
+            </span>
           </div>
         </div>
       ) : null}
