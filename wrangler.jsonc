@@ -33,7 +33,7 @@
   // and replace the placeholder below (or set it via dashboard
   // Environment Variables instead — dashboard wins over wrangler.jsonc).
   "vars": {
-    "R2_PUBLIC_BASE": "https://pub-PLACEHOLDER.r2.dev",
+    "R2_PUBLIC_BASE": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev",
     "ADMIN_GH_LOGIN": "bangbongfather-sys"
   },
 
