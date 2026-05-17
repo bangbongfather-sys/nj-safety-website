@@ -195,10 +195,17 @@ type Props = {
   currentSrc?: string | null;
   /** Called with the new public URL on successful upload. */
   onPatch: (path: string, url: string) => void;
+  /**
+   * Called right after a successful R2 upload + onPatch. Lets the parent
+   * trigger an immediate dict save (skip the 60 s autosave debounce) so
+   * the rebuild starts NOW — image uploads need fast public reflection
+   * because the admin has just confirmed a visible change.
+   */
+  onUploadComplete?: () => void;
   onClose: () => void;
 };
 
-export default function ImageSlotPanel({ slot, pat, currentSrc, onPatch, onClose }: Props) {
+export default function ImageSlotPanel({ slot, pat, currentSrc, onPatch, onUploadComplete, onClose }: Props) {
   const [upload, setUpload] = useState<UploadState>({ status: 'idle' });
   const [dropActive, setDropActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -255,10 +262,15 @@ export default function ImageSlotPanel({ slot, pat, currentSrc, onPatch, onClose
       const urlWithBust = `${publicUrl}?v=${Date.now()}`;
       setUpload({ status: 'done', previewUrl: upload.previewUrl, commitSha: 'R2', publicUrl: urlWithBust });
       onPatch(slot.path, urlWithBust);
+      // Fire-and-forget — parent flushes the dict to GitHub immediately,
+      // skipping the 60 s autosave wait. The R2 file is already live, so
+      // total time to public reflection drops to just the Cloudflare
+      // build (~90 s) instead of ~3 min (60 s debounce + 90 s build).
+      onUploadComplete?.();
     } catch (e: unknown) {
       setUpload({ status: 'error', message: e instanceof Error ? e.message : String(e) });
     }
-  }, [slot, upload, pat, onPatch]);
+  }, [slot, upload, pat, onPatch, onUploadComplete]);
 
   const handleRemove = useCallback(() => {
     if (!slot) return;

@@ -492,6 +492,12 @@ export default function EditHomePage() {
         pat={pat}
         currentSrc={imageSlotCurrentSrc}
         onPatch={applyImagePatch}
+        onUploadComplete={() => {
+          // Defer to the next tick so React flushes the dict state update
+          // from applyImagePatch first. Without this, handleSave would
+          // diff against the pre-upload draft and miss the new URL.
+          setTimeout(() => void handleSaveRef.current(), 0);
+        }}
         onClose={() => setImageSlot(null)}
       />
     </div>
