@@ -277,21 +277,37 @@ export default function EditHomePage() {
       const koChanged = JSON.stringify(koDraft) !== JSON.stringify(load.ko);
       const enChanged = JSON.stringify(enDraft) !== JSON.stringify(load.en);
       let lastSha = '';
+      // Track the new SHAs locally so multiple PUTs in the same save use
+      // the correct one, and so the next autosave starts from the fresh
+      // value instead of the stale `load.*Sha` from initial mount.
+      let nextKoSha = load.koSha;
+      let nextEnSha = load.enSha;
+      // Snapshot the drafts at the moment we start saving — that's the
+      // "known-good" content for the SHAs we're about to write.
+      const koSnapshot = koDraft;
+      const enSnapshot = enDraft;
       if (koChanged) {
         const koText = JSON.stringify(koDraft, null, 2) + '\n';
         const r = await ghPutFile(pat, KO_PATH, koText, 'chore(text): inline edit ko', load.koSha);
         lastSha = r.commitSha;
+        if (r.contentSha) nextKoSha = r.contentSha;
       }
       if (enChanged) {
         const enText = JSON.stringify(enDraft, null, 2) + '\n';
         const r = await ghPutFile(pat, EN_PATH, enText, 'chore(text): inline edit en', load.enSha);
         lastSha = r.commitSha;
+        if (r.contentSha) nextEnSha = r.contentSha;
       }
+      // Adopt the new SHAs immediately. The next autosave will diff
+      // against these snapshots and PUT with the right parents.
+      setLoad({
+        status: 'ready',
+        ko: koSnapshot,
+        en: enSnapshot,
+        koSha: nextKoSha,
+        enSha: nextEnSha,
+      });
       setSave({ status: 'done', sha: lastSha });
-      const [ko2, en2] = await Promise.all([ghGetFile(pat, KO_PATH), ghGetFile(pat, EN_PATH)]);
-      if (ko2 && en2) {
-        setLoad({ status: 'ready', ko: JSON.parse(ko2.content), en: JSON.parse(en2.content), koSha: ko2.sha, enSha: en2.sha });
-      }
     } catch (e: unknown) {
       setSave({ status: 'error', message: e instanceof Error ? e.message : String(e) });
     }

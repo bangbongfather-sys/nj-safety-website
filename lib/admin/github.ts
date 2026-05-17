@@ -77,31 +77,60 @@ export async function ghGetFileSha(pat: string, filePath: string): Promise<strin
   return data.sha ?? null;
 }
 
-/** Create or update a text file. Provide `sha` when updating an existing file. */
+/**
+ * Create or update a text file. Provide `sha` when updating an existing file.
+ *
+ * Auto-retries on 409 (stale SHA): re-fetches the current SHA from GitHub
+ * and PUTs again. This handles the very common case where two autosaves
+ * race — save A is still in flight when save B starts with the old SHA,
+ * or someone else committed between our last fetch and now.
+ *
+ * NOTE: the retry just adopts the remote SHA and overwrites — appropriate
+ * for our admin workflow where the only writer is the editor itself, but
+ * not safe for multi-author scenarios.
+ */
 export async function ghPutFile(
   pat: string,
   filePath: string,
   text: string,
   commitMessage: string,
   sha: string | null,
-): Promise<{ commitSha: string }> {
-  const body: Record<string, string> = {
-    message: commitMessage,
-    content: utf8ToBase64(text),
-    branch: REPO_BRANCH,
+): Promise<{ commitSha: string; contentSha: string }> {
+  const attempt = async (useSha: string | null): Promise<Response> => {
+    const body: Record<string, string> = {
+      message: commitMessage,
+      content: utf8ToBase64(text),
+      branch: REPO_BRANCH,
+    };
+    if (useSha) body.sha = useSha;
+    return fetch(api(`/contents/${encodeURIComponent(filePath)}`), {
+      method: 'PUT',
+      headers: { ...headers(pat), 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
   };
-  if (sha) body.sha = sha;
-  const r = await fetch(api(`/contents/${encodeURIComponent(filePath)}`), {
-    method: 'PUT',
-    headers: { ...headers(pat), 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  });
+
+  let r = await attempt(sha);
+
+  // 409 = SHA mismatch. Re-fetch fresh SHA and retry once.
+  if (r.status === 409) {
+    try {
+      const freshSha = await ghGetFileSha(pat, filePath);
+      r = await attempt(freshSha);
+    } catch {
+      // If the refresh itself fails, fall through to the original error below.
+    }
+  }
+
   if (!r.ok) {
     const errText = await r.text();
     throw new Error(`PUT failed: ${r.status} — ${errText.slice(0, 400)}`);
   }
   const data = await r.json();
-  return { commitSha: data.commit?.sha ?? '' };
+  return {
+    commitSha: data.commit?.sha ?? '',
+    contentSha: data.content?.sha ?? '',
+  };
 }
 
 /**
