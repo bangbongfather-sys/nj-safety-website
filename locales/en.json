@@ -331,6 +331,9 @@
     },
     "hero.slides[1].sub": {
       "size": "1.10em"
+    },
+    "showcase.sub": {
+      "width": "44.7%"
     }
   },
   "siteConfig": {
