@@ -273,11 +273,7 @@
     }
   },
   "styles": {
-    "hero.headlineLine1": {
-      "size": "0.90em"
-    },
     "hero.headlineLine2Em": {
-      "size": "0.90em",
       "width": "100.0%",
       "weight": "900"
     },
