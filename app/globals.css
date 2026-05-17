@@ -449,6 +449,14 @@ section { position: relative; }
 }
 .showcase-bg { position: absolute; inset: 0; }
 .showcase-bg svg { width: 100%; height: 100%; }
+/* Slightly darken + desaturate the showcase background photo so the
+ * white headline reads cleanly on top no matter what photo the admin
+ * uploads. Matches the cinematic tone of the hero filter but lighter
+ * (this section is supposed to feel more present than the hero). */
+.showcase-bg .ed-img-img,
+.showcase-bg img {
+  filter: brightness(.7) contrast(1.1) saturate(.85);
+}
 .showcase-overlay {
   position: absolute; inset: 0;
   background: linear-gradient(180deg, rgba(13,13,14,.2) 0%, rgba(13,13,14,0) 30%, rgba(13,13,14,.7) 100%);
