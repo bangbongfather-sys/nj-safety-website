@@ -44,7 +44,7 @@
         "headlineLine2Pre": "",
         "headlineLine2Em": "유틸리티 조끼.",
         "tagline": "ARAMID 62.3%./FR RAYON 36.6%./ANTI-STARIC 1.1%.",
-        "sub": "여기에 새 슬라이드 본문을 입력하세요.",
+        "sub": " 한여름 외근에도 단정한 실루엣을 유지하는 NJ Safety의 ARAMID 방염 조끼.",
         "ctaPrimary": "자세히 보기",
         "ctaSecondary": "문의",
         "linkHref": "https://nj-safety-website.njsafety91.workers.dev/ko/products/njs-av100/"
@@ -331,6 +331,9 @@
     },
     "hero.slides[2].headlineLine2Em": {
       "size": "0.90em"
+    },
+    "hero.slides[1].sub": {
+      "size": "1.10em"
     }
   },
   "siteConfig": {
