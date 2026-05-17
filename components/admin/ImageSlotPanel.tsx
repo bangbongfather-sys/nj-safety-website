@@ -66,31 +66,88 @@ function loadImage(file: File): Promise<HTMLImageElement> {
   });
 }
 
+type ResizeOpts = {
+  /** Target output aspect ratio (width / height). When the source is
+   *  much narrower (e.g. portrait into a 16:9 hero), the source is
+   *  centered on a canvas of the target aspect and the empty sides are
+   *  filled with `bgColor` so the model isn't cropped. */
+  targetAspect?: number;
+  /** Hex / css color filled behind the image when letterboxing.
+   *  Defaults to the brand black (#0d0d0e) so the bars feel intentional. */
+  bgColor?: string;
+};
+
 async function resizeTo(
   file: File,
   mime: 'image/jpeg' | 'image/png',
   maxWidth: number,
   quality: number,
+  opts: ResizeOpts = {},
 ): Promise<{ blob: Blob; w: number; h: number }> {
   const img = await loadImage(file);
-  const ratio = img.width > maxWidth ? maxWidth / img.width : 1;
-  const w = Math.round(img.width * ratio);
-  const h = Math.round(img.height * ratio);
+  const srcAspect = img.width / img.height;
+  // Portrait into a wider target → letterbox. Use a tolerance so that
+  // mildly-mismatched landscape sources (e.g. 4:3 into 16:9) still get
+  // edge-to-edge scaling rather than ugly side bars.
+  const isPortrait = img.height > img.width;
+  const target = opts.targetAspect ?? srcAspect;
+  const needsPad = opts.targetAspect != null && (isPortrait || srcAspect < target * 0.85);
+
+  let outW: number;
+  let outH: number;
+  if (needsPad) {
+    // Match target aspect; scale to maxWidth.
+    outW = Math.min(maxWidth, Math.max(img.width, Math.round(img.height * target)));
+    outH = Math.round(outW / target);
+  } else {
+    const ratio = img.width > maxWidth ? maxWidth / img.width : 1;
+    outW = Math.round(img.width * ratio);
+    outH = Math.round(img.height * ratio);
+  }
+
   const canvas = document.createElement('canvas');
-  canvas.width = w;
-  canvas.height = h;
+  canvas.width = outW;
+  canvas.height = outH;
   const ctx = canvas.getContext('2d');
   if (!ctx) throw new Error('canvas 2d context 사용 불가');
-  if (mime === 'image/jpeg') {
-    // Fill white behind anything transparent to avoid black under JPEG.
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0, 0, w, h);
+
+  // Background fill. For JPEG always paint (no alpha); for PNG only when
+  // letterboxing, so transparent logos stay transparent in normal mode.
+  if (mime === 'image/jpeg' || needsPad) {
+    ctx.fillStyle = opts.bgColor ?? (mime === 'image/jpeg' ? '#0d0d0e' : 'rgba(0,0,0,0)');
+    if (mime === 'image/jpeg' && !needsPad) ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, outW, outH);
   }
-  ctx.drawImage(img, 0, 0, w, h);
+
+  if (needsPad) {
+    // Fit source by height (or width, whichever fills more without overflow),
+    // then center.
+    const scale = Math.min(outW / img.width, outH / img.height);
+    const drawW = img.width * scale;
+    const drawH = img.height * scale;
+    const dx = (outW - drawW) / 2;
+    const dy = (outH - drawH) / 2;
+    ctx.drawImage(img, dx, dy, drawW, drawH);
+  } else {
+    ctx.drawImage(img, 0, 0, outW, outH);
+  }
+
   const blob: Blob = await new Promise((resolve, reject) => {
     canvas.toBlob((b) => (b ? resolve(b) : reject(new Error('canvas.toBlob 실패'))), mime, quality);
   });
-  return { blob, w, h };
+  return { blob, w: outW, h: outH };
+}
+
+// Slots that visually want a 16:9 landscape canvas. Portrait / heavily
+// off-aspect uploads get padded with brand-black bars instead of
+// being center-cropped, so the subject stays whole.
+function isLandscapeSlot(slot: string): boolean {
+  return (
+    slot === 'showcase.bgImage' ||
+    slot === 'hero.bgImage' ||
+    /^hero\.slides\[\d+\]\.image$/.test(slot) ||
+    /^insights\.items\[\d+\]\.image$/.test(slot)
+  );
 }
 
 type UploadState =
@@ -134,7 +191,10 @@ export default function ImageSlotPanel({ slot, pat, currentSrc, onPatch, onClose
       try {
         const target = uploadTargetFor(slot.path);
         const isPng = target.mime === 'image/png';
-        const { blob, w, h } = await resizeTo(file, isPng ? 'image/png' : 'image/jpeg', isPng ? 1200 : 2000, 0.88);
+        const opts: ResizeOpts = isLandscapeSlot(slot.path)
+          ? { targetAspect: 16 / 9, bgColor: '#0d0d0e' }
+          : {};
+        const { blob, w, h } = await resizeTo(file, isPng ? 'image/png' : 'image/jpeg', isPng ? 1200 : 2000, 0.88, opts);
         setUpload({
           status: 'preview',
           previewUrl: URL.createObjectURL(blob),
