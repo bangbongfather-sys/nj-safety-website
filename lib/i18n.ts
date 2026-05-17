@@ -81,7 +81,14 @@ export type HeroSlide = {
 type RawDict = typeof ko;
 
 type RawHero = RawDict['hero'];
-type HeroWithSlides = RawHero & {
+// IMPORTANT: We Omit `slides` (and `bgImage`) from the JSON-inferred RawHero
+// before layering our own definitions back on. If we just intersected
+// `RawHero & { slides?: HeroSlide[] }`, TypeScript would AND the two slide
+// shapes together — so any property the JSON happened to include on a
+// real slide (like `linkHref` once an admin set it) would become required,
+// which then broke `buildLegacySlide` (it doesn't fill those fields) and
+// killed the Cloudflare build.
+type HeroWithSlides = Omit<RawHero, 'slides' | 'bgImage'> & {
   /** Legacy single-image background (used when slides[] is empty). */
   bgImage?: string;
   /** Multi-slide carousel data. When set, replaces all top-level hero text. */
