@@ -321,30 +321,45 @@ export default function EditHomePage() {
     setSave({ status: 'idle' });
   }, [load]);
 
-  // ── Autosave: 15s after the last edit, push to GitHub automatically. ──
-  // Manual "변경사항 게시" still works for immediate flush.
+  // ── Autosave: 60s after the last edit, push to GitHub automatically. ──
+  // Manual "즉시 게시" still works for immediate flush.
   const [autoSavedAt, setAutoSavedAt] = useState<Date | null>(null);
   const [, tickRender] = useState(0); // for ticking the "X seconds ago" label
   const handleSaveRef = useRef(handleSave);
   useEffect(() => { handleSaveRef.current = handleSave; }, [handleSave]);
 
-  // Autosave debounce: longer is better here, because every commit triggers
-  // a separate Cloudflare build (≈1–2 min each). A 3 s window made it easy
-  // to queue 5+ builds during a normal editing burst — site got stuck
-  // behind a slow deploy chain. 15 s coalesces typical bursts into one
-  // commit while still feeling "live" to the user; the "즉시 게시" button
-  // still flushes immediately for impatient moments.
+  // Autosave timing — every commit triggers a separate Cloudflare build
+  // (~1–2 min each), so we deliberately under-fire to keep the queue
+  // healthy. Two layers:
+  //
+  //   AUTOSAVE_DEBOUNCE_MS  — how long the user has to be idle (no edits)
+  //                           before a save fires. Short bursts of edits
+  //                           collapse into a single commit.
+  //   AUTOSAVE_MIN_GAP_MS   — minimum wall-clock gap between two saves.
+  //                           Active editing sessions get batched: even
+  //                           if the user pauses several times, we still
+  //                           commit at most once every 2 minutes.
+  //
+  // The `즉시 게시` button bypasses both for impatient moments.
+  const AUTOSAVE_DEBOUNCE_MS = 60_000;
+  const AUTOSAVE_MIN_GAP_MS = 120_000;
   useEffect(() => {
     if (!dirty) return;
     if (save.status === 'saving') return;
+    // If we just saved, wait out the remainder of the min-gap window
+    // before queuing the next autosave. The dependency on `autoSavedAt`
+    // means we'll re-run after the wait and pick up the still-dirty
+    // state (or skip if the user already hit "즉시 게시" manually).
+    const sinceLast = autoSavedAt ? Date.now() - autoSavedAt.getTime() : Infinity;
+    const wait = Math.max(AUTOSAVE_DEBOUNCE_MS, AUTOSAVE_MIN_GAP_MS - sinceLast);
     const t = setTimeout(() => {
       void (async () => {
         await handleSaveRef.current();
         setAutoSavedAt(new Date());
       })();
-    }, 15000);
+    }, wait);
     return () => clearTimeout(t);
-  }, [koDraft, enDraft, dirty, save.status]);
+  }, [koDraft, enDraft, dirty, save.status, autoSavedAt]);
 
   // Tick once per 10 seconds so the "Xs ago" label stays roughly current
   // without re-rendering the whole page on every animation frame.
