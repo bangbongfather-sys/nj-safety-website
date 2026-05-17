@@ -455,7 +455,7 @@ section { position: relative; }
  * (this section is supposed to feel more present than the hero). */
 .showcase-bg .ed-img-img,
 .showcase-bg img {
-  filter: brightness(.7) contrast(1.1) saturate(.85);
+  filter: brightness(.5) contrast(1.12) saturate(.8);
 }
 .showcase-overlay {
   position: absolute; inset: 0;
