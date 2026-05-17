@@ -2389,8 +2389,17 @@
 .nj-page .psh {
   background: var(--paper);
   color: var(--ink);
-  padding: 48px 0 64px;
+  padding: 48px 0 96px;
+  /* Force the shop header to dominate the initial viewport so the
+   * sticky tab bar sits below the fold on first load instead of
+   * crowding the photo + info block. Nav above is 112px tall, so
+   * min-height: calc(100vh - 112px) makes the header at least as
+   * tall as the remaining viewport on every screen. */
+  min-height: calc(100vh - 112px);
+  display: flex;
+  align-items: center;
 }
+.nj-page .psh-wrap { width: 100%; }
 .nj-page .psh-wrap {
   max-width: 1320px;
   margin: 0 auto;
