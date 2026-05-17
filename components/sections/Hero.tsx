@@ -13,13 +13,22 @@ const AUTO_ROTATE_MS = 7000;
 // When admin has set custom filter values, emit inline CSS that overrides
 // the static rule in globals.css. When siteConfig is missing we leave
 // inline style empty so the CSS default applies.
+//
+// IMPORTANT: returned as a CSS custom property (`--hero-filter`) on the
+// section, not as `filter:` on the <img>. Reason: the real slide image
+// is rendered by <EditableImage>, which renders its own internal <img>
+// and won't accept a style prop from us. Instead, globals.css has a
+// rule `.hero-bg-slide img { filter: var(--hero-filter, ...) }` so the
+// variable applies to every slide image (active or fading) at once.
 function heroImgStyle(dict: Dictionary): CSSProperties | undefined {
   const f = dict.siteConfig?.heroFilter;
   if (!f || (f.brightness == null && f.contrast == null && f.saturate == null)) return undefined;
   const b = f.brightness ?? 0.85;
   const c = f.contrast ?? 1.15;
   const s = f.saturate ?? 0.6;
-  return { filter: `brightness(${b}) contrast(${c}) saturate(${s})` };
+  return {
+    ['--hero-filter' as string]: `brightness(${b}) contrast(${c}) saturate(${s})`,
+  };
 }
 
 // Project the (possibly slide-less) hero dict into a normalised array.
@@ -96,6 +105,7 @@ export default function Hero({ locale, dict, editor }: Props) {
     <section
       className={`hero${!editor && resolvedLink ? ' hero--linked' : ''}`}
       data-screen-label="01 Hero"
+      style={heroImgStyle(dict)}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
@@ -129,7 +139,6 @@ export default function Hero({ locale, dict, editor }: Props) {
                   aria-hidden
                   loading={active ? 'eager' : 'lazy'}
                   decoding="async"
-                  style={heroImgStyle(dict)}
                 />
               }
               editor={active ? editor : undefined}

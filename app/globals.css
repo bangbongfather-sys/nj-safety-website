@@ -155,6 +155,11 @@ p { line-height: 1.65; }
   position: relative; height: 100vh;
   min-height: 680px; overflow: hidden;
   background: #0d0d0e;
+  /* Default cinematic filter — Hero sets `--hero-filter` inline when the
+   * admin has overridden brightness/contrast/saturate, otherwise this
+   * value applies. Used by both the static fallback <img class="hero-img">
+   * and EditableImage's internal <img> via the rules below. */
+  --hero-filter: brightness(.85) contrast(1.15) saturate(.6);
 }
 .hero-bg { position: absolute; inset: 0; }
 .hero-bg svg { width: 100%; height: 100%; display: block; }
@@ -163,8 +168,13 @@ p { line-height: 1.65; }
   object-fit: cover;
   object-position: 62% 35%;
   display: block;
-  /* darken + desaturate toward neutral cinematic tone (no warm shift — overlays handle accent) */
-  filter: brightness(.85) contrast(1.15) saturate(.6);
+  filter: var(--hero-filter);
+}
+/* EditableImage renders its own <img class="ed-img-img"> inside the
+ * slide; reach into it so the admin's filter sliders affect the real
+ * uploaded photos too, not just the static fallback image. */
+.hero-bg-slide .ed-img-img {
+  filter: var(--hero-filter);
 }
 .hero-overlay {
   position: absolute; inset: 0;
