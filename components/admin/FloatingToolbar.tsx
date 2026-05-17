@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { FieldStyle } from '@/lib/i18n';
 
 export type FocusInfo = { path: string };
@@ -78,6 +78,57 @@ export default function FloatingToolbar({ focused, currentStyle, onPatchStyle, o
     };
   }, [focused]);
 
+  /**
+   * Color picker dispatch.
+   *
+   * If the user dragged out a real selection inside the focused element,
+   * we wrap just that selection in a colored `<span>` via execCommand —
+   * the contentEditable holds the new markup until blur, at which point
+   * EditableText.onBlur saves the new HTML to the dict.
+   *
+   * Otherwise (cursor sitting inside the element with no selection, or
+   * no focus at all) we fall back to the legacy whole-field override
+   * via `styles[<path>].color`.
+   */
+  const applyColor = useCallback((color: string | null) => {
+    if (!focused) return;
+
+    // Resetting (null) always clears the whole-field override. We don't
+    // try to unwrap individual selection spans — that's an unsafe DOM
+    // surgery for the rare case; clearing the whole field gets the
+    // user back to a clean slate.
+    if (color == null) {
+      onPatchStyle('color', null);
+      return;
+    }
+
+    const sel = typeof window !== 'undefined' ? window.getSelection() : null;
+    const fp = `[data-edit-path="${CSS.escape(focused.path)}"]`;
+    const el = document.querySelector(fp) as HTMLElement | null;
+
+    const hasRangeInside =
+      !!sel && sel.rangeCount > 0 && !sel.isCollapsed &&
+      !!el && (!!sel.anchorNode && el.contains(sel.anchorNode));
+
+    if (hasRangeInside && el) {
+      el.focus();
+      try {
+        // Use inline CSS spans, not legacy <font> tags.
+        document.execCommand('styleWithCSS', false, 'true');
+        document.execCommand('foreColor', false, color);
+      } catch {
+        // Fallback: apply to whole field if execCommand isn't supported.
+        onPatchStyle('color', color);
+      }
+      // EditableText.onBlur saves the new innerHTML when the user
+      // clicks away. No state patch needed here.
+      return;
+    }
+
+    // No selection → tint the whole field via the styles dict.
+    onPatchStyle('color', color);
+  }, [focused, onPatchStyle]);
+
   if (!focused) return null;
 
   const sizeEm = parseEm(currentStyle.size);
@@ -123,19 +174,22 @@ export default function FloatingToolbar({ focused, currentStyle, onPatchStyle, o
             type="button"
             className={`ed-color${currentStyle.color === c.value ? ' is-on' : ''}`}
             style={{ background: c.value }}
-            onClick={() => onPatchStyle('color', c.value)}
+            onClick={() => applyColor(c.value)}
             aria-label={c.label}
-            title={c.label}
+            title={`${c.label} (드래그 선택한 글자만 / 선택 없으면 필드 전체)`}
           />
         ))}
         <input
           type="color"
           className="ed-color-pick"
           value={currentStyle.color ?? '#ffffff'}
-          onChange={(e) => onPatchStyle('color', e.target.value)}
-          title="직접 선택"
+          onChange={(e) => applyColor(e.target.value)}
+          title="직접 선택 — 글자 드래그 후 누르면 선택한 부분만 색칠"
         />
-        <button type="button" className="ed-tb-btn reset" onClick={() => onPatchStyle('color', null)} title="초기화">↺</button>
+        <button type="button" className="ed-tb-btn reset" onClick={() => applyColor(null)} title="필드 전체 색상 초기화">↺</button>
+      </div>
+      <div className="ed-toolbar-hint">
+        💡 글자를 드래그 선택한 채로 색을 누르면 그 부분만 색칠됩니다.
       </div>
 
       <div className="ed-toolbar-row">

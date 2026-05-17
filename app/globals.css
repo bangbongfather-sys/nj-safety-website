@@ -2485,6 +2485,15 @@ section { position: relative; }
   padding-top: 4px;
   border-top: 1px solid var(--border-soft);
 }
+.ed-toolbar-hint {
+  font-size: 10px;
+  color: var(--muted);
+  line-height: 1.4;
+  padding: 2px 4px;
+  border-left: 2px solid rgba(255, 107, 26, .35);
+  padding-left: 8px;
+  margin: -2px 0 2px;
+}
 .ed-tb-btn-clear {
   width: 100%;
   text-align: center;
