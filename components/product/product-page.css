@@ -2674,11 +2674,19 @@
 
 .nj-page .pdt-panes { background: var(--paper); }
 .nj-page .pdt-pane { display: none; }
-.nj-page .pdt-pane.is-on { display: block; }
+.nj-page .pdt-pane.is-on {
+  display: block;
+  /* Breathing room so the catalog-app content (which starts with a
+   * full-bleed dark hero) doesn't slide flush under the sticky tab bar
+   * — the hard color join was reading as the tabs being "buried" in
+   * the hero, especially mid-scroll. */
+  padding-top: 56px;
+}
 
 @media (max-width: 900px) {
   .nj-page .pdt-bar-inner { padding: 0 20px; }
   .nj-page .pdt-tab { padding: 14px 8px; font-size: 13px; }
+  .nj-page .pdt-pane.is-on { padding-top: 32px; }
 }
 
 /* ============================================================
