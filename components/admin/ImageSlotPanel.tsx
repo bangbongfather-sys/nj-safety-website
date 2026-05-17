@@ -224,9 +224,13 @@ export default function ImageSlotPanel({ slot, pat, currentSrc, onPatch, onClose
         `chore(image): ${slot.path} via admin`,
         sha,
       );
-      setUpload({ status: 'done', previewUrl: upload.previewUrl, commitSha, publicUrl: target.publicUrl });
-      // Patch dict so the public site picks it up after rebuild.
-      onPatch(slot.path, target.publicUrl);
+      // Cache-bust the URL so the browser + Cloudflare CDN refetch the
+      // fresh bytes the moment the build deploys. Without this, the same
+      // path = same cache key, and visitors see the OLD photo for hours
+      // (Cloudflare static asset cache is aggressive for images).
+      const urlWithBust = `${target.publicUrl}?v=${Date.now()}`;
+      setUpload({ status: 'done', previewUrl: upload.previewUrl, commitSha, publicUrl: urlWithBust });
+      onPatch(slot.path, urlWithBust);
     } catch (e: unknown) {
       setUpload({ status: 'error', message: e instanceof Error ? e.message : String(e) });
     }
@@ -284,10 +288,17 @@ export default function ImageSlotPanel({ slot, pat, currentSrc, onPatch, onClose
       ) : upload.status === 'done' ? (
         <>
           <div className="ed-bg-status ed-bg-ok">
-            ✓ 완료 — commit <code>{upload.commitSha.slice(0, 7)}</code>
+            ✓ GitHub 커밋 완료 — <code>{upload.commitSha.slice(0, 7)}</code>
+          </div>
+          <div className="ed-bg-preview">
+            <img src={upload.previewUrl} alt="just uploaded" />
           </div>
           <div className="ed-bg-hint">
-            Cloudflare 재배포(~1~2분) 후 강제 새로고침(Ctrl+Shift+R)하시면 새 이미지가 보입니다.
+            <strong>방금 올린 사진은 위 미리보기로 확인하실 수 있어요.</strong>
+            <br />
+            실제 사이트(<code>/ko/</code>)에 반영되려면 <strong>Cloudflare 재배포 1~2분</strong> 필요합니다.
+            <br />
+            이번 URL은 <code>?v=…</code> 캐시버스터가 붙어서 빌드 끝나면 즉시 새 사진을 가져옵니다.
           </div>
           <button type="button" className="btn ghost small" onClick={onClose} style={{ marginTop: 8 }}>
             닫기
