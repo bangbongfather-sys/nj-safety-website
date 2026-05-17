@@ -56,8 +56,6 @@ export default function ProductShopHeader({ data, locale, editor }: Props) {
   const images = head.images ?? [];
 
   const [active, setActive] = useState(0);
-  const safeActive = Math.min(active, Math.max(0, images.length - 1));
-  const mainSrc = images[safeActive] ?? '';
 
   const summary = head.summarySpecs ?? [];
   const contactHref = `/${locale}/contact?product=${encodeURIComponent(data.slug ?? '')}`;
@@ -95,17 +93,33 @@ export default function ProductShopHeader({ data, locale, editor }: Props) {
     // string at the index marks it for the renderer to skip. The actual
     // array shape stays the same in JSON; we filter on render.
     editor.onImagePatch(`shopHeader.images[${index}]`, '');
-    if (active === index) setActive(0);
+    if (active >= images.length - 1) setActive(0);
   };
 
-  // Drop empty-string entries from the display so deletions take effect
-  // even without an array splice on the editor side.
-  const displayImages = images.filter((s) => !!s);
-  const displayMain = displayImages[Math.min(safeActive, displayImages.length - 1)] ?? mainSrc;
+  // Build a pair of arrays:
+  //   • displayImages — the visible photos (deletions filtered out)
+  //   • originalIndexes — same length, maps display index -> raw array
+  //     index, so editor actions (delete / replace) write to the right
+  //     path even after deletions left "holes" in the JSON.
+  const displayImages: string[] = [];
+  const originalIndexes: number[] = [];
+  images.forEach((src, i) => {
+    if (src) {
+      displayImages.push(src);
+      originalIndexes.push(i);
+    }
+  });
+  const total = displayImages.length;
+  const safeActive = total === 0 ? 0 : ((active % total) + total) % total;
+  const displayMain = displayImages[safeActive] ?? '';
+  const activeOriginalIndex = originalIndexes[safeActive] ?? 0;
   // Index for "+ 사진 추가": always the next slot AFTER all existing
   // entries (we keep the holes from deletions in place; new uploads go
   // to the end so we don't accidentally overwrite a kept image).
   const addIndex = images.length;
+
+  const goPrev = () => setActive((a) => (total <= 1 ? 0 : (a - 1 + total) % total));
+  const goNext = () => setActive((a) => (total <= 1 ? 0 : (a + 1) % total));
 
   return (
     <section className="psh">
@@ -119,16 +133,39 @@ export default function ProductShopHeader({ data, locale, editor }: Props) {
                 alt={stripTags(head.name)}
                 className="psh-main-img"
               />
-              {!editor && displayImages.length > 1 ? (
+              {/* Prev / next arrows when there's more than one photo —
+               * mirrors the homepage hero carousel pattern so visitors
+               * recognise the affordance immediately. */}
+              {total > 1 ? (
+                <>
+                  <button
+                    type="button"
+                    className="psh-nav psh-nav-prev"
+                    onClick={goPrev}
+                    aria-label="이전 사진"
+                  >
+                    ‹
+                  </button>
+                  <button
+                    type="button"
+                    className="psh-nav psh-nav-next"
+                    onClick={goNext}
+                    aria-label="다음 사진"
+                  >
+                    ›
+                  </button>
+                </>
+              ) : null}
+              {total > 1 ? (
                 <div className="psh-count">
-                  {Math.min(safeActive + 1, displayImages.length)} / {displayImages.length}
+                  {safeActive + 1} / {total}
                 </div>
               ) : null}
               {editor ? (
                 <button
                   type="button"
                   className="psh-main-edit"
-                  onClick={() => openImagePicker(safeActive)}
+                  onClick={() => openImagePicker(activeOriginalIndex)}
                   title="이 사진을 교체"
                 >
                   🖼️ 사진 교체
@@ -139,17 +176,17 @@ export default function ProductShopHeader({ data, locale, editor }: Props) {
             {/* Thumbnails — multi-image in edit and public modes */}
             {(displayImages.length > 1 || editor) ? (
               <div className="psh-thumbs" role="tablist" aria-label="제품 사진">
-                {images.map((src, i) => {
-                  if (!src) return null; // skip deleted slots
+                {displayImages.map((src, di) => {
+                  const i = originalIndexes[di]; // raw JSON-array index for editor ops
                   return (
                     <div key={src + i} className="psh-thumb-wrap">
                       <button
                         type="button"
                         role="tab"
-                        aria-selected={i === safeActive}
-                        className={`psh-thumb${i === safeActive ? ' is-on' : ''}`}
-                        onClick={() => setActive(i)}
-                        aria-label={`사진 ${i + 1}`}
+                        aria-selected={di === safeActive}
+                        className={`psh-thumb${di === safeActive ? ' is-on' : ''}`}
+                        onClick={() => setActive(di)}
+                        aria-label={`사진 ${di + 1}`}
                       >
                         <ImageOrPlaceholder src={src} alt="" />
                       </button>
