@@ -83,9 +83,6 @@ export default function Hero({ locale, dict, editor }: Props) {
   const goPrev = useCallback(() => setCurrent((c) => (c - 1 + total) % total), [total]);
   const goNext = useCallback(() => setCurrent((c) => (c + 1) % total), [total]);
 
-  const ctaPrimaryHref = slide.ctaPrimaryHref || `/${locale}/products`;
-  const ctaSecondaryHref = slide.ctaSecondaryHref || `/${locale}/contact`;
-
   // Resolve the slide link. We let the admin type either:
   //   • absolute external: "https://example.com/..."
   //   • locale-prefixed:   "/ko/products/aramid-pk"
@@ -199,16 +196,11 @@ export default function Hero({ locale, dict, editor }: Props) {
           </h1>
           <EditableText as="p" className="hero-tagline" path={`${basePath}.tagline`} value={slide.tagline ?? ''} editor={editor} />
           <EditableText as="p" className="hero-sub" path={`${basePath}.sub`} value={slide.sub ?? ''} editor={editor} multiline />
-          <div className="hero-cta">
-            <Link href={ctaPrimaryHref} className="btn btn-primary">
-              <EditableText path={`${basePath}.ctaPrimary`} value={slide.ctaPrimary ?? ''} editor={editor} />
-              <span className="arr">→</span>
-            </Link>
-            <Link href={ctaSecondaryHref} className="btn btn-ghost">
-              <EditableText path={`${basePath}.ctaSecondary`} value={slide.ctaSecondary ?? ''} editor={editor} />
-              <span className="arr">→</span>
-            </Link>
-          </div>
+          {/* CTA buttons removed — the entire slide background is now a
+           * click-through link (set per-slide via the admin 연결 페이지
+           * field), so the redundant 자세히 보기 / 문의 buttons just
+           * crowded the layout. The "consider whole slide clickable"
+           * affordance comes from the pointer cursor + hover-arrows. */}
         </div>
       </div>
 
