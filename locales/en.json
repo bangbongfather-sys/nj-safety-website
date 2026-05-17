@@ -331,6 +331,9 @@
     },
     "hero.slides[2].headlineLine2Em": {
       "size": "0.90em"
+    },
+    "hero.slides[1].sub": {
+      "size": "1.10em"
     }
   },
   "siteConfig": {
