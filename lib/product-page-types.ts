@@ -184,6 +184,36 @@ export type ProductOrder = {
 };
 
 /**
+ * Shop-style header at the very top of the product detail page.
+ *
+ * INTENTIONALLY separate from the catalog-app hero/spec data underneath:
+ * the catalog render in the 상품상세정보 tab is treated as immutable
+ * (whatever was produced by catalog-app stays as-is), while this block
+ * is what the admin freely edits — own images, own copy, own summary
+ * specs. Falls back to the catalog values when fields are missing so a
+ * brand-new product still renders something before the admin fills it in.
+ */
+export type ProductShopHeaderSpecRow = {
+  label: string;
+  value: string;
+};
+
+export type ProductShopHeaderData = {
+  /** Gallery: first item is the main photo, rest are thumbnails. */
+  images?: string[];
+  /** Brand-context line above the title — usually a category code. */
+  category?: string;
+  /** Big title (Korean). Can include `<em>` for the orange accent. */
+  name?: string;
+  /** One-line subtitle directly below the title. */
+  subtitle?: string;
+  /** Longer tagline / pitch. */
+  tagline?: string;
+  /** Quick spec rows shown on the right side under the title. */
+  summarySpecs?: ProductShopHeaderSpecRow[];
+};
+
+/**
  * "기본 정보" tab — the regulator-style summary block that B2B buyers
  * expect to see (Naver Smart Store / K2 / Coupang all render this same
  * shape). Stored as label/value pairs so the admin can rename a row's
@@ -292,6 +322,9 @@ export type ProductPageData = {
   certs?: ProductCert[];
   order?: ProductOrder;
 
+  /** Top shop-style header — separate data from the catalog hero so
+   *  edits here don't leak into the catalog render below. */
+  shopHeader?: ProductShopHeaderData;
   /** Regulator-style basic info shown under the 기본정보 tab. */
   basicInfo?: ProductBasicInfo;
   /** PDF test reports listed under the 시험성적서 tab. */
@@ -325,6 +358,47 @@ export const DEFAULT_BASIC_INFO_DISCLOSURE: ProductBasicInfoRow[] = [
   { label: '품질보증기준',                              value: '' },
   { label: 'AS책임자와 전화번호',                        value: '02-777-3079' },
 ];
+
+/**
+ * On editor load: seed a missing shopHeader from the catalog hero/spec
+ * data so the admin sees the existing photos + copy on first paint,
+ * then edits them independently. Returns a new copy of `data` with a
+ * fully-populated shopHeader; never mutates the input.
+ *
+ * Summary spec keys mirror the K2-style 6 most-useful rows we lift on
+ * the read side; values come from data.spec.rows when present.
+ */
+const SHOP_HEADER_SPEC_KEYS = ['원단 구성', '중량', '컬러', '사이즈', '원산지', '인증'];
+
+export function withShopHeaderDefaults(data: ProductPageData): ProductPageData {
+  // Build the seed images: catalog hero first, then every catalog gallery
+  // image (deduped). We DO this on every load so newly-uploaded catalog
+  // photos appear as thumbnail candidates the first time the admin
+  // opens the editor; once shopHeader.images is non-empty we trust it
+  // entirely.
+  const existing = data.shopHeader ?? {};
+  const seedImages: string[] = [];
+  if (data.hero?.image) seedImages.push(data.hero.image);
+  for (const it of data.gallery?.items ?? []) {
+    if (it.image && !seedImages.includes(it.image)) seedImages.push(it.image);
+  }
+  const seedSummary: ProductShopHeaderSpecRow[] = SHOP_HEADER_SPEC_KEYS
+    .map((label) => data.spec?.rows?.find((r) => r.label.trim() === label))
+    .filter((r): r is { label: string; value: string } => !!r)
+    .map((r) => ({ label: r.label, value: r.value }));
+
+  const filled: ProductShopHeaderData = {
+    images:       existing.images && existing.images.length > 0 ? existing.images : seedImages,
+    category:     existing.category   ?? data.category   ?? '',
+    name:         existing.name       ?? data.name       ?? '',
+    subtitle:     existing.subtitle   ?? data.subtitle   ?? '',
+    tagline:      existing.tagline    ?? data.tagline    ?? '',
+    summarySpecs: existing.summarySpecs && existing.summarySpecs.length > 0
+      ? existing.summarySpecs
+      : seedSummary,
+  };
+  return { ...data, shopHeader: filled };
+}
 
 /**
  * Backfill missing rows so the renderer always sees the full structure.

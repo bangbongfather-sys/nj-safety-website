@@ -2904,3 +2904,94 @@
   }
   .nj-page .ptr-action { grid-column: 2; justify-self: end; }
 }
+
+/* ============================================================
+   Shop header extras for edit mode
+   ============================================================ */
+/* "사진 교체" overlay button on the main image (admin only) */
+.nj-page .psh-main { position: relative; }
+.nj-page .psh-main-edit {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 5;
+  background: var(--orange);
+  color: #fff;
+  border: 1px solid var(--orange-deep);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: .04em;
+  padding: 8px 14px;
+  border-radius: 2px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .25);
+  transition: background .15s ease, transform .15s ease;
+}
+.nj-page .psh-main-edit:hover {
+  background: var(--orange-deep);
+  transform: translateY(-1px);
+}
+
+/* Thumbnail with delete button overlay (admin only) */
+.nj-page .psh-thumb-wrap { position: relative; }
+.nj-page .psh-thumb-del {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  z-index: 4;
+  width: 20px;
+  height: 20px;
+  background: #c93030;
+  color: #fff;
+  border: 1.5px solid #fff;
+  border-radius: 50%;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nj-page .psh-thumb-wrap:hover .psh-thumb-del { opacity: 1; }
+
+/* "+ 추가" tile at the end of the thumbnail strip */
+.nj-page .psh-thumb-add {
+  aspect-ratio: 1 / 1;
+  background: rgba(232, 93, 46, 0.08);
+  border: 2px dashed var(--orange);
+  color: var(--orange-deep);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  cursor: pointer;
+  transition: background .15s ease, border-color .15s ease;
+}
+.nj-page .psh-thumb-add:hover {
+  background: rgba(232, 93, 46, 0.18);
+  border-color: var(--orange-deep);
+}
+.nj-page .psh-thumb-add small {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .08em;
+}
+
+.nj-page .psh-edit-hint {
+  margin: 8px 0 0;
+  padding: 10px 14px;
+  background: rgba(232, 93, 46, 0.08);
+  border-left: 3px solid var(--orange);
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.55;
+}

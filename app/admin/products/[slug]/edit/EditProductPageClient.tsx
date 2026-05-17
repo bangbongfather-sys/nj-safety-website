@@ -29,6 +29,7 @@ import ResizeHandle from '@/components/admin/ResizeHandle';
 import type { FieldStyle as HomepageFieldStyle } from '@/lib/i18n';
 import { ghGetFile, ghPutFile } from '@/lib/admin/github';
 import type { ProductPageData, FieldStyle } from '@/lib/product-page-types';
+import { withShopHeaderDefaults } from '@/lib/product-page-types';
 import ProductPage from '@/components/product/ProductPage';
 
 // Identical implementation to the homepage editor — kept inline because
@@ -127,7 +128,12 @@ export default function EditProductPage() {
         const f = await ghGetFile(pat, FILE_PATH);
         if (cancelled) return;
         if (!f) throw new Error(`${FILE_PATH} 를 찾을 수 없습니다`);
-        const obj = JSON.parse(f.content) as ProductPageData;
+        const raw = JSON.parse(f.content) as ProductPageData;
+        // Seed shopHeader from catalog data on first load so the admin
+        // sees the existing photos + copy in the top header. Subsequent
+        // edits write only to data.shopHeader, leaving the catalog
+        // hero/spec untouched.
+        const obj = withShopHeaderDefaults(raw);
         setLoad({ status: 'ready', data: obj, sha: f.sha });
         setDraft(obj);
       } catch (e: unknown) {
