@@ -38,6 +38,8 @@ import type { EditorApi } from '@/components/admin/EditableText';
 import ImageOrPlaceholder from './ImageOrPlaceholder';
 import ProductShopHeader from './ProductShopHeader';
 import ProductDetailTabs, { type ProductTab } from './ProductDetailTabs';
+import ProductBasicInfoTab from './ProductBasicInfoTab';
+import ProductTestReportsTab from './ProductTestReportsTab';
 import './product-page.css';
 
 // Common rich-text host: marks the element with data-fp so StyleInjector
@@ -438,11 +440,19 @@ export default function ProductPage({
   data,
   locale,
   editor,
+  pat,
+  onAfterPdfUpload,
 }: {
   data: ProductPageData;
   locale: Locale;
-  /** When provided, the shop header switches to inline-edit mode. */
+  /** When provided, the shop header + tabs switch to inline-edit mode. */
   editor?: EditorApi;
+  /** GitHub PAT — required only by the 시험성적서 tab so it can PUT
+   *  PDFs through the upload Worker. */
+  pat?: string;
+  /** Mirror image upload behaviour: parent flushes the dict immediately
+   *  after a PDF lands so the rebuild starts now. */
+  onAfterPdfUpload?: () => void;
 }) {
   // `flavor` on the wrapper picks the visual treatment. CSS rules for the
   // two non-default flavors live in product-page.css under
@@ -455,10 +465,10 @@ export default function ProductPage({
         ? ' nj-page-tactical'
         : '';
 
-  // One tab — the entire catalog-app render sits inside 상품상세정보 as a
-  // single scrolling pane. (Earlier we split into detail / care / order,
-  // but the admin wanted the full catalog page kept intact so it scrolls
-  // top-to-bottom exactly like the original.)
+  // Three tabs:
+  //   1. 상품상세정보 — the full catalog-app render, scrolls top-to-bottom
+  //   2. 기본정보     — regulator-style brand / origin / 제품정보제공고시 table
+  //   3. 시험성적서   — list of PDF reports uploaded to R2
   const detailContent = (
     <>
       <Gallery gallery={data.gallery} />
@@ -472,7 +482,29 @@ export default function ProductPage({
     </>
   );
   const tabs: ProductTab[] = [
-    { key: 'detail', label: '상품상세정보', content: detailContent },
+    {
+      key: 'detail',
+      label: '상품상세정보',
+      content: detailContent,
+    },
+    {
+      key: 'basic',
+      label: '기본정보',
+      content: <ProductBasicInfoTab data={data} editor={editor} />,
+    },
+    {
+      key: 'reports',
+      label: '시험성적서',
+      content: (
+        <ProductTestReportsTab
+          data={data}
+          editor={editor}
+          pat={pat}
+          slug={data.slug ?? ''}
+          onAfterUpload={onAfterPdfUpload}
+        />
+      ),
+    },
   ];
 
   return (

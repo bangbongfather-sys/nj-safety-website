@@ -184,6 +184,43 @@ export type ProductOrder = {
 };
 
 /**
+ * "기본 정보" tab — the regulator-style summary block that B2B buyers
+ * expect to see (Naver Smart Store / K2 / Coupang all render this same
+ * shape). Stored as label/value pairs so the admin can rename a row's
+ * meaning without code changes and the missing-row case (e.g. 제조년월
+ * left blank) just renders an empty cell.
+ */
+export type ProductBasicInfoRow = {
+  label: string;
+  value: string;
+};
+
+export type ProductBasicInfo = {
+  /** 상품 기본 정보 — brand, model, manufacturer, origin */
+  primary?: ProductBasicInfoRow[];
+  /** 상품정보제공고시 — material, color, size, care, AS contact, etc. */
+  disclosure?: ProductBasicInfoRow[];
+};
+
+/**
+ * 시험성적서 tab — one or more PDF reports uploaded to R2.
+ */
+export type ProductTestReportFile = {
+  /** Public R2 URL (includes a cache-bust query). */
+  url: string;
+  /** Display name. Defaults to the original filename minus the extension. */
+  name?: string;
+  /** Byte size as reported by R2 — used for the small "1.2 MB" hint. */
+  size?: number;
+  /** ISO timestamp of upload (server clock). */
+  uploadedAt?: string;
+};
+
+export type ProductTestReports = {
+  files?: ProductTestReportFile[];
+};
+
+/**
  * Per-field style override produced by the in-page Format toolbar.
  * Stored on ProductPageData under `styles`, keyed by the same lodash-style
  * path used by editText / EditableImage (e.g. `name`, `hero.tag`,
@@ -255,9 +292,58 @@ export type ProductPageData = {
   certs?: ProductCert[];
   order?: ProductOrder;
 
+  /** Regulator-style basic info shown under the 기본정보 tab. */
+  basicInfo?: ProductBasicInfo;
+  /** PDF test reports listed under the 시험성적서 tab. */
+  testReports?: ProductTestReports;
+
   /** Optional per-field style overrides set via the in-page Format toolbar. */
   styles?: Record<string, FieldStyle>;
 };
+
+/**
+ * Default row labels for the 기본정보 tab. The renderer always shows
+ * these rows so the table layout is stable even before the admin fills
+ * anything in; admin edits write the matching index back into
+ * data.basicInfo.{primary,disclosure}[i].value.
+ */
+export const DEFAULT_BASIC_INFO_PRIMARY: ProductBasicInfoRow[] = [
+  { label: '브랜드',   value: 'NJ SAFETY' },
+  { label: '모델명',   value: '' },
+  { label: '제조사',   value: '나정엔터프라이즈' },
+  { label: '원산지',   value: '대한민국' },
+];
+
+export const DEFAULT_BASIC_INFO_DISCLOSURE: ProductBasicInfoRow[] = [
+  { label: '제품소재',                                  value: '' },
+  { label: '색상',                                      value: '' },
+  { label: '치수',                                      value: '' },
+  { label: '제조자, 수입품의 경우 수입자를 함께 표시',    value: '' },
+  { label: '제조국',                                    value: '대한민국' },
+  { label: '세탁방법 및 취급시 주의사항',                value: '' },
+  { label: '제조년월',                                  value: '' },
+  { label: '품질보증기준',                              value: '' },
+  { label: 'AS책임자와 전화번호',                        value: '02-777-3079' },
+];
+
+/**
+ * Backfill missing rows so the renderer always sees the full structure.
+ * Pure — returns a new array, never mutates the input. Rows already
+ * present (matched by label) win; defaults only fill the gaps.
+ */
+export function withBasicInfoDefaults(info?: ProductBasicInfo): ProductBasicInfo {
+  function merge(
+    existing: ProductBasicInfoRow[] | undefined,
+    defaults: ProductBasicInfoRow[],
+  ): ProductBasicInfoRow[] {
+    const existingByLabel = new Map((existing ?? []).map((r) => [r.label, r]));
+    return defaults.map((d) => existingByLabel.get(d.label) ?? { ...d });
+  }
+  return {
+    primary:    merge(info?.primary,    DEFAULT_BASIC_INFO_PRIMARY),
+    disclosure: merge(info?.disclosure, DEFAULT_BASIC_INFO_DISCLOSURE),
+  };
+}
 
 /**
  * Font presets exposed in the format toolbar. The CSS stack on each entry

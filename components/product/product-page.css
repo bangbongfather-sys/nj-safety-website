@@ -2680,3 +2680,227 @@
   .nj-page .pdt-bar-inner { padding: 0 20px; }
   .nj-page .pdt-tab { padding: 14px 8px; font-size: 13px; }
 }
+
+/* ============================================================
+   기본정보 tab (.pbi)
+   Naver/K2/Coupang-style label-value table — every row is two
+   columns separated by a soft horizontal rule. Two stacked
+   sections: 상품 기본 정보 + 상품정보제공고시.
+   ============================================================ */
+.nj-page .pbi {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 48px 32px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.nj-page .pbi-section { color: var(--ink); }
+.nj-page .pbi-h {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: -.01em;
+  color: var(--ink);
+  margin: 0 0 14px;
+}
+.nj-page .pbi-table {
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.nj-page .pbi-row {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  align-items: stretch;
+  border-bottom: 1px solid var(--rule);
+}
+.nj-page .pbi-row:last-child { border-bottom: 0; }
+.nj-page .pbi-label {
+  padding: 16px 20px;
+  font-size: 13px;
+  color: var(--ink-soft);
+  background: rgba(20, 23, 29, 0.03);
+  border-right: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+}
+.nj-page .pbi-value {
+  padding: 16px 20px;
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 1.6;
+  min-height: 24px;
+  word-break: break-word;
+}
+.nj-page .pbi-value span:empty::before {
+  content: '–';
+  color: var(--ink-soft);
+  opacity: .4;
+}
+
+@media (max-width: 720px) {
+  .nj-page .pbi { padding: 28px 20px 60px; gap: 28px; }
+  .nj-page .pbi-row { grid-template-columns: 140px 1fr; }
+  .nj-page .pbi-label { padding: 12px 14px; font-size: 12px; }
+  .nj-page .pbi-value { padding: 12px 14px; font-size: 13px; }
+}
+
+/* ============================================================
+   시험성적서 tab (.ptr)
+   List of PDF download links + admin upload UI.
+   ============================================================ */
+.nj-page .ptr {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 48px 32px 80px;
+  color: var(--ink);
+}
+.nj-page .ptr-head { margin-bottom: 24px; }
+.nj-page .ptr-h {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: -.01em;
+  color: var(--ink);
+  margin: 0 0 6px;
+}
+.nj-page .ptr-lead {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin: 0;
+}
+.nj-page .ptr-empty {
+  border: 1px dashed var(--rule);
+  border-radius: 2px;
+  padding: 48px 24px;
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 14px;
+  background: rgba(20, 23, 29, 0.02);
+}
+.nj-page .ptr-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.nj-page .ptr-item {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+}
+.nj-page .ptr-link {
+  flex: 1;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  text-decoration: none;
+  color: var(--ink);
+  transition: border-color .15s ease, background .15s ease;
+}
+.nj-page .ptr-link:hover {
+  border-color: var(--orange);
+  background: rgba(232, 93, 46, 0.04);
+}
+.nj-page .ptr-pdf-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 52px;
+  background: var(--orange);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: .08em;
+  border-radius: 2px;
+}
+.nj-page .ptr-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.nj-page .ptr-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.nj-page .ptr-sub {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-soft);
+  letter-spacing: .02em;
+}
+.nj-page .ptr-action {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--orange);
+  letter-spacing: .04em;
+  white-space: nowrap;
+}
+.nj-page .ptr-del {
+  background: transparent;
+  color: #c93030;
+  border: 1px solid rgba(201, 48, 48, 0.35);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .08em;
+  padding: 0 16px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background .15s ease;
+}
+.nj-page .ptr-del:hover {
+  background: rgba(201, 48, 48, 0.1);
+}
+.nj-page .ptr-foot { margin-top: 18px; }
+.nj-page .ptr-add {
+  background: var(--ink);
+  color: var(--paper);
+  border: 1px solid var(--ink);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: .04em;
+  padding: 12px 22px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background .15s ease, transform .15s ease;
+}
+.nj-page .ptr-add:hover:not(:disabled) {
+  background: var(--orange);
+  border-color: var(--orange);
+  transform: translateY(-1px);
+}
+.nj-page .ptr-add:disabled { opacity: .5; cursor: wait; }
+.nj-page .ptr-err {
+  margin: 12px 0 0;
+  padding: 10px 14px;
+  background: rgba(201, 48, 48, 0.08);
+  border-left: 3px solid #c93030;
+  font-size: 13px;
+  color: #c93030;
+}
+
+@media (max-width: 720px) {
+  .nj-page .ptr { padding: 28px 20px 60px; }
+  .nj-page .ptr-h { font-size: 18px; }
+  .nj-page .ptr-link {
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+  }
+  .nj-page .ptr-action { grid-column: 2; justify-self: end; }
+}

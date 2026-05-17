@@ -267,7 +267,17 @@ export default function EditProductPage() {
       ) : null}
 
       <div className="ed-page">
-        <ProductPage data={draft} locale="ko" editor={editor} />
+        <ProductPage
+          data={draft}
+          locale="ko"
+          editor={editor}
+          pat={pat}
+          onAfterPdfUpload={() => {
+            // Same trick as image uploads — defer one tick so React
+            // flushes the dict state, then trigger an immediate save.
+            setTimeout(() => void handleSaveRef.current(), 0);
+          }}
+        />
       </div>
 
       <ImageSlotPanel
