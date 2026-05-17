@@ -1966,6 +1966,16 @@ section { position: relative; }
 }
 .ed-editable { box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 
+/* Preserve user-typed whitespace VISUALLY for every editable text slot.
+ * Without this, the browser's default `white-space: normal` collapses runs
+ * of spaces to a single space when rendering. Even though the JSON saves
+ * the multi-spaces correctly, the page would only show one. `pre-wrap`
+ * preserves runs of spaces while still wrapping at word boundaries — exactly
+ * what we want for hero headlines and any editable copy where the author
+ * has typed deliberate extra spacing. Applies on both admin and public so
+ * the spacing matches what the author saw while editing. */
+[data-fp] { white-space: pre-wrap; }
+
 /* ---------- Floating format toolbar ---------- */
 .ed-toolbar {
   position: fixed;
