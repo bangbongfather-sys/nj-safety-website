@@ -23,7 +23,31 @@
     "ctaSecondary": "견적 문의",
     "scroll": "Scroll to explore",
     "locatorName": "NJ SAFETY",
-    "locatorSub": "ARAMID SAFETY WEAR ·"
+    "locatorSub": "ARAMID SAFETY WEAR ·",
+    "slides": [
+      {
+        "image": "",
+        "eyebrow": "산업 안전복 · 1992년부터",
+        "headlineLine1": "아라미드의 견고함.",
+        "headlineLine2Pre": "",
+        "headlineLine2Em": "안전 ,  그 이상 의 확신.",
+        "tagline": "Your Flame Shield for Safer Work.",
+        "sub": "아라미드 원단으로 설계된 산업용 방염 작업복. NFPA 2112 · HRC2 · EN ISO 11612 국제 인증.",
+        "ctaPrimary": "제품 보기",
+        "ctaSecondary": "견적 문의"
+      },
+      {
+        "image": "",
+        "eyebrow": "— NEW · 2026",
+        "headlineLine1": "신제품",
+        "headlineLine2Pre": "",
+        "headlineLine2Em": "출시.",
+        "tagline": "COMING SOON.",
+        "sub": "여기에 새 슬라이드 본문을 입력하세요.",
+        "ctaPrimary": "자세히 보기",
+        "ctaSecondary": "문의"
+      }
+    ]
   },
   "products": {
     "eyebrow": "— Products",
