@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useCallback, useEffect, useState, type CSSProperties } from 'react';
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
 import type { Dictionary, HeroSlide, Locale } from '@/lib/i18n';
 import EditableText, { type EditorApi } from '@/components/admin/EditableText';
 import EditableImage from '@/components/admin/EditableImage';
@@ -285,32 +285,81 @@ export default function Hero({ locale, dict, editor }: Props) {
               ) : null}
             </div>
           </div>
-          <div className="hero-admin-row hero-admin-link">
-            <label className="hero-admin-label" htmlFor={`hero-link-${idx}`}>
-              🔗 연결 페이지
-            </label>
-            <input
-              id={`hero-link-${idx}`}
-              type="text"
-              className="hero-admin-input"
-              placeholder="/products/제품ID  또는  https://..."
-              defaultValue={slide.linkHref ?? ''}
-              onBlur={(e) => {
-                const v = e.target.value.trim();
-                // URL is structural — write to both locales so ko + en
-                // visitors land on the same product page. Falls back to
-                // single-locale patch if onImagePatch isn't wired.
-                if (editor.onImagePatch) editor.onImagePatch(`${basePath}.linkHref`, v || null);
-                else editor.onPatch(`${basePath}.linkHref`, v);
-              }}
-              title="슬라이드 배경을 클릭했을 때 이동할 페이지. 비워두면 클릭 불가. 짧게 /products/xxx 처럼 입력하면 언어가 자동으로 붙습니다."
-            />
-            <span className="hero-admin-hint">
-              {slide.linkHref ? '✅ 클릭 가능' : '비어있음 (클릭 불가)'}
-            </span>
-          </div>
+          <SlideLinkInput
+            key={`link-${idx}`}
+            slideIndex={idx}
+            basePath={basePath}
+            initialValue={slide.linkHref ?? ''}
+            editor={editor}
+          />
         </div>
       ) : null}
     </section>
   );
 }
+
+/**
+ * Link input for the active slide. Extracted into its own component so we
+ * can `key={idx}` on the parent and force a fresh mount every time the
+ * admin switches slides — that way the input always shows the URL for
+ * the slide currently on screen instead of the stale value typed for
+ * a previous slide (uncontrolled defaultValue was leaking across slides).
+ *
+ * Local state holds the in-progress edit so typing stays snappy; we only
+ * push to the dict on blur so the dirty flag / autosave doesn't fire on
+ * every keystroke.
+ */
+function SlideLinkInput({
+  slideIndex,
+  basePath,
+  initialValue,
+  editor,
+}: {
+  slideIndex: number;
+  basePath: string;
+  initialValue: string;
+  editor: EditorApi;
+}) {
+  const [val, setVal] = useState(initialValue);
+  // The initial-value snapshot is captured once when this instance mounts
+  // (per slideIndex thanks to the parent key). We expose `lastFlushed` so
+  // blur can skip a no-op write when the user didn't actually change it.
+  const lastFlushed = useRef(initialValue);
+  const flush = () => {
+    const v = val.trim();
+    if (v === lastFlushed.current) return;
+    lastFlushed.current = v;
+    // URL is structural — write to both locales so ko + en visitors land
+    // on the same product page. Falls back to single-locale patch if
+    // onImagePatch isn't wired.
+    if (editor.onImagePatch) editor.onImagePatch(`${basePath}.linkHref`, v || null);
+    else editor.onPatch(`${basePath}.linkHref`, v);
+  };
+  return (
+    <div className="hero-admin-row hero-admin-link">
+      <label className="hero-admin-label" htmlFor={`hero-link-${slideIndex}`}>
+        🔗 연결 페이지
+      </label>
+      <input
+        id={`hero-link-${slideIndex}`}
+        type="text"
+        className="hero-admin-input"
+        placeholder="/products/제품ID  또는  https://..."
+        value={val}
+        onChange={(e) => setVal(e.target.value)}
+        onBlur={flush}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            (e.target as HTMLInputElement).blur();
+          }
+        }}
+        title="슬라이드 배경을 클릭했을 때 이동할 페이지. 비워두면 클릭 불가. 짧게 /products/xxx 처럼 입력하면 언어가 자동으로 붙습니다."
+      />
+      <span className="hero-admin-hint">
+        {val.trim() ? '✅ 클릭 가능' : '비어있음 (클릭 불가)'}
+      </span>
+    </div>
+  );
+}
+
