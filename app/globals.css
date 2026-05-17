@@ -91,7 +91,7 @@ p { line-height: 1.65; }
 }
 .nav-inner {
   display: flex; align-items: center; justify-content: space-between;
-  height: 72px; padding: 0 56px;
+  height: 88px; padding: 0 56px;
   max-width: 1600px; margin: 0 auto;
 }
 .logo {
@@ -103,12 +103,15 @@ p { line-height: 1.65; }
  * off-white so it reads cleanly against the dark nav; brand orange
  * preserved. No background pill needed. */
 .logo-img {
-  height: 36px;
+  height: 56px;
   width: auto;
   display: block;
   transition: transform .2s ease;
 }
 .logo:hover .logo-img { transform: translateY(-1px); }
+/* Nav shrinks on scroll — pull the logo down proportionally so it still
+ * sits clear of the top/bottom edges instead of dominating the bar. */
+.nav.scrolled .logo-img { height: 44px; }
 .menu { display: flex; gap: 38px; }
 .menu a {
   font-size: 13px; font-weight: 500;
@@ -731,7 +734,7 @@ section { position: relative; }
   margin-bottom: 24px;
 }
 .footer .brand-foot .logo { margin-bottom: 24px; }
-.footer .brand-foot .logo-img { height: 44px; }
+.footer .brand-foot .logo-img { height: 64px; }
 .footer .brand-foot p {
   font-size: 13px;
   line-height: 1.7;
@@ -793,7 +796,7 @@ section { position: relative; }
    Product detail page (data/products/<slug>.json driven)
    Adapted from `_nj-safety-design/product-drawer.css`
    ============================================================ */
-.product-detail { padding-top: 72px; background: var(--bg); color: var(--text); }
+.product-detail { padding-top: 88px; background: var(--bg); color: var(--text); }
 .product-detail-back {
   border-bottom: 1px solid var(--border-soft);
   background: var(--bg-3);
