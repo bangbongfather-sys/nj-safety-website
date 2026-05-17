@@ -2163,9 +2163,13 @@ section { position: relative; }
   position: absolute;
   inset: 0;
   cursor: pointer;
-  /* Sits on top of the static <img> inside so the anchor itself receives
-   * the click; the image is purely visual. */
-  z-index: 1;
+  /* DO NOT set z-index here. The active slide is opacity:1 which doesn't
+   * establish a stacking context, so any positive z-index on the link
+   * escapes up and renders the image ABOVE .hero-overlay — the dark
+   * gradient disappears and the photo looks weirdly bright. The anchor
+   * naturally wraps the <img>, so clicks bubble up to it without any
+   * z-index help; the overlay layers above already have
+   * `pointer-events: none` so they never block the click. */
 }
 .hero-bg-link:focus-visible {
   outline: 2px solid var(--accent);
