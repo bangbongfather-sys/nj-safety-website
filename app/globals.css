@@ -2179,10 +2179,17 @@ section { position: relative; }
  * them on the actual interactive elements (CTA buttons) so those still
  * receive their own click handlers. Edit mode never gets `.hero--linked`,
  * so all the contentEditable text stays clickable for the admin. */
-.hero.hero--linked .hero-content { pointer-events: none; }
+.hero.hero--linked { cursor: pointer; }
+.hero.hero--linked .hero-content { pointer-events: none; cursor: pointer; }
 .hero.hero--linked .hero-cta,
 .hero.hero--linked .hero-cta a,
-.hero.hero--linked .hero-cta button { pointer-events: auto; }
+.hero.hero--linked .hero-cta button {
+  pointer-events: auto;
+  cursor: pointer;
+}
+/* Make sure the link wrapper itself reports the pointer cursor too. */
+.hero.hero--linked .hero-bg-slide,
+.hero.hero--linked .hero-bg-slide * { cursor: pointer; }
 
 /* ---------- Floating format toolbar ---------- */
 .ed-toolbar {
