@@ -106,7 +106,7 @@
     "eyebrow": "— In the field",
     "headlineLine1": "현장에서",
     "headlineLine2": "증명됩니다.",
-    "sub": "오랜시간 수많은  현장에서 검증되었습니다 .",
+    "sub": "가장 위험한 곳에서 가장 안전하게. 수많은 작업자의 생명을 지켜온 확실한 보호 시스템을 경험하세요.",
     "bgImage": ""
   },
   "manifesto": {
@@ -331,6 +331,9 @@
     },
     "hero.slides[1].sub": {
       "size": "1.10em"
+    },
+    "showcase.sub": {
+      "width": "44.7%"
     }
   },
   "siteConfig": {
