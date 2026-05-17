@@ -135,6 +135,62 @@ export default function EditHomePage() {
     setEnDraft((d) => (d ? (setIn(d, path, v) as Dictionary) : d));
   }, []);
 
+  // Hero slide structure (count + image) needs to stay in sync across
+  // locales. Text inside each slide is per-language and is created blank
+  // in the off-language until the user fills it in.
+  const onAddHeroSlide = useCallback(() => {
+    function buildLegacySlide(d: Dictionary) {
+      // Project the legacy top-level hero fields into a slides[0] shape so
+      // the first "Add slide" press doesn't lose the original content.
+      const h = d.hero;
+      return {
+        image: h.bgImage ?? '',
+        eyebrow: h.eyebrow,
+        headlineLine1: h.headlineLine1,
+        headlineLine2Pre: h.headlineLine2Pre,
+        headlineLine2Em: h.headlineLine2Em,
+        tagline: h.tagline,
+        sub: h.sub,
+        ctaPrimary: h.ctaPrimary,
+        ctaSecondary: h.ctaSecondary,
+      };
+    }
+    function blankSlide() {
+      return {
+        image: '',
+        eyebrow: '— NEW · 2026',
+        headlineLine1: '신제품',
+        headlineLine2Pre: '',
+        headlineLine2Em: '출시.',
+        tagline: 'COMING SOON.',
+        sub: '여기에 새 슬라이드 본문을 입력하세요.',
+        ctaPrimary: '자세히 보기',
+        ctaSecondary: '문의',
+      };
+    }
+    function apply(d: Dictionary): Dictionary {
+      const heroAny = d.hero as Dictionary['hero'];
+      const existing = heroAny.slides && heroAny.slides.length > 0
+        ? heroAny.slides
+        : [buildLegacySlide(d)];
+      const next = [...existing, blankSlide()];
+      return { ...d, hero: { ...heroAny, slides: next } };
+    }
+    setKoDraft((d) => (d ? apply(d) : d));
+    setEnDraft((d) => (d ? apply(d) : d));
+  }, []);
+
+  const onDeleteHeroSlide = useCallback((index: number) => {
+    function apply(d: Dictionary): Dictionary {
+      const heroAny = d.hero as Dictionary['hero'];
+      if (!heroAny.slides || heroAny.slides.length <= 1) return d;
+      const next = heroAny.slides.filter((_, i) => i !== index);
+      return { ...d, hero: { ...heroAny, slides: next } };
+    }
+    setKoDraft((d) => (d ? apply(d) : d));
+    setEnDraft((d) => (d ? apply(d) : d));
+  }, []);
+
   const editor: EditorApi = useMemo(() => ({
     locale: active,
     onPatch: (pathStr, value) => {
@@ -144,7 +200,9 @@ export default function EditHomePage() {
     },
     onImagePatch: applyImagePatch,
     onImageClick: (pathStr) => setImageSlot({ path: pathStr }),
-  }), [active, applyImagePatch]);
+    onAddHeroSlide,
+    onDeleteHeroSlide,
+  }), [active, applyImagePatch, onAddHeroSlide, onDeleteHeroSlide]);
 
   // Resolve the current image URL at a path so the ImageSlotPanel can
   // show "현재" alongside the new preview.

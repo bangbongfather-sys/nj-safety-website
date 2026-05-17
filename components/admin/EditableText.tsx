@@ -9,6 +9,10 @@ export type EditorApi = {
   onImagePatch?: (path: string, value: string | null) => void;
   /** Open the image upload panel for the given slot path. */
   onImageClick?: (path: string) => void;
+  /** Append a new hero slide (synced across both locales). */
+  onAddHeroSlide?: () => void;
+  /** Remove the hero slide at `index` (synced across both locales). */
+  onDeleteHeroSlide?: (index: number) => void;
   /** Current display locale (for visual hint only — paths are language-agnostic). */
   locale: 'ko' | 'en';
 };

@@ -1,13 +1,18 @@
+'use client';
+
 import Link from 'next/link';
-import type { CSSProperties } from 'react';
-import type { Dictionary, Locale } from '@/lib/i18n';
+import { useCallback, useEffect, useState, type CSSProperties } from 'react';
+import type { Dictionary, HeroSlide, Locale } from '@/lib/i18n';
 import EditableText, { type EditorApi } from '@/components/admin/EditableText';
+import EditableImage from '@/components/admin/EditableImage';
 
 type Props = { locale: Locale; dict: Dictionary; editor?: EditorApi };
 
-// When admin has set custom filter values, emit inline CSS that
-// overrides the static rule in globals.css. When siteConfig is missing
-// we leave inline style empty so the CSS default applies.
+const AUTO_ROTATE_MS = 7000;
+
+// When admin has set custom filter values, emit inline CSS that overrides
+// the static rule in globals.css. When siteConfig is missing we leave
+// inline style empty so the CSS default applies.
 function heroImgStyle(dict: Dictionary): CSSProperties | undefined {
   const f = dict.siteConfig?.heroFilter;
   if (!f || (f.brightness == null && f.contrast == null && f.saturate == null)) return undefined;
@@ -17,19 +22,92 @@ function heroImgStyle(dict: Dictionary): CSSProperties | undefined {
   return { filter: `brightness(${b}) contrast(${c}) saturate(${s})` };
 }
 
+// Project the (possibly slide-less) hero dict into a normalised array.
+// When the user hasn't created any slides yet, we synthesise a single
+// virtual slide from the legacy top-level fields so the rendered carousel
+// still has exactly one slot to render.
+function getEffectiveSlides(hero: Dictionary['hero']): HeroSlide[] {
+  if (hero.slides && hero.slides.length > 0) return hero.slides;
+  return [{
+    image: hero.bgImage ?? '',
+    eyebrow: hero.eyebrow,
+    headlineLine1: hero.headlineLine1,
+    headlineLine2Pre: hero.headlineLine2Pre,
+    headlineLine2Em: hero.headlineLine2Em,
+    tagline: hero.tagline,
+    sub: hero.sub,
+    ctaPrimary: hero.ctaPrimary,
+    ctaSecondary: hero.ctaSecondary,
+  }];
+}
+
 export default function Hero({ locale, dict, editor }: Props) {
+  const hero = dict.hero;
+  const slides = getEffectiveSlides(hero);
+  const usingSlides = !!(hero.slides && hero.slides.length > 0);
+  const total = slides.length;
+
+  const [current, setCurrent] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  // Clamp when total shrinks (e.g. a slide was deleted).
+  useEffect(() => {
+    if (current >= total) setCurrent(Math.max(0, total - 1));
+  }, [current, total]);
+
+  // Public-side auto-rotate. Disabled while the admin is editing so the
+  // user doesn't lose focus mid-typing.
+  useEffect(() => {
+    if (editor || total <= 1 || paused) return;
+    const t = window.setInterval(() => {
+      setCurrent((c) => (c + 1) % total);
+    }, AUTO_ROTATE_MS);
+    return () => window.clearInterval(t);
+  }, [editor, total, paused]);
+
+  const idx = Math.min(current, total - 1);
+  const slide = slides[idx];
+  // Edits in slide-mode write into hero.slides[i]; in legacy fallback mode
+  // they still go to hero.* so existing JSON without slides keeps working.
+  const basePath = usingSlides ? `hero.slides[${idx}]` : 'hero';
+
+  const goPrev = useCallback(() => setCurrent((c) => (c - 1 + total) % total), [total]);
+  const goNext = useCallback(() => setCurrent((c) => (c + 1) % total), [total]);
+
+  const ctaPrimaryHref = slide.ctaPrimaryHref || `/${locale}/products`;
+  const ctaSecondaryHref = slide.ctaSecondaryHref || `/${locale}/contact`;
+
   return (
-    <section className="hero" data-screen-label="01 Hero">
+    <section
+      className="hero"
+      data-screen-label="01 Hero"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
       <div className="hero-bg">
-        <img
-          className="hero-img"
-          src="/hero.jpg"
+        <EditableImage
+          path={`${basePath}.image`}
+          src={slide.image}
           alt=""
-          aria-hidden
-          loading="eager"
-          decoding="async"
-          style={heroImgStyle(dict)}
+          className="hero-bg-edit"
+          fallback={
+            <img
+              className="hero-img"
+              src="/hero.jpg"
+              alt=""
+              aria-hidden
+              loading="eager"
+              decoding="async"
+              style={heroImgStyle(dict)}
+            />
+          }
+          editor={editor}
         />
+        {/*
+         * Apply the filter overlay on top of the image. When EditableImage
+         * is rendering a real <img>, the filter is applied via a sibling
+         * class hook so we don't have to special-case both branches.
+         */}
       </div>
       <div className="hero-overlay" />
       <div className="hero-accent" />
@@ -39,28 +117,28 @@ export default function Hero({ locale, dict, editor }: Props) {
         <div className="wrap">
           <div className="hero-tag">
             <span className="hairline" />
-            <EditableText as="span" className="eyebrow" path="hero.eyebrow" value={dict.hero.eyebrow} editor={editor} />
+            <EditableText as="span" className="eyebrow" path={`${basePath}.eyebrow`} value={slide.eyebrow ?? ''} editor={editor} />
           </div>
           <h1 className="hero-headline">
             <span className="line">
-              <EditableText path="hero.headlineLine1" value={dict.hero.headlineLine1} editor={editor} />
+              <EditableText path={`${basePath}.headlineLine1`} value={slide.headlineLine1 ?? ''} editor={editor} />
             </span>
             <span className="line">
-              <EditableText path="hero.headlineLine2Pre" value={dict.hero.headlineLine2Pre} editor={editor} />
+              <EditableText path={`${basePath}.headlineLine2Pre`} value={slide.headlineLine2Pre ?? ''} editor={editor} />
               <em>
-                <EditableText path="hero.headlineLine2Em" value={dict.hero.headlineLine2Em} editor={editor} />
+                <EditableText path={`${basePath}.headlineLine2Em`} value={slide.headlineLine2Em ?? ''} editor={editor} />
               </em>
             </span>
           </h1>
-          <EditableText as="p" className="hero-tagline" path="hero.tagline" value={dict.hero.tagline} editor={editor} />
-          <EditableText as="p" className="hero-sub" path="hero.sub" value={dict.hero.sub} editor={editor} multiline />
+          <EditableText as="p" className="hero-tagline" path={`${basePath}.tagline`} value={slide.tagline ?? ''} editor={editor} />
+          <EditableText as="p" className="hero-sub" path={`${basePath}.sub`} value={slide.sub ?? ''} editor={editor} multiline />
           <div className="hero-cta">
-            <Link href={`/${locale}/products`} className="btn btn-primary">
-              <EditableText path="hero.ctaPrimary" value={dict.hero.ctaPrimary} editor={editor} />
+            <Link href={ctaPrimaryHref} className="btn btn-primary">
+              <EditableText path={`${basePath}.ctaPrimary`} value={slide.ctaPrimary ?? ''} editor={editor} />
               <span className="arr">→</span>
             </Link>
-            <Link href={`/${locale}/contact`} className="btn btn-ghost">
-              <EditableText path="hero.ctaSecondary" value={dict.hero.ctaSecondary} editor={editor} />
+            <Link href={ctaSecondaryHref} className="btn btn-ghost">
+              <EditableText path={`${basePath}.ctaSecondary`} value={slide.ctaSecondary ?? ''} editor={editor} />
               <span className="arr">→</span>
             </Link>
           </div>
@@ -69,16 +147,86 @@ export default function Hero({ locale, dict, editor }: Props) {
 
       <div className="hero-meta">
         <div className="scroll">
-          <EditableText path="hero.scroll" value={dict.hero.scroll} editor={editor} />
+          <EditableText path="hero.scroll" value={hero.scroll} editor={editor} />
           <span className="scroll-line" />
         </div>
         <div className="hero-locator">
           <div className="col">
-            <EditableText as="span" className="v" path="hero.locatorName" value={dict.hero.locatorName} editor={editor} />
-            <EditableText as="span" path="hero.locatorSub" value={dict.hero.locatorSub} editor={editor} />
+            <EditableText as="span" className="v" path="hero.locatorName" value={hero.locatorName} editor={editor} />
+            <EditableText as="span" path="hero.locatorSub" value={hero.locatorSub} editor={editor} />
           </div>
         </div>
       </div>
+
+      {/* Carousel controls — only show when there's more than one slide. */}
+      {total > 1 ? (
+        <>
+          <button
+            type="button"
+            className="hero-nav-arrow hero-nav-prev"
+            onClick={goPrev}
+            aria-label="이전 슬라이드"
+          >
+            ‹
+          </button>
+          <button
+            type="button"
+            className="hero-nav-arrow hero-nav-next"
+            onClick={goNext}
+            aria-label="다음 슬라이드"
+          >
+            ›
+          </button>
+          <div className="hero-dots" role="tablist" aria-label="히어로 슬라이드">
+            {slides.map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                role="tab"
+                aria-selected={i === idx}
+                aria-label={`슬라이드 ${i + 1}`}
+                className={`hero-dot${i === idx ? ' is-on' : ''}`}
+                onClick={() => setCurrent(i)}
+              />
+            ))}
+          </div>
+        </>
+      ) : null}
+
+      {/* Admin slide management bar — only renders in edit mode. */}
+      {editor ? (
+        <div className="hero-admin-bar">
+          <span className="hero-admin-counter">
+            슬라이드 <strong>{idx + 1}</strong> / {total}
+          </span>
+          <div className="hero-admin-actions">
+            {editor.onAddHeroSlide ? (
+              <button
+                type="button"
+                className="hero-admin-btn"
+                onClick={() => editor.onAddHeroSlide?.()}
+                title="현재 슬라이드 뒤에 새 슬라이드 추가 (양쪽 언어 동시)"
+              >
+                + 새 슬라이드
+              </button>
+            ) : null}
+            {editor.onDeleteHeroSlide && total > 1 ? (
+              <button
+                type="button"
+                className="hero-admin-btn danger"
+                onClick={() => {
+                  if (window.confirm(`슬라이드 ${idx + 1}을(를) 삭제할까요?`)) {
+                    editor.onDeleteHeroSlide?.(idx);
+                  }
+                }}
+                title="이 슬라이드를 양쪽 언어에서 삭제"
+              >
+                현재 슬라이드 삭제
+              </button>
+            ) : null}
+          </div>
+        </div>
+      ) : null}
     </section>
   );
 }

@@ -1976,6 +1976,117 @@ section { position: relative; }
  * the spacing matches what the author saw while editing. */
 [data-fp] { white-space: pre-wrap; }
 
+/* ============================================================
+   Hero carousel — multi-slide nav (arrows + dots + admin bar)
+   ============================================================ */
+.hero-nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 30;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(13, 13, 14, .6);
+  border: 1px solid rgba(255, 255, 255, .18);
+  color: var(--text);
+  font-size: 28px;
+  line-height: 1;
+  display: grid; place-items: center;
+  cursor: pointer;
+  transition: background .2s, border-color .2s, transform .2s;
+  font-family: inherit;
+}
+.hero-nav-arrow:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #0d0d0e;
+  transform: translateY(-50%) scale(1.06);
+}
+.hero-nav-prev { left: 28px; }
+.hero-nav-next { right: 28px; }
+@media (max-width: 900px) {
+  .hero-nav-arrow { width: 42px; height: 42px; font-size: 22px; }
+  .hero-nav-prev { left: 14px; }
+  .hero-nav-next { right: 14px; }
+}
+
+.hero-dots {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  display: flex;
+  gap: 10px;
+  padding: 8px 12px;
+  background: rgba(13, 13, 14, .55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-radius: 999px;
+}
+.hero-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .3);
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  transition: background .2s, transform .2s;
+}
+.hero-dot:hover { background: rgba(255, 255, 255, .65); }
+.hero-dot.is-on {
+  background: var(--accent);
+  transform: scale(1.2);
+}
+
+/* Admin slide-management bar (only renders in /admin/edit/) */
+.hero-admin-bar {
+  position: absolute;
+  top: 86px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 14px;
+  background: rgba(13, 13, 14, .92);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  font-family: var(--sans);
+  color: var(--text);
+  backdrop-filter: blur(10px);
+}
+.hero-admin-counter {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .14em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.hero-admin-counter strong {
+  color: var(--accent);
+  font-weight: 700;
+  margin-right: 2px;
+}
+.hero-admin-actions { display: flex; gap: 6px; }
+.hero-admin-btn {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .08em;
+  padding: 5px 10px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background .15s, border-color .15s, color .15s;
+}
+.hero-admin-btn:hover { border-color: var(--accent); color: var(--accent); }
+.hero-admin-btn.danger { border-color: rgba(255, 107, 107, .35); color: #ff9a9a; }
+.hero-admin-btn.danger:hover { background: rgba(255, 107, 107, .12); border-color: #ff6b6b; color: #ff6b6b; }
+
 /* ---------- Floating format toolbar ---------- */
 .ed-toolbar {
   position: fixed;

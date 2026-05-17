@@ -45,14 +45,49 @@ export type SiteConfig = {
   heroFilter?: HeroFilter;
 };
 
+/**
+ * One slide in the hero carousel. All fields optional so the renderer can
+ * project the legacy single-slide schema (top-level hero.{eyebrow, headline*,
+ * tagline, sub, ctaPrimary, ctaSecondary, bgImage}) into a virtual one-item
+ * slides[] array when no real slides have been created yet.
+ *
+ * As soon as the admin clicks "+ 새 슬라이드", the editor migrates the
+ * legacy fields into slides[0] and appends a fresh blank slides[1]; from
+ * then on every hero edit writes into hero.slides[i].*.
+ */
+export type HeroSlide = {
+  image?: string;
+  eyebrow?: string;
+  headlineLine1?: string;
+  headlineLine2Pre?: string;
+  headlineLine2Em?: string;
+  tagline?: string;
+  sub?: string;
+  ctaPrimary?: string;
+  /** Per-slide override; defaults to /<locale>/products when missing. */
+  ctaPrimaryHref?: string;
+  ctaSecondary?: string;
+  /** Per-slide override; defaults to /<locale>/contact when missing. */
+  ctaSecondaryHref?: string;
+};
+
 type RawDict = typeof ko;
+
+type RawHero = RawDict['hero'];
+type HeroWithSlides = RawHero & {
+  /** Legacy single-image background (used when slides[] is empty). */
+  bgImage?: string;
+  /** Multi-slide carousel data. When set, replaces all top-level hero text. */
+  slides?: HeroSlide[];
+};
 
 // Both `styles` and `siteConfig` need to be Omit'd from RawDict because
 // every save the editor performs further specialises the JSON-inferred
-// shape of these fields. Without the Omit the intersection narrows them
-// past the open shape we want, and code that does `delete d.siteConfig`
-// or spreads a Record fails to type-check.
-export type Dictionary = Omit<RawDict, 'styles' | 'siteConfig'> & {
+// shape of these fields. Same Omit trick for `hero` so the optional
+// `slides[]` we layer in stays open-shape regardless of how the JSON
+// has been edited.
+export type Dictionary = Omit<RawDict, 'styles' | 'siteConfig' | 'hero'> & {
+  hero: HeroWithSlides;
   /** Per-field style overrides keyed by `data-fp` path. */
   styles?: Record<string, FieldStyle>;
   /** Site-wide visual config (hero filter etc.), edited via admin. */

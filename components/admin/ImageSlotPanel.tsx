@@ -41,6 +41,17 @@ function uploadTargetFor(slot: string): { repoPath: string; publicUrl: string; m
     };
   }
 
+  // hero.slides[<idx>].image → JPG (one file per slide in repo)
+  const mHeroSlide = slot.match(/^hero\.slides\[(\d+)\]\.image$/);
+  if (mHeroSlide) {
+    const n = String(Number(mHeroSlide[1]) + 1).padStart(2, '0');
+    return {
+      repoPath: `public/hero/slide-${n}.jpg`,
+      publicUrl: `/hero/slide-${n}.jpg`,
+      mime: 'image/jpeg',
+    };
+  }
+
   // Fallback: slugified upload bucket
   const safe = slot.replace(/[^a-z0-9]/gi, '-').toLowerCase();
   return { repoPath: `public/uploads/${safe}.jpg`, publicUrl: `/uploads/${safe}.jpg`, mime: 'image/jpeg' };
