@@ -312,9 +312,7 @@
   },
   "siteConfig": {
     "heroFilter": {
-      "brightness": 0.78,
-      "contrast": 1,
-      "saturate": 0.76
+      "brightness": 1
     }
   }
 }
