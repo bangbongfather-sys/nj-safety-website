@@ -1,26 +1,27 @@
 /**
  * NJ Safety — Product Page renderer (public).
  *
- * Pure-presentation port of catalog-app/src/app/products/[slug]/ProductPage.tsx,
- * with all editor affordances stripped (no contentEditable, no onPatch,
- * no SectionPlaceholder, no in-image overlays). Renders ProductPageData
- * for the public site at /[locale]/products/<slug>/.
+ * E-commerce-style shop header (image gallery on the left + product info
+ * on the right) followed by tabs containing the rich catalog-app content
+ * (gallery, material, features, spec table, etc). The site nav + footer
+ * stay visible above and below; this component renders only what's
+ * between them.
  *
- * Sections: Topnav · Hero · Gallery · Statement · Material · Features ·
- *           Spec · Field · Care+Cert · Order · Footer
+ * Tab layout:
+ *   1. 상품상세정보 — Gallery · Statement · Material · Features · Spec · Field
+ *   2. 인증 · 관리   — Care · Certs
+ *   3. 발주 안내    — Order
  *
  * Headlines and other rich strings accept inline `<em>...</em>` /
  * `<span style="color:...">` etc. and are rendered via dangerouslySetInnerHTML
  * after a minimal sanitize pass — content originates in JSON we control.
  */
 
-import type { CSSProperties, HTMLAttributes } from 'react';
+import type { HTMLAttributes } from 'react';
 import { sanitizeHtml } from '@/lib/sanitize';
 import type {
   FieldStyle,
-  HeroBadge,
   ProductPageData,
-  ProductHero,
   ProductGallery,
   ProductStatement,
   ProductMaterial,
@@ -32,7 +33,10 @@ import type {
   ProductOrder,
 } from '@/lib/product-page-types';
 import { fontStackFor } from '@/lib/product-page-types';
+import type { Locale } from '@/lib/i18n';
 import ImageOrPlaceholder from './ImageOrPlaceholder';
+import ProductShopHeader from './ProductShopHeader';
+import ProductDetailTabs, { type ProductTab } from './ProductDetailTabs';
 import './product-page.css';
 
 // Common rich-text host: marks the element with data-fp so StyleInjector
@@ -78,101 +82,6 @@ function StyleInjector({ styles }: { styles?: Record<string, FieldStyle> }) {
   }
   if (!rules.length) return null;
   return <style dangerouslySetInnerHTML={{ __html: rules.join('\n') }} />;
-}
-
-// ─── Topnav ─────────────────────────────────────────────────────────
-function Topnav({ model, flavor }: { model?: string; flavor?: string }) {
-  const logoSrc =
-    flavor === 'tactical' ? '/brand/logo-light.png' : '/brand/logo.png';
-  return (
-    <nav className="topnav">
-      <div className="topnav-l">
-        <ImageOrPlaceholder src={logoSrc} alt="NJ SAFETY" className="topnav-logo" />
-      </div>
-      <div className="topnav-r">
-        <a href="#material">MATERIAL</a>
-        <a href="#spec">SPEC</a>
-        <a href="#order">INQUIRY</a>
-        {model ? <span>{model}</span> : null}
-      </div>
-    </nav>
-  );
-}
-
-// ─── Hero ───────────────────────────────────────────────────────────
-function resolveBadges(hero: ProductHero): HeroBadge[] {
-  if (hero.badges && hero.badges.length) return hero.badges;
-  const synth: HeroBadge[] = [];
-  if (hero.tag) synth.push({ text: hero.tag, position: 'bottom-left', style: 'tag' });
-  if (hero.corner) synth.push({ text: hero.corner, position: 'top-right', style: 'corner' });
-  if (hero.badge) synth.push({ text: hero.badge, position: 'top-right', style: 'stamp' });
-  return synth;
-}
-
-function Hero({ data }: { data: ProductPageData }) {
-  const hero: ProductHero = data.hero ?? {};
-  const counters = hero.counters ?? [];
-  const rawName = data.name ?? '';
-  const nameHasHtml = /[<&]/.test(rawName);
-  const titleWords = nameHasHtml ? [] : rawName.split(/\s+/).filter(Boolean);
-
-  return (
-    <section className="hero">
-      <div className="hero-left">
-        <div className="eyebrow">
-          <span className="bar" />
-          <span {...richProps('category', data.category ?? '')} />
-        </div>
-        {nameHasHtml ? (
-          <h1 className="hero-title">
-            <span className="line" {...richProps('name', rawName)} />
-          </h1>
-        ) : (
-          <h1 className="hero-title">
-            {titleWords.map((w, i) => (
-              <span key={i} className={'line' + (i === 1 ? ' line-orange' : '')}>
-                {w}
-              </span>
-            ))}
-          </h1>
-        )}
-        <p
-          className="hero-lead"
-          {...richProps('tagline', data.tagline ?? data.subtitle ?? '')}
-        />
-        {counters.length > 0 ? (
-          <div className="hero-counters">
-            {counters.map((c, i) => (
-              <div key={i}>
-                <span className="c-num">
-                  <span {...richProps(`hero.counters[${i}].value`, c.value)} />
-                  {c.unit ? <small {...richProps(`hero.counters[${i}].unit`, c.unit)} /> : null}
-                </span>
-                <span className="c-lbl" {...richProps(`hero.counters[${i}].label`, c.label)} />
-              </div>
-            ))}
-          </div>
-        ) : null}
-      </div>
-      <div className="hero-image">
-        <ImageOrPlaceholder
-          src={hero.image}
-          alt={hero.imageAlt ?? data.name ?? ''}
-        />
-        {resolveBadges(hero).map((b, i) => {
-          const style = b.style ?? 'stamp';
-          const position = b.position ?? 'top-right';
-          return (
-            <div
-              key={i}
-              className={`hero-badge hero-badge-${position} hero-badge-style-${style}`}
-              {...richProps(`hero.badges[${i}].text`, b.text ?? '')}
-            />
-          );
-        })}
-      </div>
-    </section>
-  );
 }
 
 // ─── Gallery ────────────────────────────────────────────────────────
@@ -523,44 +432,53 @@ function Order({ order }: { order?: ProductOrder }) {
   );
 }
 
-// ─── Footer ─────────────────────────────────────────────────────────
-function Footer({ model }: { model?: string }) {
-  return (
-    <footer className="footer">
-      <ImageOrPlaceholder src="/brand/logo-light.png" alt="NJ SAFETY" className="footer-logo" />
-      <span className="footer-fill" />
-      <span>{model ?? ''}</span>
-      <span className="footer-end">© 2026</span>
-    </footer>
-  );
-}
-
 // ─── Top-level page ─────────────────────────────────────────────────
-export default function ProductPage({ data }: { data: ProductPageData }) {
-  // Mirror catalog-app/src/app/products/[slug]/page.tsx — flavor on the
-  // wrapper picks the visual treatment. CSS rules for the two non-default
-  // flavors live in product-page.css under .nj-page.nj-page-flagship
-  // (kraft hangtag) and .nj-page.nj-page-tactical (black + yellow accent).
+export default function ProductPage({
+  data,
+  locale,
+}: {
+  data: ProductPageData;
+  locale: Locale;
+}) {
+  // `flavor` on the wrapper picks the visual treatment. CSS rules for the
+  // two non-default flavors live in product-page.css under
+  // .nj-page.nj-page-flagship (kraft hangtag) and
+  // .nj-page.nj-page-tactical (black + yellow accent).
   const flavorClass =
     data.flavor === 'flagship'
       ? ' nj-page-flagship'
       : data.flavor === 'tactical'
         ? ' nj-page-tactical'
         : '';
-  return (
-    <div className={`nj-page${flavorClass}`}>
-      <StyleInjector styles={data.styles} />
-      <Topnav model={data.model} flavor={data.flavor} />
-      <Hero data={data} />
+
+  // Tab content. Each tab's content can be null/false to self-hide.
+  const detailContent = (
+    <>
       <Gallery gallery={data.gallery} />
       <Statement statement={data.statement} />
       <Material material={data.material} />
       <Features features={data.features} />
       <Spec spec={data.spec} model={data.model} />
       <Field field={data.field} />
-      <CareCert care={data.care} certs={data.certs} />
-      <Order order={data.order} />
-      <Footer model={data.model} />
+    </>
+  );
+  const careCertContent =
+    data.care || (data.certs && data.certs.length > 0)
+      ? <CareCert care={data.care} certs={data.certs} />
+      : null;
+  const orderContent = data.order ? <Order order={data.order} /> : null;
+
+  const tabs: ProductTab[] = [
+    { key: 'detail', label: '상품상세정보', content: detailContent },
+    { key: 'care',   label: '인증 · 관리',  content: careCertContent },
+    { key: 'order',  label: '발주 안내',    content: orderContent },
+  ];
+
+  return (
+    <div className={`nj-page${flavorClass}`}>
+      <StyleInjector styles={data.styles} />
+      <ProductShopHeader data={data} locale={locale} />
+      <ProductDetailTabs tabs={tabs} />
     </div>
   );
 }

@@ -8,10 +8,9 @@ import EditableText, { type EditorApi } from '@/components/admin/EditableText';
 
 type Props = { locale: Locale; dict: Dictionary; editor?: EditorApi };
 
-// On product detail pages the catalog-app render is full-bleed with its own
-// topnav (paper background, ink type) — the brand-site dark nav clashes
-// visually, so we hide it for that route family. Same for Footer.
-const PRODUCT_DETAIL_RE = /^\/(?:ko|en)\/products\/[^/]+\/?$/;
+// Product detail pages now wear the standard site chrome — we render a
+// shop-style header below the nav instead of a stand-alone full-bleed
+// page, so the site nav (and footer) stay visible across the catalog.
 
 export default function Navigation({ locale, dict, editor }: Props) {
   const pathname = usePathname() ?? '';
@@ -23,8 +22,6 @@ export default function Navigation({ locale, dict, editor }: Props) {
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-
-  if (PRODUCT_DETAIL_RE.test(pathname)) return null;
 
   // Build the toggle target by swapping the locale prefix
   const otherLocale: Locale = locale === 'ko' ? 'en' : 'ko';

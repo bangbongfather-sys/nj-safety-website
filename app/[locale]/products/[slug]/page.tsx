@@ -40,5 +40,5 @@ export default async function ProductDetailRoute({ params }: Props) {
   if (!isLocale(locale)) notFound();
   const product = getProduct(slug);
   if (!product) notFound();
-  return <ProductPage data={product} />;
+  return <ProductPage data={product} locale={locale} />;
 }

@@ -1,18 +1,14 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import type { Dictionary, Locale } from '@/lib/i18n';
 import EditableText, { type EditorApi } from '@/components/admin/EditableText';
 
 type Props = { locale: Locale; dict: Dictionary; editor?: EditorApi };
 
-const PRODUCT_DETAIL_RE = /^\/(?:ko|en)\/products\/[^/]+\/?$/;
-
+// Footer renders on product detail pages now too — they share the standard
+// site chrome instead of being full-bleed catalog pages.
 export default function Footer({ locale, dict, editor }: Props) {
-  const pathname = usePathname() ?? '';
-  if (PRODUCT_DETAIL_RE.test(pathname)) return null;
-
   return (
     <footer className="footer">
       <div className="wrap">
