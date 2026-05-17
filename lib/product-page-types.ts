@@ -201,6 +201,10 @@ export type ProductShopHeaderSpecRow = {
 export type ProductShopHeaderData = {
   /** Gallery: first item is the main photo, rest are thumbnails. */
   images?: string[];
+  /** Brand name shown on the very top right (defaults to "NJ SAFETY"). */
+  brand?: string;
+  /** Model / SKU code shown next to the brand name. */
+  model?: string;
   /** Brand-context line above the title — usually a category code. */
   category?: string;
   /** Big title (Korean). Can include `<em>` for the orange accent. */
@@ -211,6 +215,8 @@ export type ProductShopHeaderData = {
   tagline?: string;
   /** Quick spec rows shown on the right side under the title. */
   summarySpecs?: ProductShopHeaderSpecRow[];
+  /** Bottom meta line — tel / email / origin etc. */
+  contactInfo?: ProductShopHeaderSpecRow[];
 };
 
 /**
@@ -387,8 +393,17 @@ export function withShopHeaderDefaults(data: ProductPageData): ProductPageData {
     .filter((r): r is { label: string; value: string } => !!r)
     .map((r) => ({ label: r.label, value: r.value }));
 
+  // Default contact line — same trio we used to hardcode in the JSX.
+  const seedContact: ProductShopHeaderSpecRow[] = [
+    { label: 'tel.',     value: '02-777-3079' },
+    { label: 'email.',   value: 'njsafety91@naver.com' },
+    { label: 'made in',  value: 'Korea' },
+  ];
+
   const filled: ProductShopHeaderData = {
     images:       existing.images && existing.images.length > 0 ? existing.images : seedImages,
+    brand:        existing.brand      ?? 'NJ SAFETY',
+    model:        existing.model      ?? data.model      ?? '',
     category:     existing.category   ?? data.category   ?? '',
     name:         existing.name       ?? data.name       ?? '',
     subtitle:     existing.subtitle   ?? data.subtitle   ?? '',
@@ -396,6 +411,9 @@ export function withShopHeaderDefaults(data: ProductPageData): ProductPageData {
     summarySpecs: existing.summarySpecs && existing.summarySpecs.length > 0
       ? existing.summarySpecs
       : seedSummary,
+    contactInfo:  existing.contactInfo && existing.contactInfo.length > 0
+      ? existing.contactInfo
+      : seedContact,
   };
   return { ...data, shopHeader: filled };
 }

@@ -190,12 +190,18 @@ export default function ProductShopHeader({ data, locale, editor }: Props) {
           {/* ── Right: info + actions ───────────────────────────── */}
           <div className="psh-info">
             <div className="psh-brand">
-              <span className="psh-brand-name">NJ SAFETY</span>
+              <EditableText
+                as="span"
+                className="psh-brand-name"
+                path="shopHeader.brand"
+                value={head.brand ?? 'NJ SAFETY'}
+                editor={editor}
+              />
               <EditableText
                 as="span"
                 className="psh-model"
-                path="model"
-                value={data.model ?? ''}
+                path="shopHeader.model"
+                value={head.model ?? ''}
                 editor={editor}
               />
             </div>
@@ -289,15 +295,31 @@ export default function ProductShopHeader({ data, locale, editor }: Props) {
             </div>
 
             <ul className="psh-meta">
-              <li>
-                <strong>tel.</strong> 02-777-3079
-              </li>
-              <li>
-                <strong>email.</strong> njsafety91@naver.com
-              </li>
-              <li>
-                <strong>made in</strong> Korea
-              </li>
+              {(head.contactInfo ?? []).map((row, i) => (
+                <li key={row.label + i}>
+                  {editor ? (
+                    <EditableText
+                      as="strong"
+                      path={`shopHeader.contactInfo[${i}].label`}
+                      value={row.label}
+                      editor={editor}
+                    />
+                  ) : (
+                    <strong>{row.label}</strong>
+                  )}
+                  {' '}
+                  {editor ? (
+                    <EditableText
+                      as="span"
+                      path={`shopHeader.contactInfo[${i}].value`}
+                      value={row.value}
+                      editor={editor}
+                    />
+                  ) : (
+                    <span>{row.value}</span>
+                  )}
+                </li>
+              ))}
             </ul>
           </div>
         </div>
