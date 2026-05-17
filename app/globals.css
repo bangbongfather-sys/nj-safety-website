@@ -18,9 +18,17 @@
   --muted-2: #6b6b70;
   --border: #3a3a3c;
   --border-soft: #2f2f31;
-  --sans: 'Pretendard', 'Inter', -apple-system, system-ui, sans-serif;
-  --display: 'Inter', 'Pretendard', sans-serif;
-  --mono: 'JetBrains Mono', ui-monospace, monospace;
+  /* Apple-style font stack — SF Pro on Apple devices, Pretendard
+   * (Korean SF Pro analogue) elsewhere. The -apple-system / Blink
+   * leads pull the native San Francisco face when available, so the
+   * site reads identically to Apple's marketing site on macOS / iOS. */
+  --sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display',
+          'Pretendard Variable', 'Pretendard', 'Helvetica Neue',
+          'Apple SD Gothic Neo', system-ui, sans-serif;
+  --display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text',
+             'Pretendard Variable', 'Pretendard', 'Apple SD Gothic Neo',
+             'Helvetica Neue', sans-serif;
+  --mono: ui-monospace, 'SF Mono', 'Menlo', 'JetBrains Mono', monospace;
 }
 
 * { box-sizing: border-box; }
@@ -29,8 +37,14 @@ html, body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--sans);
+  /* Apple-style typography polish: subpixel AA off on macOS, optional
+   * ligatures + contextual alternates on, slight letter-spacing pull
+   * for body copy. Matches the marketing-site feel apple.com ships. */
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  font-feature-settings: 'ss01', 'cv11', 'kern';
+  letter-spacing: -0.011em;
 }
 
 body { overflow-x: hidden; }
@@ -121,9 +135,13 @@ p { line-height: 1.65; }
 .nav.scrolled .logo-img { height: 60px; }
 .menu { display: flex; gap: 44px; }
 .menu a {
-  font-size: 16px; font-weight: 600;
-  letter-spacing: -0.005em; color: var(--text);
-  opacity: .88; position: relative;
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.022em;       /* Apple-style tight tracking on display */
+  color: var(--text);
+  opacity: .92;
+  position: relative;
   transition: opacity .2s, color .2s;
 }
 .menu a:hover { opacity: 1; color: var(--accent); }
@@ -136,8 +154,11 @@ p { line-height: 1.65; }
 .nav-right { display: flex; align-items: center; gap: 22px; }
 .lang {
   display: flex; gap: 8px; align-items: center;
-  font-family: var(--mono); font-size: 13px;
-  letter-spacing: .1em; color: var(--muted);
+  font-family: var(--display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--muted);
   cursor: pointer; user-select: none;
 }
 .lang .on { color: var(--text); }
@@ -145,11 +166,12 @@ p { line-height: 1.65; }
 .btn-quote {
   background: var(--accent);
   color: #0d0d0e;
-  font-weight: 700;
+  font-family: var(--display);
+  font-weight: 800;
   font-size: 14px;
-  letter-spacing: .04em;
+  letter-spacing: -0.01em;
   padding: 13px 22px;
-  border-radius: 2px;
+  border-radius: 8px;            /* Apple-style softly rounded pill button */
   display: inline-flex;
   align-items: center;
   gap: 8px;
