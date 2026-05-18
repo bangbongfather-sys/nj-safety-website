@@ -361,6 +361,12 @@
     },
     "about.ceo.signoffTitle": {
       "size": "1.30em"
+    },
+    "contact.hero.titleLine1": {
+      "width": "95.5%"
+    },
+    "contact.hero.titleLine2Post": {
+      "size": "0.90em"
     }
   },
   "siteConfig": {
@@ -670,10 +676,10 @@
     },
     "hero": {
       "eyebrow": "Contact · 문의",
-      "titleLine1": "현장에 맞는 방염 솔루션,",
+      "titleLine1": "현장에 맞는             <span style=\"color: rgb(255, 107, 26);\">방염 솔루션,</span>",
       "titleLine2Pre": "",
-      "titleLine2Em": "전문가 상담",
-      "titleLine2Post": "으로 시작하세요.",
+      "titleLine2Em": "",
+      "titleLine2Post": "NJ SAFETY에서       상담받으세요.",
       "sub": "제품 견적부터 B2B 단체 주문, OEM 제작, 인증서 발급까지 — NJ SAFETY 전문가가 1영업일 이내 직접 회신해 드립니다.",
       "metrics": [
         {
