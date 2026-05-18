@@ -867,7 +867,7 @@
       "items": [
         {
           "q": "최소 주문 수량(MOQ)은 어떻게 되나요?",
-          "a": "기성 제품은 <b>1벌부터 주문 가능</b>합니다. 단체 견적(5% 추가 할인)은 <b>50벌부터</b>, OEM 제작(자수·자체 패턴)은 <b>100벌부터</b> 진행합니다. 정기 공급 계약은 별도 협의."
+          "a": "초도 발주는 <span style=\"color: rgb(255, 255, 255);\">30</span><b>벌부터</b>, OEM 제작(자수·자체 패턴)은 <b>100벌부터</b> 진행합니다. 정기 공급 계약은 별도 협의."
         },
         {
           "q": "견적은 어떻게 산정되나요?",
@@ -900,14 +900,14 @@
       ]
     },
     "visit": {
-      "eyebrow": "— Visit / 오시는 길",
-      "titleLine1": "현장 미팅·샘플 확인,",
+      "eyebrow": "— Visit",
+      "titleLine1": "오시는 길",
       "titleLine2Pre": "",
-      "titleLine2Em": "직접 방문",
-      "titleLine2Post": "도 환영합니다.",
+      "titleLine2Em": "",
+      "titleLine2Post": "",
       "r": "By appointment",
       "addr": {
-        "ko": "서울특별시 중랑구 신내동",
+        "ko": "서울특별시 중랑구 신내역로 111 신내 SK V1 센터 B동 426호",
         "en": "Sinnae-dong, Jungnang-gu, Seoul, KR",
         "zip": "우편번호 02075 (가상)"
       },
