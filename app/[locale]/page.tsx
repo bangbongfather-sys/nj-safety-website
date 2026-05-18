@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { getDictionary, isLocale, type Locale } from '@/lib/i18n';
+import { getAllProducts } from '@/lib/products';
 import Hero from '@/components/sections/Hero';
 import Products from '@/components/sections/Products';
 import Showcase from '@/components/sections/Showcase';
@@ -20,7 +21,7 @@ export default async function HomePage({ params }: Props) {
   return (
     <>
       <Hero locale={locale} dict={dict} />
-      <Products locale={locale} dict={dict} />
+      <Products locale={locale} dict={dict} products={getAllProducts()} />
       <Showcase dict={dict} />
       <Manifesto dict={dict} />
       <Certifications dict={dict} />
