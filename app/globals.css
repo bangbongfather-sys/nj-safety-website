@@ -385,10 +385,40 @@ section { position: relative; }
  * card that Mammut uses.
  * ────────────────────────────────────────────────────────────────── */
 .products.products-light {
-  background: #1f1f21;          /* one notch above --bg (#1c1c1e) */
+  /* Layered atmospheric background:
+   *   1. Faint orange radial in the upper-right — ambient brand light,
+   *      not a defined glow. Opacity .035 so it reads as 'depth', not
+   *      'spotlight'.
+   *   2. Vertical gradient that matches --bg at top + bottom (so it
+   *      flows seamlessly into Hero above and Showcase below) and only
+   *      lifts to #232325 in the middle band — gives the section its
+   *      own zone of presence without a hard color join. */
+  background:
+    radial-gradient(ellipse 60% 50% at 78% 25%, rgba(255, 107, 26, .035) 0%, transparent 60%),
+    linear-gradient(180deg,
+      var(--bg) 0%,
+      #1f1f21 30%,
+      #232325 50%,
+      #1f1f21 70%,
+      var(--bg) 100%
+    );
   color: var(--text);
   padding: 120px 0;
+  position: relative;
 }
+/* Optional subtle noise so the gradient doesn't band on cheap displays.
+ * 8% opacity is barely perceptible up close but stops the smooth-band
+ * artefact that big gradients show on 6-bit panels. */
+.products.products-light::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .04;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+.products.products-light > * { position: relative; z-index: 1; }
 .products.products-light .section-head { margin-bottom: 56px; }
 .products.products-light .products-light-head .l .title { color: var(--text); }
 .products.products-light .products-light-head .l .title em { color: var(--accent); }
