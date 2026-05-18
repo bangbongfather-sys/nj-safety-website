@@ -349,6 +349,18 @@
     },
     "about.hero.sub": {
       "width": "100.0%"
+    },
+    "about.hero.titleLine1Pre": {
+      "size": "1.10em"
+    },
+    "about.hero.titleLine1Em": {
+      "size": "1.10em"
+    },
+    "about.ceo.signoffName": {
+      "size": "1.10em"
+    },
+    "about.ceo.signoffTitle": {
+      "size": "1.10em"
     }
   },
   "siteConfig": {
@@ -370,8 +382,8 @@
       "yearLabelV": "Industrial Safety",
       "titleLine1Pre": "산업 현장이 선택한, ",
       "titleLine1Em": "    방염 파트너 .",
-      "titleLine2": "NJ SAFETY.",
-      "sub": "1987년 나정ETP로 시작해 38년간 방염 산업안전복 한 분야에만 집중해 왔습니다. 원단 개발부터 디자인·생산·출하까지 — 모든 단계를 책임지는 원스톱 시스템으로 산업 현장의 가장 가까운 곳에서 작업자를 지킵니다.",
+      "titleLine2": "",
+      "sub": "NJ SAFETY는 방염복 및 산업안전복 한 분야에만 집중해 왔습니다. \n원단 개발부터 디자인·생산·출하까지 — 모든 단계를 책임지는 원스톱 시스템으로 산업 현장의 가장 가까운 곳에서 작업자를 지킵니다.",
       "asideTag": "— Brand Mission",
       "asidePullPre": "우리는 작업복을 만들지 않습니다.",
       "asidePullEm": "생명을 지키는 보호 시스템",
@@ -384,7 +396,7 @@
         "lbl": "— Heritage",
         "num": "40",
         "unit": "YEARS",
-        "desc": "1987년 창립 이래 방염 산업안전복 단일 카테고리에 집중해온 시간."
+        "desc": "창립 이래 방염복 및 산업안전복 단일 카테고리에 집중해온 시간."
       },
       {
         "lbl": "— Coverage",
@@ -409,14 +421,14 @@
       "eyebrow": "— CEO Message",
       "titleLine1": "산업 현장이 선택한,",
       "titleLine2Em": "방염의 가장 가까운 파트너.",
-      "paragraph1": "1987년, 단 한 가지 신념으로 시작했습니다. 산업 현장에서 일하는 사람의 안전은 결코 타협의 대상이 될 수 없다는 것. 38년이 지난 지금도 그 신념은 변하지 않았습니다.",
+      "paragraph1": "단 한 가지 신념으로 시작했습니다. 산업 현장에서 일하는 사람의 안전은 결코 타협의 대상이 될 수 없다는 것. 38년이 지난 지금도 그 신념은 변하지 않았습니다.",
       "paragraph2": "그동안 우리는 방염 작업복 한 분야에 집중하며 원단부터 봉제, 인증, 사후 관리까지 모든 단계를 직접 다뤄왔습니다. 한전 협력사, SK 계열, LG 계열을 비롯한 국내 주요 산업 현장이 NJ SAFETY를 선택한 이유 — 그것은 우리가 만든 옷이 좋아서가 아니라, 작업자를 지키는 일에 한 번도 한눈팔지 않았기 때문입니다.",
       "paragraph3": "앞으로도 우리는 가장 가까운 곳에서, 가장 확실한 방식으로 산업 현장을 지키겠습니다.",
       "badge": "CEO · 대표 인사말",
       "stamp": "2026 / SEOUL",
       "portraitPlaceholder": "[ PORTRAIT · 대표이사 ]",
       "signoffTitle": "대표이사",
-      "signoffName": "홍 길 동",
+      "signoffName": "나 승 민",
       "portraitImage": ""
     },
     "heritage": {
