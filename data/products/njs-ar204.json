@@ -413,7 +413,7 @@
   "flavor": "tactical",
   "shopHeader": {
     "images": [
-      "/api/images/njs-ar204-hero-image-1778376783137-e6448dbe996d.jpg",
+      "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njs-ar204/shopheader-images-0.jpg?v=1779107508963",
       "/products/njs-ar204/front.jpg",
       "/products/njs-ar204/back.jpg",
       "/products/njs-ar204/stripe.jpg",
