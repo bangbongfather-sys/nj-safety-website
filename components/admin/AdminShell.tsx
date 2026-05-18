@@ -15,6 +15,7 @@ function Gate({ children }: { children: ReactNode }) {
   const isFullBleed =
     pathname.startsWith('/admin/edit') ||
     pathname.startsWith('/admin/about/edit') ||
+    pathname.startsWith('/admin/contact/edit') ||
     /^\/admin\/products\/[^/]+\/edit\/?$/.test(pathname);
 
   if (state.status === 'unknown' || state.status === 'verifying') {

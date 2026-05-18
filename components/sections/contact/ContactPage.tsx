@@ -3,42 +3,35 @@
 /**
  * /ko/contact — 문의 페이지.
  *
- * 6-section flow per design_handoff_contact_page:
- *   01. Hero            — slogan + 3 metric tiles (response / MOQ / lead time)
- *   02. Inquiry Types   — 5 cards, click to prefill the form's hidden type
- *   03. Form            — main inquiry form + sticky sidebar
- *   04. Process         — 4-step workflow from inquiry to delivery
- *   05. FAQ             — 8 accordion items
- *   06. Visit           — address, transit, map placeholder
- *
- * Site nav + footer auto-mounted by app/[locale]/layout.tsx. This
- * component renders only the page body.
- *
- * Form submission posts multipart/form-data to /api/contact, which the
- * Worker handles (uploads attachments to R2, sends email via the
- * verified Cloudflare send_email binding).
+ * Now reads every visible string from `dict.contact.*`, so the
+ * existing WYSIWYG admin (and the new /admin/contact/edit route)
+ * can edit copy inline using the same EditableText primitive
+ * everywhere else uses. Form mechanics (input names, select option
+ * lists used for backend filtering, submit endpoint) stay hardcoded
+ * because they're functional UI, not editorial copy.
  */
 
 import { useRef, useState, type FormEvent } from 'react';
-import type { Locale } from '@/lib/i18n';
+import type { Dictionary, Locale } from '@/lib/i18n';
+import EditableText, { type EditorApi } from '@/components/admin/EditableText';
 import './contact.css';
 
 type InquiryType = 'quote' | 'b2b' | 'oem' | 'cert' | 'as';
 
-const TYPE_LABELS: Record<InquiryType, { num: string; ko: string; en: string }> = {
-  quote: { num: '01', ko: '제품·견적 문의',     en: 'Product & Quote' },
-  b2b:   { num: '02', ko: 'B2B 단체 주문',     en: 'Bulk Order' },
-  oem:   { num: '03', ko: 'OEM·ODM 제작',       en: 'Custom Manufacturing' },
-  cert:  { num: '04', ko: '인증서·시험성적서', en: 'Certification Docs' },
-  as:    { num: '05', ko: 'A/S·교환·반품',     en: 'After-sales' },
+type Props = {
+  locale: Locale;
+  dict: Dictionary;
+  editor?: EditorApi;
 };
 
-export default function ContactPage({ locale }: { locale: Locale }) {
+type ContactDict = NonNullable<Dictionary['contact']>;
+
+export default function ContactPage({ locale, dict, editor }: Props) {
+  const contact = dict.contact as ContactDict;
   const [activeType, setActiveType] = useState<InquiryType>('quote');
 
   const onTypeChange = (t: InquiryType) => {
     setActiveType(t);
-    // Smooth-scroll to the form after the state lands.
     requestAnimationFrame(() => {
       document.getElementById('form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
@@ -46,52 +39,65 @@ export default function ContactPage({ locale }: { locale: Locale }) {
 
   return (
     <div className="contact-page">
-      <ContactHero />
-      <InquiryTypes active={activeType} onChange={onTypeChange} />
-      <ContactForm activeType={activeType} locale={locale} />
-      <ContactProcess />
-      <ContactFaq />
-      <ContactVisit />
+      <ContactHero contact={contact} editor={editor} />
+      <InquiryTypes contact={contact} active={activeType} onChange={onTypeChange} editor={editor} />
+      <ContactForm contact={contact} activeType={activeType} locale={locale} editor={editor} />
+      <ContactProcess contact={contact} editor={editor} />
+      <ContactFaq contact={contact} editor={editor} />
+      <ContactVisit contact={contact} editor={editor} />
     </div>
   );
 }
 
 /* ─── 01. Hero ───────────────────────────────────────────────────── */
-function ContactHero() {
+function ContactHero({ contact, editor }: { contact: ContactDict; editor?: EditorApi }) {
+  const h = contact.hero;
+  const metrics = h.metrics ?? [];
   return (
     <section className="ct-hero" data-screen-label="01 Hero">
       <div className="wrap">
         <div className="ct-hero-content">
           <div className="ct-hero-l">
             <span className="ct-eyebrow">
-              <span className="ct-hairline" /> Contact · 문의
+              <span className="ct-hairline" />{' '}
+              <EditableText as="span" path="contact.hero.eyebrow" value={h.eyebrow ?? ''} editor={editor} />
             </span>
             <h1>
-              현장에 맞는 방염 솔루션,
+              <EditableText path="contact.hero.titleLine1" value={h.titleLine1 ?? ''} editor={editor} />
               <br />
-              <em>전문가 상담</em>으로 시작하세요.
+              <EditableText path="contact.hero.titleLine2Pre" value={h.titleLine2Pre ?? ''} editor={editor} />
+              <em>
+                <EditableText path="contact.hero.titleLine2Em" value={h.titleLine2Em ?? ''} editor={editor} />
+              </em>
+              <EditableText path="contact.hero.titleLine2Post" value={h.titleLine2Post ?? ''} editor={editor} />
             </h1>
-            <p className="ct-hero-sub">
-              제품 견적부터 B2B 단체 주문, OEM 제작, 인증서 발급까지 — NJ SAFETY 전문가가
-              1영업일 이내 직접 회신해 드립니다.
-            </p>
+            <EditableText
+              as="p"
+              className="ct-hero-sub"
+              path="contact.hero.sub"
+              value={h.sub ?? ''}
+              editor={editor}
+              multiline
+            />
           </div>
           <div className="ct-hero-metrics">
-            <div className="ct-hero-metric">
-              <span className="lbl">— Response</span>
-              <span className="val">1<span>영업일</span></span>
-              <span className="desc">평균 회신 시간 (B2B 우선 처리)</span>
-            </div>
-            <div className="ct-hero-metric">
-              <span className="lbl">— MOQ</span>
-              <span className="val">50<span>벌부터</span></span>
-              <span className="desc">단체 견적 최소 수량 · 5% 추가 할인</span>
-            </div>
-            <div className="ct-hero-metric">
-              <span className="lbl">— Lead Time</span>
-              <span className="val">3<span>–6주</span></span>
-              <span className="desc">평균 납기 · 양산 기준</span>
-            </div>
+            {metrics.map((m, i) => (
+              <div key={i} className="ct-hero-metric">
+                <EditableText as="span" className="lbl" path={`contact.hero.metrics[${i}].lbl`} value={m.lbl ?? ''} editor={editor} />
+                <span className="val">
+                  <EditableText as="span" path={`contact.hero.metrics[${i}].num`} value={m.num ?? ''} editor={editor} />
+                  <EditableText as="span" path={`contact.hero.metrics[${i}].unit`} value={m.unit ?? ''} editor={editor} />
+                </span>
+                <EditableText
+                  as="span"
+                  className="desc"
+                  path={`contact.hero.metrics[${i}].desc`}
+                  value={m.desc ?? ''}
+                  editor={editor}
+                  multiline
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -100,99 +106,93 @@ function ContactHero() {
 }
 
 /* ─── 02. Inquiry Types ──────────────────────────────────────────── */
-const TYPE_CARDS: { type: InquiryType; body: string; icon: React.ReactNode }[] = [
-  {
-    type: 'quote',
-    body: '아라미드 시즌 제품의 가격·재고·납기 관련 일반 견적 문의.',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-        <polyline points="14 2 14 8 20 8" />
-        <line x1="9" y1="13" x2="15" y2="13" />
-        <line x1="9" y1="17" x2="15" y2="17" />
-      </svg>
-    ),
-  },
-  {
-    type: 'b2b',
-    body: '50벌 이상 단체 주문 · 5% 추가 할인 · 전담 매니저 응대.',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-        <path d="M3 21V8l9-5 9 5v13" />
-        <path d="M9 21V12h6v9" />
-        <path d="M3 13h18" />
-      </svg>
-    ),
-  },
-  {
-    type: 'oem',
-    body: '자체 패턴·자수·로고 작업. 원단부터 봉제까지 본사 직접 제작.',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-        <circle cx="12" cy="12" r="3" />
-        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
-      </svg>
-    ),
-  },
-  {
-    type: 'cert',
-    body: 'NFPA 2112 UL 인증, ARC 시험성적서, 혼용률 시험 자료 요청.',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-        <path d="M12 2 4 5v7c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V5l-8-3Z" />
-        <path d="m9 12 2 2 4-4" />
-      </svg>
-    ),
-  },
-  {
-    type: 'as',
-    body: '사용 중 발생한 하자·사이즈 교환·수선 등의 사후 관리.',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" />
-      </svg>
-    ),
-  },
+const TYPE_ICONS = [
+  // Order matches dict.contact.types.items[0..4] — keep these in sync.
+  <svg key="i1" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+    <polyline points="14 2 14 8 20 8" />
+    <line x1="9" y1="13" x2="15" y2="13" />
+    <line x1="9" y1="17" x2="15" y2="17" />
+  </svg>,
+  <svg key="i2" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+    <path d="M3 21V8l9-5 9 5v13" />
+    <path d="M9 21V12h6v9" />
+    <path d="M3 13h18" />
+  </svg>,
+  <svg key="i3" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+    <circle cx="12" cy="12" r="3" />
+    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+  </svg>,
+  <svg key="i4" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+    <path d="M12 2 4 5v7c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V5l-8-3Z" />
+    <path d="m9 12 2 2 4-4" />
+  </svg>,
+  <svg key="i5" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" />
+  </svg>,
 ];
 
-function InquiryTypes({ active, onChange }: { active: InquiryType; onChange: (t: InquiryType) => void }) {
+function InquiryTypes({
+  contact, active, onChange, editor,
+}: {
+  contact: ContactDict;
+  active: InquiryType;
+  onChange: (t: InquiryType) => void;
+  editor?: EditorApi;
+}) {
+  const t = contact.types;
+  const items = t.items ?? [];
   return (
     <section className="ct-types ct-section" data-screen-label="02 Inquiry Types">
       <div className="wrap">
         <div className="ct-section-head">
           <div className="l">
-            <span className="ct-eyebrow">— Inquiry Types / 5 Categories</span>
+            <EditableText as="span" className="ct-eyebrow" path="contact.types.eyebrow" value={t.eyebrow ?? ''} editor={editor} />
             <h2 className="ct-title">
-              먼저, <em>어떤 문의</em>인지 알려주세요.
+              <EditableText path="contact.types.titlePre" value={t.titlePre ?? ''} editor={editor} />
+              <em>
+                <EditableText path="contact.types.titleEm" value={t.titleEm ?? ''} editor={editor} />
+              </em>
+              <EditableText path="contact.types.titlePost" value={t.titlePost ?? ''} editor={editor} />
             </h2>
           </div>
-          <div className="r">Step 01 of 02</div>
+          <EditableText as="div" className="r" path="contact.types.r" value={t.r ?? ''} editor={editor} />
         </div>
 
         <div className="ct-types-grid">
-          {TYPE_CARDS.map((c) => {
-            const label = TYPE_LABELS[c.type];
-            const isActive = c.type === active;
+          {items.map((item, i) => {
+            // type key drives the form's hidden inquiry_type field — stays
+            // structural (not edited), but ko/en/body all flow through dict.
+            const isActive = item.type === active;
+            const Tag = editor ? 'div' : 'button';
+            const tagProps = editor
+              ? { className: `ct-type-card${isActive ? ' is-active' : ''}` }
+              : {
+                  type: 'button' as const,
+                  className: `ct-type-card${isActive ? ' is-active' : ''}`,
+                  onClick: () => onChange(item.type as InquiryType),
+                  'aria-pressed': isActive,
+                  'data-type': item.type,
+                };
             return (
-              <button
-                key={c.type}
-                type="button"
-                className={`ct-type-card${isActive ? ' is-active' : ''}`}
-                data-type={c.type}
-                onClick={() => onChange(c.type)}
-                aria-pressed={isActive}
-              >
+              <Tag key={item.type} {...tagProps}>
                 <div className="top">
-                  <span className="n">{label.num} / 05</span>
-                  <span className="icon">{c.icon}</span>
+                  <span className="n">{String(i + 1).padStart(2, '0')} / 05</span>
+                  <span className="icon">{TYPE_ICONS[i] ?? null}</span>
                 </div>
                 <div>
-                  <h3>{label.ko}</h3>
-                  <div className="en">{label.en}</div>
+                  <EditableText as="h3" path={`contact.types.items[${i}].ko`} value={item.ko ?? ''} editor={editor} />
+                  <EditableText as="div" className="en" path={`contact.types.items[${i}].en`} value={item.en ?? ''} editor={editor} />
                 </div>
-                <p>{c.body}</p>
-                <span className="arr">{isActive ? '선택됨 ✓' : '선택 →'}</span>
-              </button>
+                <EditableText as="p" path={`contact.types.items[${i}].body`} value={item.body ?? ''} editor={editor} multiline />
+                <span className="arr">
+                  {isActive ? (
+                    <EditableText as="span" path="contact.types.selectedLabel" value={t.selectedLabel ?? ''} editor={editor} />
+                  ) : (
+                    <EditableText as="span" path="contact.types.selectLabel" value={t.selectLabel ?? ''} editor={editor} />
+                  )}
+                </span>
+              </Tag>
             );
           })}
         </div>
@@ -208,7 +208,15 @@ type SubmitState =
   | { status: 'ok' }
   | { status: 'error'; message: string };
 
-function ContactForm({ activeType, locale }: { activeType: InquiryType; locale: Locale }) {
+function ContactForm({
+  contact, activeType, locale, editor,
+}: {
+  contact: ContactDict;
+  activeType: InquiryType;
+  locale: Locale;
+  editor?: EditorApi;
+}) {
+  const f = contact.form;
   const formRef = useRef<HTMLFormElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const [submit, setSubmit] = useState<SubmitState>({ status: 'idle' });
@@ -220,8 +228,6 @@ function ContactForm({ activeType, locale }: { activeType: InquiryType; locale: 
     setSubmit({ status: 'sending' });
     try {
       const fd = new FormData(formRef.current);
-      // hidden field – overwrite with the latest activeType so the
-      // type the user has selected (not the default) is what arrives.
       fd.set('inquiry_type', activeType);
       const r = await fetch('/api/contact', { method: 'POST', body: fd });
       const payload = (await r.json().catch(() => ({}))) as { ok?: boolean; error?: string };
@@ -232,18 +238,20 @@ function ContactForm({ activeType, locale }: { activeType: InquiryType; locale: 
       setSubmit({ status: 'ok' });
       formRef.current.reset();
       setFileNames([]);
-    } catch (e: unknown) {
-      setSubmit({ status: 'error', message: e instanceof Error ? e.message : String(e) });
+    } catch (err: unknown) {
+      setSubmit({ status: 'error', message: err instanceof Error ? err.message : String(err) });
     }
   };
 
   const onFilePick = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
-    setFileNames(Array.from(files).map((f) => f.name));
+    setFileNames(Array.from(files).map((x) => x.name));
   };
 
-  const selectedLabel = `${TYPE_LABELS[activeType].num} / ${TYPE_LABELS[activeType].ko}`;
+  const activeIdx = (contact.types.items ?? []).findIndex((it) => it.type === activeType);
+  const activeKo = (contact.types.items ?? [])[activeIdx]?.ko ?? '';
+  const selectedLabel = `${String(activeIdx + 1).padStart(2, '0')} / ${activeKo}`;
   const namesPreview =
     fileNames.length === 0
       ? null
@@ -256,18 +264,21 @@ function ContactForm({ activeType, locale }: { activeType: InquiryType; locale: 
       <div className="wrap">
         <div className="ct-section-head">
           <div className="l">
-            <span className="ct-eyebrow">— Inquiry Form / Step 02</span>
+            <EditableText as="span" className="ct-eyebrow" path="contact.form.sectionEyebrow" value={f.sectionEyebrow ?? ''} editor={editor} />
             <h2 className="ct-title">
-              담당자 정보를 <em>알려주세요.</em>
+              <EditableText path="contact.form.sectionTitlePre" value={f.sectionTitlePre ?? ''} editor={editor} />
+              <em>
+                <EditableText path="contact.form.sectionTitleEm" value={f.sectionTitleEm ?? ''} editor={editor} />
+              </em>
             </h2>
           </div>
-          <div className="r">* 표시는 필수</div>
+          <EditableText as="div" className="r" path="contact.form.sectionR" value={f.sectionR ?? ''} editor={editor} />
         </div>
 
         <div className="ct-form-grid">
           <form ref={formRef} className="ct-form" onSubmit={handleSubmit} noValidate>
             <div className="ct-form-title">
-              <h2>문의 양식</h2>
+              <EditableText as="h2" path="contact.form.title" value={f.title ?? ''} editor={editor} />
               <span className="selected">{selectedLabel}</span>
             </div>
 
@@ -275,11 +286,16 @@ function ContactForm({ activeType, locale }: { activeType: InquiryType; locale: 
 
             <div className="ct-form-row">
               <div className="ct-field">
-                <label htmlFor="company">회사명 <span className="req">*</span></label>
-                <input id="company" name="company" type="text" placeholder="예) 한국전력 협력업체 ○○○" required />
+                <label htmlFor="company">
+                  <EditableText as="span" path="contact.form.labels.company" value={f.labels?.company ?? ''} editor={editor} />
+                  {' '}<span className="req">*</span>
+                </label>
+                <input id="company" name="company" type="text" placeholder={f.placeholders?.company} required />
               </div>
               <div className="ct-field">
-                <label htmlFor="industry">산업군</label>
+                <label htmlFor="industry">
+                  <EditableText as="span" path="contact.form.labels.industry" value={f.labels?.industry ?? ''} editor={editor} />
+                </label>
                 <select id="industry" name="industry" defaultValue="">
                   <option value="">선택해 주세요</option>
                   <option>전력·발전 (Power)</option>
@@ -295,29 +311,42 @@ function ContactForm({ activeType, locale }: { activeType: InquiryType; locale: 
 
             <div className="ct-form-row">
               <div className="ct-field">
-                <label htmlFor="contact_name">담당자명 <span className="req">*</span></label>
-                <input id="contact_name" name="contact_name" type="text" placeholder="이름" required />
+                <label htmlFor="contact_name">
+                  <EditableText as="span" path="contact.form.labels.contactName" value={f.labels?.contactName ?? ''} editor={editor} />
+                  {' '}<span className="req">*</span>
+                </label>
+                <input id="contact_name" name="contact_name" type="text" placeholder={f.placeholders?.contactName} required />
               </div>
               <div className="ct-field">
-                <label htmlFor="position">직책</label>
-                <input id="position" name="position" type="text" placeholder="예) 안전관리팀장" />
-              </div>
-            </div>
-
-            <div className="ct-form-row">
-              <div className="ct-field">
-                <label htmlFor="phone">연락처 <span className="req">*</span></label>
-                <input id="phone" name="phone" type="tel" placeholder="010-0000-0000" required />
-              </div>
-              <div className="ct-field">
-                <label htmlFor="email">이메일 <span className="req">*</span></label>
-                <input id="email" name="email" type="email" placeholder="name@company.co.kr" required />
+                <label htmlFor="position">
+                  <EditableText as="span" path="contact.form.labels.position" value={f.labels?.position ?? ''} editor={editor} />
+                </label>
+                <input id="position" name="position" type="text" placeholder={f.placeholders?.position} />
               </div>
             </div>
 
             <div className="ct-form-row">
               <div className="ct-field">
-                <label htmlFor="quantity_range">예상 수량</label>
+                <label htmlFor="phone">
+                  <EditableText as="span" path="contact.form.labels.phone" value={f.labels?.phone ?? ''} editor={editor} />
+                  {' '}<span className="req">*</span>
+                </label>
+                <input id="phone" name="phone" type="tel" placeholder={f.placeholders?.phone} required />
+              </div>
+              <div className="ct-field">
+                <label htmlFor="email">
+                  <EditableText as="span" path="contact.form.labels.email" value={f.labels?.email ?? ''} editor={editor} />
+                  {' '}<span className="req">*</span>
+                </label>
+                <input id="email" name="email" type="email" placeholder={f.placeholders?.email} required />
+              </div>
+            </div>
+
+            <div className="ct-form-row">
+              <div className="ct-field">
+                <label htmlFor="quantity_range">
+                  <EditableText as="span" path="contact.form.labels.quantityRange" value={f.labels?.quantityRange ?? ''} editor={editor} />
+                </label>
                 <select id="quantity_range" name="quantity_range" defaultValue="">
                   <option value="">선택해 주세요</option>
                   <option>1~49 벌 (소량)</option>
@@ -329,26 +358,30 @@ function ContactForm({ activeType, locale }: { activeType: InquiryType; locale: 
                 </select>
               </div>
               <div className="ct-field">
-                <label htmlFor="delivery_date">희망 납기</label>
-                <input id="delivery_date" name="delivery_date" type="text" placeholder="예) 2026년 7월 말 / 정기 공급" />
+                <label htmlFor="delivery_date">
+                  <EditableText as="span" path="contact.form.labels.deliveryDate" value={f.labels?.deliveryDate ?? ''} editor={editor} />
+                </label>
+                <input id="delivery_date" name="delivery_date" type="text" placeholder={f.placeholders?.deliveryDate} />
               </div>
             </div>
 
             <div className="ct-form-row full">
               <div className="ct-field">
-                <label htmlFor="message">문의 내용 <span className="req">*</span></label>
-                <textarea
-                  id="message"
-                  name="message"
-                  placeholder="예) 한전 협력업체용 아라미드 하계 시즌 200벌, 자수 작업 포함 견적 문의드립니다. 사이즈 분포는 추후 공유 가능합니다."
-                  required
-                />
+                <label htmlFor="message">
+                  <EditableText as="span" path="contact.form.labels.message" value={f.labels?.message ?? ''} editor={editor} />
+                  {' '}<span className="req">*</span>
+                </label>
+                <textarea id="message" name="message" placeholder={f.placeholders?.message} required />
               </div>
             </div>
 
             <div className="ct-form-row full">
               <div className="ct-field">
-                <label>파일 첨부 <span className="ct-hint-mini">(시방서·로고·사이즈표 등)</span></label>
+                <label>
+                  <EditableText as="span" path="contact.form.labels.fileAttach" value={f.labels?.fileAttach ?? ''} editor={editor} />
+                  {' '}
+                  <EditableText as="span" className="ct-hint-mini" path="contact.form.fileHintMini" value={f.fileHintMini ?? ''} editor={editor} />
+                </label>
                 <div className="ct-file-upload">
                   <div className="ic">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
@@ -364,9 +397,11 @@ function ContactForm({ activeType, locale }: { activeType: InquiryType; locale: 
                       </>
                     ) : (
                       <>
-                        <b>최대 5개 파일까지</b>
+                        <b>
+                          <EditableText as="span" path="contact.form.fileHintTitle" value={f.fileHintTitle ?? ''} editor={editor} />
+                        </b>
                         <br />
-                        PDF · JPG · PNG · AI · ZIP / 각 20MB 이하
+                        <EditableText as="span" path="contact.form.fileHintBody" value={f.fileHintBody ?? ''} editor={editor} />
                       </>
                     )}
                   </div>
@@ -379,7 +414,9 @@ function ContactForm({ activeType, locale }: { activeType: InquiryType; locale: 
                     accept=".pdf,.jpg,.jpeg,.png,.webp,.gif,.ai,.eps,.zip,.svg,.heic,application/pdf,image/*"
                     onChange={onFilePick}
                   />
-                  <label htmlFor="fileInput">파일 선택</label>
+                  <label htmlFor="fileInput">
+                    <EditableText as="span" path="contact.form.fileSelectLabel" value={f.fileSelectLabel ?? ''} editor={editor} />
+                  </label>
                 </div>
               </div>
             </div>
@@ -387,95 +424,113 @@ function ContactForm({ activeType, locale }: { activeType: InquiryType; locale: 
             <div className="ct-agree">
               <input id="agree" name="agreed" type="checkbox" required />
               <label htmlFor="agree">
-                <a href="#privacy" onClick={(e) => e.preventDefault()}>개인정보 수집·이용 약관</a>에 동의합니다.
+                <EditableText as="span" path="contact.form.agreePre" value={f.agreePre ?? ''} editor={editor} />
+                <a href="#privacy" onClick={(e) => e.preventDefault()}>
+                  <EditableText as="span" path="contact.form.agreeLink" value={f.agreeLink ?? ''} editor={editor} />
+                </a>
+                <EditableText as="span" path="contact.form.agreePost" value={f.agreePost ?? ''} editor={editor} />
                 <br />
-                <span className="ct-agree-fine">
-                  수집 항목: 회사명·담당자명·연락처·이메일 / 보유 기간: 문의 처리 후 6개월 / 이용 목적: 문의 응대 및 견적 발송
-                </span>
+                <EditableText
+                  as="span"
+                  className="ct-agree-fine"
+                  path="contact.form.agreeFine"
+                  value={f.agreeFine ?? ''}
+                  editor={editor}
+                  multiline
+                />
               </label>
             </div>
 
             <div className="ct-form-submit">
-              <span className="note">— 1영업일 이내 회신 드립니다</span>
+              <EditableText
+                as="span"
+                className="note"
+                path="contact.form.submitNote"
+                value={f.submitNote ?? ''}
+                editor={editor}
+              />
               <button
                 type="submit"
                 className="ct-btn ct-btn-primary"
-                disabled={submit.status === 'sending'}
+                disabled={submit.status === 'sending' || !!editor}
+                title={editor ? '편집 모드에서는 실제 제출 비활성화' : undefined}
               >
-                {submit.status === 'sending' ? '전송 중...' : '문의 제출하기'}
+                {submit.status === 'sending' ? (
+                  <EditableText as="span" path="contact.form.submitting" value={f.submitting ?? ''} editor={editor} />
+                ) : (
+                  <EditableText as="span" path="contact.form.submitButton" value={f.submitButton ?? ''} editor={editor} />
+                )}
                 <span className="arr">→</span>
               </button>
             </div>
 
             {submit.status === 'ok' ? (
               <div className="ct-form-toast ok">
-                ✓ 문의가 접수되었습니다. 1영업일 이내 회신 드립니다.
+                <EditableText as="span" path="contact.form.toastOk" value={f.toastOk ?? ''} editor={editor} />
               </div>
             ) : null}
-            {submit.status === 'error' ? (
-              <div className="ct-form-toast err">⚠ {submit.message}</div>
-            ) : null}
+            {submit.status === 'error' ? <div className="ct-form-toast err">⚠ {submit.message}</div> : null}
           </form>
 
-          <ContactSidebar locale={locale} />
+          <ContactSidebar contact={contact} editor={editor} />
         </div>
       </div>
     </section>
   );
 }
 
-function ContactSidebar({ locale: _locale }: { locale: Locale }) {
+function ContactSidebar({ contact, editor }: { contact: ContactDict; editor?: EditorApi }) {
+  const s = contact.sidebar;
+  const rows = s.rows ?? [];
+  const actions = s.actions ?? [];
   return (
     <aside className="ct-sidebar">
       <div className="ct-sb-card accent">
-        <span className="lbl">— Direct Line / B2B 전담</span>
-        <div className="tel">02-777-3079</div>
+        <EditableText as="span" className="lbl" path="contact.sidebar.directLabel" value={s.directLabel ?? ''} editor={editor} />
+        <EditableText as="div" className="tel" path="contact.sidebar.tel" value={s.tel ?? ''} editor={editor} />
         <p className="hrs">
-          평일 09:00 – 18:00 KST
+          <EditableText as="span" path="contact.sidebar.hoursLine1" value={s.hoursLine1 ?? ''} editor={editor} />
           <br />
-          점심 12:30 – 13:30 · 주말 휴무
+          <EditableText as="span" path="contact.sidebar.hoursLine2" value={s.hoursLine2 ?? ''} editor={editor} />
         </p>
       </div>
 
       <div className="ct-sb-card">
-        <span className="lbl">— Other Channels</span>
+        <EditableText as="span" className="lbl" path="contact.sidebar.otherLabel" value={s.otherLabel ?? ''} editor={editor} />
         <div className="ct-sb-list">
-          <div className="ct-sb-row">
-            <span className="k">Email</span>
-            <span className="v">
-              <a href="mailto:njsafety91@naver.com">njsafety91@naver.com</a>
-            </span>
-          </div>
-          <div className="ct-sb-row">
-            <span className="k">Fax</span>
-            <span className="v">02-774-1841</span>
-          </div>
-          <div className="ct-sb-row">
-            <span className="k">Web</span>
-            <span className="v">
-              <a href="https://www.njfashion.co.kr" target="_blank" rel="noreferrer">www.njfashion.co.kr</a>
-            </span>
-          </div>
+          {rows.map((row, i) => (
+            <div key={i} className="ct-sb-row">
+              <EditableText as="span" className="k" path={`contact.sidebar.rows[${i}].key`} value={row.key ?? ''} editor={editor} />
+              <span className="v">
+                {row.href ? (
+                  <a href={row.href} target={row.href.startsWith('http') ? '_blank' : undefined} rel={row.href.startsWith('http') ? 'noreferrer' : undefined}>
+                    <EditableText as="span" path={`contact.sidebar.rows[${i}].value`} value={row.value ?? ''} editor={editor} />
+                  </a>
+                ) : (
+                  <EditableText as="span" path={`contact.sidebar.rows[${i}].value`} value={row.value ?? ''} editor={editor} />
+                )}
+              </span>
+            </div>
+          ))}
         </div>
         <div className="ct-sb-actions">
-          {/* TODO: 실제 카탈로그 PDF / 카카오톡 채널 URL 연결 */}
-          <a href="#catalog">
-            <span className="ic">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                <polyline points="14 2 14 8 20 8" />
-              </svg>
-            </span>
-            카탈로그 PDF
-          </a>
-          <a href="#kakao">
-            <span className="ic">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-              </svg>
-            </span>
-            카카오톡 채널
-          </a>
+          {actions.map((a, i) => (
+            <a key={i} href={a.href || '#'}>
+              <span className="ic">
+                {i === 0 ? (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                  </svg>
+                ) : (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                  </svg>
+                )}
+              </span>
+              <EditableText as="span" path={`contact.sidebar.actions[${i}].ko`} value={a.ko ?? ''} editor={editor} />
+            </a>
+          ))}
         </div>
       </div>
 
@@ -485,7 +540,11 @@ function ContactSidebar({ locale: _locale }: { locale: Locale }) {
           <polyline points="12 6 12 12 16 14" />
         </svg>
         <span>
-          <b>평균 회신 1영업일</b> — 대형 견적·OEM은 2~3일 소요
+          <EditableText as="span" path="contact.sidebar.reassurePre" value={s.reassurePre ?? ''} editor={editor} />
+          <b>
+            <EditableText as="span" path="contact.sidebar.reassureEm" value={s.reassureEm ?? ''} editor={editor} />
+          </b>
+          <EditableText as="span" path="contact.sidebar.reassurePost" value={s.reassurePost ?? ''} editor={editor} />
         </span>
       </div>
     </aside>
@@ -493,87 +552,42 @@ function ContactSidebar({ locale: _locale }: { locale: Locale }) {
 }
 
 /* ─── 04. Process ───────────────────────────────────────────────── */
-function ContactProcess() {
-  const STEPS = [
-    {
-      n: 'STEP 01',
-      ko: '문의 접수',
-      en: 'Inquiry Received',
-      body: '온라인 폼·전화·이메일로 접수된 문의를 영업팀이 분류·전담 매니저 배정합니다.',
-      eta: '— Day 1 (1영업일 내)',
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-        </svg>
-      ),
-    },
-    {
-      n: 'STEP 02',
-      ko: '요구사항 확인',
-      en: 'Consultation',
-      body: '전화·메일로 수량·사양·납기·인증 요구사항을 구체화합니다. 필요시 샘플 발송.',
-      eta: '— Day 2 – 3',
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-          <circle cx="9" cy="7" r="4" />
-          <path d="M22 11l-3 3-2-2" />
-        </svg>
-      ),
-    },
-    {
-      n: 'STEP 03',
-      ko: '견적서 발송',
-      en: 'Quotation',
-      body: '정식 견적서 + 시험성적서/인증서 패키지를 PDF로 발송. 수정 1회 무료.',
-      eta: '— Day 3 – 5',
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-          <polyline points="14 2 14 8 20 8" />
-          <line x1="9" y1="13" x2="15" y2="13" />
-        </svg>
-      ),
-    },
-    {
-      n: 'STEP 04',
-      ko: '계약·생산·납품',
-      en: 'Production & Delivery',
-      body: '계약 체결 후 본사 자체 생산 라인에서 봉제·QC·출하. 정기 공급 협의 가능.',
-      eta: '— 3 – 6주 (양산 기준)',
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-          <rect x="2" y="3" width="20" height="14" rx="2" />
-          <path d="M8 21h8M12 17v4" />
-        </svg>
-      ),
-    },
-  ];
+const PROCESS_ICONS = [
+  <svg key="p1" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>,
+  <svg key="p2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 11l-3 3-2-2" /></svg>,
+  <svg key="p3" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="9" y1="13" x2="15" y2="13" /></svg>,
+  <svg key="p4" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8M12 17v4" /></svg>,
+];
 
+function ContactProcess({ contact, editor }: { contact: ContactDict; editor?: EditorApi }) {
+  const p = contact.process;
+  const steps = p.steps ?? [];
   return (
     <section className="ct-process ct-section" data-screen-label="04 Process">
       <div className="wrap">
         <div className="ct-section-head">
           <div className="l">
-            <span className="ct-eyebrow">— How It Works / 4 Steps</span>
+            <EditableText as="span" className="ct-eyebrow" path="contact.process.eyebrow" value={p.eyebrow ?? ''} editor={editor} />
             <h2 className="ct-title">
-              문의에서 납품까지,
+              <EditableText path="contact.process.titleLine1" value={p.titleLine1 ?? ''} editor={editor} />
               <br />
-              <em>네 단계 프로세스.</em>
+              <em>
+                <EditableText path="contact.process.titleLine2Em" value={p.titleLine2Em ?? ''} editor={editor} />
+              </em>
             </h2>
           </div>
-          <div className="r">Avg. 3 – 6 weeks total</div>
+          <EditableText as="div" className="r" path="contact.process.r" value={p.r ?? ''} editor={editor} />
         </div>
 
         <div className="ct-process-grid">
-          {STEPS.map((s) => (
-            <div key={s.n} className="ct-process-step">
-              <span className="n">{s.n}</span>
-              <span className="ic">{s.icon}</span>
-              <h4>{s.ko}</h4>
-              <span className="en">{s.en}</span>
-              <p>{s.body}</p>
-              <span className="eta">{s.eta}</span>
+          {steps.map((s, i) => (
+            <div key={i} className="ct-process-step">
+              <EditableText as="span" className="n" path={`contact.process.steps[${i}].n`} value={s.n ?? ''} editor={editor} />
+              <span className="ic">{PROCESS_ICONS[i] ?? null}</span>
+              <EditableText as="h4" path={`contact.process.steps[${i}].ko`} value={s.ko ?? ''} editor={editor} />
+              <EditableText as="span" className="en" path={`contact.process.steps[${i}].en`} value={s.en ?? ''} editor={editor} />
+              <EditableText as="p" path={`contact.process.steps[${i}].body`} value={s.body ?? ''} editor={editor} multiline />
+              <EditableText as="span" className="eta" path={`contact.process.steps[${i}].eta`} value={s.eta ?? ''} editor={editor} />
             </div>
           ))}
         </div>
@@ -583,42 +597,12 @@ function ContactProcess() {
 }
 
 /* ─── 05. FAQ ───────────────────────────────────────────────────── */
-function ContactFaq() {
-  const FAQS: { q: string; a: React.ReactNode }[] = [
-    {
-      q: '최소 주문 수량(MOQ)은 어떻게 되나요?',
-      a: <>기성 제품은 <b>1벌부터 주문 가능</b>합니다. 단체 견적(5% 추가 할인)은 <b>50벌부터</b>, OEM 제작(자수·자체 패턴)은 <b>100벌부터</b> 진행합니다. 정기 공급 계약은 별도 협의.</>,
-    },
-    {
-      q: '견적은 어떻게 산정되나요?',
-      a: <>제품·수량·사이즈 분포·자수/로고 옵션·인증서 요구사항을 기준으로 산정됩니다. 정식 견적서 발송까지 평균 <b>3~5영업일</b> 소요되며, <b>견적서 1회 무료 수정</b>이 포함됩니다.</>,
-    },
-    {
-      q: '평균 납기는 얼마나 걸리나요?',
-      a: <>기성 재고 보유 사이즈는 <b>출고일 기준 5~7영업일</b>, 신규 양산은 <b>3~6주</b>, OEM 제작은 <b>6~10주</b>입니다. 급한 일정은 사전 협의 시 단축 가능합니다.</>,
-    },
-    {
-      q: 'OEM 자수·로고 작업도 가능한가요?',
-      a: <>가능합니다. <b>자수·전사·실크프린팅</b> 모두 지원하며, 회사 로고·이름·소속 부서 단위 가공이 가능합니다. AI 또는 고해상도 PNG 파일을 첨부해 주시면 디자인팀이 검토 후 시안을 회신해 드립니다.</>,
-    },
-    {
-      q: '시험성적서·인증서를 받을 수 있나요?',
-      a: <>제품별 <b>혼용률 시험성적서·방염 시험성적서·ARC 시험성적서</b>를 PDF로 발송해 드립니다. NFPA 2112 UL 인증은 2026년 내 취득 예정이며, 진행 단계별 자료 공유 가능합니다.</>,
-    },
-    {
-      q: '결제 조건은 어떻게 되나요?',
-      a: <>기성 제품은 <b>발주 시 100% 선결제</b>, OEM·단체 견적은 <b>계약금 30% / 출고 시 70%</b> 분할 가능. 정기 공급 계약은 월별 정산 협의 가능합니다. 세금계산서 발행.</>,
-    },
-    {
-      q: 'A/S 기간과 처리 방식은?',
-      a: <>제조상 하자는 <b>출고일 기준 1년</b> 무상 교환·수선. 사용 중 발생한 마모·수선 요청은 별도 견적. 사이즈 교환은 출고 후 <b>14일 이내</b>, 미사용 상태일 때만 가능합니다.</>,
-    },
-    {
-      q: '해외 배송·수출이 가능한가요?',
-      a: <>가능합니다. <b>EXW / FOB / CIF 조건</b>으로 진행하며, 통관·관세·검역 자료는 지원해 드립니다. 영어 시험성적서·인증서 발급 가능 (NFPA 2112 UL 인증 후 영문 ATPV 라벨 부착).</>,
-    },
-  ];
-
+function ContactFaq({ contact, editor }: { contact: ContactDict; editor?: EditorApi }) {
+  const fq = contact.faq;
+  const items = fq.items ?? [];
+  // In edit mode, show every answer expanded so the admin can edit them
+  // without clicking each Q open. Public mode keeps the one-at-a-time
+  // accordion behaviour.
   const [openIdx, setOpenIdx] = useState<number | null>(0);
 
   return (
@@ -626,35 +610,55 @@ function ContactFaq() {
       <div className="wrap">
         <div className="ct-section-head">
           <div className="l">
-            <span className="ct-eyebrow">— FAQ / 자주 묻는 질문</span>
+            <EditableText as="span" className="ct-eyebrow" path="contact.faq.eyebrow" value={fq.eyebrow ?? ''} editor={editor} />
             <h2 className="ct-title">
-              문의 전, <em>이것부터.</em>
+              <EditableText path="contact.faq.titlePre" value={fq.titlePre ?? ''} editor={editor} />
+              <em>
+                <EditableText path="contact.faq.titleEm" value={fq.titleEm ?? ''} editor={editor} />
+              </em>
             </h2>
           </div>
-          <div className="r">{FAQS.length} Questions</div>
+          <EditableText as="div" className="r" path="contact.faq.r" value={fq.r ?? ''} editor={editor} />
         </div>
 
         <div className="ct-faq-list">
-          {FAQS.map((f, i) => {
-            const isOpen = openIdx === i;
+          {items.map((item, i) => {
+            const isOpen = editor ? true : openIdx === i;
             return (
               <div key={i} className={`ct-faq-item${isOpen ? ' is-open' : ''}`}>
-                <button
-                  type="button"
-                  className="ct-faq-q"
-                  onClick={() => setOpenIdx(isOpen ? null : i)}
-                  aria-expanded={isOpen}
-                >
-                  <span className="n">Q {String(i + 1).padStart(2, '0')}</span>
-                  <span className="t">{f.q}</span>
-                  <span className="toggle" aria-hidden>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M12 5v14M5 12h14" />
-                    </svg>
-                  </span>
-                </button>
+                {editor ? (
+                  <div className="ct-faq-q" aria-disabled>
+                    <span className="n">Q {String(i + 1).padStart(2, '0')}</span>
+                    <EditableText as="span" className="t" path={`contact.faq.items[${i}].q`} value={item.q ?? ''} editor={editor} />
+                    <span className="toggle" aria-hidden>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M5 12h14" /></svg>
+                    </span>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    className="ct-faq-q"
+                    onClick={() => setOpenIdx(isOpen ? null : i)}
+                    aria-expanded={isOpen}
+                  >
+                    <span className="n">Q {String(i + 1).padStart(2, '0')}</span>
+                    <span className="t">{item.q}</span>
+                    <span className="toggle" aria-hidden>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M5 12h14" /></svg>
+                    </span>
+                  </button>
+                )}
                 <div className="ct-faq-a">
-                  <div className="ct-faq-a-inner">{f.a}</div>
+                  <div className="ct-faq-a-inner">
+                    {/* Answer is HTML — EditableText sanitises + preserves inline <b> */}
+                    <EditableText
+                      as="div"
+                      path={`contact.faq.items[${i}].a`}
+                      value={item.a ?? ''}
+                      editor={editor}
+                      multiline
+                    />
+                  </div>
                 </div>
               </div>
             );
@@ -666,65 +670,53 @@ function ContactFaq() {
 }
 
 /* ─── 06. Visit ─────────────────────────────────────────────────── */
-function ContactVisit() {
+function ContactVisit({ contact, editor }: { contact: ContactDict; editor?: EditorApi }) {
+  const v = contact.visit;
+  const rows = v.rows ?? [];
+  const actions = v.mapActions ?? [];
   return (
     <section className="ct-visit ct-section" data-screen-label="06 Visit">
       <div className="wrap">
         <div className="ct-section-head">
           <div className="l">
-            <span className="ct-eyebrow">— Visit / 오시는 길</span>
+            <EditableText as="span" className="ct-eyebrow" path="contact.visit.eyebrow" value={v.eyebrow ?? ''} editor={editor} />
             <h2 className="ct-title">
-              현장 미팅·샘플 확인,
+              <EditableText path="contact.visit.titleLine1" value={v.titleLine1 ?? ''} editor={editor} />
               <br />
-              <em>직접 방문</em>도 환영합니다.
+              <EditableText path="contact.visit.titleLine2Pre" value={v.titleLine2Pre ?? ''} editor={editor} />
+              <em>
+                <EditableText path="contact.visit.titleLine2Em" value={v.titleLine2Em ?? ''} editor={editor} />
+              </em>
+              <EditableText path="contact.visit.titleLine2Post" value={v.titleLine2Post ?? ''} editor={editor} />
             </h2>
           </div>
-          <div className="r">By appointment</div>
+          <EditableText as="div" className="r" path="contact.visit.r" value={v.r ?? ''} editor={editor} />
         </div>
 
         <div className="ct-visit-grid">
           <div className="ct-visit-info">
             <div className="ct-addr">
-              <span className="ko">서울특별시 중랑구 신내동</span>
-              <span className="en">Sinnae-dong, Jungnang-gu, Seoul, KR</span>
-              {/* TODO 실제 우편번호로 교체 */}
-              <span className="zip">우편번호 02075 (가상)</span>
+              <EditableText as="span" className="ko" path="contact.visit.addr.ko" value={v.addr?.ko ?? ''} editor={editor} />
+              <EditableText as="span" className="en" path="contact.visit.addr.en" value={v.addr?.en ?? ''} editor={editor} />
+              <EditableText as="span" className="zip" path="contact.visit.addr.zip" value={v.addr?.zip ?? ''} editor={editor} />
             </div>
             <div className="ct-visit-rows">
-              <div className="row">
-                <span className="k">Subway</span>
-                <span className="v">
-                  <span className="ic">●</span>지하철 6호선 신내역 도보 8분
-                  <span className="sub">경춘선 신내역 2번 출구 도보 약 600m</span>
-                </span>
-              </div>
-              <div className="row">
-                <span className="k">Bus</span>
-                <span className="v">
-                  <span className="ic">●</span>간선 202, 240 / 지선 2227
-                  <span className="sub">신내역.중랑구청 정류장 하차</span>
-                </span>
-              </div>
-              <div className="row">
-                <span className="k">Parking</span>
-                <span className="v">
-                  <span className="ic">●</span>건물 지하 주차장 2시간 무료
-                  <span className="sub">방문 미팅 사전 등록 시 적용</span>
-                </span>
-              </div>
-              <div className="row">
-                <span className="k">Visit</span>
-                <span className="v">
-                  <span className="ic">●</span>평일 09:00 – 18:00 / 사전 예약 필수
-                  <span className="sub">샘플 확인·미팅은 02-777-3079로 사전 연락</span>
-                </span>
-              </div>
+              {rows.map((row, i) => (
+                <div key={i} className="row">
+                  <EditableText as="span" className="k" path={`contact.visit.rows[${i}].key`} value={row.key ?? ''} editor={editor} />
+                  <span className="v">
+                    <span className="ic">●</span>
+                    <EditableText as="span" path={`contact.visit.rows[${i}].v`} value={row.v ?? ''} editor={editor} />
+                    <EditableText as="span" className="sub" path={`contact.visit.rows[${i}].sub`} value={row.sub ?? ''} editor={editor} />
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
 
           <div className="ct-map">
-            <span className="badge">NJ HQ</span>
-            <span className="stamp">37.61° N / 127.10° E</span>
+            <EditableText as="span" className="badge" path="contact.visit.mapBadge" value={v.mapBadge ?? ''} editor={editor} />
+            <EditableText as="span" className="stamp" path="contact.visit.mapStamp" value={v.mapStamp ?? ''} editor={editor} />
             <svg viewBox="0 0 600 480" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden>
               <defs>
                 <pattern id="ct-grid" width="40" height="40" patternUnits="userSpaceOnUse">
@@ -759,14 +751,17 @@ function ContactVisit() {
               </g>
             </svg>
             <div className="pin">
-              <div className="lbl">NJ SAFETY HQ</div>
+              <div className="lbl">
+                <EditableText as="span" path="contact.visit.mapPinLabel" value={v.mapPinLabel ?? ''} editor={editor} />
+              </div>
               <div className="marker" />
             </div>
             <div className="actions">
-              {/* TODO 실제 카카오맵 / 네이버지도 / 길찾기 URL 연결 */}
-              <a href="#kakaomap">카카오맵 →</a>
-              <a href="#navermap">네이버지도 →</a>
-              <a href="#directions">길찾기 →</a>
+              {actions.map((a, i) => (
+                <a key={i} href={a.href || '#'}>
+                  <EditableText as="span" path={`contact.visit.mapActions[${i}].ko`} value={a.ko ?? ''} editor={editor} />
+                </a>
+              ))}
             </div>
           </div>
         </div>

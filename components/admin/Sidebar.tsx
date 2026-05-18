@@ -10,6 +10,7 @@ const ITEMS: NavItem[] = [
   { href: '/admin',            label: '대시보드',                  section: 'main'  },
   { href: '/admin/edit',       label: '✎ 메인 페이지 편집',         section: 'main'  },
   { href: '/admin/about/edit', label: '✎ 회사소개 편집',           section: 'main'  },
+  { href: '/admin/contact/edit', label: '✎ 문의 편집',             section: 'main'  },
   { href: '/admin/text',       label: '텍스트 편집 (폼)',          section: 'main'  },
   { href: '/admin/products',   label: '제품 관리',                  section: 'main'  },
   { href: '/admin/settings',   label: '설정',                       section: 'tools' },
