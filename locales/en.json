@@ -367,6 +367,9 @@
     },
     "contact.hero.titleLine2Post": {
       "size": "0.90em"
+    },
+    "contact.hero.sub": {
+      "width": "69.2%"
     }
   },
   "siteConfig": {
