@@ -100,12 +100,27 @@ type HeroWithSlides = Omit<RawHero, 'slides' | 'bgImage'> & {
 // shape of these fields. Same Omit trick for `hero` so the optional
 // `slides[]` we layer in stays open-shape regardless of how the JSON
 // has been edited.
-export type Dictionary = Omit<RawDict, 'styles' | 'siteConfig' | 'hero'> & {
+/** Free-floating editable text block — see components/admin/CustomBlocks. */
+export type CustomBlock = {
+  id: string;
+  route: string;
+  text?: string;
+  /** Position is stored as JSON numbers in saved files but accepts
+   *  strings on intermediate writes (onPatch always patches strings). */
+  x?: number;
+  y?: number;
+  width?: number;
+  color?: string;
+};
+
+export type Dictionary = Omit<RawDict, 'styles' | 'siteConfig' | 'hero' | 'customBlocks'> & {
   hero: HeroWithSlides;
   /** Per-field style overrides keyed by `data-fp` path. */
   styles?: Record<string, FieldStyle>;
   /** Site-wide visual config (hero filter etc.), edited via admin. */
   siteConfig?: SiteConfig;
+  /** Ad-hoc text boxes the admin can drop anywhere on the page. */
+  customBlocks?: CustomBlock[];
 };
 
 export function getDictionary(locale: Locale): Dictionary {

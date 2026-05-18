@@ -14,6 +14,10 @@ export type EditorApi = {
   onAddHeroSlide?: () => void;
   /** Remove the hero slide at `index` (synced across both locales). */
   onDeleteHeroSlide?: (index: number) => void;
+  /** Append a new floating text box to dict.customBlocks. */
+  onCustomBlockCreate?: (block: unknown) => void;
+  /** Remove a floating text box by id. */
+  onCustomBlockDelete?: (id: string) => void;
   /** Current display locale (for visual hint only — paths are language-agnostic). */
   locale: 'ko' | 'en';
 };

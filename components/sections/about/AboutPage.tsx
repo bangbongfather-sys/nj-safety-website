@@ -26,6 +26,7 @@ import Link from 'next/link';
 import type { Dictionary, Locale } from '@/lib/i18n';
 import EditableText, { type EditorApi } from '@/components/admin/EditableText';
 import EditableImage from '@/components/admin/EditableImage';
+import { CustomBlocksLayer } from '@/components/admin/CustomBlocks';
 import './about.css';
 
 type Props = {
@@ -42,7 +43,7 @@ type AboutDict = NonNullable<Dictionary['about']>;
 export default function AboutPage({ locale, dict, editor }: Props) {
   const about = dict.about as AboutDict;
   return (
-    <div className="about-page">
+    <div className="about-page cb-page-root">
       <AboutHero about={about} editor={editor} />
       <AboutStats about={about} editor={editor} />
       <AboutCeo about={about} editor={editor} />
@@ -52,6 +53,7 @@ export default function AboutPage({ locale, dict, editor }: Props) {
       <AboutIndustries about={about} editor={editor} />
       <AboutRecent about={about} editor={editor} />
       <AboutCta about={about} locale={locale} editor={editor} />
+      <CustomBlocksLayer blocks={dict.customBlocks} route="about" editor={editor} />
     </div>
   );
 }

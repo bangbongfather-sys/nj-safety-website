@@ -9,6 +9,7 @@ import Certifications from '@/components/sections/Certifications';
 import Clients from '@/components/sections/Clients';
 import Insights from '@/components/sections/Insights';
 import ContactCTA from '@/components/sections/ContactCTA';
+import { CustomBlocksLayer } from '@/components/admin/CustomBlocks';
 
 type Props = { params: Promise<{ locale: string }> | { locale: string } };
 
@@ -19,7 +20,7 @@ export default async function HomePage({ params }: Props) {
   const dict = getDictionary(locale);
 
   return (
-    <>
+    <div className="cb-page-root">
       <Hero locale={locale} dict={dict} />
       <Products locale={locale} dict={dict} products={getAllProducts()} />
       <Showcase dict={dict} />
@@ -28,6 +29,7 @@ export default async function HomePage({ params }: Props) {
       <Clients dict={dict} />
       <Insights locale={locale} dict={dict} />
       <ContactCTA locale={locale} dict={dict} />
-    </>
+      <CustomBlocksLayer blocks={dict.customBlocks} route="home" />
+    </div>
   );
 }

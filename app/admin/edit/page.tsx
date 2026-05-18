@@ -8,6 +8,7 @@ import FloatingToolbar, { type FocusInfo } from '@/components/admin/FloatingTool
 import ResizeHandle from '@/components/admin/ResizeHandle';
 import HeroBgPanel from '@/components/admin/HeroBgPanel';
 import ImageSlotPanel from '@/components/admin/ImageSlotPanel';
+import { CustomBlocksLayer, CustomBlockCreateButton } from '@/components/admin/CustomBlocks';
 import type { HeroFilter } from '@/lib/i18n';
 import StyleInjector from '@/components/admin/StyleInjector';
 import { ghGetFile, ghPutFile } from '@/lib/admin/github';
@@ -191,6 +192,27 @@ export default function EditHomePage() {
     setEnDraft((d) => (d ? apply(d) : d));
   }, []);
 
+  // Custom-block helpers — push/remove items in dict.customBlocks
+  // across the active locale's draft. Free-floating boxes are page-
+  // specific text overlays the admin can drop anywhere; see
+  // components/admin/CustomBlocks.
+  const onCustomBlockCreate = useCallback((block: unknown) => {
+    const update = (d: Dictionary): Dictionary => ({
+      ...d,
+      customBlocks: [...(d.customBlocks ?? []), block as Dictionary['customBlocks'] extends (infer U)[] | undefined ? U : never],
+    });
+    if (active === 'ko') setKoDraft((d) => (d ? update(d) : d));
+    else setEnDraft((d) => (d ? update(d) : d));
+  }, [active]);
+  const onCustomBlockDelete = useCallback((id: string) => {
+    const update = (d: Dictionary): Dictionary => ({
+      ...d,
+      customBlocks: (d.customBlocks ?? []).filter((b) => b.id !== id),
+    });
+    if (active === 'ko') setKoDraft((d) => (d ? update(d) : d));
+    else setEnDraft((d) => (d ? update(d) : d));
+  }, [active]);
+
   const editor: EditorApi = useMemo(() => ({
     locale: active,
     onPatch: (pathStr, value) => {
@@ -202,7 +224,9 @@ export default function EditHomePage() {
     onImageClick: (pathStr) => setImageSlot({ path: pathStr }),
     onAddHeroSlide,
     onDeleteHeroSlide,
-  }), [active, applyImagePatch, onAddHeroSlide, onDeleteHeroSlide]);
+    onCustomBlockCreate,
+    onCustomBlockDelete,
+  }), [active, applyImagePatch, onAddHeroSlide, onDeleteHeroSlide, onCustomBlockCreate, onCustomBlockDelete]);
 
   // Resolve the current image URL at a path so the ImageSlotPanel can
   // show "현재" alongside the new preview.
@@ -457,7 +481,7 @@ export default function EditHomePage() {
       <div className="ed-page">
         <StyleInjector styles={activeDict.styles} />
         <Navigation locale={active} dict={activeDict} editor={editor} />
-        <main>
+        <main className="cb-page-root">
           <Hero locale={active} dict={activeDict} editor={editor} />
           <Products locale={active} dict={activeDict} editor={editor} />
           <Showcase dict={activeDict} editor={editor} />
@@ -466,6 +490,7 @@ export default function EditHomePage() {
           <Clients dict={activeDict} editor={editor} />
           <Insights locale={active} dict={activeDict} editor={editor} />
           <ContactCTA locale={active} dict={activeDict} editor={editor} />
+          <CustomBlocksLayer blocks={activeDict.customBlocks} route="home" editor={editor} />
         </main>
         <Footer locale={active} dict={activeDict} editor={editor} />
       </div>
@@ -480,6 +505,7 @@ export default function EditHomePage() {
         focused={focused}
         onPatchStyle={(_k, v) => onPatchStyle('width', v)}
       />
+      <CustomBlockCreateButton route="home" editor={editor} />
       <HeroBgPanel
         open={heroBgPanelOpen}
         pat={pat}

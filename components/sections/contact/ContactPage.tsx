@@ -14,6 +14,7 @@
 import { useRef, useState, type FormEvent } from 'react';
 import type { Dictionary, Locale } from '@/lib/i18n';
 import EditableText, { type EditorApi } from '@/components/admin/EditableText';
+import { CustomBlocksLayer } from '@/components/admin/CustomBlocks';
 import './contact.css';
 
 type InquiryType = 'quote' | 'b2b' | 'oem' | 'cert' | 'as';
@@ -38,13 +39,14 @@ export default function ContactPage({ locale, dict, editor }: Props) {
   };
 
   return (
-    <div className="contact-page">
+    <div className="contact-page cb-page-root">
       <ContactHero contact={contact} editor={editor} />
       <InquiryTypes contact={contact} active={activeType} onChange={onTypeChange} editor={editor} />
       <ContactForm contact={contact} activeType={activeType} locale={locale} editor={editor} />
       <ContactProcess contact={contact} editor={editor} />
       <ContactFaq contact={contact} editor={editor} />
       <ContactVisit contact={contact} editor={editor} />
+      <CustomBlocksLayer blocks={dict.customBlocks} route="contact" editor={editor} />
     </div>
   );
 }

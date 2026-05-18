@@ -18,6 +18,7 @@ import type { EditorApi } from '@/components/admin/EditableText';
 import FloatingToolbar, { type FocusInfo } from '@/components/admin/FloatingToolbar';
 import ResizeHandle from '@/components/admin/ResizeHandle';
 import ImageSlotPanel from '@/components/admin/ImageSlotPanel';
+import { CustomBlockCreateButton } from '@/components/admin/CustomBlocks';
 import StyleInjector from '@/components/admin/StyleInjector';
 import { ghGetFile, ghPutFile } from '@/lib/admin/github';
 import type { Dictionary, FieldStyle, Locale } from '@/lib/i18n';
@@ -148,6 +149,23 @@ export default function EditAboutPage() {
     setEnDraft((d) => (d ? (setIn(d, path, v) as Dictionary) : d));
   }, []);
 
+  const onCustomBlockCreate = useCallback((block: unknown) => {
+    const update = (d: Dictionary): Dictionary => ({
+      ...d,
+      customBlocks: [...(d.customBlocks ?? []), block as NonNullable<Dictionary['customBlocks']>[number]],
+    });
+    if (active === 'ko') setKoDraft((d) => (d ? update(d) : d));
+    else setEnDraft((d) => (d ? update(d) : d));
+  }, [active]);
+  const onCustomBlockDelete = useCallback((id: string) => {
+    const update = (d: Dictionary): Dictionary => ({
+      ...d,
+      customBlocks: (d.customBlocks ?? []).filter((b) => b.id !== id),
+    });
+    if (active === 'ko') setKoDraft((d) => (d ? update(d) : d));
+    else setEnDraft((d) => (d ? update(d) : d));
+  }, [active]);
+
   const editor: EditorApi = useMemo(() => ({
     locale: active,
     onPatch: (pathStr, value) => {
@@ -157,7 +175,9 @@ export default function EditAboutPage() {
     },
     onImagePatch: applyImagePatch,
     onImageClick: (pathStr) => setImageSlot({ path: pathStr }),
-  }), [active, applyImagePatch]);
+    onCustomBlockCreate,
+    onCustomBlockDelete,
+  }), [active, applyImagePatch, onCustomBlockCreate, onCustomBlockDelete]);
 
   const imageSlotCurrentSrc = useMemo(() => {
     if (!imageSlot || !koDraft) return null;
@@ -325,6 +345,7 @@ export default function EditAboutPage() {
         focused={focused}
         onPatchStyle={(_k, v) => onPatchStyle('width', v)}
       />
+      <CustomBlockCreateButton route="about" editor={editor} />
       <ImageSlotPanel
         slot={imageSlot}
         pat={pat}

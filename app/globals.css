@@ -3056,3 +3056,98 @@ section { position: relative; }
   .statement { padding: 100px 0; }
   .hero-headline { font-size: clamp(40px, 12vw, 64px); }
 }
+
+/* ============================================================
+   Custom text blocks (.cb-) — free-floating editable boxes the
+   admin can drop anywhere on a page via the per-page editors
+   (home / about / contact / etc) under /admin.
+   ============================================================ */
+.cb-page-root { position: relative; }
+
+.cb-block {
+  /* Render above section content but below the floating editor
+   * toolbars + ImageSlotPanel (which sit at higher z-indexes). */
+  z-index: 30;
+  max-width: min(560px, 90vw);
+  font-family: var(--sans);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.6;
+}
+.cb-block .cb-text {
+  background: rgba(13, 13, 14, .72);
+  color: inherit;
+  padding: 10px 14px;
+  border-left: 3px solid var(--accent);
+  backdrop-filter: blur(8px);
+}
+.cb-block.is-editor .cb-text {
+  outline: 1px dashed rgba(255, 107, 26, .55);
+  outline-offset: 4px;
+}
+
+/* Edit-mode toolbar above the box — drag handle on the left,
+ * delete on the right. Hidden until hover so it doesn't clutter
+ * the page while the admin is reading the live preview. */
+.cb-block .cb-toolbar {
+  position: absolute;
+  top: -32px;
+  left: 0;
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity .15s ease;
+  z-index: 1;
+}
+.cb-block:hover .cb-toolbar { opacity: 1; }
+.cb-handle,
+.cb-del {
+  background: var(--bg-3);
+  color: var(--text);
+  border: 1px solid var(--border);
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  font-family: var(--mono);
+  font-size: 14px;
+  padding: 0;
+  user-select: none;
+}
+.cb-handle:active { cursor: grabbing; }
+.cb-del {
+  color: #ff9a9a;
+  border-color: rgba(255, 107, 107, .35);
+  cursor: pointer;
+}
+.cb-del:hover {
+  background: rgba(255, 107, 107, .12);
+  border-color: #ff6b6b;
+}
+
+/* Floating "+ 텍스트 박스 추가" button — pinned to the bottom-right
+ * of editor routes. Stays accessible regardless of scroll position. */
+.cb-create-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1200;
+  background: var(--accent);
+  color: #0d0d0e;
+  border: 1px solid var(--accent);
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: .04em;
+  padding: 12px 18px;
+  border-radius: 100px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .35);
+  cursor: pointer;
+  transition: filter .15s ease, transform .15s ease;
+}
+.cb-create-btn:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
