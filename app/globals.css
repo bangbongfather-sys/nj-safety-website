@@ -378,30 +378,31 @@ section { position: relative; }
 /* ---------- Products ---------- */
 .products { padding: 140px 0; background: var(--bg); }
 
-/* ─── Products section — LIGHT variant (Mammut-style "New Arrivals") ─
- * Replaces the dark 3-card season grid with a clean white surface
- * + horizontal carousel of real products. Cards are bright photo on
- * grey-cream BG, with a hover cross-fade to a second image.
+/* ─── Products section — dark-lift carousel (Arc'teryx / Veilance feel) —
+ * Slightly elevated dark surface so the section reads as its own zone
+ * without breaking the site's cinematic top-to-bottom dark flow. Cards
+ * sit on a mid-grey frame; product photos pop without the harsh white
+ * card that Mammut uses.
  * ────────────────────────────────────────────────────────────────── */
 .products.products-light {
-  background: #f5f5f5;
-  color: #0d0d0e;
+  background: #1f1f21;          /* one notch above --bg (#1c1c1e) */
+  color: var(--text);
   padding: 120px 0;
 }
 .products.products-light .section-head { margin-bottom: 56px; }
-.products.products-light .products-light-head .l .title { color: #0d0d0e; }
+.products.products-light .products-light-head .l .title { color: var(--text); }
 .products.products-light .products-light-head .l .title em { color: var(--accent); }
 .products.products-light .products-light-head .l .eyebrow { color: var(--accent); }
-.products.products-light .products-light-head .r { color: #4a4a4d; }
+.products.products-light .products-light-head .r { color: var(--muted); }
 .products.products-light .products-light-head .r:hover { color: var(--accent); }
 
 .products-light-empty {
   padding: 64px 24px;
   text-align: center;
-  color: #6b6b70;
+  color: var(--muted);
   font-size: 14px;
-  background: #fff;
-  border: 1px dashed rgba(0, 0, 0, .12);
+  background: var(--bg-2);
+  border: 1px dashed var(--border);
 }
 
 /* Horizontal scroll rail — snap-aligned so users can flick / arrow
@@ -439,11 +440,17 @@ section { position: relative; }
 .pl-card-frame {
   position: relative;
   aspect-ratio: 4 / 5;
-  background: #ffffff;
+  /* Mid-grey card surface — one step above the section bg so the
+   * card edge reads against the surrounding dark. Photos that have
+   * a white studio background still look clean (cards aren't trying
+   * to fake-match), industrial product shots blend in nicely. */
+  background: var(--bg-2);
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, .04);
+  border: 1px solid var(--border-soft);
   border-radius: 2px;
+  transition: border-color .25s ease;
 }
+.pl-card:hover .pl-card-frame { border-color: var(--accent); }
 .pl-card-img {
   position: absolute;
   inset: 0;
@@ -467,7 +474,7 @@ section { position: relative; }
   font-family: var(--mono);
   font-size: 11px;
   letter-spacing: .2em;
-  color: #b8b8bd;
+  color: var(--muted-2);
 }
 .pl-card-meta {
   display: flex;
@@ -486,13 +493,13 @@ section { position: relative; }
   font-family: var(--display);
   font-weight: 700;
   font-size: 15px;
-  color: #0d0d0e;
+  color: var(--text);
   letter-spacing: -0.008em;
   line-height: 1.35;
 }
 .pl-card-sub {
   font-size: 12px;
-  color: #6b6b70;
+  color: var(--muted);
   line-height: 1.4;
 }
 
