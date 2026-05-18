@@ -1,0 +1,390 @@
+{
+  "slug": "njs-ar301",
+  "model": "NJS-AR301",
+  "category": "ARAMID FR SERIES · STEADY No.01",
+  "name": "아라미드 <br><span style=\"color: rgb(198, 90, 30);\">하계</span> <br>방염 자켓",
+  "subtitle": "전기·설비 현장의 여름을 책임지는 스테디 워크자켓",
+  "tagline": "메타 아라미드 65.5%와 Lenzing FR 33.5%의 정직한 혼방. 12년간 같은 사양으로, 같은 현장을 지켜온 NJ Safety의 스테디 셀러.",
+  "hero": {
+    "imageAlt": "아라미드 하계 자켓 — 정면 멜란지 블루",
+    "counters": [
+      {
+        "value": "65",
+        "unit": "%",
+        "label": "META ARAMID"
+      },
+      {
+        "value": "33.5",
+        "unit": "%",
+        "label": "LENZING FR"
+      },
+      {
+        "value": "1.5",
+        "unit": "%",
+        "label": "ANTISTATIC"
+      }
+    ],
+    "badges": [
+      {
+        "text": "ARAMID SUMMER JACKET",
+        "position": "bottom-right",
+        "style": "stamp"
+      }
+    ],
+    "image": "/api/images/njs-ar301-hero-image-1778376335618-e0f0025c41d0.png"
+  },
+  "gallery": {
+    "eyebrow": "PRODUCT VIEWS",
+    "headline": "12년간 같은 자리, <em>같은 사양 </em>으로.",
+    "note": "전국 120여 사업장 운용 · 누적 출고 8만 5천 벌 · 2014년 첫 출시 이후 동일 패턴 유지.",
+    "items": [
+      {
+        "tag": "FIG. 01 · FRONT",
+        "label": "정면",
+        "caption": "스탠드 카라 · 풀 집업 · 가슴 트윈 리플렉티브 라인.",
+        "span": "xl",
+        "image": "/api/images/njs-ar301-gallery-items-0-image-1778339913656-fa722bc8f98a.jpg"
+      },
+      {
+        "tag": "FIG. 02 · BACK",
+        "label": "후면",
+        "caption": "1줄 등판 리플렉티브 · 어드저스터블 사이드 탭.",
+        "span": "xl",
+        "image": "/api/images/njs-ar301-gallery-items-1-image-1778339951657-947e65ce73f9.jpg"
+      },
+      {
+        "image": "/products/njs-ar301/chest-zip.jpg",
+        "tag": "FIG. 03 · CHEST",
+        "label": "체스트 디테일",
+        "caption": "트윈 리플렉티브 테이프 · 플랩 포켓의 반사 풀러.",
+        "span": "l"
+      },
+      {
+        "image": "/products/njs-ar301/zip-detail.jpg",
+        "tag": "FIG. 04 · ZIP",
+        "label": "메인 지퍼",
+        "caption": "잠금 슬라이더의 정직한 매트 블랙 마감.",
+        "span": "l"
+      },
+      {
+        "image": "/products/njs-ar301/aramid-tab.jpg",
+        "tag": "FIG. 05 · ARAMID TAB",
+        "label": "아라미드 케어 라벨",
+        "caption": "오렌지 우븐 라벨 — 난연 표시는 세탁 후에도 유지.",
+        "span": "tall"
+      },
+      {
+        "image": "/products/njs-ar301/sleeve-patch.jpg",
+        "tag": "FIG. 06 · SLEEVE",
+        "label": "소매 PVC 패치",
+        "caption": "우측 상박, 멀리서도 식별되는 시그니처 라벨.",
+        "span": "tall"
+      },
+      {
+        "image": "/api/images/njs-ar301-gallery-7-1778339882916-c200a23dc541.jpg",
+        "tag": "",
+        "label": "",
+        "caption": "",
+        "span": "tall"
+      }
+    ]
+  },
+  "statement": {
+    "eyebrow": "TWELVE YEARS, ONE PATTERN",
+    "headline": "현장은 <em>익숙함</em>으로 안전을 지킵니다.",
+    "body": "AR301은 화려한 갱신 대신, 정직한 유지를 선택해 온 옷입니다. 2014년 출시 이후 메타 아라미드 65.5%와 Lenzing FR 33.5%, 그리고 1.5%의 정전기 방지사라는 혼용률은 단 한 번도 바뀌지 않았습니다. 같은 자리에 같은 사양으로 — 그것이 12년간 한국전력, 가스공사, 그리고 120여 곳의 플랜트 사업장이 NJ Safety를 다시 찾는 이유입니다.",
+    "sign": "NJ SAFETY · STEADY SERIES"
+  },
+  "material": {
+    "eyebrow": "FABRIC ENGINEERING",
+    "headline": "세 가지 원사가 만드는 <em>한 장의 옷</em>.",
+    "image": "/products/njs-ar301/aramid-tab.jpg",
+    "callouts": [
+      {
+        "tag": "A",
+        "title": "Meta-Aramid 65.5%",
+        "body": "1,300°C 내열. 용융·점화점이 없는 본질적 난연 섬유."
+      },
+      {
+        "tag": "B",
+        "title": "Lenzing FR® Rayon 33.5%",
+        "body": "오스트리아 Lenzing 사의 영구 난연 비스코스. 흡습과 촉감을 담당."
+      },
+      {
+        "tag": "C",
+        "title": "Antistatic Carbon 1.5%",
+        "body": "탄소 도전사 그리드. 정전기 방전으로 전기 작업 위험 차단."
+      }
+    ]
+  },
+  "features": {
+    "eyebrow": "WHY THIS JACKET",
+    "headline": "여름 현장에서 살아남는 <em>여섯</em> 가지 장치.",
+    "items": [
+      {
+        "n": "01",
+        "title": "메타 아라미드 65.5%",
+        "body": "EN ISO 11612 A1·B1·C1·F1 통과. 점화 후 자동 소화."
+      },
+      {
+        "n": "02",
+        "title": "Lenzing FR 33.5%",
+        "body": "흡습률 13%. 한여름에도 땀이 옷에 머물지 않음.",
+        "featured": true
+      },
+      {
+        "n": "03",
+        "title": "Antistatic 1.5%",
+        "body": "EN 1149-5 · 정전기 방전 ≤ 0.2초."
+      },
+      {
+        "n": "04",
+        "title": "트윈 리플렉티브",
+        "body": "가슴 2줄 + 등판 1줄. EN ISO 20471 등급 표시 위치."
+      },
+      {
+        "n": "05",
+        "title": "어드저스터블 사이드",
+        "body": "허리 탭으로 작업복 위 착용 시에도 핏 조정."
+      },
+      {
+        "n": "06",
+        "title": "메쉬 안감 통기",
+        "body": "겨드랑이·카라 안감 메쉬. 한여름 외근 30분당 8% 체감 온도 ↓."
+      }
+    ]
+  },
+  "spec": {
+    "eyebrow": "TECHNICAL SHEET",
+    "headline": "12년간 <em>변하지 않은</em> 사양.",
+    "rows": [
+      {
+        "label": "원단 구성",
+        "value": "Meta-Aramid 65.5% / Lenzing FR 33.5% / Antistatic 1.5%"
+      },
+      {
+        "label": "조직",
+        "value": "Plain Weave · Ripstop 그리드"
+      },
+      {
+        "label": "평량",
+        "value": "215 g/m²"
+      },
+      {
+        "label": "컬러",
+        "value": "Melange Blue / Navy"
+      },
+      {
+        "label": "사이즈",
+        "value": "90 / 95 / 100 / 105 / 110 / 115"
+      },
+      {
+        "label": "리플렉티브",
+        "value": "3M Scotchlite™ · 전·후·소매"
+      },
+      {
+        "label": "지퍼",
+        "value": "YKK Vislon · 매트 블랙"
+      },
+      {
+        "label": "원산지",
+        "value": "Made in Korea"
+      },
+      {
+        "label": "인증",
+        "value": "EN ISO 11612 / EN 1149-5 / KC"
+      }
+    ],
+    "sizeTable": {
+      "unit": "cm",
+      "headers": [
+        "SIZE",
+        "가슴",
+        "어깨",
+        "소매",
+        "총장"
+      ],
+      "rows": [
+        [
+          "90",
+          "53",
+          "45",
+          "60",
+          "66"
+        ],
+        [
+          "95",
+          "55",
+          "47",
+          "61",
+          "68"
+        ],
+        [
+          "100",
+          "57",
+          "49",
+          "62",
+          "70"
+        ],
+        [
+          "105",
+          "59",
+          "51",
+          "63",
+          "72"
+        ],
+        [
+          "110",
+          "61",
+          "53",
+          "64",
+          "74"
+        ],
+        [
+          "115",
+          "63",
+          "55",
+          "65",
+          "76"
+        ]
+      ]
+    }
+  },
+  "field": {
+    "eyebrow": "WHERE IT LIVES",
+    "headline": "12년간 <em>같은 현장</em>에서.",
+    "items": [
+      {
+        "n": "01",
+        "tag": "KEPCO",
+        "title": "한국전력 변전 정비",
+        "body": "전국 변전소 정기 점검의 표준 하계 자켓. 2016년부터 누적 4만 2천 벌 운용."
+      },
+      {
+        "n": "02",
+        "tag": "PLANT",
+        "title": "정유·화학 플랜트",
+        "body": "여수·울산 단지의 여름 정기 보수 시즌 베이스 레이어."
+      },
+      {
+        "n": "03",
+        "tag": "GAS",
+        "title": "도시가스 배관",
+        "body": "메탄 누설 점검 작업의 정전기 방지 자켓."
+      },
+      {
+        "n": "04",
+        "tag": "MAINT.",
+        "title": "철도·차량 정비",
+        "body": "코레일 차량 기지의 여름철 외근 표준복."
+      }
+    ]
+  },
+  "care": {
+    "eyebrow": "KEEP IT SAFE",
+    "items": [
+      {
+        "icon": "40°",
+        "title": "40°C 일반 세탁",
+        "body": "중성세제 · 별도 드라이 불필요"
+      },
+      {
+        "icon": "✕",
+        "title": "표백제 금지",
+        "body": "아라미드 섬유 손상 방지",
+        "warn": true
+      },
+      {
+        "icon": "↓",
+        "title": "저온 텀블 / 자연건조",
+        "body": "그늘 건조 권장"
+      },
+      {
+        "icon": "≡",
+        "title": "중간 온도 다림질",
+        "body": "최대 150°C · 라벨 직접 다림질 금지"
+      }
+    ]
+  },
+  "certs": [
+    {
+      "mark": "EN",
+      "title": "EN ISO 11612",
+      "sub": "내열·내염 성능",
+      "highlight": true
+    },
+    {
+      "mark": "AS",
+      "title": "EN 1149-5",
+      "sub": "정전기 방지 성능"
+    },
+    {
+      "mark": "KC",
+      "title": "KC 안전인증",
+      "sub": "KC—2024—AR301"
+    },
+    {
+      "mark": "★",
+      "title": "현장 운용",
+      "sub": "12년 · 8만 5천 벌"
+    }
+  ],
+  "order": {
+    "headline": "12년간 함께해 온 사업장에는 <em>전담 매니저</em>가 배정됩니다.",
+    "cells": [
+      {
+        "label": "단체 / B2B",
+        "value": "50 EA 부터",
+        "body": "사업장 사이즈 분석, 자수·실크 가공, 분할 납품 가능."
+      },
+      {
+        "label": "샘플",
+        "value": "무상 제공",
+        "body": "법인 명의 신청 시 영업일 2일 내 발송."
+      },
+      {
+        "label": "납기",
+        "value": "5—10일",
+        "body": "재고 보유 컬러·사이즈 기준 / 가공 시 +5일."
+      }
+    ],
+    "contact": [
+      {
+        "label": "STEADY DESK",
+        "value": "02 — 0000 — 0001"
+      },
+      {
+        "label": "EMAIL",
+        "value": "steady@njsafety.co.kr"
+      },
+      {
+        "label": "WEB",
+        "value": "njsafety.co.kr/ar301"
+      }
+    ]
+  },
+  "styles": {
+    "name": {
+      "weight": "700",
+      "size": "0.70em"
+    },
+    "hero.counters[0].value": {
+      "size": "0.85em"
+    },
+    "hero.counters[1].value": {
+      "size": "0.85em"
+    },
+    "hero.counters[2].value": {
+      "size": "0.85em"
+    },
+    "tagline": {
+      "size": "0.85em",
+      "width": "144%"
+    },
+    "gallery.note": {
+      "width": "137%",
+      "align": "left"
+    }
+  },
+  "flavor": "tactical"
+}
