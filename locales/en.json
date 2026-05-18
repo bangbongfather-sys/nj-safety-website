@@ -346,6 +346,9 @@
     },
     "hero.slides[0].headlineLine2Em": {
       "weight": "900"
+    },
+    "about.hero.sub": {
+      "width": "100.0%"
     }
   },
   "siteConfig": {
