@@ -414,7 +414,7 @@
   "shopHeader": {
     "images": [
       "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njs-ar204/shopheader-images-0.jpg?v=1779107508963",
-      "/products/njs-ar204/front.jpg",
+      "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njs-ar204/card-hover.jpg?v=1779107692809",
       "/products/njs-ar204/back.jpg",
       "/products/njs-ar204/stripe.jpg",
       "/products/njs-ar204/collar.jpg",
