@@ -2,6 +2,10 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "nj-safety-website",
   "compatibility_date": "2025-04-01",
+  // mimetext (used by /api/contact for MIME message composition) pulls
+  // mime-types -> node 'path' / 'os'. nodejs_compat enables those built-ins
+  // inside the Worker runtime; without it the build fails to resolve "path".
+  "compatibility_flags": ["nodejs_compat"],
 
   // Worker entry — handles /api/admin/upload-image, falls back to static
   // assets for everything else. Until we ship the upload feature this
