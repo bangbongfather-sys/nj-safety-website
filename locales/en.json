@@ -361,6 +361,12 @@
     },
     "about.ceo.signoffTitle": {
       "size": "1.30em"
+    },
+    "contact.hero.titleLine1": {
+      "width": "95.5%"
+    },
+    "contact.hero.titleLine2Post": {
+      "size": "0.90em"
     }
   },
   "siteConfig": {
