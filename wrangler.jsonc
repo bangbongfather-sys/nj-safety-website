@@ -28,6 +28,26 @@
     }
   ],
 
+  // Outbound transactional email via Cloudflare Email Workers.
+  //
+  // MANUAL SETUP REQUIRED (one-time):
+  //   1. In the Cloudflare dashboard go to Workers & Pages →
+  //      `nj-safety-website` → Settings → Send Email.
+  //   2. Add `njsafety91@naver.com` as the destination address. Click
+  //      'Send verification' — Cloudflare emails Naver a verify link.
+  //   3. Open the email + click the link to confirm.
+  //   4. After that the binding below activates and the contact form
+  //      can POST to /api/contact → email lands in the inbox.
+  //
+  // The send_email binding name 'CONTACT_EMAIL' is what worker/index.ts
+  // calls — keep the two in sync if you rename.
+  "send_email": [
+    {
+      "name": "CONTACT_EMAIL",
+      "destination_address": "njsafety91@naver.com"
+    }
+  ],
+
   // Public-facing R2 URL. After the bucket's Public Access is enabled,
   // copy the `https://pub-<hash>.r2.dev` URL from the bucket Settings
   // and replace the placeholder below (or set it via dashboard
