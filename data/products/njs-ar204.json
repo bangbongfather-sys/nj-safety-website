@@ -410,5 +410,59 @@
       "width": "84%"
     }
   },
-  "flavor": "tactical"
+  "flavor": "tactical",
+  "shopHeader": {
+    "images": [
+      "/api/images/njs-ar204-hero-image-1778376783137-e6448dbe996d.jpg",
+      "/products/njs-ar204/front.jpg",
+      "/products/njs-ar204/back.jpg",
+      "/products/njs-ar204/stripe.jpg",
+      "/products/njs-ar204/collar.jpg",
+      "/products/njs-ar204/pocket.jpg",
+      "/products/njs-ar204/patch.jpg",
+      "/products/njs-ar204/sleeve.jpg"
+    ],
+    "brand": "NJ SAFETY",
+    "model": "NJSST#YY",
+    "category": "ARAMID FR SERIES · Vol.04",
+    "name": "<span style=\"color: rgb(255, 255, 255);\">아라미드</span> <br><span style=\"color: rgb(198, 90, 30);\">PK</span> <br><span style=\"color: rgb(255, 255, 255);\">티셔츠</span>",
+    "subtitle": "전기·설비 현장의 일상을 위한 난연 워크웨어",
+    "tagline": "신뢰할 수 있는 아라미드 원단과 뛰어난 신축성으로 완성한, <div style=\"\">하루 종일 입을 수 있는 PK 티셔츠.</div><div style=\"color: rgb(255, 255, 255); font-weight: 400;\"><span style=\"font-size: clamp(13px, 1.3vw, 15px); letter-spacing: 0.01em; font-weight: 700; color: rgb(29, 29, 31);\"></span></div><div style=\"color: rgb(255, 255, 255);\"><span style=\"font-size: clamp(13px, 1.3vw, 15px); letter-spacing: 0.01em; font-weight: 700; color: rgb(29, 29, 31);\"></span></div><div style=\"color: rgb(255, 255, 255);\"></div><div style=\"color: rgb(255, 255, 255);\"></div><div><span style=\"font-size: clamp(13px, 1.3vw, 15px); letter-spacing: 0.01em; font-weight: 700; color: rgb(29, 29, 31);\"><br></span></div>",
+    "summarySpecs": [
+      {
+        "label": "원단 구성",
+        "value": "Aramid 63.8% / FR Rayon(Lenzing FR) 33.9%/Spandex 2.3%"
+      },
+      {
+        "label": "컬러",
+        "value": "MELANGE GRAY"
+      },
+      {
+        "label": "사이즈",
+        "value": "90 / 95 / 100 / 105 / 110/115/120(대형 사이즈 제작 가능)"
+      },
+      {
+        "label": "원산지",
+        "value": "Made in Korea"
+      },
+      {
+        "label": "인증",
+        "value": "시험성적서"
+      }
+    ],
+    "contactInfo": [
+      {
+        "label": "tel.",
+        "value": "02-777-3079"
+      },
+      {
+        "label": "email.",
+        "value": "njsafety91@naver.com"
+      },
+      {
+        "label": "made in",
+        "value": "Korea"
+      }
+    ]
+  }
 }
