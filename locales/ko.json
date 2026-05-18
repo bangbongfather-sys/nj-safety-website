@@ -367,6 +367,9 @@
     },
     "contact.hero.titleLine2Post": {
       "size": "0.90em"
+    },
+    "contact.hero.sub": {
+      "width": "69.2%"
     }
   },
   "siteConfig": {
@@ -676,11 +679,11 @@
     },
     "hero": {
       "eyebrow": "Contact · 문의",
-      "titleLine1": "현장에 맞는             <span style=\"color: rgb(255, 107, 26);\">방염 솔루션,</span>",
+      "titleLine1": "최적의 현장 맞춤형 방염 솔루션",
       "titleLine2Pre": "",
       "titleLine2Em": "",
-      "titleLine2Post": "NJ SAFETY에서       상담받으세요.",
-      "sub": "제품 견적부터 B2B 단체 주문, OEM 제작, 인증서 발급까지 — NJ SAFETY 전문가가 1영업일 이내 직접 회신해 드립니다.",
+      "titleLine2Post": "<span style=\"color: rgb(255, 107, 26);\">NJ SAFETY</span>와  함께합니다.               ",
+      "sub": "제품 견적, B2B 단체 주문부터 OEM 제작까지. NJ SAFETY에서  1영업일   이내에 빠르고 확실하게 회신해 드립니다.",
       "metrics": [
         {
           "lbl": "— Response",
@@ -712,31 +715,31 @@
         {
           "type": "quote",
           "ko": "제품·견적 문의",
-          "en": "Product & Quote",
+          "en": "<br>",
           "body": "아라미드 시즌 제품의 가격·재고·납기 관련 일반 견적 문의."
         },
         {
           "type": "b2b",
           "ko": "B2B 단체 주문",
-          "en": "Bulk Order",
+          "en": "<br>",
           "body": "50벌 이상 단체 주문 · 5% 추가 할인 · 전담 매니저 응대."
         },
         {
           "type": "oem",
           "ko": "OEM·ODM 제작",
-          "en": "Custom Manufacturing",
+          "en": "<br>",
           "body": "자체 패턴·자수·로고 작업. 원단부터 봉제까지 본사 직접 제작."
         },
         {
           "type": "cert",
           "ko": "인증서·시험성적서",
-          "en": "Certification Docs",
+          "en": "<br>",
           "body": "NFPA 2112 UL 인증, ARC 시험성적서, 혼용률 시험 자료 요청."
         },
         {
           "type": "as",
           "ko": "A/S·교환·반품",
-          "en": "After-sales",
+          "en": "<br>",
           "body": "사용 중 발생한 하자·사이즈 교환·수선 등의 사후 관리."
         }
       ],
