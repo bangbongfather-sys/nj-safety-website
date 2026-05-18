@@ -386,5 +386,11 @@
       "align": "left"
     }
   },
-  "flavor": "tactical"
+  "flavor": "tactical",
+  "shopHeader": {
+    "images": [
+      "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njs-ar301/card-main.jpg?v=1779108830633",
+      ""
+    ]
+  }
 }
