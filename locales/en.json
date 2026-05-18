@@ -357,10 +357,10 @@
       "size": "1.10em"
     },
     "about.ceo.signoffName": {
-      "size": "1.10em"
+      "size": "1.30em"
     },
     "about.ceo.signoffTitle": {
-      "size": "1.10em"
+      "size": "1.30em"
     }
   },
   "siteConfig": {
@@ -429,7 +429,7 @@
       "portraitPlaceholder": "[ PORTRAIT · 대표이사 ]",
       "signoffTitle": "대표이사",
       "signoffName": "홍 길 동",
-      "portraitImage": ""
+      "portraitImage": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/about/ceo-portrait.jpg?v=1779096886949"
     },
     "heritage": {
       "eyebrow": "— Heritage / 1987 → Present",
