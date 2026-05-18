@@ -111,13 +111,39 @@ function AboutHero({ about, editor }: { about: AboutDict; editor?: EditorApi }) 
                 />
               </span>
             </div>
+            {/* Hero title is rendered with the orange <em> on its own
+              * block-level line, so the admin can type a long pre-em
+              * statement and the brand line below it wraps cleanly
+              * instead of mid-syllable. The optional `titleLine2` only
+              * renders when it has content — avoids the empty <br>
+              * from leaving a ghost line. */}
             <h1>
-              <EditableText path="about.hero.titleLine1Pre" value={h.titleLine1Pre ?? ''} editor={editor} />
-              <em>
-                <EditableText path="about.hero.titleLine1Em" value={h.titleLine1Em ?? ''} editor={editor} />
-              </em>
-              <br />
-              <EditableText path="about.hero.titleLine2" value={h.titleLine2 ?? ''} editor={editor} />
+              <EditableText
+                as="span"
+                className="ab-hero-h1-pre"
+                path="about.hero.titleLine1Pre"
+                value={h.titleLine1Pre ?? ''}
+                editor={editor}
+              />
+              {h.titleLine1Em || editor ? (
+                <em>
+                  <EditableText
+                    as="span"
+                    path="about.hero.titleLine1Em"
+                    value={h.titleLine1Em ?? ''}
+                    editor={editor}
+                  />
+                </em>
+              ) : null}
+              {h.titleLine2 || editor ? (
+                <EditableText
+                  as="span"
+                  className="ab-hero-h1-line2"
+                  path="about.hero.titleLine2"
+                  value={h.titleLine2 ?? ''}
+                  editor={editor}
+                />
+              ) : null}
             </h1>
             <EditableText
               as="p"

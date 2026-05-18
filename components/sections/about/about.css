@@ -139,10 +139,27 @@
   font-size: clamp(40px, 5vw, 76px);
   font-weight: 800;
   letter-spacing: -0.03em;
-  line-height: 1.02;
-  text-wrap: balance;
+  line-height: 1.08;
+  /* `text-wrap: balance` was breaking Korean mid-syllable (e.g.
+   * "선택한" → "선택" + "한") because CJK has no word spaces for
+   * the balancer to anchor on. Falling back to natural wrap +
+   * `word-break: keep-all` keeps multi-character words together. */
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
-.about-page .ab-hero h1 em { font-style: normal; color: var(--accent); }
+/* Each text segment becomes its own block so the admin can type
+ * "산업 현장이 선택한," in titleLine1Pre, "방염 파트너." in
+ * titleLine1Em, and have them lay out as two clean stacked lines
+ * — no rogue mid-syllable wrap from the layout column. */
+.about-page .ab-hero h1 .ab-hero-h1-pre,
+.about-page .ab-hero h1 em,
+.about-page .ab-hero h1 .ab-hero-h1-line2 {
+  display: block;
+}
+.about-page .ab-hero h1 em {
+  font-style: normal;
+  color: var(--accent);
+}
 .about-page .ab-hero-sub {
   margin-top: 28px;
   font-size: 17px;
