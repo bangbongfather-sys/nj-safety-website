@@ -2552,11 +2552,21 @@
 .nj-page .psh-name {
   font-family: var(--font-display);
   font-weight: 900;
-  font-size: clamp(28px, 3.4vw, 44px);
-  line-height: 1.15;
-  letter-spacing: -.02em;
+  /* Was clamp(28, 3.4vw, 44px). At the live grid (info column ≈ 580px)
+   * a 44px Korean title "아라미드 PK 티셔츠" sits right on the edge and
+   * the browser breaks at every space — so the admin saw a clean
+   * one-liner but visitors got a stacked "JSON-looking" three-line
+   * title. Trimmed the max + opted into `word-break: keep-all` so
+   * Korean words stay atomic, and `text-wrap: balance` so any wrap
+   * lands on a natural break, not mid-phrase. */
+  font-size: clamp(24px, 2.6vw, 36px);
+  line-height: 1.2;
+  letter-spacing: -.018em;
   color: var(--ink);
   margin: 4px 0 0;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  text-wrap: balance;
 }
 .nj-page .psh-name em { font-style: normal; color: var(--orange); }
 .nj-page .psh-subtitle {
