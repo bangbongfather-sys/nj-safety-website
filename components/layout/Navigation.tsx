@@ -65,6 +65,22 @@ function getDropdownItems(
       },
     ];
   }
+  if (key === 'about') {
+    // /about now split into a story half (Hero/Stats/CEO/Heritage) and a
+    // capabilities half (Values/OneStop/Industries/Certs) so each page
+    // is short enough to read without endless scrolling. /about itself
+    // is the story page; /about/capabilities is its sibling.
+    return [
+      {
+        href: `/${locale}/about/`,
+        label: locale === 'ko' ? '회사 이야기' : 'Our Story',
+      },
+      {
+        href: `/${locale}/about/capabilities/`,
+        label: locale === 'ko' ? '역량 & 시스템' : 'Capabilities',
+      },
+    ];
+  }
   return [];
 }
 
@@ -72,6 +88,7 @@ function getDropdownItems(
 function getAllLabel(key: string, locale: Locale): string {
   if (key === 'products') return locale === 'ko' ? '전체 제품' : 'All products';
   if (key === 'resources') return locale === 'ko' ? '자료실 메인' : 'Resources home';
+  if (key === 'about') return locale === 'ko' ? '회사소개 전체' : 'About overview';
   return locale === 'ko' ? '전체' : 'All';
 }
 

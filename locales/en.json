@@ -671,6 +671,12 @@
       "sub": "Custom quote · Material consultation · Sample request",
       "btnPrimary": "견적 문의하기 →",
       "btnSecondary": "제품 라인업 보기 →"
+    },
+    "capHero": {
+      "eyebrow": "— About · Capabilities",
+      "titleLine1": "Manufacturing system,",
+      "titleLine2Em": "proven capability.",
+      "sub": "From fabric to despatch — how NJ Safety builds, where it serves, and the certifications that back it. Values, system, industries, and recent proof on one page."
     }
   },
   "contact": {

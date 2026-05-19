@@ -33,6 +33,19 @@ type Props = {
   locale: Locale;
   dict: Dictionary;
   editor?: EditorApi;
+  /**
+   * Which slice of the 9-section narrative to render.
+   *   'full'         — every section (used by /admin/about/edit so the
+   *                    admin can edit the whole page on one screen).
+   *   'story'        — Hero + Stats + CEO + Heritage. The public /about
+   *                    landing. "누구인가" 흐름.
+   *   'capabilities' — Values + OneStop + Industries + Recent. The
+   *                    public /about/capabilities page. "어떻게
+   *                    만드는가" 흐름.
+   * Both public views still render the CTA at the bottom so each page
+   * has a conversion exit.
+   */
+  view?: 'full' | 'story' | 'capabilities';
 };
 
 // Narrow guard: anything under `about` is admin-authored, so it might be
@@ -40,21 +53,67 @@ type Props = {
 // renderer defensive by using `?? ''` / `?? []` everywhere.
 type AboutDict = NonNullable<Dictionary['about']>;
 
-export default function AboutPage({ locale, dict, editor }: Props) {
+export default function AboutPage({ locale, dict, editor, view = 'full' }: Props) {
   const about = dict.about as AboutDict;
+
+  // Split the 9 sections into story / capabilities. The selectors are
+  // derived from the section names rather than the original order so
+  // adding a new section later only needs the case added in one place.
+  const showStory = view === 'full' || view === 'story';
+  const showCapabilities = view === 'full' || view === 'capabilities';
+
   return (
     <div className="about-page cb-page-root">
-      <AboutHero about={about} editor={editor} />
-      <AboutStats about={about} editor={editor} />
-      <AboutCeo about={about} editor={editor} />
-      <AboutHeritage about={about} editor={editor} />
-      <AboutValues about={about} editor={editor} />
-      <AboutOneStop about={about} editor={editor} />
-      <AboutIndustries about={about} editor={editor} />
-      <AboutRecent about={about} editor={editor} />
-      <AboutCta about={about} locale={locale} editor={editor} />
+      {/* Hero only fronts the full view + the story view. The
+       * capabilities page gets its own smaller intro below. */}
+      {showStory ? <AboutHero about={about} editor={editor} /> : null}
+      {showStory ? <AboutStats about={about} editor={editor} /> : null}
+      {showStory ? <AboutCeo about={about} editor={editor} /> : null}
+      {showStory ? <AboutHeritage about={about} editor={editor} /> : null}
+
+      {/* Capabilities sub-page gets its own intro band so the screen
+       * doesn't open mid-content. Hidden on the full admin view to
+       * avoid duplicating headings during editing. */}
+      {view === 'capabilities' ? <CapabilitiesIntro about={about} /> : null}
+
+      {showCapabilities ? <AboutValues about={about} editor={editor} /> : null}
+      {showCapabilities ? <AboutOneStop about={about} editor={editor} /> : null}
+      {showCapabilities ? <AboutIndustries about={about} editor={editor} /> : null}
+      {showCapabilities ? <AboutRecent about={about} editor={editor} /> : null}
+
+      {/* CTA closes every public view — story page sends the visitor
+       * to capabilities OR to product/contact; capabilities page sends
+       * them straight to product/contact. Inline cross-link to the
+       * other half lives in AboutCta when `view !== 'full'`. */}
+      <AboutCta about={about} locale={locale} editor={editor} view={view} />
       <CustomBlocksLayer blocks={dict.customBlocks} route="about" editor={editor} />
     </div>
+  );
+}
+
+/* ─── Capabilities sub-page intro ────────────────────────────────────
+ * Small band shown above the Values section on /about/capabilities, so
+ * the visitor lands on something framed rather than diving straight
+ * into a list. Pulled from dict.about.capHero, with hard-coded fallback
+ * copy when the dict hasn't been seeded yet (won't break the page).
+ */
+function CapabilitiesIntro({ about }: { about: AboutDict }) {
+  const h = (about as unknown as { capHero?: { eyebrow?: string; titleLine1?: string; titleLine2Em?: string; sub?: string } }).capHero;
+  const eyebrow = h?.eyebrow ?? '— 회사소개 · 역량';
+  const titleLine1 = h?.titleLine1 ?? '제조 시스템과';
+  const titleLine2Em = h?.titleLine2Em ?? '검증된 역량.';
+  const sub = h?.sub ?? '원단부터 출하까지, NJ Safety 가 어떻게 만들고 어디서 쓰이는지. 가치·시스템·산업군·인증을 한 페이지에 담았습니다.';
+  return (
+    <section className="ab-caphero" data-screen-label="Capabilities intro">
+      <div className="wrap" style={{ padding: '88px 0 32px' }}>
+        <span className="eyebrow">{eyebrow}</span>
+        <h1 style={{ fontFamily: 'var(--display)', fontWeight: 900, letterSpacing: '-.03em', fontSize: 'clamp(40px, 6vw, 96px)', lineHeight: 1.05, marginTop: 18 }}>
+          <span style={{ display: 'block' }}>{titleLine1}</span>
+          <em style={{ fontStyle: 'normal', color: 'var(--accent)' }}>{titleLine2Em}</em>
+        </h1>
+        <p style={{ marginTop: 24, maxWidth: 720, color: 'var(--muted)', fontSize: 17, lineHeight: 1.65 }}>{sub}</p>
+      </div>
+    </section>
   );
 }
 
@@ -592,8 +651,25 @@ function AboutRecent({ about, editor }: { about: AboutDict; editor?: EditorApi }
 }
 
 /* ─── 09. CTA ────────────────────────────────────────────────────── */
-function AboutCta({ about, locale, editor }: { about: AboutDict; locale: Locale; editor?: EditorApi }) {
+function AboutCta({
+  about,
+  locale,
+  editor,
+  view,
+}: {
+  about: AboutDict;
+  locale: Locale;
+  editor?: EditorApi;
+  view?: 'full' | 'story' | 'capabilities';
+}) {
   const c = about.cta;
+  // Cross-link sends the visitor to the OTHER half of /about. Hidden on
+  // the full admin view (which already shows everything on one page).
+  const cross = view === 'story'
+    ? { href: `/${locale}/about/capabilities/`, label: locale === 'ko' ? '제조 시스템 보기 →' : 'View capabilities →' }
+    : view === 'capabilities'
+      ? { href: `/${locale}/about/`, label: locale === 'ko' ? '← 회사 이야기로' : '← Our story' }
+      : null;
   return (
     <section className="ab-cta" data-screen-label="09 CTA">
       <div className="wrap">
@@ -614,6 +690,21 @@ function AboutCta({ about, locale, editor }: { about: AboutDict; locale: Locale;
             <EditableText path="about.cta.btnSecondary" value={c.btnSecondary ?? ''} editor={editor} />
           </Link>
         </div>
+        {cross ? (
+          <div style={{ marginTop: 32 }}>
+            <Link
+              href={cross.href}
+              style={{
+                color: 'var(--muted)',
+                fontSize: 14,
+                textDecoration: 'underline',
+                letterSpacing: '-.01em',
+              }}
+            >
+              {cross.label}
+            </Link>
+          </div>
+        ) : null}
       </div>
     </section>
   );

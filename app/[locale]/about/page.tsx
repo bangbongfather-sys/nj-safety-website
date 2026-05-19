@@ -21,5 +21,8 @@ export default async function AboutRoute({ params }: Props) {
   const resolved = await params;
   if (!isLocale(resolved.locale)) notFound();
   const locale = resolved.locale as Locale;
-  return <AboutPageView locale={locale} dict={getDictionary(locale)} />;
+  // Public /about is the "회사 이야기" half only — Hero / Stats / CEO /
+  // Heritage. The capabilities half lives at /about/capabilities. Both
+  // share the same dict; the split is purely a render-time view.
+  return <AboutPageView locale={locale} dict={getDictionary(locale)} view="story" />;
 }

@@ -671,6 +671,12 @@
       "sub": "Custom quote · Material consultation · Sample request",
       "btnPrimary": "견적 문의하기 →",
       "btnSecondary": "제품 라인업 보기 →"
+    },
+    "capHero": {
+      "eyebrow": "— 회사소개 · 역량",
+      "titleLine1": "제조 시스템과",
+      "titleLine2Em": "검증된 역량.",
+      "sub": "원단부터 출하까지, NJ Safety가 어떻게 만들고 어디서 쓰이는지. 가치 · 시스템 · 산업군 · 인증을 한 페이지에 담았습니다."
     }
   },
   "contact": {
