@@ -371,6 +371,17 @@
     },
     "contact.hero.sub": {
       "width": "69.2%"
+    },
+    "cta.titleLine2End": {
+      "width": "100.0%",
+      "size": "0.80em"
+    },
+    "cta.titleLine1": {
+      "width": "100.0%",
+      "size": "0.80em"
+    },
+    "cta.titleLine2Em": {
+      "size": "0.90em"
     }
   },
   "siteConfig": {
