@@ -39,7 +39,14 @@ export default function Footer({ locale, dict, editor }: Props) {
               <li><Link href={`/${locale}/about`}><EditableText path="footer.company[0]" value={dict.footer.company[0]} editor={editor} /></Link></li>
               <li><Link href={`/${locale}/certifications`}><EditableText path="footer.company[1]" value={dict.footer.company[1]} editor={editor} /></Link></li>
               <li><Link href={`/${locale}/news`}><EditableText path="footer.company[2]" value={dict.footer.company[2]} editor={editor} /></Link></li>
-              <li><Link href={`/${locale}/about`}><EditableText path="footer.company[3]" value={dict.footer.company[3]} editor={editor} /></Link></li>
+              <li>
+                {/* Resources hub — added 2026-05 along with /privacy. Slots
+                 * into the existing footer.company[3] dict key (was a
+                 * duplicate "회사소개" link before — pointed back to
+                 * /about). Reusing the same key keeps the EditableText
+                 * editing surface intact. */}
+                <Link href={`/${locale}/resources/`}><EditableText path="footer.company[3]" value={dict.footer.company[3]} editor={editor} /></Link>
+              </li>
               <li><Link href={`/${locale}/contact`}><EditableText path="footer.company[4]" value={dict.footer.company[4]} editor={editor} /></Link></li>
             </ul>
           </div>
@@ -62,9 +69,14 @@ export default function Footer({ locale, dict, editor }: Props) {
         <div className="footer-bar">
           <span><EditableText path="company.copyright" value={dict.company.copyright} editor={editor} /> · <EditableText path="company.brn" value={dict.company.brn} editor={editor} /></span>
           <div className="legal">
-            <Link href="#"><EditableText path="footer.legal.privacy" value={dict.footer.legal.privacy} editor={editor} /></Link>
-            <Link href="#"><EditableText path="footer.legal.terms" value={dict.footer.legal.terms} editor={editor} /></Link>
-            <Link href="#"><EditableText path="footer.legal.sitemap" value={dict.footer.legal.sitemap} editor={editor} /></Link>
+            {/* Privacy is the only legal page we currently host. Terms /
+             * Sitemap stay as labels-without-links until those pages are
+             * actually authored — better to look unfinished than to point
+             * the wrong label at the wrong destination. The admin can flip
+             * these to real routes once the matching content exists. */}
+            <Link href={`/${locale}/privacy/`}><EditableText path="footer.legal.privacy" value={dict.footer.legal.privacy} editor={editor} /></Link>
+            <span style={{ color: 'var(--muted)' }}><EditableText path="footer.legal.terms" value={dict.footer.legal.terms} editor={editor} /></span>
+            <span style={{ color: 'var(--muted)' }}><EditableText path="footer.legal.sitemap" value={dict.footer.legal.sitemap} editor={editor} /></span>
           </div>
         </div>
       </div>

@@ -258,7 +258,7 @@
       "About",
       "Certifications",
       "Newsroom",
-      "Careers",
+      "Resources",
       "Contact"
     ],
     "social": "SOCIAL",
@@ -952,5 +952,125 @@
       ]
     }
   },
-  "customBlocks": []
+  "customBlocks": [],
+  "resources": {
+    "meta": {
+      "title": "Resources — NJ SAFETY",
+      "description": "Catalog PDFs, test reports, and a size guide — every document you need to evaluate and order NJ SAFETY workwear."
+    },
+    "hero": {
+      "eyebrow": "— Resources",
+      "titlePre": "Everything for ",
+      "titleEm": "your evaluation."
+    },
+    "sub": "Catalog, test reports, and the size guide — gathered in one place. Download freely for internal circulation or order review.",
+    "catalog": {
+      "title": "Catalog",
+      "desc": "Full product lineup and specs in PDF.",
+      "downloadCta": "Download →",
+      "placeholder": "Catalog PDF coming soon"
+    },
+    "sizeGuide": {
+      "title": "Size Guide",
+      "desc": "Measurement method and per-product size tables.",
+      "cta": "View guide →"
+    },
+    "testReports": {
+      "title": "Test Reports",
+      "desc": "Per-product KC / NFPA / EN ISO certification test reports.",
+      "empty": "No test reports listed yet — coming soon."
+    }
+  },
+  "sizeGuide": {
+    "meta": {
+      "title": "Size Guide — NJ SAFETY",
+      "description": "How to measure for industrial workwear, plus per-product size tables."
+    },
+    "hero": {
+      "eyebrow": "— Size Guide",
+      "titlePre": "Get the ",
+      "titleEm": "right fit."
+    },
+    "intro": "Safety workwear affects on-site movement directly. Use the steps below to take your measurements, then check the per-product table before ordering.",
+    "howToHead": "How to measure",
+    "howTo": [
+      {
+        "n": "01",
+        "label": "Chest",
+        "body": "Run the tape under both armpits in a single loop, at the fullest point of the chest during a normal breath."
+      },
+      {
+        "n": "02",
+        "label": "Shoulder",
+        "body": "Edge to edge across the back, from one shoulder tip to the other."
+      },
+      {
+        "n": "03",
+        "label": "Length",
+        "body": "From the centre back neck (7th cervical vertebra) to the desired hem."
+      },
+      {
+        "n": "04",
+        "label": "Sleeve",
+        "body": "From the shoulder tip to the wrist, arm resting naturally at the side."
+      }
+    ],
+    "tableHead": "Per-product size tables",
+    "tableEmpty": "No size tables listed yet.",
+    "tip": "When you fall between two sizes, choose the larger one. Industrial workwear is often layered over base garments, so extra room is helpful."
+  },
+  "privacy": {
+    "meta": {
+      "title": "Privacy Policy — NJ SAFETY",
+      "description": "How NJ SAFETY (Najung Enterprise) collects, uses, retains, and disposes of personal information."
+    },
+    "hero": {
+      "eyebrow": "— Privacy Policy",
+      "titlePre": "Privacy ",
+      "titleEm": "policy."
+    },
+    "effective": "Effective: 2026-05-19",
+    "intro": "Najung Enterprise Co., Ltd. (\"the Company\") complies with the Personal Information Protection Act of Korea and handles users’ personal information as follows.",
+    "sections": [
+      {
+        "title": "1. Information We Collect",
+        "body": "The Company collects only the minimum information needed to respond to quote inquiries and product consultations.\n\n• Required: company name, contact name, phone, email\n• Optional: attached files (drawings, specifications, evaluation documents)\n• Automatically collected: access IP, cookies, service usage logs"
+      },
+      {
+        "title": "2. Purpose of Collection and Use",
+        "body": "• Responding to quote inquiries\n• Product consultation and ordering guidance\n• After-sales support\n• Statistical analysis and service quality improvement"
+      },
+      {
+        "title": "3. Retention and Use Period",
+        "body": "• Quote and consultation inquiries: one year after the response is closed\n• Active transaction records: retained per the Consumer Protection in Electronic Commerce Act and related regulations\n• If consent is withdrawn or deletion is requested, data is destroyed without delay"
+      },
+      {
+        "title": "4. Sharing with Third Parties",
+        "body": "The Company does not share users’ personal information with external parties as a rule. Exceptions are limited to lawful requests from authorities or other cases mandated by law."
+      },
+      {
+        "title": "5. Destruction Procedure and Method",
+        "body": "• Procedure: destroyed immediately after the purpose is fulfilled\n• Method: electronic files are permanently deleted by methods that prevent recovery; paper documents are shredded"
+      },
+      {
+        "title": "6. User Rights",
+        "body": "Users may at any time request access, correction, deletion, or suspension of processing of their personal information. Contact the privacy officer below in writing, by phone, or by email; the Company will respond without delay."
+      },
+      {
+        "title": "7. Security Measures",
+        "body": "The Company implements the following measures to keep personal information safe.\n\n• Administrative: internal management plan, regular training\n• Technical: access logs, encrypted (HTTPS) communication\n• Physical: locked storage for hardcopy records"
+      },
+      {
+        "title": "8. Cookies",
+        "body": "The Company may use cookies to improve service convenience. Users may disable cookies in their browser settings; some features may then be unavailable."
+      }
+    ],
+    "officerHead": "Privacy Officer",
+    "officer": {
+      "name": "(To be assigned)",
+      "role": "Operations Support",
+      "contact": "tel. +82-2-777-3079 / email. njsafety91@naver.com"
+    },
+    "changeNote": "This policy is effective as of the date above. Any future changes will be announced on this page."
+  }
 }
