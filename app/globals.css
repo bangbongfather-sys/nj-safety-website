@@ -151,6 +151,104 @@ p { line-height: 1.65; }
   height: 2px; background: var(--accent);
 }
 .menu a.active { color: var(--accent); opacity: 1; }
+
+/* ---------- Nav hover dropdown (제품 → subcategories) ----------
+ * The 제품 entry switches from a plain <a> to a wrapper <div> that
+ * holds the link + an absolutely-positioned dropdown panel. The
+ * panel is hidden by default and fades in on hover/focus-within.
+ * We extend the wrapper's hit area downward via the ::before pad so
+ * the cursor can travel from link → panel without crossing a gap
+ * (the gap would otherwise dismiss the dropdown). */
+.menu-item.has-dropdown {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+/* Re-apply the link typography we inherited from `.menu a` — the
+ * wrapper above broke the direct-child selector. */
+.menu-item.has-dropdown > .menu-link {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.022em;
+  color: var(--text);
+  opacity: .92;
+  position: relative;
+  transition: opacity .2s, color .2s;
+}
+.menu-item.has-dropdown > .menu-link:hover { opacity: 1; color: var(--accent); }
+.menu-item.has-dropdown > .menu-link:hover::after {
+  content: ""; position: absolute;
+  left: 0; right: 0; bottom: -22px;
+  height: 2px; background: var(--accent);
+}
+.menu-item.has-dropdown > .menu-link.active { color: var(--accent); opacity: 1; }
+
+/* Invisible bridge between the link and the panel so the dropdown
+ * doesn't dismiss when the cursor crosses the gap. */
+.menu-item.has-dropdown::before {
+  content: "";
+  position: absolute;
+  left: -16px; right: -16px;
+  top: 100%; height: 24px;
+}
+.menu-dropdown {
+  position: absolute;
+  top: calc(100% + 22px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+  min-width: 240px;
+  padding: 10px;
+  background: rgba(20, 20, 22, .98);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  box-shadow: 0 24px 48px rgba(0,0,0,.45), 0 4px 12px rgba(0,0,0,.3);
+  backdrop-filter: saturate(150%) blur(14px);
+  -webkit-backdrop-filter: saturate(150%) blur(14px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .18s ease, transform .18s ease, visibility .18s;
+  z-index: 60;
+}
+.menu-item.has-dropdown:hover .menu-dropdown,
+.menu-item.has-dropdown:focus-within .menu-dropdown {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+.menu-dropdown-all,
+.menu-dropdown-item {
+  display: block;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-family: var(--display);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  color: var(--text);
+  opacity: .88;
+  white-space: nowrap;
+  transition: background .15s, color .15s, opacity .15s;
+}
+.menu-dropdown-all { font-weight: 700; opacity: 1; }
+.menu-dropdown-all:hover,
+.menu-dropdown-item:hover {
+  background: rgba(255, 107, 26, .12);
+  color: var(--accent);
+  opacity: 1;
+}
+/* Override the underline ::after that .menu a normally gets — looks
+ * wrong inside a vertical dropdown list. */
+.menu-dropdown-all:hover::after,
+.menu-dropdown-item:hover::after { display: none; }
+.menu-dropdown-sep {
+  height: 1px;
+  background: var(--border-soft);
+  margin: 6px 4px;
+}
+
 .nav-right { display: flex; align-items: center; gap: 22px; }
 .lang {
   display: flex; gap: 8px; align-items: center;

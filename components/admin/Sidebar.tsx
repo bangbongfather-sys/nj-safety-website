@@ -13,6 +13,7 @@ const ITEMS: NavItem[] = [
   { href: '/admin/contact/edit', label: '✎ 문의 편집',             section: 'main'  },
   { href: '/admin/text',       label: '텍스트 편집 (폼)',          section: 'main'  },
   { href: '/admin/products',   label: '제품 관리',                  section: 'main'  },
+  { href: '/admin/products/categories', label: '↳ 카테고리 (하위탭)', section: 'main'  },
   { href: '/admin/settings',   label: '설정',                       section: 'tools' },
 ];
 
@@ -23,7 +24,19 @@ export default function Sidebar() {
 
   function isActive(href: string): boolean {
     if (href === '/admin') return pathname === '/admin' || pathname === '/admin/';
-    return pathname === href || pathname.startsWith(href + '/');
+    // A href is active when the current path equals it OR starts with it,
+    // BUT only if no other sidebar entry is a more-specific (longer) match.
+    // Otherwise `/admin/products` would stay lit on `/admin/products/categories`
+    // alongside the categories entry itself.
+    const matches = pathname === href || pathname.startsWith(href + '/');
+    if (!matches) return false;
+    const longerMatch = ITEMS.some(
+      (i) =>
+        i.href !== href &&
+        i.href.startsWith(href + '/') &&
+        (pathname === i.href || pathname.startsWith(i.href + '/')),
+    );
+    return !longerMatch;
   }
 
   return (

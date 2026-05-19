@@ -1,0 +1,16 @@
+{
+  "categories": [
+    {
+      "id": "summer",
+      "nameKo": "하계 시즌",
+      "nameEn": "Summer Season",
+      "productSlugs": ["njs-av100"]
+    },
+    {
+      "id": "spring-fall",
+      "nameKo": "춘추 시즌",
+      "nameEn": "Spring / Fall",
+      "productSlugs": ["njs-ar204"]
+    }
+  ]
+}

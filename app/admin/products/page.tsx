@@ -281,6 +281,9 @@ export default function ProductsListPage() {
           <Link href="/admin/products/upload" className="btn primary">
             + 새 제품 추가
           </Link>
+          <Link href="/admin/products/categories" className="btn ghost">
+            ↳ 카테고리 (하위탭) 관리
+          </Link>
           <button type="button" className="btn ghost" onClick={() => void reload()}>
             새로고침
           </button>
