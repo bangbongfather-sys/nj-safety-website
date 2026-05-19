@@ -85,10 +85,14 @@ function getDropdownItems(
 }
 
 /** "전체 X" copy for the top item of the dropdown. */
-function getAllLabel(key: string, locale: Locale): string {
+function getAllLabel(key: string, locale: Locale): string | null {
   if (key === 'products') return locale === 'ko' ? '전체 제품' : 'All products';
   if (key === 'resources') return locale === 'ko' ? '자료실 메인' : 'Resources home';
-  if (key === 'about') return locale === 'ko' ? '회사소개 전체' : 'About overview';
+  // /about itself is the "회사 이야기" page — clicking "회사소개 전체"
+  // landed on the same route as "회사 이야기", so the top item just
+  // duplicated the first subtab. Returning null skips the all-link +
+  // separator entirely for about.
+  if (key === 'about') return null;
   return locale === 'ko' ? '전체' : 'All';
 }
 
@@ -158,10 +162,14 @@ export default function Navigation({ locale, dict, editor }: Props) {
                   <EditableText path={`nav.${l.key}`} value={dict.nav[l.key]} editor={editor} />
                 </Link>
                 <div className="menu-dropdown" role="menu" aria-label={dict.nav[l.key]}>
-                  <Link href={l.href} className="menu-dropdown-all" role="menuitem">
-                    {allLabel}
-                  </Link>
-                  <div className="menu-dropdown-sep" aria-hidden />
+                  {allLabel ? (
+                    <>
+                      <Link href={l.href} className="menu-dropdown-all" role="menuitem">
+                        {allLabel}
+                      </Link>
+                      <div className="menu-dropdown-sep" aria-hidden />
+                    </>
+                  ) : null}
                   {dropdownItems.map((item) => (
                     <Link
                       key={item.href}
