@@ -2,15 +2,20 @@
   "categories": [
     {
       "id": "summer",
-      "nameKo": "하계 시즌",
+      "nameKo": "여름(SUMMER)",
       "nameEn": "Summer Season",
-      "productSlugs": ["njs-av100", "njssyyy"]
+      "productSlugs": [
+        "njs-av100",
+        "njssyyy",
+        "njs-ar301",
+        "njs-ar204"
+      ]
     },
     {
-      "id": "spring-fall",
-      "nameKo": "춘추 시즌",
+      "id": "winter",
+      "nameKo": "겨울(WINTER)",
       "nameEn": "Spring / Fall",
-      "productSlugs": ["njs-ar204"]
+      "productSlugs": []
     }
   ]
 }
