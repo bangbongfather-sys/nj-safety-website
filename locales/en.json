@@ -9,7 +9,6 @@
     "certifications": "Certifications",
     "clients": "Clients",
     "resources": "Resources",
-    "news": "News",
     "contact": "Contact",
     "quoteCta": "Get a quote"
   },
@@ -258,7 +257,6 @@
     "company": [
       "About",
       "Certifications",
-      "Newsroom",
       "Resources",
       "Contact"
     ],

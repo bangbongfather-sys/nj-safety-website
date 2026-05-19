@@ -22,7 +22,7 @@ import Showcase from '@/components/sections/Showcase';
 import Manifesto from '@/components/sections/Manifesto';
 import Certifications from '@/components/sections/Certifications';
 import Clients from '@/components/sections/Clients';
-import Insights from '@/components/sections/Insights';
+// import Insights from '@/components/sections/Insights';  // removed with /news (2026-05)
 import ContactCTA from '@/components/sections/ContactCTA';
 
 const KO_PATH = 'locales/ko.json';
@@ -488,7 +488,7 @@ export default function EditHomePage() {
           <Manifesto dict={activeDict} editor={editor} />
           <Certifications dict={activeDict} editor={editor} />
           <Clients dict={activeDict} editor={editor} />
-          <Insights locale={active} dict={activeDict} editor={editor} />
+          {/* Insights section removed alongside /news (2026-05) */}
           <ContactCTA locale={active} dict={activeDict} editor={editor} />
           <CustomBlocksLayer blocks={activeDict.customBlocks} route="home" editor={editor} />
         </main>

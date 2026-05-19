@@ -7,7 +7,7 @@ import Showcase from '@/components/sections/Showcase';
 import Manifesto from '@/components/sections/Manifesto';
 import Certifications from '@/components/sections/Certifications';
 import Clients from '@/components/sections/Clients';
-import Insights from '@/components/sections/Insights';
+// import Insights from '@/components/sections/Insights';  // removed with /news (2026-05)
 import ContactCTA from '@/components/sections/ContactCTA';
 import { CustomBlocksLayer } from '@/components/admin/CustomBlocks';
 
@@ -27,7 +27,9 @@ export default async function HomePage({ params }: Props) {
       <Manifesto dict={dict} />
       <Certifications dict={dict} />
       <Clients dict={dict} />
-      <Insights locale={locale} dict={dict} />
+      {/* <Insights /> removed alongside /news (2026-05). Component file
+       * preserved at components/sections/Insights.tsx so the section can
+       * be restored by un-commenting the import + this line. */}
       <ContactCTA locale={locale} dict={dict} />
       <CustomBlocksLayer blocks={dict.customBlocks} route="home" />
     </div>

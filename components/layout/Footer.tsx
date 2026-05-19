@@ -36,18 +36,13 @@ export default function Footer({ locale, dict, editor }: Props) {
           <div>
             <EditableText as="h4" path="footer.companyHead" value={dict.footer.companyHead} editor={editor} />
             <ul>
+              {/* News was removed 2026-05 — its <li> dropped here, and the
+               * dict array footer.company shrank from 5 → 4 to keep the
+               * indices contiguous with the rendered items below. */}
               <li><Link href={`/${locale}/about`}><EditableText path="footer.company[0]" value={dict.footer.company[0]} editor={editor} /></Link></li>
               <li><Link href={`/${locale}/certifications`}><EditableText path="footer.company[1]" value={dict.footer.company[1]} editor={editor} /></Link></li>
-              <li><Link href={`/${locale}/news`}><EditableText path="footer.company[2]" value={dict.footer.company[2]} editor={editor} /></Link></li>
-              <li>
-                {/* Resources hub — added 2026-05 along with /privacy. Slots
-                 * into the existing footer.company[3] dict key (was a
-                 * duplicate "회사소개" link before — pointed back to
-                 * /about). Reusing the same key keeps the EditableText
-                 * editing surface intact. */}
-                <Link href={`/${locale}/resources/`}><EditableText path="footer.company[3]" value={dict.footer.company[3]} editor={editor} /></Link>
-              </li>
-              <li><Link href={`/${locale}/contact`}><EditableText path="footer.company[4]" value={dict.footer.company[4]} editor={editor} /></Link></li>
+              <li><Link href={`/${locale}/resources/`}><EditableText path="footer.company[2]" value={dict.footer.company[2]} editor={editor} /></Link></li>
+              <li><Link href={`/${locale}/contact`}><EditableText path="footer.company[3]" value={dict.footer.company[3]} editor={editor} /></Link></li>
             </ul>
           </div>
 
