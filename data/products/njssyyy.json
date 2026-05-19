@@ -1,0 +1,369 @@
+{
+  "slug": "njssyyy",
+  "model": "NJSSYYY-YY",
+  "category": "ARAMID FR SERIES · SUMMER SHIRT",
+  "name": "아라미드 하계 남방",
+  "subtitle": "현장의 일상복, 셔츠로 다시 그리다",
+  "tagline": "두 톤 패널 + 가슴 트윈 리플렉티브 + 라벨링 디테일. 정전기·내열 환경의 단정한 외근복을 위한 NJ Safety의 새 남방.",
+  "flavor": "fieldmanual",
+  "hero": {
+    "image": "/products/njssyyy/model.png",
+    "imageAlt": "아라미드 하계 남방 — 모델 착장 컷",
+    "tag": "FIG. 00 · ON BODY",
+    "corner": "CHARCOAL + LIGHT GREY",
+    "badges": [
+      {
+        "text": "FIELD MANUAL · NO.05 · SUMMER",
+        "position": "top-right"
+      }
+    ],
+    "counters": [
+      {
+        "value": "65",
+        "unit": "%",
+        "label": "META ARAMID"
+      },
+      {
+        "value": "33",
+        "unit": "%",
+        "label": "FR RAYON"
+      },
+      {
+        "value": "180",
+        "unit": "G/M²",
+        "label": "WEIGHT"
+      }
+    ]
+  },
+  "gallery": {
+    "eyebrow": "PRODUCT VIEWS",
+    "headline": "모든 각도에서, <em>정직하게</em>.",
+    "note": "스튜디오 촬영 · 실물 컬러는 모니터에 따라 차이가 있을 수 있습니다.",
+    "items": [
+      {
+        "image": "/products/njssyyy/front.jpg",
+        "tag": "FIG. 01 · FRONT",
+        "label": "정면 — 풀 컷",
+        "caption": "차콜 상단 + 라이트 그레이 본체 · 가슴 트윈 리플렉티브 라인.",
+        "span": "xl"
+      },
+      {
+        "image": "/products/njssyyy/back.jpg",
+        "tag": "FIG. 02 · BACK",
+        "label": "후면 — 풀 컷",
+        "caption": "차콜 상단 + 라이트 그레이 등판 + 어깨 리플렉티브 트림.",
+        "span": "xl"
+      },
+      {
+        "image": "/products/njssyyy/collar.jpg",
+        "tag": "FIG. 03 · COLLAR",
+        "label": "카라 + 가슴 리플렉티브",
+        "caption": "포인티드 카라 · 가슴 트윈 라인 · 'NJ SAFETY' 리플렉티브 텍스트.",
+        "span": "l"
+      },
+      {
+        "image": "/products/njssyyy/pockets.jpg",
+        "tag": "FIG. 04 · CHEST PAIR",
+        "label": "가슴 듀얼 플랩 포켓",
+        "caption": "라이트 그레이 본체 위 양쪽 가슴 플랩 포켓 + 오렌지 ARAMID 케어 라벨.",
+        "span": "l"
+      },
+      {
+        "image": "/products/njssyyy/pocket-detail.jpg",
+        "tag": "FIG. 05 · POCKET",
+        "label": "가슴 포켓 단독",
+        "caption": "공구·필기구 수납이 가능한 깊이의 단일 플랩 포켓.",
+        "span": "tall"
+      },
+      {
+        "image": "/products/njssyyy/sleeve-patch.jpg",
+        "tag": "FIG. 06 · SLEEVE",
+        "label": "소매 NJ SAFETY 패치",
+        "caption": "왼쪽 소매 오렌지 러버 'NJ SAFETY' 시그니처 태그.",
+        "span": "tall"
+      },
+      {
+        "image": "/products/njssyyy/lenzing.jpg",
+        "tag": "FIG. 07 · LENZING",
+        "label": "LENZING for Protective Wear",
+        "caption": "포켓 사이드의 'LENZING for Protective Wear' 화이트 라벨.",
+        "span": "tall"
+      }
+    ]
+  },
+  "statement": {
+    "eyebrow": "A NOTE FROM THE FIELD",
+    "headline": "셔츠가 가진 <em>단정함</em>, 워크웨어가 가진 <em>안전</em>.",
+    "body": "남방은 현장에서도 가장 자주 입게 되는 옷입니다. 하지만 시중의 셔츠는 난연 등급도, 정전기 차단도 챙기지 않습니다. NJSSYYY는 메타-아라미드 65%와 FR 레이온 33%의 검증된 블렌드를 셔츠 실루엣 안에 담았습니다. 차콜과 라이트 그레이의 두 톤 패널, 가슴 트윈 리플렉티브, 그리고 가벼운 180g 평량까지 — 셔츠의 격식과 워크웨어의 기능을 한 벌에 통합한 결과입니다.",
+    "sign": "NJ SAFETY PRODUCT TEAM"
+  },
+  "material": {
+    "eyebrow": "FABRIC LAYOUT",
+    "headline": "<em>두 가지 원단</em>이 만드는 한 벌의 셔츠.",
+    "image": "/products/njssyyy/pockets.jpg",
+    "callouts": [
+      {
+        "tag": "A",
+        "title": "Upper Panel · 차콜",
+        "body": "어깨와 카라를 받치는 차콜 메타-아라미드 트윌."
+      },
+      {
+        "tag": "B",
+        "title": "Lower Panel · 라이트 그레이",
+        "body": "본체 패널 — 가벼운 라이트 그레이 우븐. 한여름에도 시원."
+      },
+      {
+        "tag": "C",
+        "title": "ARAMID Care Label",
+        "body": "오렌지 케어 라벨 — 메타-아라미드 65% 표시. 반복 세탁에도 유지."
+      }
+    ]
+  },
+  "features": {
+    "eyebrow": "WHY THIS SHIRT",
+    "headline": "현장에서 살아남는 <em>여섯</em> 가지 장치.",
+    "items": [
+      {
+        "n": "01",
+        "title": "검증된 아라미드 블렌드",
+        "body": "메타-아라미드 65% / FR 레이온 33% / 정전기 2%. 국내 시험기관 통과."
+      },
+      {
+        "n": "02",
+        "title": "두 톤 패널 디자인",
+        "body": "차콜 + 라이트 그레이 컬러 블록. 셔츠 형태로 단정함 유지.",
+        "featured": true
+      },
+      {
+        "n": "03",
+        "title": "가슴 트윈 리플렉티브",
+        "body": "3M Scotchlite™ 트윈 라인 + 'NJ SAFETY' 리플렉티브 텍스트."
+      },
+      {
+        "n": "04",
+        "title": "듀얼 플랩 포켓 + 소매 포켓",
+        "body": "가슴 2 + 소매 1. 공구·필기구·계측기 분리 수납."
+      },
+      {
+        "n": "05",
+        "title": "오렌지 러버 패치",
+        "body": "소매 'NJ SAFETY' 러버 태그. 멀리서도 시인성 확보."
+      },
+      {
+        "n": "06",
+        "title": "가벼운 180 g/m²",
+        "body": "기존 자켓 215g 대비 16% ↓. 한여름 일상 착용 가능."
+      }
+    ]
+  },
+  "spec": {
+    "eyebrow": "TECHNICAL SHEET",
+    "headline": "한 페이지에 담은 <em>스펙</em>.",
+    "rows": [
+      {
+        "label": "원단 구성",
+        "value": "Meta-Aramid 65% / FR Rayon 33% / Antistatic 2%"
+      },
+      {
+        "label": "조직",
+        "value": "Plain Weave · Two-Tone Panel"
+      },
+      {
+        "label": "평량",
+        "value": "180 g/m²"
+      },
+      {
+        "label": "컬러",
+        "value": "Charcoal + Light Grey"
+      },
+      {
+        "label": "사이즈",
+        "value": "90 / 95 / 100 / 105 / 110"
+      },
+      {
+        "label": "포켓",
+        "value": "3 EA · 가슴 듀얼 + 소매 1"
+      },
+      {
+        "label": "리플렉티브",
+        "value": "3M Scotchlite™ · 가슴 트윈 라인"
+      },
+      {
+        "label": "단추",
+        "value": "매트 블랙 · 폴리에스터"
+      },
+      {
+        "label": "원산지",
+        "value": "Made in Korea"
+      },
+      {
+        "label": "인증",
+        "value": "KC 안전인증 · EN ISO 11612"
+      }
+    ],
+    "sizeTable": {
+      "unit": "cm",
+      "headers": [
+        "SIZE",
+        "가슴",
+        "어깨",
+        "소매",
+        "총장"
+      ],
+      "rows": [
+        [
+          "90",
+          "52",
+          "44",
+          "59",
+          "70"
+        ],
+        [
+          "95",
+          "55",
+          "46",
+          "60",
+          "72"
+        ],
+        [
+          "100",
+          "58",
+          "48",
+          "61",
+          "74"
+        ],
+        [
+          "105",
+          "61",
+          "50",
+          "62",
+          "76"
+        ],
+        [
+          "110",
+          "64",
+          "52",
+          "63",
+          "78"
+        ]
+      ]
+    }
+  },
+  "field": {
+    "eyebrow": "WHERE IT LIVES",
+    "headline": "전기·설비 작업자의 <em>여름 일상복</em>.",
+    "items": [
+      {
+        "n": "01",
+        "tag": "ELECTRICAL",
+        "title": "전기 점검",
+        "body": "배전반·변전소 정기 점검 — 정전기 차단과 단정한 외관을 동시에."
+      },
+      {
+        "n": "02",
+        "tag": "PLANT",
+        "title": "플랜트 외근",
+        "body": "스팀·발전 설비 외근에서 셔츠 한 장으로 단정함과 안전 모두."
+      },
+      {
+        "n": "03",
+        "tag": "INSPECTION",
+        "title": "현장 검수",
+        "body": "공구·필기구·계측기를 3개의 플랩 포켓에 분리 수납."
+      },
+      {
+        "n": "04",
+        "tag": "SUMMER",
+        "title": "여름철 외근",
+        "body": "180g 가벼운 평량 — 한여름에도 셔츠 한 장으로 외근 가능."
+      }
+    ]
+  },
+  "care": {
+    "eyebrow": "KEEP IT SAFE",
+    "items": [
+      {
+        "icon": "30°",
+        "title": "30°C 일반 세탁",
+        "body": "중성세제 · 별도 드라이 불필요"
+      },
+      {
+        "icon": "✕",
+        "title": "표백제 금지",
+        "body": "아라미드 섬유 손상 방지",
+        "warn": true
+      },
+      {
+        "icon": "↓",
+        "title": "저온 텀블 / 자연건조",
+        "body": "그늘 건조 권장"
+      },
+      {
+        "icon": "≡",
+        "title": "중간 온도 다림질",
+        "body": "최대 150°C · 라벨 직접 다림질 금지"
+      }
+    ]
+  },
+  "certs": [
+    {
+      "mark": "KC",
+      "title": "KC 안전인증",
+      "sub": "KC—2026—SY01",
+      "highlight": true
+    },
+    {
+      "mark": "EN",
+      "title": "내열 시험",
+      "sub": "EN ISO 11612 통과"
+    },
+    {
+      "mark": "AS",
+      "title": "정전기 시험",
+      "sub": "EN 1149-5"
+    },
+    {
+      "mark": "★",
+      "title": "현장 운용",
+      "sub": "여름 시즌 신규 라인"
+    }
+  ],
+  "order": {
+    "headline": "공식 대리점에서 <em>판매 안내 및 출고</em> 가능합니다.",
+    "cells": [
+      {
+        "label": "서비스",
+        "value": "특정사이즈 및 수선 제작.",
+        "body": "*소형 및 대형 사이즈 제작, 소매길이 추가 가능."
+      },
+      {
+        "label": "납기",
+        "value": "재고 확인 후 출고",
+        "body": "재고 보유 사이즈 기준 / 가공 시 +7일."
+      },
+      {
+        "label": "대리점",
+        "value": "전국 대리점 안내",
+        "body": "유선 및 메일 문의 시 안내."
+      }
+    ],
+    "contact": [
+      {
+        "label": "TEL",
+        "value": "02-777-3079"
+      },
+      {
+        "label": "FAX",
+        "value": "02-774-1841"
+      },
+      {
+        "label": "WEB",
+        "value": "www.njfashion.co.kr"
+      },
+      {
+        "label": "EMAIL",
+        "value": "njsafety91@naver.com"
+      }
+    ]
+  }
+}
