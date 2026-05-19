@@ -365,5 +365,11 @@
         "value": "njsafety91@naver.com"
       }
     ]
+  },
+  "shopHeader": {
+    "images": [
+      "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njssyyy/card-main.jpg?v=1779201513418",
+      ""
+    ]
   }
 }
