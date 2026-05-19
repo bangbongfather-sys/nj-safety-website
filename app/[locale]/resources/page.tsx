@@ -73,13 +73,18 @@ export default async function ResourcesPage({ params }: Props) {
         </h1>
         <p style={{ marginTop: 16, maxWidth: 760 }}>{dict.resources.sub}</p>
 
-        {/* Three top cards — Catalog / Size Guide / Test Reports overview */}
+        {/* Three top cards — Catalog / Size Guide / Test Reports overview.
+         * The wrapper carries id="catalog" so the nav-dropdown's
+         * "카탈로그 PDF" item lands here (the catalog card is the first
+         * of the three). scrollMarginTop offsets the sticky 112px nav. */}
         <div
+          id="catalog"
           style={{
             marginTop: 56,
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
             gap: 16,
+            scrollMarginTop: 112,
           }}
         >
           {/* Catalog PDF — placeholder until the operator uploads one */}

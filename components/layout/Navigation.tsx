@@ -26,6 +26,55 @@ type RawCategory = {
 const CATEGORIES: RawCategory[] =
   (categoriesData as { categories?: RawCategory[] }).categories ?? [];
 
+/**
+ * Build the dropdown item list for a given nav key. Each entry's
+ * provenance is different:
+ *   - products  → admin-edited categories in data/product-categories.json
+ *   - resources → static set (catalog / size guide / test reports)
+ * Any other nav key returns an empty list and the caller falls back
+ * to a plain link.
+ */
+function getDropdownItems(
+  key: string,
+  locale: Locale,
+  /** Parent route — used to build relative anchor links. */
+  baseHref: string,
+): Array<{ href: string; label: string }> {
+  if (key === 'products') {
+    return CATEGORIES.map((c) => ({
+      href: `/${locale}/products/category/${c.id}`,
+      label: locale === 'en' ? (c.nameEn || c.nameKo || c.id) : (c.nameKo || c.nameEn || c.id),
+    }));
+  }
+  if (key === 'resources') {
+    // Catalog + test reports live as anchored sections on the hub page
+    // (each card has scroll-margin so the offset under the sticky nav
+    // is correct); the size guide is its own route.
+    return [
+      {
+        href: `${baseHref}#catalog`,
+        label: locale === 'ko' ? '카탈로그 PDF' : 'Catalog PDF',
+      },
+      {
+        href: `/${locale}/resources/size-guide/`,
+        label: locale === 'ko' ? '사이즈 가이드' : 'Size Guide',
+      },
+      {
+        href: `${baseHref}#test-reports`,
+        label: locale === 'ko' ? '시험성적서' : 'Test Reports',
+      },
+    ];
+  }
+  return [];
+}
+
+/** "전체 X" copy for the top item of the dropdown. */
+function getAllLabel(key: string, locale: Locale): string {
+  if (key === 'products') return locale === 'ko' ? '전체 제품' : 'All products';
+  if (key === 'resources') return locale === 'ko' ? '자료실 메인' : 'Resources home';
+  return locale === 'ko' ? '전체' : 'All';
+}
+
 export default function Navigation({ locale, dict, editor }: Props) {
   const pathname = usePathname() ?? '';
   const [scrolled, setScrolled] = useState(false);
@@ -62,13 +111,16 @@ export default function Navigation({ locale, dict, editor }: Props) {
         <div className="menu">
           {links.map((l) => {
             const isActive = pathname.startsWith(l.href);
-            // The "제품" entry gets a hover dropdown listing every
-            // subcategory the admin has defined. When no categories
-            // exist yet we render the plain link so the dropdown
-            // never flashes empty.
-            const isProducts = l.key === 'products' && CATEGORIES.length > 0;
+            // Each nav entry can declare its own dropdown items. Currently:
+            //   - products → admin-managed categories from data/product-categories.json
+            //   - resources → fixed 3 subtabs (catalog / size guide / test reports)
+            // When the list is empty we fall back to a plain link so the
+            // dropdown never flashes empty (e.g. before any product
+            // category is defined).
+            const dropdownItems = getDropdownItems(l.key, locale, l.href);
+            const allLabel = getAllLabel(l.key, locale);
 
-            if (!isProducts) {
+            if (dropdownItems.length === 0) {
               return (
                 <Link
                   key={l.href}
@@ -89,29 +141,20 @@ export default function Navigation({ locale, dict, editor }: Props) {
                   <EditableText path={`nav.${l.key}`} value={dict.nav[l.key]} editor={editor} />
                 </Link>
                 <div className="menu-dropdown" role="menu" aria-label={dict.nav[l.key]}>
-                  <Link
-                    href={l.href}
-                    className="menu-dropdown-all"
-                    role="menuitem"
-                  >
-                    {locale === 'ko' ? '전체 제품' : 'All products'}
+                  <Link href={l.href} className="menu-dropdown-all" role="menuitem">
+                    {allLabel}
                   </Link>
                   <div className="menu-dropdown-sep" aria-hidden />
-                  {CATEGORIES.map((c) => {
-                    const label = locale === 'en'
-                      ? (c.nameEn || c.nameKo || c.id)
-                      : (c.nameKo || c.nameEn || c.id);
-                    return (
-                      <Link
-                        key={c.id}
-                        href={`/${locale}/products/category/${c.id}`}
-                        className="menu-dropdown-item"
-                        role="menuitem"
-                      >
-                        {label}
-                      </Link>
-                    );
-                  })}
+                  {dropdownItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className="menu-dropdown-item"
+                      role="menuitem"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
                 </div>
               </div>
             );
