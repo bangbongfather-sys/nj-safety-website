@@ -9,6 +9,7 @@
     "certifications": "Certifications",
     "clients": "Clients",
     "resources": "Resources",
+    "news": "News",
     "contact": "Contact",
     "quoteCta": "Get a quote"
   },
@@ -257,6 +258,7 @@
     "company": [
       "About",
       "Certifications",
+      "Newsroom",
       "Resources",
       "Contact"
     ],
@@ -372,7 +374,8 @@
     },
     "cta.titleLine2End": {
       "width": "100.0%",
-      "size": "0.80em"
+      "size": "0.80em",
+      "color": "#6b6b70"
     },
     "cta.titleLine1": {
       "width": "100.0%",
