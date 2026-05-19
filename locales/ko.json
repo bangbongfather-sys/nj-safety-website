@@ -9,6 +9,7 @@
     "certifications": "인증",
     "clients": "실적",
     "resources": "자료실",
+    "news": "뉴스",
     "contact": "문의",
     "quoteCta": "견적 문의"
   },
@@ -226,9 +227,9 @@
   },
   "cta": {
     "eyebrow": "— Contact / 08",
-    "titleLine1": "프로젝트에 맞는 안전 솔루션,",
+    "titleLine1": "<span style=\"color: rgb(107, 107, 112);\">프로젝트에 맞는 안전 솔루션</span>,",
     "titleLine2Em": "전문 컨설팅",
-    "titleLine2End": "으로 시작하세요.",
+    "titleLine2End": "<span style=\"color: rgb(107, 107, 112);\">으로 시작하세요</span>.",
     "sub": "Custom quote · Material consultation · Sample request",
     "button": "견적 문의하기"
   },
@@ -257,6 +258,7 @@
     "company": [
       "About",
       "Certifications",
+      "Newsroom",
       "자료실",
       "Contact"
     ],
@@ -372,7 +374,8 @@
     },
     "cta.titleLine2End": {
       "width": "100.0%",
-      "size": "0.80em"
+      "size": "0.80em",
+      "color": "#6b6b70"
     },
     "cta.titleLine1": {
       "width": "100.0%",
