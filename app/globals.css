@@ -133,10 +133,14 @@ p { line-height: 1.65; }
 /* Nav shrinks on scroll — pull the logo down proportionally so it still
  * sits clear of the top/bottom edges instead of dominating the bar. */
 .nav.scrolled .logo-img { height: 60px; }
-.menu { display: flex; gap: 44px; }
+.menu { display: flex; gap: 52px; }
 .menu a {
   font-family: var(--display);
-  font-size: 16px;
+  font-size: 19px;                /* Bumped 16 → 19 (2026-05) so the top
+                                   * nav has more presence — 5 items only
+                                   * left after the news/clients removal,
+                                   * the larger type also fills the bar
+                                   * better. */
   font-weight: 700;
   letter-spacing: -0.022em;       /* Apple-style tight tracking on display */
   color: var(--text);
@@ -165,10 +169,11 @@ p { line-height: 1.65; }
   align-items: center;
 }
 /* Re-apply the link typography we inherited from `.menu a` — the
- * wrapper above broke the direct-child selector. */
+ * wrapper above broke the direct-child selector. Keep this matched
+ * to `.menu a` above (font-size 19px since 2026-05). */
 .menu-item.has-dropdown > .menu-link {
   font-family: var(--display);
-  font-size: 16px;
+  font-size: 19px;
   font-weight: 700;
   letter-spacing: -0.022em;
   color: var(--text);
