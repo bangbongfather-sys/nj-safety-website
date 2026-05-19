@@ -35,5 +35,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts.bak
 
-# claude code local tooling (preview server config etc.)
-.claude/
+# claude code local tooling — keep agents/skills shared, ignore machine-local config
+.claude/launch.json
+.claude/settings.local.json
