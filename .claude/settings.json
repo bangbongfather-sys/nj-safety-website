@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(git push origin main)",
+      "Bash(git push origin main:main)",
+      "Bash(git push)"
+    ]
+  },
+  "autoMode": {
+    "allow": [
+      "$defaults",
+      "Pushing to `main` in this repository (`nj-safety-website`) is the user's intended workflow — solo project owned by the user, who works across two machines (Mac + Windows home PC) and uses `main` directly as their integration branch. Cloudflare auto-deploys on push. Do NOT block `git push origin main` or `git push` against this repo's main branch."
+    ]
+  }
+}
