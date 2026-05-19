@@ -21,7 +21,7 @@ import Products from '@/components/sections/Products';
 import Showcase from '@/components/sections/Showcase';
 import Manifesto from '@/components/sections/Manifesto';
 import Certifications from '@/components/sections/Certifications';
-import Clients from '@/components/sections/Clients';
+// import Clients from '@/components/sections/Clients';  // removed with /clients (2026-05)
 // import Insights from '@/components/sections/Insights';  // removed with /news (2026-05)
 import ContactCTA from '@/components/sections/ContactCTA';
 
@@ -487,7 +487,7 @@ export default function EditHomePage() {
           <Showcase dict={activeDict} editor={editor} />
           <Manifesto dict={activeDict} editor={editor} />
           <Certifications dict={activeDict} editor={editor} />
-          <Clients dict={activeDict} editor={editor} />
+          {/* Clients section removed alongside /clients (2026-05) */}
           {/* Insights section removed alongside /news (2026-05) */}
           <ContactCTA locale={active} dict={activeDict} editor={editor} />
           <CustomBlocksLayer blocks={activeDict.customBlocks} route="home" editor={editor} />
