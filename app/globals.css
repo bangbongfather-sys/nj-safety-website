@@ -304,9 +304,14 @@ p { line-height: 1.65; }
 }
 /* EditableImage renders its own <img class="ed-img-img"> inside the
  * slide; reach into it so the admin's filter sliders affect the real
- * uploaded photos too, not just the static fallback image. */
+ * uploaded photos too, not just the static fallback image. Also pin
+ * `object-fit/position` here so the uploaded photo cropping matches
+ * the static fallback (.hero-img). Mobile overrides live further down
+ * in the responsive block (P3 — pulls the subject inward at <sm). */
 .hero-bg-slide .ed-img-img {
   filter: var(--hero-filter);
+  object-fit: cover;
+  object-position: 62% 35%;
 }
 .hero-overlay {
   position: absolute; inset: 0;
@@ -3168,15 +3173,66 @@ section { position: relative; }
   .wrap, .nav-inner, .hero-meta { padding-left: 20px; padding-right: 20px; }
   .insights-grid, .stats { grid-template-columns: 1fr; }
   .logos { grid-template-columns: repeat(3, 1fr); }
-  .certs-grid { grid-template-columns: repeat(2, 1fr); }
   .hero-meta { display: none; }
-  .footer-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; gap: 48px; }
   .section-pad, .products, .certs, .trusted, .insights, .cta { padding: 80px 0; }
   .statement { padding: 100px 0; }
   .hero-headline { font-size: clamp(40px, 12vw, 64px); }
+  /* Footer logo shrinks alongside the in-nav mark on mobile (P3). */
+  .footer .brand-foot .logo-img { height: 60px; }
 }
 @media (max-width: 480px) {
   .wrap, .nav-inner, .hero-meta { padding-left: 16px; padding-right: 16px; }
+}
+
+/* ---------- Certifications grid (P3 — Tailwind-aligned) ----------
+ * Was: 3-up everywhere, falling to 2-up only at 680px → tablets
+ * (768–1023px) ran the cards at ~220px wide and crushed the cert
+ * names. Now:
+ *   ≥lg (1024px):           3 columns
+ *   md / sm (640–1023px):   2 columns
+ *   <sm (≤639px):           1 column
+ * The previous `.certs-grid` override inside the 680px block was
+ * removed above; this self-contained block takes its place. */
+@media (max-width: 1023px) {
+  .certs-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 639px) {
+  .certs-grid { grid-template-columns: 1fr; }
+}
+
+/* ---------- Hero — mobile image crop + height + overlay (P3) ----
+ * Single dict images (no separate mobile asset) → handle the
+ * landscape-to-portrait reframe purely in CSS. We pull the focal
+ * point further right (60%) since the subject / brand mark sits in
+ * the right half of every hero photo currently in the dict, and we
+ * cap height so the slide doesn't dominate the entire phone viewport
+ * (was 100vh = 800px+ on a typical phone). The overlay also gets a
+ * darker top-and-bottom vertical fade so the headline / scroll meta
+ * stay legible against any background. */
+@media (max-width: 639px) {
+  .hero {
+    height: auto;
+    min-height: 0;
+    /* min(640px, 80vh) — leaves room for the section below to peek
+     * above the fold so users know to scroll. */
+    height: min(640px, 80vh);
+  }
+  .hero-img,
+  .hero-bg-slide .ed-img-img {
+    object-position: 60% center;
+  }
+  /* Stronger vertical gradient on top of the existing horizontal one
+   * — covers the text block + bottom meta even when the photo is
+   * bright in the centre. Layered ON TOP of `.hero-overlay`'s own
+   * stack via a sibling element would be ideal, but `.hero-overlay`
+   * already paints multi-layer backgrounds; we just retune it here
+   * for mobile so the existing horizontal gradient still applies. */
+  .hero-overlay {
+    background:
+      linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.35) 50%, rgba(0,0,0,.65) 100%),
+      linear-gradient(90deg, rgba(13,13,14,.85) 0%, rgba(13,13,14,.55) 50%, rgba(13,13,14,.55) 100%);
+  }
 }
 
 /* ============================================================

@@ -893,13 +893,33 @@
    * to balance against neighbours. */
   .contact-page .ct-type-card { min-height: 0; padding: 28px 24px; gap: 14px; }
 }
-@media (max-width: 680px) {
+/* Phone floor (Tailwind <sm). Previously 680px — moved to 639px in P3
+ * so the contact page lines up with about.css / globals.css. The
+ * actual layout these rules trigger hasn't changed; only the
+ * threshold did. */
+@media (max-width: 639px) {
   .contact-page .ct-process-grid,
   .contact-page .ct-hero-metrics { grid-template-columns: 1fr; }
   .contact-page .ct-form-row { grid-template-columns: 1fr; }
-  .contact-page .ct-form { padding: 32px 24px; }
+  .contact-page .ct-form { padding: 32px 20px; }
   .contact-page .ct-faq-q { grid-template-columns: 50px 1fr 28px; gap: 16px; }
   .contact-page .ct-faq-q .t { font-size: 16px; }
   .contact-page .ct-faq-a-inner { padding-left: 0; }
   .contact-page .ct-section { padding: 80px 0; }
+  /* iOS Safari auto-zooms when a focused input has font-size < 16px;
+   * the desktop 14px ran into that. Bumping just under-sm avoids
+   * desktop layout drift while keeping iPhones from yanking the
+   * viewport on first tap. min-height also bumps so the touch target
+   * matches Apple's 44pt recommendation. */
+  .contact-page .ct-field input,
+  .contact-page .ct-field select,
+  .contact-page .ct-field textarea {
+    font-size: 16px;
+    padding: 14px 14px;
+    min-height: 48px;
+  }
+  .contact-page .ct-field textarea { min-height: 140px; }
+  /* Tighter row gap when the grid collapses — 20px between every
+   * stacked field added up to a tall scroll. */
+  .contact-page .ct-form-row { gap: 16px; margin-bottom: 16px; }
 }

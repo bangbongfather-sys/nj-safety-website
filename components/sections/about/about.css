@@ -886,21 +886,29 @@
 }
 
 /* ─── Responsive ─────────────────────────────────────────────────── */
+/* Breakpoint policy (P3):
+ *   1180px → kept as XL-desktop transition (5-col values → 2-col;
+ *            onestop / industries 4-col → 2-col). Anything wider is
+ *            a real desktop, anything narrower is small-desktop/tablet
+ *            — this rung is genuinely about layout density, not
+ *            phone/tablet/desktop, so it stays as-is.
+ *   1023px (<lg, Tailwind) → tablet / iPad-portrait floor: hero
+ *            stacks, stats drop to 2-col, timeline becomes vertical,
+ *            CEO + recent split. Previously this group was at 980px
+ *            which left iPad-portrait (810px) and small laptops
+ *            cramped.
+ *   639px  (<sm, Tailwind) → phone floor: values / industries /
+ *            onestop collapse to 1-col, cert rows reflow, section
+ *            padding tightens. Previously 680px.
+ */
 @media (max-width: 1180px) {
   .about-page .ab-values-grid { grid-template-columns: repeat(2, 1fr); }
   .about-page .ab-onestop-grid,
   .about-page .ab-industries-grid { grid-template-columns: repeat(2, 1fr); }
   .about-page .ab-step::after { display: none; }
 }
-/* About hero stacks at <lg (1024px). Pulled out of the 980px block
- * so the hero collapses on iPad-portrait (810px) and small laptops —
- * at the old 980px floor the left text + right aside both ran at
- * ~440px and the "K-Safety, since 1992." pull-quote wrapped awkwardly.
- * The other ab-* rules at 980px stay until P3 sweeps the breakpoints. */
 @media (max-width: 1023px) {
   .about-page .ab-hero-content { grid-template-columns: 1fr; gap: 48px; }
-}
-@media (max-width: 980px) {
   .about-page .ab-stats-grid { grid-template-columns: 1fr 1fr; }
   .about-page .ab-timeline { grid-template-columns: 1fr; gap: 60px; }
   .about-page .ab-timeline::before { display: none; }
@@ -914,7 +922,7 @@
   .about-page .ab-ceo-grid,
   .about-page .ab-recent-grid { grid-template-columns: 1fr; gap: 48px; }
 }
-@media (max-width: 680px) {
+@media (max-width: 639px) {
   .about-page .ab-values-grid,
   .about-page .ab-industries-grid,
   .about-page .ab-onestop-grid { grid-template-columns: 1fr; }
