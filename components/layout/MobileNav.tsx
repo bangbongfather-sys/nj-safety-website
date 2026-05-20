@@ -53,6 +53,14 @@ export default function MobileNav({
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const firstLinkRef = useRef<HTMLAnchorElement | null>(null);
+  // Mirrors `open` in a ref so the deferred focus setTimeout below can
+  // check the *current* value at fire time. Without this, a rapid
+  // open→close→open→close inside the 60ms window can leave a pending
+  // focus() that lands on the (now-hidden) drawer's first link.
+  const openRef = useRef(open);
+  useEffect(() => {
+    openRef.current = open;
+  }, [open]);
   // Track the pathname so we can auto-close the drawer when the route
   // changes. We can't just listen to clicks on links because Next's Link
   // sometimes uses pushState without a full nav event we'd otherwise see.
@@ -78,8 +86,10 @@ export default function MobileNav({
     // Focus the first link for keyboard users. setTimeout because the
     // drawer transitions in — focusing mid-animation can cause the
     // page to scroll before overflow:hidden takes effect.
+    // Re-check openRef at fire time: if the drawer was closed again
+    // inside the 60ms window we'd otherwise focus a hidden link.
     const t = window.setTimeout(() => {
-      firstLinkRef.current?.focus();
+      if (openRef.current) firstLinkRef.current?.focus();
     }, 60);
     return () => {
       document.body.style.overflow = prevOverflow;

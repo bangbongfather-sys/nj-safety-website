@@ -133,10 +133,9 @@ export default function ProductShopHeader({ data, locale, editor }: Props) {
                 alt={stripTags(head.name)}
                 className="psh-main-img"
                 // Main product photo = LCP candidate on the detail page;
-                // <1024px the grid is single-column (full bleed of the wrap,
-                // ~100vw minus padding), ≥1024px it's the left half of the
-                // 2-col layout.
-                sizes="(max-width: 1023px) 100vw, 50vw"
+                // priority flips the underlying <img> to eager-load with
+                // fetchpriority=high so the browser starts the request
+                // before parsing the rest of the document.
                 priority
               />
               {/* Prev / next arrows when there's more than one photo —

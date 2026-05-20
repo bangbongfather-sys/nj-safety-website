@@ -34,15 +34,6 @@ type Props = {
   className?: string;
   style?: React.CSSProperties;
   /**
-   * Responsive sizes hint. Forwarded straight to the underlying <img>'s
-   * `sizes` attribute when set, which lets the browser pick the right
-   * srcset candidate. We don't generate srcset here (the catalog-app
-   * serves a single source URL per photo) so `sizes` is informational
-   * only, but it's still the right contract to expose for callers that
-   * later add multi-resolution sources.
-   */
-  sizes?: string;
-  /**
    * Loading hint. Defaults to lazy. Set to "eager" (or pass `priority`)
    * for above-the-fold imagery — the product detail page's main photo
    * is the LCP candidate, so we let the caller opt in to eager loading
@@ -53,12 +44,16 @@ type Props = {
   priority?: boolean;
 };
 
+// Note: we intentionally don't expose a `sizes` prop. A plain <img> without
+// `srcSet` ignores `sizes`, so forwarding it would be a dead attribute that
+// misleads readers into thinking responsive selection is happening. If we
+// ever add multi-resolution sources, reintroduce `sizes` alongside `srcSet`.
+
 export default function ImageOrPlaceholder({
   src,
   alt,
   className,
   style,
-  sizes,
   loading,
   priority,
 }: Props) {
@@ -80,7 +75,6 @@ export default function ImageOrPlaceholder({
       alt={alt ?? ''}
       className={className}
       style={style}
-      sizes={sizes}
       loading={priority ? 'eager' : (loading ?? 'lazy')}
       fetchPriority={priority ? 'high' : undefined}
       decoding="async"
