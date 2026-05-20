@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import type { Dictionary, Locale } from '@/lib/i18n';
 import type { Product } from '@/lib/products';
 import EditableText, { type EditorApi } from '@/components/admin/EditableText';
@@ -95,21 +96,36 @@ export default function Products({ locale, dict, products, editor }: Props) {
                       <div className="pl-card-frame">
                         {main ? (
                           <>
-                            <img
+                            {/* next/image with `fill` overlays the parent
+                             * frame so the existing absolute-positioned
+                             * cross-fade CSS keeps working unchanged.
+                             * `sizes` reflects the layout: mobile/tablet
+                             * (<1024px) the rail is 1-up snap-scroll
+                             * (≈70vw card per design), ≥1024px it's a
+                             * 3-up grid (≈33vw per card). Unoptimized
+                             * mode (next.config) means the browser still
+                             * gets the original source URL, but the
+                             * width / srcset metadata helps preload
+                             * priority + a11y. */}
+                            <Image
                               src={main}
                               alt={stripTags(prod.name)}
                               className="pl-card-img pl-card-img-main"
+                              fill
+                              sizes="(max-width: 1023px) 70vw, 33vw"
                               loading="lazy"
-                              decoding="async"
+                              unoptimized
                             />
                             {hover ? (
-                              <img
+                              <Image
                                 src={hover}
                                 alt=""
                                 aria-hidden
                                 className="pl-card-img pl-card-img-hover"
+                                fill
+                                sizes="(max-width: 1023px) 70vw, 33vw"
                                 loading="lazy"
-                                decoding="async"
+                                unoptimized
                               />
                             ) : null}
                           </>

@@ -33,9 +33,35 @@ type Props = {
   alt?: string;
   className?: string;
   style?: React.CSSProperties;
+  /**
+   * Responsive sizes hint. Forwarded straight to the underlying <img>'s
+   * `sizes` attribute when set, which lets the browser pick the right
+   * srcset candidate. We don't generate srcset here (the catalog-app
+   * serves a single source URL per photo) so `sizes` is informational
+   * only, but it's still the right contract to expose for callers that
+   * later add multi-resolution sources.
+   */
+  sizes?: string;
+  /**
+   * Loading hint. Defaults to lazy. Set to "eager" (or pass `priority`)
+   * for above-the-fold imagery — the product detail page's main photo
+   * is the LCP candidate, so we let the caller opt in to eager loading
+   * for that single slot.
+   */
+  loading?: 'lazy' | 'eager';
+  /** Mirrors next/image's priority flag: when true, eager-load + high fetch priority. */
+  priority?: boolean;
 };
 
-export default function ImageOrPlaceholder({ src, alt, className, style }: Props) {
+export default function ImageOrPlaceholder({
+  src,
+  alt,
+  className,
+  style,
+  sizes,
+  loading,
+  priority,
+}: Props) {
   const [errored, setErrored] = useState(false);
   const resolved = rewriteSrc(src);
 
@@ -54,7 +80,10 @@ export default function ImageOrPlaceholder({ src, alt, className, style }: Props
       alt={alt ?? ''}
       className={className}
       style={style}
-      loading="lazy"
+      sizes={sizes}
+      loading={priority ? 'eager' : (loading ?? 'lazy')}
+      fetchPriority={priority ? 'high' : undefined}
+      decoding="async"
       onError={() => setErrored(true)}
     />
   );
