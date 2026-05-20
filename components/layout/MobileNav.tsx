@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import type { Dictionary, Locale } from '@/lib/i18n';
 
 /**
@@ -53,6 +54,15 @@ export default function MobileNav({
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const firstLinkRef = useRef<HTMLAnchorElement | null>(null);
+  // Portal target — only available after mount (no `document` during SSR).
+  // The drawer must escape the parent <nav> because that ancestor uses
+  // backdrop-filter, which on iOS Safari (and per the filter-effects-2
+  // spec) creates a containing block for fixed-positioned descendants —
+  // without the portal the drawer + backdrop get clipped to the nav bar.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   // Mirrors `open` in a ref so the deferred focus setTimeout below can
   // check the *current* value at fire time. Without this, a rapid
   // open→close→open→close inside the 60ms window can leave a pending
@@ -144,6 +154,8 @@ export default function MobileNav({
         </span>
       </button>
 
+      {mounted && createPortal(
+        <>
       {/* Backdrop — fades. pointer-events:none when closed so it never
           intercepts clicks on the resting page. */}
       <div
@@ -300,6 +312,9 @@ export default function MobileNav({
           </Link>
         </div>
       </div>
+        </>,
+        document.body,
+      )}
     </>
   );
 }
