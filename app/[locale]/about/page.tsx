@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: dict.about?.meta?.title ?? '회사소개 — NJ SAFETY',
     description:
       dict.about?.meta?.description ??
-      '1987년 나정ETP로 시작해 2025년 현재, 38년간 산업안전복 한 분야에 집중해온 나정엔터프라이즈. 원단 개발부터 출하까지 원스톱으로 책임집니다.',
+      '1987년 나정ETP로 시작해 40년간 산업안전복 한 분야에 집중해온 나정엔터프라이즈. 원단 개발부터 출하까지 원스톱으로 책임집니다.',
   };
 }
 
