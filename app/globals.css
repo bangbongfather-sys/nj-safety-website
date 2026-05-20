@@ -815,6 +815,15 @@ section { position: relative; }
   word-break: keep-all;
   overflow-wrap: break-word;
 }
+/* `<em>` in the showcase dict ("<em>증명</em>됩니다.") is meant as a
+ * brand-orange accent, mirroring every other headline (.hero-headline
+ * em, .ab-heritage em, etc.). Without this override the browser
+ * default kicks in — italic + inherited white — which was why "증명"
+ * was the only italic chunk on the headline. */
+.showcase-h em {
+  font-style: normal;
+  color: var(--accent);
+}
 /* On small phones, the bold Korean strokes in clamp()'s 48px floor
  * collide thanks to the -0.04em negative tracking. Relax the tracking
  * and drop one weight step so glyphs don't visually overlap. */
