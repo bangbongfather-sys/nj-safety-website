@@ -134,7 +134,13 @@ export default function Hero({ locale, dict, editor }: Props) {
                   src="/hero.jpg"
                   alt=""
                   aria-hidden
+                  // Hero spans the full viewport on every breakpoint.
+                  sizes="100vw"
                   loading={active ? 'eager' : 'lazy'}
+                  // LCP candidate: only the first/active slide gets
+                  // high fetch priority. Older browsers ignore this
+                  // hint so it's safe to set unconditionally.
+                  fetchPriority={active ? 'high' : undefined}
                   decoding="async"
                 />
               }

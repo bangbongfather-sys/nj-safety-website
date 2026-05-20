@@ -3,7 +3,6 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getDictionary, isLocale, type Locale } from '@/lib/i18n';
 import { getAllProducts } from '@/lib/products';
-import type { Product } from '@/lib/products';
 
 type Props = { params: Promise<{ locale: string }> | { locale: string } };
 
@@ -87,7 +86,9 @@ export default async function ResourcesPage({ params }: Props) {
             scrollMarginTop: 112,
           }}
         >
-          {/* Catalog PDF — placeholder until the operator uploads one */}
+          {/* Catalog PDF card — disabled because no PDF asset has been
+           * registered yet. Flip `disabled` off and add `href` once the
+           * operator uploads the catalog binary (target path TBD by ops). */}
           <ResourceCard
             title={dict.resources.catalog.title}
             desc={dict.resources.catalog.desc}

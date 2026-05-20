@@ -1,64 +1,63 @@
 {
   "meta": {
     "title": "NJ SAFETY — Industrial Safety Wear",
-    "description": "Aramid-engineered flame-resistant workwear for extreme industrial environments. NFPA 2112 · HRC2 · EN ISO 11612 certified. Since 1992 by Najung Enterprise."
+    "description": "Aramid-engineered flame-resistant workwear for extreme industrial environments. NFPA 2112 · HRC2 · EN ISO 11612 certified. Since 1987 by Najung Enterprise."
   },
   "nav": {
     "about": "About",
     "products": "Products",
     "certifications": "Certifications",
     "resources": "Resources",
-    "news": "News",
     "contact": "Contact",
     "quoteCta": "Get a quote"
   },
   "hero": {
-    "eyebrow": "Industrial Safety Wear · Since 1992",
-    "headlineLine1": "Built",
-    "headlineLine2Pre": "to ",
-    "headlineLine2Em": "outlast.",
-    "tagline": "극한의 현장, 검증된 보호.",
+    "eyebrow": "Industrial Safety Wear · Since 1987",
+    "headlineLine1": "Aramid integrity.",
+    "headlineLine2Pre": "",
+    "headlineLine2Em": "Safety, beyond assurance.",
+    "tagline": "Your Flame Shield for Safer Work.",
     "sub": "Aramid-engineered flame-resistant workwear for extreme industrial environments. NFPA 2112 · HRC2 · EN ISO 11612 certified.",
     "ctaPrimary": "View products",
-    "ctaSecondary": "Request quote",
+    "ctaSecondary": "Request a quote",
     "scroll": "Scroll to explore",
-    "locatorName": "Najung Enterprise",
-    "locatorSub": "Industrial safety wear · est. 1992",
+    "locatorName": "NJ SAFETY",
+    "locatorSub": "ARAMID WORKWEAR ·",
     "slides": [
       {
         "image": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/hero/slide-01.jpg?v=1779116571353",
-        "eyebrow": "Industrial Safety Wear · Since 1992",
-        "headlineLine1": "Built",
-        "headlineLine2Pre": "to ",
-        "headlineLine2Em": "outlast.",
-        "tagline": "극한의 현장, 검증된 보호.",
+        "eyebrow": "ARAMID WORKWEAR · Since 1987",
+        "headlineLine1": "Aramid integrity.",
+        "headlineLine2Pre": "",
+        "headlineLine2Em": "Safety, beyond assurance.",
+        "tagline": "Your Flame Shield for Safer Work.",
         "sub": "Aramid-engineered flame-resistant workwear for extreme industrial environments. NFPA 2112 · HRC2 · EN ISO 11612 certified.",
         "ctaPrimary": "View products",
-        "ctaSecondary": "Request quote",
+        "ctaSecondary": "Request a quote",
         "linkHref": "https://nj-safety-website.njsafety91.workers.dev/ko/products/"
       },
       {
         "image": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/hero/slide-02.jpg?v=1779003592609",
         "eyebrow": "— NEW · 2026",
-        "headlineLine1": "신제품",
+        "headlineLine1": "Aramid mesh",
         "headlineLine2Pre": "",
-        "headlineLine2Em": "출시.",
-        "tagline": "COMING SOON.",
-        "sub": "여기에 새 슬라이드 본문을 입력하세요.",
-        "ctaPrimary": "자세히 보기",
-        "ctaSecondary": "문의",
+        "headlineLine2Em": "utility vest.",
+        "tagline": "ARAMID 62.3% · FR RAYON 36.6% · ANTISTATIC 1.1%",
+        "sub": "A summer-engineered FR vest that holds a clean silhouette through the hottest outdoor shifts.",
+        "ctaPrimary": "View details",
+        "ctaSecondary": "Enquire",
         "linkHref": "https://nj-safety-website.njsafety91.workers.dev/ko/products/njs-av100/"
       },
       {
         "image": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/hero/slide-03.jpg?v=1779031477758",
         "eyebrow": "— NEW · 2026",
-        "headlineLine1": "신제품",
+        "headlineLine1": "2026",
         "headlineLine2Pre": "",
-        "headlineLine2Em": "출시.",
+        "headlineLine2Em": "Aramid PK tee.",
         "tagline": "COMING SOON.",
-        "sub": "여기에 새 슬라이드 본문을 입력하세요.",
-        "ctaPrimary": "자세히 보기",
-        "ctaSecondary": "문의",
+        "sub": "A flame-resistant PK tee for everyday electrical and plant work. 4-way stretch knit, built for full-day wear.",
+        "ctaPrimary": "View details",
+        "ctaSecondary": "Enquire",
         "linkHref": "https://nj-safety-website.njsafety91.workers.dev/ko/products/njs-ar204/"
       }
     ]
@@ -67,7 +66,7 @@
     "eyebrow": "— Products",
     "titlePre": "Product ",
     "titleEm": "lineup.",
-    "viewAll": "View all 24 products →",
+    "viewAll": "View all products →",
     "summer": {
       "en": "Aramid · Summer Season",
       "ko": "Aramid Summer Season",
@@ -103,10 +102,10 @@
     }
   },
   "showcase": {
-    "eyebrow": "— In the field",
+    "eyebrow": "— IN THE FIELD",
     "headlineLine1": "Proven",
-    "headlineLine2": "on site.",
-    "sub": "Tested on 500+ active sites — from POSCO blast furnaces to HD Hyundai dry docks.",
+    "headlineLine2": "<em>on site</em>.",
+    "sub": "A protection system built from field data gathered across power, refinery and gas sites.\n\n*Model wears the Aramid insulated jumper \nstyle code. NJWW26\n",
     "bgImage": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/showcase-bg.jpg?v=1779027401239"
   },
   "manifesto": {
@@ -116,7 +115,7 @@
     "quoteEm": "We engineer protection systems",
     "quoteMid": " that",
     "quoteEnd": "preserve life.",
-    "sigNumber": "No. 1992 — 2026",
+    "sigNumber": "No. 1987 — 2026",
     "sigName": "— NJ Safety, Najung Enterprise Co., Ltd."
   },
   "certifications": {
@@ -143,87 +142,6 @@
       }
     ]
   },
-  "clients": {
-    "eyebrow": "— Clients / 06",
-    "headline": "Trusted by industry leaders across shipbuilding, steel, energy & chemicals.",
-    "logos": [
-      "KEPCO Partner",
-      "SK",
-      "LG Chem",
-      "CLIENT 04",
-      "CLIENT 05",
-      "CLIENT 06",
-      "CLIENT 07",
-      "CLIENT 08",
-      "CLIENT 09",
-      "CLIENT 10",
-      "CLIENT 11",
-      "CLIENT 12"
-    ],
-    "logoImages": [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
-    ],
-    "stats": [
-      {
-        "label": "— Heritage / since 1992",
-        "num": "34",
-        "sup": "YRS",
-        "desc": "Single-category focus on industrial safety wear"
-      },
-      {
-        "label": "— Active partnerships",
-        "num": "500",
-        "sup": "+",
-        "desc": "Industrial sites supplied, domestic & overseas"
-      },
-      {
-        "label": "— Export reach",
-        "num": "50",
-        "sup": "+",
-        "desc": "Countries shipped to, across 4 continents"
-      }
-    ]
-  },
-  "insights": {
-    "eyebrow": "— Journal / 07",
-    "titlePre": "Field ",
-    "titleEm": "insights.",
-    "all": "All articles →",
-    "items": [
-      {
-        "cat": "Technical · 04 min",
-        "date": "04 / 18 / 2026",
-        "title": "How arc flash penetrates workwear",
-        "excerpt": "ATPV vs EBT, and a guide to choosing the right rating for your site.",
-        "image": ""
-      },
-      {
-        "cat": "Standards · 06 min",
-        "date": "04 / 02 / 2026",
-        "title": "What sets NFPA 2112 apart",
-        "excerpt": "The 3-second exposure, 50% body burn benchmark — explained with real test data.",
-        "image": ""
-      },
-      {
-        "cat": "Materials · 03 min",
-        "date": "03 / 21 / 2026",
-        "title": "Breathable FR fabric for summer sites",
-        "excerpt": "A 230 gsm lightweight solution built from Lenzing FR® lyocell and aramid blends.",
-        "image": ""
-      }
-    ]
-  },
   "cta": {
     "eyebrow": "— Contact / 08",
     "titleLine1": "Start your project with",
@@ -233,17 +151,17 @@
     "button": "Request a quote"
   },
   "company": {
-    "tel": "02-545-1992",
-    "fax": "02-545-1993",
-    "email": "sales@njsafety.co.kr",
+    "tel": "02-777-3079",
+    "fax": "",
+    "email": "njsafety91@naver.com",
     "hours": "Mon–Fri · 09:00 – 18:00 KST",
-    "addressShort": "142 Sandan-ro, Heungdeok-gu, Cheongju",
-    "addressFull": "142 Sandan-ro, Heungdeok-gu, Cheongju — Najung Tower",
-    "brn": "BRN 123-45-67890",
+    "addressShort": "111 Sinnae-yeok-ro, Jungnang-gu, Seoul",
+    "addressFull": "Unit 426, Building B, SK V1 Centre, 111 Sinnae-yeok-ro, Jungnang-gu, Seoul, Republic of Korea",
+    "brn": "101-09-93896",
     "copyright": "© 2026 NAJUNG ENTERPRISE CO., LTD."
   },
   "footer": {
-    "brandDesc": "Najung Enterprise has manufactured industrial safety wear since 1992. We supply OEM/ODM production with NFPA, EN and KS certifications, sourcing premium fabrics globally to protect workers in the harshest industrial environments.",
+    "brandDesc": "Najung Enterprise has manufactured industrial safety wear since 1987. We supply OEM/ODM production with NFPA, EN and KS certifications, sourcing premium fabrics globally to protect workers in the harshest industrial environments.",
     "productsHead": "Products",
     "companyHead": "Company",
     "connectHead": "Connect",
@@ -257,7 +175,6 @@
     "company": [
       "About",
       "Certifications",
-      "Newsroom",
       "Resources",
       "Contact"
     ],
@@ -273,12 +190,6 @@
     }
   },
   "skeleton": {
-    "about": {
-      "eyebrow": "— About",
-      "titlePre": "Since 1992, ",
-      "titleEm": "one focus.",
-      "body": "The full About page is launching shortly. It will cover Najung Enterprise's 34 years of industrial safety wear expertise, production facilities and global partnerships."
-    },
     "products": {
       "eyebrow": "— Products",
       "titlePre": "The full ",
@@ -290,24 +201,6 @@
       "titlePre": "International ",
       "titleEm": "standards.",
       "body": "The certifications page is launching shortly. It will cover the testing criteria and reports for our 8 standards including NFPA 2112, HRC Level 2 and EN ISO 11612."
-    },
-    "clients": {
-      "eyebrow": "— Clients",
-      "titlePre": "Trust, ",
-      "titleEm": "proven on site.",
-      "body": "The clients page is under construction. We will publish industry-by-industry supply history and on-site case studies."
-    },
-    "news": {
-      "eyebrow": "— Newsroom",
-      "titlePre": "Field ",
-      "titleEm": "Insights.",
-      "body": "The newsroom is launching shortly. It will publish regular content on safety standards, new product development and technical reference material."
-    },
-    "contact": {
-      "eyebrow": "— Contact",
-      "titlePre": "Start with ",
-      "titleEm": "expert consultation.",
-      "body": "The contact page is under construction. Quote, sample request and fabric consultation forms will be available shortly. In the meantime, please reach us at sales@njsafety.co.kr or +82-2-545-1992."
     }
   },
   "styles": {
@@ -393,69 +286,69 @@
   },
   "about": {
     "meta": {
-      "title": "회사소개 — NJ SAFETY",
-      "description": "1987년 나정ETP로 시작해 2025년 현재, 38년간 산업안전복 한 분야에 집중해온 나정엔터프라이즈. 원단 개발부터 출하까지 원스톱으로 책임집니다."
+      "title": "About — NJ SAFETY",
+      "description": "Founded as Najung ETP in 1987, Najung Enterprise has focused on industrial safety wear for 40 years. From fabric R&D to despatch — every stage handled in-house."
     },
     "hero": {
-      "eyebrow": "About · 회사소개",
-      "yearNum": "38",
+      "eyebrow": "About · Company",
+      "yearNum": "40",
       "yearLabelK": "Years of",
       "yearLabelV": "Industrial Safety",
-      "titleLine1Pre": "방염, ",
-      "titleLine1Em": "한 길.",
-      "titleLine2": "나정엔터프라이즈.",
-      "sub": "1987년 나정ETP로 시작해 38년간 방염 산업안전복 한 분야에만 집중해 왔습니다. 원단 개발부터 디자인·생산·출하까지 — 모든 단계를 책임지는 원스톱 시스템으로 산업 현장의 가장 가까운 곳에서 작업자를 지킵니다.",
+      "titleLine1Pre": "The flame-resistant partner ",
+      "titleLine1Em": "chosen on site.",
+      "titleLine2": "",
+      "sub": "NJ SAFETY has stayed within one category — flame-resistant and industrial safety wear. From fabric R&D through design, production and despatch, every stage is handled by a single one-stop system that keeps us close to the worker on the floor.",
       "asideTag": "— Brand Mission",
-      "asidePullPre": "우리는 작업복을 만들지 않습니다.",
-      "asidePullEm": "생명을 지키는 보호 시스템",
-      "asidePullPost": "을 설계합니다.",
+      "asidePullPre": "We don't make workwear.",
+      "asidePullEm": "<em>We engineer protection systems that preserve life</em>",
+      "asidePullPost": ".",
       "corpName": "NAJUNG ENTERPRISE CO., LTD.",
       "corpEst": "EST. 1987"
     },
     "stats": [
       {
         "lbl": "— Heritage",
-        "num": "38",
+        "num": "40",
         "unit": "YEARS",
-        "desc": "1987년 창립 이래 방염 산업안전복 단일 카테고리에 집중해온 시간."
+        "desc": "Time spent on a single category — flame-resistant and industrial safety wear."
       },
       {
         "lbl": "— Coverage",
         "num": "4",
-        "unit": "대 산업",
-        "desc": "전력·발전 / 전기공사 / 정유·석유화학 / 에너지·가스 현장에 공급."
+        "unit": "INDUSTRIES",
+        "desc": "Supplying power & generation, electrical works, refining & petrochemicals, energy & gas."
       },
       {
         "lbl": "— Process",
         "num": "4",
-        "unit": "단계 ONE-STOP",
-        "desc": "원단 개발 → 디자인 → 생산 → 출하까지 본사 직접 관리."
+        "unit": "STAGE ONE-STOP",
+        "desc": "Fabric R&D → design → production → despatch, all managed in-house."
       },
       {
         "lbl": "— Trust",
         "num": "∞",
         "unit": "",
-        "desc": "한전 협력사 · SK 계열 · LG 계열 등 산업 리더의 선택."
+        "desc": "Chosen by industry leaders including KEPCO partners, SK and LG affiliates."
       }
     ],
     "ceo": {
       "eyebrow": "— CEO Message",
-      "titleLine1": "산업 현장이 선택한,",
-      "titleLine2Em": "방염의 가장 가까운 파트너.",
-      "paragraph1": "1987년, 단 한 가지 신념으로 시작했습니다. 산업 현장에서 일하는 사람의 안전은 결코 타협의 대상이 될 수 없다는 것. 38년이 지난 지금도 그 신념은 변하지 않았습니다.",
-      "paragraph2": "그동안 우리는 방염 작업복 한 분야에 집중하며 원단부터 봉제, 인증, 사후 관리까지 모든 단계를 직접 다뤄왔습니다. 한전 협력사, SK 계열, LG 계열을 비롯한 국내 주요 산업 현장이 NJ SAFETY를 선택한 이유 — 그것은 우리가 만든 옷이 좋아서가 아니라, 작업자를 지키는 일에 한 번도 한눈팔지 않았기 때문입니다.",
-      "paragraph3": "앞으로도 우리는 가장 가까운 곳에서, 가장 확실한 방식으로 산업 현장을 지키겠습니다.",
-      "badge": "CEO · 대표 인사말",
+      "titleLine1": "Chosen on site,",
+      "titleLine2Em": "the closest FR partner.",
+      "paragraph1": "We started with one conviction: the safety of the people working on industrial sites can never be a matter of compromise. Forty years on, that conviction has not changed.",
+      "paragraph2": "Across those years we have stayed within one category — flame-resistant workwear — handling fabric, sewing, certification and after-sales in-house. The reason KEPCO partners, SK and LG affiliates and other leading Korean sites keep returning to NJ SAFETY is not that our garments look better, but that we have never once looked away from the work of protecting the people who wear them.",
+      "paragraph3": "We will continue to protect the industrial floor in the closest, most certain way we know how.",
+      "badge": "CEO · Message",
       "stamp": "2026 / SEOUL",
-      "portraitPlaceholder": "[ PORTRAIT · 대표이사 ]",
-      "signoffTitle": "대표이사",
-      "signoffName": "홍 길 동",
+      "portraitPlaceholder": "",
+      "signoffTitle": "Chief Executive Officer",
+      "signoffName": "",
       "portraitImage": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/about/ceo-portrait.jpg?v=1779096958128"
     },
     "heritage": {
       "eyebrow": "— Heritage / 1987 → Present",
-      "titlePre": "38년, ",
-      "titleEm": "한 길.",
+      "titlePre": "40 years, ",
+      "titleEm": "one path.",
       "no": "No. 1987 — 2026",
       "phases": [
         {
@@ -463,25 +356,25 @@
           "yearEm": "1987",
           "yearPost": " — 2010",
           "yearSub": "Foundation Era",
-          "h3Line1": "나정ETP 창립.",
-          "h3Line2": "방염복 제조의 기틀.",
-          "lede": "1987년 7월 5일, 나정ETP를 설립하며 사무복·작업복·근무복·방염복 제조에 첫발.",
+          "h3Line1": "Najung ETP founded.",
+          "h3Line2": "The base for FR manufacturing.",
+          "lede": "On 5 July 1987, Najung ETP was founded to manufacture office wear, workwear, uniforms and flame-resistant garments.",
           "items": [
             {
               "y": "1987",
-              "t": "나정ETP 설립 · 자체 봉제 라인 가동"
+              "t": "Najung ETP established · in-house sewing line"
             },
             {
               "y": "~2010",
-              "t": "국내 자체 생산 공장 설립 · 다품종 생산 체계 정착"
+              "t": "Domestic production plant built · multi-line production established"
             }
           ],
           "clients": [
-            "금호건설",
-            "한국크로락스",
-            "애경산업",
-            "보령메디앙",
-            "롯데쇼핑"
+            "Kumho Construction",
+            "Korea Clorox",
+            "Aekyung Industrial",
+            "Boryung Medience",
+            "Lotte Shopping"
           ],
           "current": false
         },
@@ -490,21 +383,21 @@
           "yearEm": "",
           "yearPost": "",
           "yearSub": "Specialization Era",
-          "h3Line1": "방염복으로의 집중.",
-          "h3Line2": "한전 협력사 진입.",
-          "lede": "방염 제품군에 본격적으로 집중하며 한전 협력업체로 등록, 전국구로 확장.",
+          "h3Line1": "Concentration on FR.",
+          "h3Line2": "KEPCO partner registration.",
+          "lede": "We focused fully on flame-resistant categories and registered as a KEPCO partner, expanding nationwide.",
           "items": [
             {
               "y": "2010s",
-              "t": "방염복 제품 분야 본격 확장 · R&D 강화"
+              "t": "Full expansion into FR product lines · stronger R&D"
             },
             {
               "y": "2017",
-              "t": "나정ETP 창립 30주년 · 자체 홈페이지 오픈"
+              "t": "Najung ETP 30th anniversary · own website launched"
             },
             {
               "y": "2018+",
-              "t": "한전 협력업체 방염복 제작 · 전국구 공급망 확립"
+              "t": "FR manufacturing for KEPCO partners · nationwide supply network"
             }
           ],
           "clients": [],
@@ -512,28 +405,28 @@
         },
         {
           "yearPre": "2021 — ",
-          "yearEm": "현재",
+          "yearEm": "    Present",
           "yearPost": "",
           "yearSub": "Expansion Era",
-          "h3Line1": "대기업 협력 확장.",
-          "h3Line2": "국제 인증 가속.",
-          "lede": "서울 신내동으로 본사 확장 이전, 대형 산업군과의 계약 본격화.",
+          "h3Line1": "Larger industrial partners.",
+          "h3Line2": "Accelerated international certification.",
+          "lede": "Headquarters relocated to Sinnae-dong in Seoul as contracts with major industrial groups began in earnest.",
           "items": [
             {
               "y": "2021",
-              "t": "본사 확장 이전 (서울시 신내동)"
+              "t": "Head office relocated and expanded (Sinnae-dong, Seoul)"
             },
             {
               "y": "2021+",
-              "t": "SK 계열사 · LG 계열사 등 다양한 산업군 계약 확대"
+              "t": "Expanded contracts with SK and LG affiliates across multiple industries"
             },
             {
               "y": "2025",
-              "t": "아크 플래시 시험 완료 · NFPA 2112 UL 인증 진행 중"
+              "t": "Arc-flash testing completed · NFPA 2112 UL certification in progress"
             },
             {
               "y": "2026",
-              "t": "브랜드 리뉴얼 · NJ SAFETY 디지털 플랫폼 출시"
+              "t": "Brand renewal · NJ SAFETY digital platform launched"
             }
           ],
           "clients": [],
@@ -543,145 +436,145 @@
     },
     "values": {
       "eyebrow": "— Core Values / 5 Principles",
-      "titleLine1": "한 분야를 38년간 지켜온",
-      "titleLine2Em": "다섯 가지 기준.",
+      "titleLine1": "Forty years in one field,",
+      "titleLine2Em": "five standards.",
       "rMicro": "Innovation · Quality · Safety · Trust · Expertise",
       "items": [
         {
           "n": "01 / 05",
           "en": "INNOVATION",
-          "ko": "혁신 · 소재 / 디자인",
-          "body": "아라미드 기반의 고기능 원단을 자체 개발하고, 산업별 작업 환경 데이터를 패턴·부자재에 반영해 끊임없이 다시 설계합니다."
+          "ko": "Material & Design",
+          "body": "We develop high-performance aramid fabrics in-house and feed industry-specific site data back into patterns and trims, redesigning each season from the ground up."
         },
         {
           "n": "02 / 05",
           "en": "QUALITY",
-          "ko": "품질 · 인증 / 시험",
-          "body": "모든 원단 로트와 완제품은 자체 시험과 제3자 시험기관 검증을 거칩니다. NFPA 2112, HRC2, ARC Flash 시험 결과로 입증합니다."
+          "ko": "Certification & Testing",
+          "body": "Every fabric lot and finished garment is verified by our in-house lab and accredited third-party labs. Proof is delivered in NFPA 2112, HRC2 and Arc Flash test results."
         },
         {
           "n": "03 / 05",
           "en": "SAFETY",
-          "ko": "안전 · 작업자 우선",
-          "body": "옷의 멋이 아니라 사람의 생명이 기준입니다. 모든 설계 결정은 \"작업자 보호가 더 강해지는가\"라는 한 질문 앞에서 검증됩니다."
+          "ko": "Worker First",
+          "body": "The garment is measured against a life, not a look. Every design decision is checked against one question: does this make protection stronger?"
         },
         {
           "n": "04 / 05",
           "en": "TRUST",
-          "ko": "신뢰 · 38년 한 분야",
-          "body": "유행을 따르지 않습니다. 1987년부터 같은 자리, 같은 일에 집중해온 시간이 한전·SK·LG 계열 산업 현장의 신뢰가 되었습니다."
+          "ko": "40 Years, One Field",
+          "body": "We do not chase trends. Forty years on the same ground, doing the same work, is what has earned the trust of KEPCO, SK and LG-affiliated sites."
         },
         {
           "n": "05 / 05",
           "en": "EXPERTISE",
-          "ko": "전문성 · 단일 카테고리 집중",
-          "body": "다른 분야로 손을 뻗지 않았습니다. 방염 산업안전복 — 단 하나의 카테고리에 모든 자원과 시간을 투입했습니다."
+          "ko": "Single-Category Focus",
+          "body": "We have not branched out. Flame-resistant industrial safety wear — every resource and every hour goes to that one category."
         }
       ]
     },
     "oneStop": {
       "eyebrow": "— One-Stop System / Fabric → Field",
-      "titleLine1": "원단부터 출하까지,",
-      "titleLine2Em": "한 지붕 아래.",
+      "titleLine1": "From fabric to despatch,",
+      "titleLine2Em": "fully integrated.",
       "rMicro": "4 Stages · In-House Managed",
       "steps": [
         {
           "n": "STEP 01",
-          "ko": "방염 원단 개발",
+          "ko": "FR Fabric R&D",
           "en": "Fabric R&D",
-          "body": "아라미드 혼방 비율, 정전기 방지사 함량, 메쉬 통기 구조까지 — 원단 단계에서부터 설계에 개입합니다."
+          "body": "Aramid blend ratios, antistatic yarn content, mesh ventilation structure — we engineer at the fabric stage."
         },
         {
           "n": "STEP 02",
-          "ko": "패턴·디자인",
+          "ko": "Pattern & Design",
           "en": "Pattern & Design",
-          "body": "현장에서 수집한 작업 동작 데이터를 패턴·부자재 배치에 직접 반영합니다. 본사 디자인팀이 모든 시즌을 책임집니다."
+          "body": "Work-motion data gathered on site feeds directly into patterns and trim placement. Our in-house design team owns every season."
         },
         {
           "n": "STEP 03",
-          "ko": "국내 자체 생산",
+          "ko": "In-House Production",
           "en": "In-House Production",
-          "body": "국내 자체 생산 공장에서 봉제·검수까지. 외주에 의존하지 않기에 일관된 품질과 빠른 피드백이 가능합니다."
+          "body": "Sewing and inspection happen at our own Korean plant. With no outsourcing, quality stays consistent and feedback stays fast."
         },
         {
           "n": "STEP 04",
-          "ko": "QC · 출하 · A/S",
+          "ko": "QC · Ship · A/S",
           "en": "QC · Ship · A/S",
-          "body": "출하 전 자체 QC와 시험성적서 확인. 출하 이후에도 A/S 서비스를 통한 철저한 사후 관리가 이어집니다."
+          "body": "Before despatch, in-house QC confirms test reports. After despatch, A/S service carries the relationship forward."
         }
       ],
-      "footQuotePre": "전 단계를 본사가 직접 관리하기 때문에, ",
-      "footQuoteEm": "피드백은 빠르고 품질은 일관됩니다.",
+      "footQuotePre": "Because every stage is run by us, ",
+      "footQuoteEm": "feedback is fast and quality is consistent.",
       "footBadge": "In-house · Korea"
     },
     "industries": {
       "eyebrow": "— Industries Served",
-      "titleLine1": "네 가지 핵심 산업,",
-      "titleLine2Em": "가장 위험한 현장.",
+      "titleLine1": "Four core industries,",
+      "titleLine2Em": "the most hazardous sites.",
       "rMicro": "Power · Electric · Petrochem · Energy",
       "items": [
         {
           "n": "01 · POWER",
-          "ko": "전력 · 발전",
+          "ko": "Power & Generation",
           "en": "Power Generation",
-          "body": "한전 협력업체 · 발전사 공급. 송배전 · 발전 설비 점검 현장의 방염 작업복."
+          "body": "KEPCO partner · generation utilities. FR workwear for transmission, distribution and generation-plant inspection."
         },
         {
           "n": "02 · ELECTRIC",
-          "ko": "전기 공사",
+          "ko": "Electrical Works",
           "en": "Electrical Works",
-          "body": "고압 송전선로 · 활선 작업 등 아크 플래시 위험이 상존하는 전기 공사 전문 보호복."
+          "body": "Dedicated protective wear for high-voltage transmission and live-line work where arc-flash risk is constant."
         },
         {
           "n": "03 · PETROCHEM",
-          "ko": "정유 · 석유화학",
+          "ko": "Refining & Petrochemicals",
           "en": "Refinery & Petrochem",
-          "body": "여수·울산 단지의 정기 보수 · 안전 점검. 정전기 방지와 통기성을 동시에 갖춘 라인."
+          "body": "Turnaround and safety inspection at the Yeosu and Ulsan complexes. A line that combines antistatic protection with breathability."
         },
         {
           "n": "04 · ENERGY",
-          "ko": "에너지 · 가스",
+          "ko": "Energy & Gas",
           "en": "Energy & Gas",
-          "body": "가스 공사 · 발전 플랜트 · 신재생 에너지 인프라 현장의 고위험 보호복 솔루션."
+          "body": "High-risk protection for gas utilities, generation plants and renewable-energy infrastructure sites."
         }
       ]
     },
     "recent": {
       "eyebrow": "— Certifications / 2025 — 2026",
-      "titlePre": "최근 인증 ",
-      "titleEm": "진행 현황.",
-      "body": "2025년부터 글로벌 인증 체계를 본격 확대하고 있습니다. 아크 플래시 시험을 완료했고, NFPA 2112 UL 인증을 비롯한 다수의 국제 인증을 진행 중입니다.",
+      "titlePre": "Recent certification ",
+      "titleEm": "progress.",
+      "body": "From 2025 we have moved seriously to broaden our international certifications. Arc-flash testing has been completed, and several global certifications including NFPA 2112 UL are in progress.",
       "rows": [
         {
           "y": "2025",
-          "title": "아크 플래시 (Arc Flash) 시험 완료",
-          "body": "전기 작업복 ATPV 등급 시험을 정식 인증기관에서 완료. 시험 성적서 발급 보유.",
-          "status": "완료",
+          "title": "Arc-flash testing completed",
+          "body": "ATPV rating tests for electrical workwear completed at an accredited certification body. Official test report on file.",
+          "status": "Completed",
           "done": true
         },
         {
           "y": "2025",
-          "title": "NFPA 2112 UL 인증 진행",
-          "body": "북미 플래시 화재 보호 표준 — UL 정식 인증 절차 진행 중. 2026년 내 취득 목표.",
-          "status": "진행중",
+          "title": "NFPA 2112 UL certification in progress",
+          "body": "North American flash-fire protection standard — UL certification under way. Target: completion within 2026.",
+          "status": "In progress",
           "done": false
         },
         {
           "y": "2026",
-          "title": "국제 인증 다수 추가 진행",
-          "body": "EN ISO 11612, HRC Level 2, IEC 61482 등 글로벌 인증 체계 확대 추진.",
-          "status": "진행중",
+          "title": "Multiple international certifications in progress",
+          "body": "EN ISO 11612, HRC Level 2, IEC 61482 and other global standards being added.",
+          "status": "In progress",
           "done": false
         }
       ]
     },
     "cta": {
       "eyebrow": "— Partner with NJ Safety",
-      "titleLine1": "현장에 가장 가까운 방염 파트너,",
-      "titleLine2Em": "NJ SAFETY와 시작하세요.",
+      "titleLine1": "The FR partner closest to the floor,",
+      "titleLine2Em": "start with NJ SAFETY.",
       "sub": "Custom quote · Material consultation · Sample request",
-      "btnPrimary": "견적 문의하기 →",
-      "btnSecondary": "제품 라인업 보기 →"
+      "btnPrimary": "Request a quote →",
+      "btnSecondary": "View product lineup →"
     },
     "capHero": {
       "eyebrow": "— About · Capabilities",
@@ -692,134 +585,129 @@
   },
   "contact": {
     "meta": {
-      "title": "문의 — NJ SAFETY",
-      "description": "견적·B2B 단체 주문·OEM 제작·인증서 요청·A/S 등 NJ SAFETY 전문가에게 직접 문의하세요. 1영업일 내 회신."
+      "title": "Contact — NJ SAFETY",
+      "description": "Quotes, B2B bulk orders, OEM production, certification documents and after-sales — talk to an NJ SAFETY specialist. We reply within one business day."
     },
     "hero": {
-      "eyebrow": "Contact · 문의",
-      "titleLine1": "현장에 맞는 방염 솔루션,",
+      "eyebrow": "Contact · Enquiries",
+      "titleLine1": "Site-specific FR solutions,",
       "titleLine2Pre": "",
-      "titleLine2Em": "전문가 상담",
-      "titleLine2Post": "으로 시작하세요.",
-      "sub": "제품 견적부터 B2B 단체 주문, OEM 제작, 인증서 발급까지 — NJ SAFETY 전문가가 1영업일 이내 직접 회신해 드립니다.",
+      "titleLine2Em": "",
+      "titleLine2Post": "delivered with <em>NJ SAFETY</em>.",
+      "sub": "From product quotes and B2B bulk orders to OEM production — NJ SAFETY replies within one business day, clearly and directly.",
       "metrics": [
         {
           "lbl": "— Response",
           "num": "1",
-          "unit": "영업일",
-          "desc": "평균 회신 시간 (B2B 우선 처리)"
+          "unit": "BUS. DAY",
+          "desc": "Average reply time (B2B prioritised)"
         },
         {
           "lbl": "— MOQ",
           "num": "50",
-          "unit": "벌부터",
-          "desc": "단체 견적 최소 수량 · 5% 추가 할인"
+          "unit": "UNITS+",
+          "desc": "Bulk-quote minimum · 5% additional discount"
         },
         {
           "lbl": "— Lead Time",
           "num": "3",
-          "unit": "–6주",
-          "desc": "평균 납기 · 양산 기준"
+          "unit": "–6 WK",
+          "desc": "Average delivery · production run"
         }
       ]
     },
     "types": {
       "eyebrow": "— Inquiry Types / 5 Categories",
-      "titlePre": "먼저, ",
-      "titleEm": "어떤 문의",
-      "titlePost": "인지 알려주세요.",
+      "titlePre": "First, ",
+      "titleEm": "what kind of enquiry",
+      "titlePost": "is it?",
       "r": "Step 01 of 02",
       "items": [
         {
           "type": "quote",
-          "ko": "제품·견적 문의",
+          "ko": "Product & Quote",
           "en": "Product & Quote",
-          "body": "아라미드 시즌 제품의 가격·재고·납기 관련 일반 견적 문의."
+          "body": "General price, stock and lead-time enquiries for the Aramid season lineup."
         },
         {
           "type": "b2b",
-          "ko": "B2B 단체 주문",
+          "ko": "B2B Bulk Order",
           "en": "Bulk Order",
-          "body": "50벌 이상 단체 주문 · 5% 추가 할인 · 전담 매니저 응대."
+          "body": "Bulk orders from 50 units · 5% additional discount · dedicated account manager."
         },
         {
           "type": "oem",
-          "ko": "OEM·ODM 제작",
+          "ko": "OEM / ODM Production",
           "en": "Custom Manufacturing",
-          "body": "자체 패턴·자수·로고 작업. 원단부터 봉제까지 본사 직접 제작."
+          "body": "Custom patterns, embroidery and logo work. From fabric to sewing, produced in-house."
         },
         {
           "type": "cert",
-          "ko": "인증서·시험성적서",
+          "ko": "Certificates & Test Reports",
           "en": "Certification Docs",
-          "body": "NFPA 2112 UL 인증, ARC 시험성적서, 혼용률 시험 자료 요청."
+          "body": "Requests for NFPA 2112 UL, ARC test reports and blend-ratio test data."
         },
         {
           "type": "as",
-          "ko": "A/S·교환·반품",
+          "ko": "After-sales / Exchange / Return",
           "en": "After-sales",
-          "body": "사용 중 발생한 하자·사이즈 교환·수선 등의 사후 관리."
+          "body": "After-sales support for defects, size exchanges and repairs."
         }
       ],
-      "selectLabel": "선택 →",
-      "selectedLabel": "선택됨 ✓"
+      "selectLabel": "Select →",
+      "selectedLabel": "Selected ✓"
     },
     "form": {
       "sectionEyebrow": "— Inquiry Form / Step 02",
-      "sectionTitlePre": "담당자 정보를 ",
-      "sectionTitleEm": "알려주세요.",
-      "sectionR": "* 표시는 필수",
-      "title": "문의 양식",
+      "sectionTitlePre": "Tell us about ",
+      "sectionTitleEm": "the contact person.",
+      "sectionR": "* required",
+      "title": "Inquiry form",
       "labels": {
-        "company": "회사명",
-        "industry": "산업군",
-        "contactName": "담당자명",
-        "position": "직책",
-        "phone": "연락처",
-        "email": "이메일",
-        "quantityRange": "예상 수량",
-        "deliveryDate": "희망 납기",
-        "message": "문의 내용",
-        "fileAttach": "파일 첨부"
+        "company": "Company",
+        "industry": "Industry",
+        "contactName": "Contact name",
+        "position": "Position",
+        "phone": "Phone",
+        "email": "Email",
+        "quantityRange": "Estimated quantity",
+        "deliveryDate": "Required delivery",
+        "message": "Message",
+        "fileAttach": "Attachments"
       },
       "placeholders": {
-        "company": "예) 한국전력 협력업체 ○○○",
-        "contactName": "이름",
-        "position": "예) 안전관리팀장",
+        "company": "e.g. KEPCO Partner ○○○",
+        "contactName": "Full name",
+        "position": "e.g. Safety Manager",
         "phone": "010-0000-0000",
         "email": "name@company.co.kr",
-        "deliveryDate": "예) 2026년 7월 말 / 정기 공급",
-        "message": "예) 한전 협력업체용 아라미드 하계 시즌 200벌, 자수 작업 포함 견적 문의드립니다. 사이즈 분포는 추후 공유 가능합니다."
+        "deliveryDate": "e.g. End of July 2026 / Regular supply",
+        "message": "e.g. Request a quote for 200 units of the Aramid Summer Season for a KEPCO partner site, with embroidery included. Size distribution will follow."
       },
-      "fileHintMini": "(시방서·로고·사이즈표 등)",
-      "fileHintTitle": "최대 5개 파일까지",
-      "fileHintBody": "PDF · JPG · PNG · AI · ZIP / 각 20MB 이하",
-      "fileSelectLabel": "파일 선택",
-      "agreePre": "",
-      "agreeLink": "개인정보 수집·이용 약관",
-      "agreePost": "에 동의합니다.",
-      "agreeFine": "수집 항목: 회사명·담당자명·연락처·이메일 / 보유 기간: 문의 처리 후 6개월 / 이용 목적: 문의 응대 및 견적 발송",
-      "submitNote": "— 1영업일 이내 회신 드립니다",
-      "submitButton": "문의 제출하기",
-      "submitting": "전송 중...",
-      "toastOk": "✓ 문의가 접수되었습니다. 1영업일 이내 회신 드립니다."
+      "fileHintMini": "(spec sheets, logos, size tables, etc.)",
+      "fileHintTitle": "Up to 5 files",
+      "fileHintBody": "PDF · JPG · PNG · AI · ZIP / up to 20MB each",
+      "fileSelectLabel": "Choose file",
+      "agreePre": "I agree to the ",
+      "agreeLink": "privacy collection & use terms",
+      "agreePost": ".",
+      "agreeFine": "Collected: company, contact name, phone, email / Retained: 6 months after closure / Purpose: enquiry handling and quotation.",
+      "submitNote": "— We reply within one business day",
+      "submitButton": "Submit enquiry",
+      "submitting": "Sending...",
+      "toastOk": "✓ Enquiry received. We will reply within one business day."
     },
     "sidebar": {
-      "directLabel": "— Direct Line / B2B 전담",
+      "directLabel": "— Direct Line / B2B Desk",
       "tel": "02-777-3079",
-      "hoursLine1": "평일 09:00 – 18:00 KST",
-      "hoursLine2": "점심 12:30 – 13:30 · 주말 휴무",
+      "hoursLine1": "Mon–Fri 09:00 – 18:00 KST",
+      "hoursLine2": "Lunch 12:30 – 13:30 · Closed weekends",
       "otherLabel": "— Other Channels",
       "rows": [
         {
           "key": "Email",
           "value": "njsafety91@naver.com",
           "href": "mailto:njsafety91@naver.com"
-        },
-        {
-          "key": "Fax",
-          "value": "02-774-1841",
-          "href": ""
         },
         {
           "key": "Web",
@@ -829,126 +717,126 @@
       ],
       "actions": [
         {
-          "ko": "카탈로그 PDF",
+          "ko": "Catalogue PDF",
           "href": "#catalog"
         },
         {
-          "ko": "카카오톡 채널",
+          "ko": "KakaoTalk channel",
           "href": "#kakao"
         }
       ],
       "reassurePre": "",
-      "reassureEm": "평균 회신 1영업일",
-      "reassurePost": " — 대형 견적·OEM은 2~3일 소요"
+      "reassureEm": "Average reply: one business day",
+      "reassurePost": " — larger quotes and OEM take 2–3 days"
     },
     "process": {
       "eyebrow": "— How It Works / 4 Steps",
-      "titleLine1": "문의에서 납품까지,",
-      "titleLine2Em": "네 단계 프로세스.",
+      "titleLine1": "From enquiry to delivery,",
+      "titleLine2Em": "a four-step process.",
       "r": "Avg. 3 – 6 weeks total",
       "steps": [
         {
           "n": "STEP 01",
-          "ko": "문의 접수",
+          "ko": "Inquiry Received",
           "en": "Inquiry Received",
-          "body": "온라인 폼·전화·이메일로 접수된 문의를 영업팀이 분류·전담 매니저 배정합니다.",
-          "eta": "— Day 1 (1영업일 내)"
+          "body": "Enquiries submitted by form, phone or email are triaged by sales and routed to a dedicated account manager.",
+          "eta": "— Day 1 (within 1 business day)"
         },
         {
           "n": "STEP 02",
-          "ko": "요구사항 확인",
+          "ko": "Consultation",
           "en": "Consultation",
-          "body": "전화·메일로 수량·사양·납기·인증 요구사항을 구체화합니다. 필요시 샘플 발송.",
+          "body": "We confirm quantity, specification, lead time and certification requirements by phone or email. Samples sent if needed.",
           "eta": "— Day 2 – 3"
         },
         {
           "n": "STEP 03",
-          "ko": "견적서 발송",
+          "ko": "Quotation",
           "en": "Quotation",
-          "body": "정식 견적서 + 시험성적서/인증서 패키지를 PDF로 발송. 수정 1회 무료.",
+          "body": "A formal quotation and the test-report / certification package is sent as PDF. One free revision included.",
           "eta": "— Day 3 – 5"
         },
         {
           "n": "STEP 04",
-          "ko": "계약·생산·납품",
+          "ko": "Production & Delivery",
           "en": "Production & Delivery",
-          "body": "계약 체결 후 본사 자체 생산 라인에서 봉제·QC·출하. 정기 공급 협의 가능.",
-          "eta": "— 3 – 6주 (양산 기준)"
+          "body": "After contracting, the in-house line handles sewing, QC and despatch. Regular-supply arrangements available.",
+          "eta": "— 3 – 6 weeks (production run)"
         }
       ]
     },
     "faq": {
-      "eyebrow": "— FAQ / 자주 묻는 질문",
-      "titlePre": "문의 전, ",
-      "titleEm": "이것부터.",
+      "eyebrow": "— FAQ",
+      "titlePre": "Before you write, ",
+      "titleEm": "start here.",
       "r": "8 Questions",
       "items": [
         {
-          "q": "최소 주문 수량(MOQ)은 어떻게 되나요?",
-          "a": "기성 제품은 <b>1벌부터 주문 가능</b>합니다. 단체 견적(5% 추가 할인)은 <b>50벌부터</b>, OEM 제작(자수·자체 패턴)은 <b>100벌부터</b> 진행합니다. 정기 공급 계약은 별도 협의."
+          "q": "What is the minimum order quantity (MOQ)?",
+          "a": "Bulk quotes (with a 5% additional discount) start at <b>50 units</b>. OEM production (embroidery, custom patterns) starts at <b>100 units</b>. Regular-supply contracts are arranged separately."
         },
         {
-          "q": "견적은 어떻게 산정되나요?",
-          "a": "제품·수량·사이즈 분포·자수/로고 옵션·인증서 요구사항을 기준으로 산정됩니다. 정식 견적서 발송까지 평균 <b>3~5영업일</b> 소요되며, <b>견적서 1회 무료 수정</b>이 포함됩니다."
+          "q": "How is a quotation calculated?",
+          "a": "Quotations are based on the product, quantity, size distribution, embroidery / logo options and certification requirements. The formal quote takes about <b>3–5 business days</b>, with <b>one free revision</b> included."
         },
         {
-          "q": "평균 납기는 얼마나 걸리나요?",
-          "a": "기성 재고 보유 사이즈는 <b>출고일 기준 5~7영업일</b>, 신규 양산은 <b>3~6주</b>, OEM 제작은 <b>6~10주</b>입니다. 급한 일정은 사전 협의 시 단축 가능합니다."
+          "q": "What is the average lead time?",
+          "a": "In-stock sizes ship in <b>5–7 business days</b>. New production runs take <b>3–6 weeks</b>; OEM production takes <b>6–10 weeks</b>. Urgent schedules can often be shortened by prior arrangement."
         },
         {
-          "q": "OEM 자수·로고 작업도 가능한가요?",
-          "a": "가능합니다. <b>자수·전사·실크프린팅</b> 모두 지원하며, 회사 로고·이름·소속 부서 단위 가공이 가능합니다. AI 또는 고해상도 PNG 파일을 첨부해 주시면 디자인팀이 검토 후 시안을 회신해 드립니다."
+          "q": "Can you handle OEM embroidery and logo work?",
+          "a": "Yes. We support <b>embroidery, heat transfer and silk printing</b>, including company logos, names and department-level customisation. Send an AI or high-resolution PNG file and our design team will review and return a proof."
         },
         {
-          "q": "시험성적서·인증서를 받을 수 있나요?",
-          "a": "제품별 <b>혼용률 시험성적서·방염 시험성적서·ARC 시험성적서</b>를 PDF로 발송해 드립니다. NFPA 2112 UL 인증은 2026년 내 취득 예정이며, 진행 단계별 자료 공유 가능합니다."
+          "q": "Can I receive test reports and certificates?",
+          "a": "We send per-product <b>blend-ratio, flame-resistance and ARC test reports</b> as PDF. NFPA 2112 UL certification is targeted for completion within 2026; we can share progress documentation in the meantime."
         },
         {
-          "q": "결제 조건은 어떻게 되나요?",
-          "a": "기성 제품은 <b>발주 시 100% 선결제</b>, OEM·단체 견적은 <b>계약금 30% / 출고 시 70%</b> 분할 가능. 정기 공급 계약은 월별 정산 협의 가능합니다. 세금계산서 발행."
+          "q": "What are the payment terms?",
+          "a": "Stock items: <b>100% prepayment on order</b>. OEM and bulk quotes can be split <b>30% deposit / 70% on despatch</b>. Regular-supply contracts can be settled monthly. Tax invoices issued."
         },
         {
-          "q": "A/S 기간과 처리 방식은?",
-          "a": "제조상 하자는 <b>출고일 기준 1년</b> 무상 교환·수선. 사용 중 발생한 마모·수선 요청은 별도 견적. 사이즈 교환은 출고 후 <b>14일 이내</b>, 미사용 상태일 때만 가능합니다."
+          "q": "How long is the after-sales period?",
+          "a": "Manufacturing defects are exchanged or repaired free of charge within <b>one year of despatch</b>. Wear and tear repairs are quoted separately. Size exchanges are accepted <b>within 14 days</b> of despatch and only when unused."
         },
         {
-          "q": "해외 배송·수출이 가능한가요?",
-          "a": "가능합니다. <b>EXW / FOB / CIF 조건</b>으로 진행하며, 통관·관세·검역 자료는 지원해 드립니다. 영어 시험성적서·인증서 발급 가능 (NFPA 2112 UL 인증 후 영문 ATPV 라벨 부착)."
+          "q": "Do you ship overseas / export?",
+          "a": "Yes. We work on <b>EXW / FOB / CIF terms</b> and support customs, duty and quarantine documentation. English test reports and certificates are available (English ATPV labelling follows the NFPA 2112 UL certification)."
         }
       ]
     },
     "visit": {
-      "eyebrow": "— Visit / 오시는 길",
-      "titleLine1": "현장 미팅·샘플 확인,",
+      "eyebrow": "— Visit",
+      "titleLine1": "Getting here",
       "titleLine2Pre": "",
-      "titleLine2Em": "직접 방문",
-      "titleLine2Post": "도 환영합니다.",
+      "titleLine2Em": "",
+      "titleLine2Post": "",
       "r": "By appointment",
       "addr": {
-        "ko": "서울특별시 중랑구 신내동",
-        "en": "Sinnae-dong, Jungnang-gu, Seoul, KR",
-        "zip": "우편번호 02075 (가상)"
+        "ko": "서울특별시 중랑구 신내역로 111 SK V1 센터 B동 426호",
+        "en": "Unit 426, Building B, SK V1 Centre, 111 Sinnae-yeok-ro, Jungnang-gu, Seoul, Republic of Korea",
+        "zip": "Postcode 02050"
       },
       "rows": [
         {
           "key": "Subway",
-          "v": "지하철 6호선 신내역 도보 8분",
-          "sub": "경춘선 신내역 2번 출구 도보 약 600m"
+          "v": "Line 6 Sinnae Station · 8 min walk",
+          "sub": "Approx. 600 m from Sinnae Station (Gyeongchun Line) Exit 2"
         },
         {
           "key": "Bus",
-          "v": "간선 202, 240 / 지선 2227",
-          "sub": "신내역.중랑구청 정류장 하차"
+          "v": "Trunk 202, 240 / Branch 2227",
+          "sub": "Alight at Sinnae Station · Jungnang-gu Office"
         },
         {
           "key": "Parking",
-          "v": "건물 지하 주차장 2시간 무료",
-          "sub": "방문 미팅 사전 등록 시 적용"
+          "v": "2 hours free in basement car park",
+          "sub": "On confirmed visit appointments"
         },
         {
-          "key": "Visit",
-          "v": "평일 09:00 – 18:00 / 사전 예약 필수",
-          "sub": "샘플 확인·미팅은 02-777-3079로 사전 연락"
+          "key": "Hours",
+          "v": "Mon–Fri 09:00 – 17:00",
+          "sub": "Please book sample reviews and meetings in advance"
         }
       ],
       "mapBadge": "NJ HQ",
@@ -956,15 +844,15 @@
       "mapPinLabel": "NJ SAFETY HQ",
       "mapActions": [
         {
-          "ko": "카카오맵 →",
+          "ko": "KakaoMap →",
           "href": "#kakaomap"
         },
         {
-          "ko": "네이버지도 →",
+          "ko": "Naver Map →",
           "href": "#navermap"
         },
         {
-          "ko": "길찾기 →",
+          "ko": "Directions →",
           "href": "#directions"
         }
       ]
@@ -1085,7 +973,7 @@
     ],
     "officerHead": "Privacy Officer",
     "officer": {
-      "name": "(To be assigned)",
+      "name": "",
       "role": "Operations Support",
       "contact": "tel. +82-2-777-3079 / email. njsafety91@naver.com"
     },

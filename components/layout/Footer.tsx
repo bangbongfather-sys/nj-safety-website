@@ -53,10 +53,10 @@ export default function Footer({ locale, dict, editor }: Props) {
               <div><span className="k">{dict.footer.telKey}</span><EditableText path="company.tel" value={dict.company.tel} editor={editor} /></div>
               <div><span className="k">{dict.footer.faxKey}</span><EditableText path="company.fax" value={dict.company.fax} editor={editor} /></div>
               <div><span className="k">{dict.footer.mailKey}</span><EditableText path="company.email" value={dict.company.email} editor={editor} /></div>
-              <div style={{ marginTop: 14 }}>
-                <span className="k">{dict.footer.social}</span>
-                <a href="#" style={{ color: '#fff' }}>Instagram</a> · <a href="#" style={{ color: '#fff' }}>LinkedIn</a>
-              </div>
+              {/* Social row dropped 2026-05: no operational Instagram /
+               * LinkedIn account yet. Reintroduce as real <a href="..."> once
+               * the company supplies live profile URLs — disabled <span>
+               * placeholders only invited misclicks. */}
             </div>
           </div>
         </div>

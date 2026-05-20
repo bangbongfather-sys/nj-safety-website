@@ -132,6 +132,11 @@ export default function ProductShopHeader({ data, locale, editor }: Props) {
                 src={displayMain}
                 alt={stripTags(head.name)}
                 className="psh-main-img"
+                // Main product photo = LCP candidate on the detail page;
+                // priority flips the underlying <img> to eager-load with
+                // fetchpriority=high so the browser starts the request
+                // before parsing the rest of the document.
+                priority
               />
               {/* Prev / next arrows when there's more than one photo —
                * mirrors the homepage hero carousel pattern so visitors

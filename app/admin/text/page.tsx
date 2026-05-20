@@ -18,8 +18,6 @@ const SECTION_LABELS: Record<string, string> = {
   showcase:      '쇼케이스 (현장 컷)',
   manifesto:     '매니페스토 (브랜드 선언)',
   certifications:'인증 섹션',
-  clients:       '고객사 / 통계',
-  insights:      '인사이트 (아티클)',
   cta:           'CTA / 문의 섹션',
   company:       '회사 정보',
   footer:        '푸터',

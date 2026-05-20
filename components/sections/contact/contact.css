@@ -173,7 +173,10 @@
   width: 100%;
   font-family: inherit;
 }
-.contact-page .ct-type-card:hover { background: #2c2c2e; }
+@media (hover: hover) {
+  .contact-page .ct-type-card:hover { background: #2c2c2e; }
+}
+.contact-page .ct-type-card:focus-visible { background: #2c2c2e; outline: 2px solid var(--accent); outline-offset: 2px; }
 .contact-page .ct-type-card.is-active { background: var(--accent); color: #0d0d0e; }
 .contact-page .ct-type-card.is-active .n,
 .contact-page .ct-type-card.is-active h3,
@@ -438,10 +441,13 @@
   font-family: var(--display);
 }
 .contact-page .ct-btn-primary { background: var(--accent); color: #0d0d0e; }
-.contact-page .ct-btn-primary:hover:not(:disabled) { filter: brightness(1.08); }
 .contact-page .ct-btn-primary:disabled { opacity: .5; cursor: wait; }
 .contact-page .ct-btn .arr { transition: transform .25s; }
-.contact-page .ct-btn:hover:not(:disabled) .arr { transform: translateX(3px); }
+@media (hover: hover) {
+  .contact-page .ct-btn-primary:hover:not(:disabled) { filter: brightness(1.08); }
+  .contact-page .ct-btn:hover:not(:disabled) .arr { transform: translateX(3px); }
+}
+.contact-page .ct-btn-primary:focus-visible:not(:disabled) { filter: brightness(1.08); outline: 2px solid var(--accent); outline-offset: 2px; }
 
 .contact-page .ct-form-toast {
   margin-top: 24px;
@@ -874,20 +880,52 @@
 /* ─── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 1100px) {
   .contact-page .ct-hero-content { grid-template-columns: 1fr; gap: 48px; }
-  .contact-page .ct-types-grid { grid-template-columns: repeat(2, 1fr); }
   .contact-page .ct-form-grid { grid-template-columns: 1fr; gap: 32px; }
   .contact-page .ct-sidebar { position: relative; top: 0; }
   .contact-page .ct-process-grid { grid-template-columns: 1fr 1fr; }
   .contact-page .ct-visit-grid { grid-template-columns: 1fr; gap: 32px; }
 }
-@media (max-width: 680px) {
-  .contact-page .ct-types-grid,
+/* Inquiry types grid: 5-up on desktop is fine, but at ≤1023px each
+ * card crushed to ~180px wide with the title wrapping onto 3 lines.
+ * Steps down to 2-up at <lg (1024px) and 1-up at <sm (640px) — aligns
+ * with Tailwind's breakpoint grid. */
+@media (max-width: 1023px) {
+  .contact-page .ct-types-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 639px) {
+  .contact-page .ct-types-grid { grid-template-columns: 1fr; }
+  /* Cards stretch full-width on phones; trim the vertical padding
+   * since each card now stands alone and doesn't need the 280px min
+   * to balance against neighbours. */
+  .contact-page .ct-type-card { min-height: 0; padding: 28px 24px; gap: 14px; }
+}
+/* Phone floor (Tailwind <sm). Previously 680px — moved to 639px in P3
+ * so the contact page lines up with about.css / globals.css. The
+ * actual layout these rules trigger hasn't changed; only the
+ * threshold did. */
+@media (max-width: 639px) {
   .contact-page .ct-process-grid,
   .contact-page .ct-hero-metrics { grid-template-columns: 1fr; }
   .contact-page .ct-form-row { grid-template-columns: 1fr; }
-  .contact-page .ct-form { padding: 32px 24px; }
+  .contact-page .ct-form { padding: 32px 20px; }
   .contact-page .ct-faq-q { grid-template-columns: 50px 1fr 28px; gap: 16px; }
   .contact-page .ct-faq-q .t { font-size: 16px; }
   .contact-page .ct-faq-a-inner { padding-left: 0; }
   .contact-page .ct-section { padding: 80px 0; }
+  /* iOS Safari auto-zooms when a focused input has font-size < 16px;
+   * the desktop 14px ran into that. Bumping just under-sm avoids
+   * desktop layout drift while keeping iPhones from yanking the
+   * viewport on first tap. min-height also bumps so the touch target
+   * matches Apple's 44pt recommendation. */
+  .contact-page .ct-field input,
+  .contact-page .ct-field select,
+  .contact-page .ct-field textarea {
+    font-size: 16px;
+    padding: 14px 14px;
+    min-height: 48px;
+  }
+  .contact-page .ct-field textarea { min-height: 140px; }
+  /* Tighter row gap when the grid collapses — 20px between every
+   * stacked field added up to a tall scroll. */
+  .contact-page .ct-form-row { gap: 16px; margin-bottom: 16px; }
 }

@@ -508,7 +508,9 @@
   min-height: 340px;
   transition: background .3s, transform .3s;
 }
-.about-page .ab-value:hover { background: #2c2c2e; }
+@media (hover: hover) {
+  .about-page .ab-value:hover { background: #2c2c2e; }
+}
 .about-page .ab-value .top {
   display: flex;
   justify-content: space-between;
@@ -675,9 +677,11 @@
   overflow: hidden;
   transition: border-color .25s, transform .25s;
 }
-.about-page .ab-ind:hover {
-  border-color: var(--accent);
-  transform: translateY(-2px);
+@media (hover: hover) {
+  .about-page .ab-ind:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
 }
 .about-page .ab-ind .n {
   font-family: var(--mono);
@@ -769,7 +773,9 @@
   align-items: center;
   transition: border-color .25s;
 }
-.about-page .ab-cert-row:hover { border-color: var(--accent); }
+@media (hover: hover) {
+  .about-page .ab-cert-row:hover { border-color: var(--accent); }
+}
 .about-page .ab-cert-row .y {
   font-family: var(--display);
   font-size: 32px;
@@ -873,7 +879,10 @@
   background: var(--accent);
   color: #0d0d0e;
 }
-.about-page .ab-btn-primary:hover { filter: brightness(1.08); }
+@media (hover: hover) {
+  .about-page .ab-btn-primary:hover { filter: brightness(1.08); }
+}
+.about-page .ab-btn-primary:focus-visible { filter: brightness(1.08); outline: 2px solid var(--accent); outline-offset: 2px; }
 .about-page .ab-btn-ghost {
   background: transparent;
   color: #fff;
@@ -886,13 +895,28 @@
 }
 
 /* ─── Responsive ─────────────────────────────────────────────────── */
+/* Breakpoint policy (P3):
+ *   1180px → kept as XL-desktop transition (5-col values → 2-col;
+ *            onestop / industries 4-col → 2-col). Anything wider is
+ *            a real desktop, anything narrower is small-desktop/tablet
+ *            — this rung is genuinely about layout density, not
+ *            phone/tablet/desktop, so it stays as-is.
+ *   1023px (<lg, Tailwind) → tablet / iPad-portrait floor: hero
+ *            stacks, stats drop to 2-col, timeline becomes vertical,
+ *            CEO + recent split. Previously this group was at 980px
+ *            which left iPad-portrait (810px) and small laptops
+ *            cramped.
+ *   639px  (<sm, Tailwind) → phone floor: values / industries /
+ *            onestop collapse to 1-col, cert rows reflow, section
+ *            padding tightens. Previously 680px.
+ */
 @media (max-width: 1180px) {
   .about-page .ab-values-grid { grid-template-columns: repeat(2, 1fr); }
   .about-page .ab-onestop-grid,
   .about-page .ab-industries-grid { grid-template-columns: repeat(2, 1fr); }
   .about-page .ab-step::after { display: none; }
 }
-@media (max-width: 980px) {
+@media (max-width: 1023px) {
   .about-page .ab-hero-content { grid-template-columns: 1fr; gap: 48px; }
   .about-page .ab-stats-grid { grid-template-columns: 1fr 1fr; }
   .about-page .ab-timeline { grid-template-columns: 1fr; gap: 60px; }
@@ -907,7 +931,7 @@
   .about-page .ab-ceo-grid,
   .about-page .ab-recent-grid { grid-template-columns: 1fr; gap: 48px; }
 }
-@media (max-width: 680px) {
+@media (max-width: 639px) {
   .about-page .ab-values-grid,
   .about-page .ab-industries-grid,
   .about-page .ab-onestop-grid { grid-template-columns: 1fr; }

@@ -50,9 +50,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const cat = getCategory(id);
   if (!cat) return {};
   const name = categoryName(cat, locale as Locale);
+  const description =
+    locale === 'en'
+      ? `Products in the ${name} category.`
+      : `${name} 카테고리에 속한 제품 목록.`;
   return {
     title: `${name} — NJ SAFETY`,
-    description: `${name} 카테고리에 속한 제품 목록.`,
+    description,
   };
 }
 
@@ -76,9 +80,7 @@ export default async function CategoryPage({ params }: Props) {
   return (
     <section className="skeleton-page" style={{ paddingBottom: 120 }}>
       <div className="wrap">
-        <span className="eyebrow">
-          {loc === 'ko' ? `— ${dict.nav.products}` : `— ${dict.nav.products}`}
-        </span>
+        <span className="eyebrow">— {dict.nav.products}</span>
         <h1>
           {name}
           <em>.</em>

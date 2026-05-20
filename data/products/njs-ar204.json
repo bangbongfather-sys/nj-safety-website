@@ -2,9 +2,9 @@
   "slug": "njs-ar204",
   "model": "NJSST#YY",
   "category": "ARAMID FR SERIES · Vol.04",
-  "name": "<span style=\"color: rgb(255, 255, 255);\">아라미드</span> <br><span style=\"color: rgb(198, 90, 30);\">PK</span> <br><span style=\"color: rgb(255, 255, 255);\">티셔츠</span>",
+  "name": "아라미드 <br><em>PK</em> <br>티셔츠",
   "subtitle": "전기·설비 현장의 일상을 위한 난연 워크웨어",
-  "tagline": "신뢰할 수 있는 아라미드 원단과 뛰어난 신축성으로 완성한, <div style=\"\">하루 종일 입을 수 있는 PK 티셔츠.</div><div style=\"color: rgb(255, 255, 255); font-weight: 400;\"><span style=\"font-size: clamp(13px, 1.3vw, 15px); letter-spacing: 0.01em; font-weight: 700; color: rgb(29, 29, 31);\"></span></div><div style=\"color: rgb(255, 255, 255);\"><span style=\"font-size: clamp(13px, 1.3vw, 15px); letter-spacing: 0.01em; font-weight: 700; color: rgb(29, 29, 31);\"></span></div><div style=\"color: rgb(255, 255, 255);\"></div><div style=\"color: rgb(255, 255, 255);\"></div><div><span style=\"font-size: clamp(13px, 1.3vw, 15px); letter-spacing: 0.01em; font-weight: 700; color: rgb(29, 29, 31);\"><br></span></div>",
+  "tagline": "신뢰할 수 있는 아라미드 원단과 뛰어난 신축성으로 완성한, 하루 종일 입을 수 있는 PK 티셔츠.",
   "hero": {
     "imageAlt": "아라미드 PK 하프집 티셔츠 차콜 네이비 — 정면",
     "counters": [
@@ -96,28 +96,28 @@
   },
   "statement": {
     "eyebrow": "A NOTE FROM THE FIELD",
-    "body": "한 벌의 작업복은 안전 장비이자, 매일의 유니폼입니다. <div>아라미드 PK 티셔츠는 두 가지 요구를 분리하지 않고 <span style=\"text-wrap-mode: initial; letter-spacing: -0.005em;\">하나의 옷에 담는 것을 출발점으로 삼았습니다.</span></div><div></div><div>멜란지 톤의 절제된 외관 뒤에는 검증된 난연 원사와 <span style=\"text-wrap-mode: initial; letter-spacing: -0.005em;\">4-way 신축 PK 조직이 있고, </span><span style=\"text-wrap-mode: initial; letter-spacing: -0.005em;\">그것은 12시간 동안 입어도 옷의 존재를 잊게 만듭니다.</span></div><div><div></div></div>",
-    "sign": "NJ SAFETY PRoducts",
-    "headline": "현장의 품격은 <span style=\"color: rgb(198, 90, 30);\">안전</span>과 <br>정제된 <span style=\"color: rgb(198, 90, 30);\">단정함</span>에서 시작됩니다"
+    "body": "한 벌의 작업복은 안전 장비이자, 매일의 유니폼입니다. 아라미드 PK 티셔츠는 두 가지 요구를 분리하지 않고 하나의 옷에 담는 것을 출발점으로 삼았습니다.\n\n멜란지 톤의 절제된 외관 뒤에는 검증된 난연 원사와 4-way 신축 PK 조직이 있고, 그것은 12시간 동안 입어도 옷의 존재를 잊게 만듭니다.",
+    "sign": "NJ SAFETY PRODUCTS",
+    "headline": "현장의 품격은 <em>안전</em>과 <br>정제된 <em>단정함</em>에서 시작됩니다."
   },
   "material": {
     "eyebrow": "CLOSE LOOK",
-    "headline": "<span style=\"color: rgb(198, 90, 30);\">NJ SAFETY</span>의 <br>PK 조직이 <br>말해주는 것.",
+    "headline": "<em>NJ SAFETY</em>의 <br>PK 조직이 <br>말해주는 것.",
     "image": "/products/njs-ar204/collar.jpg",
     "callouts": [
       {
         "tag": "A",
         "body": "NJ아라미드 PK 방염 원단의 방염성은 세탁 후에도 유지됩니다.",
-        "title": "PERMANENT<span style=\"color: rgb(198, 90, 30);\"> FR</span> PERFORMANCE"
+        "title": "PERMANENT <em>FR</em> PERFORMANCE"
       },
       {
         "tag": "B",
         "body": "아라미드 특유의 강인함에 신축성을 더해, 반복적인 움직임에도 무릎이나 팔꿈치의 늘어남 없이 탄탄한 복원력을 보여줍니다.",
-        "title": "RESILIENT <span style=\"color: rgb(198, 90, 30);\">ARAMID fr</span> pk knit"
+        "title": "RESILIENT <em>ARAMID FR</em> PK KNIT"
       },
       {
         "tag": "C",
-        "title": "color. <span style=\"color: rgb(198, 90, 30);\">Melange</span> Knit",
+        "title": "COLOR · <em>MELANGE</em> KNIT",
         "body": "멜란지 그레이 색감은 오염이 도드라지지 않습니다."
       }
     ]
@@ -293,14 +293,14 @@
       },
       {
         "body": "다림질은 울 종류나 면 종류의 온도로 가능.",
-        "icon": "<span style=\"letter-spacing: -0.08px;\">≡</span>",
+        "icon": "≡",
         "title": "중간 온도 다림질"
       }
     ]
   },
   "certs": [
     {
-      "mark": "&nbsp;ARC",
+      "mark": "ARC",
       "title": "아크테스트 시험성적",
       "sub": "EN IEC 61482-1-1, >8cal"
     },
@@ -322,7 +322,7 @@
     }
   ],
   "order": {
-    "headline": "공식 대리점에서<br><span style=\"color: rgb(255, 255, 255);\">판매 안내 및 출고</span> 가능합니다.",
+    "headline": "공식 대리점에서<br><em>판매 안내 및 출고</em> 가능합니다.",
     "cells": [
       {
         "label": "서비스",
@@ -427,7 +427,6 @@
     "category": "ARAMID FR SERIES · Vol.04",
     "name": "아라미드 PK 티셔츠",
     "subtitle": "전기·설비 현장의 일상을 위한 난연 워크웨어",
-    "tagline": "",
     "summarySpecs": [
       {
         "label": "원단 구성",

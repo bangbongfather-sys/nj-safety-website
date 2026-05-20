@@ -33,9 +33,30 @@ type Props = {
   alt?: string;
   className?: string;
   style?: React.CSSProperties;
+  /**
+   * Loading hint. Defaults to lazy. Set to "eager" (or pass `priority`)
+   * for above-the-fold imagery — the product detail page's main photo
+   * is the LCP candidate, so we let the caller opt in to eager loading
+   * for that single slot.
+   */
+  loading?: 'lazy' | 'eager';
+  /** Mirrors next/image's priority flag: when true, eager-load + high fetch priority. */
+  priority?: boolean;
 };
 
-export default function ImageOrPlaceholder({ src, alt, className, style }: Props) {
+// Note: we intentionally don't expose a `sizes` prop. A plain <img> without
+// `srcSet` ignores `sizes`, so forwarding it would be a dead attribute that
+// misleads readers into thinking responsive selection is happening. If we
+// ever add multi-resolution sources, reintroduce `sizes` alongside `srcSet`.
+
+export default function ImageOrPlaceholder({
+  src,
+  alt,
+  className,
+  style,
+  loading,
+  priority,
+}: Props) {
   const [errored, setErrored] = useState(false);
   const resolved = rewriteSrc(src);
 
@@ -54,7 +75,9 @@ export default function ImageOrPlaceholder({ src, alt, className, style }: Props
       alt={alt ?? ''}
       className={className}
       style={style}
-      loading="lazy"
+      loading={priority ? 'eager' : (loading ?? 'lazy')}
+      fetchPriority={priority ? 'high' : undefined}
+      decoding="async"
       onError={() => setErrored(true)}
     />
   );
