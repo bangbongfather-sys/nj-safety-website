@@ -7,6 +7,17 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        // Tailwind defaults preserved: sm 640, md 768, lg 1024, xl 1280, 2xl 1536.
+        // Added:
+        //   xs  → very small phones (legacy 360px breakpoint)
+        //   nav → 1100px desktop/mobile cutover for the top nav. The
+        //         legacy CSS already used 1100px to hide .menu; keeping
+        //         the same number here means the new Tailwind-driven
+        //         hamburger appears at the exact same threshold.
+        xs: '360px',
+        nav: '1100px',
+      },
       colors: {
         bg: '#1c1c1e',
         'bg-2': '#2a2a2c',

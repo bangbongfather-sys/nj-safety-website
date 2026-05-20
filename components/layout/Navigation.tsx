@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import type { Dictionary, Locale } from '@/lib/i18n';
 import EditableText, { type EditorApi } from '@/components/admin/EditableText';
+import MobileNav from '@/components/layout/MobileNav';
 import categoriesData from '@/data/product-categories.json';
 
 type Props = { locale: Locale; dict: Dictionary; editor?: EditorApi };
@@ -120,6 +121,16 @@ export default function Navigation({ locale, dict, editor }: Props) {
     { href: `/${locale}/contact`,        key: 'contact' },
   ];
 
+  // Pre-build the list MobileNav needs — keeps the drawer dumb and
+  // avoids re-importing categoriesData on the client a second time.
+  const mobileLinks = links.map((l) => ({
+    href: l.href,
+    key: l.key,
+    label: dict.nav[l.key],
+    items: getDropdownItems(l.key, locale, l.href),
+    allLabel: getAllLabel(l.key, locale),
+  }));
+
   return (
     <nav className={`nav${scrolled ? ' scrolled' : ''}`} id="nav">
       <div className="nav-inner">
@@ -127,6 +138,9 @@ export default function Navigation({ locale, dict, editor }: Props) {
           <img src="/nj-logo.png" alt="NJ SAFETY" className="logo-img" />
         </Link>
 
+        {/* Desktop menu — hidden below 1100px (CSS @media handles it
+            via `.menu { display: none }`; the matching Tailwind class
+            here ensures the hamburger UI is hidden ≥ 1100px). */}
         <div className="menu">
           {links.map((l) => {
             const isActive = pathname.startsWith(l.href);
@@ -184,6 +198,8 @@ export default function Navigation({ locale, dict, editor }: Props) {
           })}
         </div>
 
+        {/* Desktop right cluster — KO/EN toggle + quote CTA. Hidden on
+            mobile by the matching `.nav-right` @media rule below 1100px. */}
         <div className="nav-right">
           <Link href={toggleHref} className="lang" aria-label="Toggle language">
             <span className={locale === 'ko' ? 'on' : undefined}>KO</span>
@@ -195,6 +211,18 @@ export default function Navigation({ locale, dict, editor }: Props) {
             <span>→</span>
           </Link>
         </div>
+
+        {/* Mobile hamburger + right-slide drawer. The component owns
+            its own visibility via `nav:hidden` so it disappears on
+            desktop without any extra wrapper here. */}
+        <MobileNav
+          locale={locale}
+          otherLocale={otherLocale}
+          toggleHref={toggleHref}
+          links={mobileLinks}
+          quoteCta={dict.nav.quoteCta}
+          quoteHref={`/${locale}/contact`}
+        />
       </div>
     </nav>
   );

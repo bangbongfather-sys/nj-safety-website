@@ -3145,11 +3145,27 @@ section { position: relative; }
   .insights-grid .article:nth-child(3) { grid-column: 1 / -1; }
   .certs-inner { grid-template-columns: 1fr; gap: 48px; }
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
-  .menu { display: none; }
+  /* Desktop nav cluster hidden below 1100px — the right-slide drawer
+   * (components/layout/MobileNav.tsx) takes over and renders a
+   * hamburger toggle plus its own KO/EN switch + quote CTA inside. */
+  .menu,
+  .nav-right { display: none; }
+  /* Tighter header on mobile — 112px nav eats too much vertical real
+   * estate on phones. 72px keeps the brand mark legible while leaving
+   * room for hero copy beneath. Logo image scales down to match. */
+  .nav-inner { height: 72px; }
+  .logo-img { height: 48px; }
+  .nav.scrolled .logo-img { height: 40px; }
+  /* product-detail page reserves space for the fixed nav at the top.
+   * Keep that offset in sync with the new header height. */
+  .product-detail { padding-top: 72px; }
   .section-head { flex-direction: column; align-items: flex-start; gap: 20px; }
   .cta-inner { grid-template-columns: 1fr; gap: 40px; }
 }
 @media (max-width: 680px) {
+  /* Pull container padding in further so cards/text reach closer to
+   * the screen edge — 32px was eating ~15% of a 360px viewport. */
+  .wrap, .nav-inner, .hero-meta { padding-left: 20px; padding-right: 20px; }
   .insights-grid, .stats { grid-template-columns: 1fr; }
   .logos { grid-template-columns: repeat(3, 1fr); }
   .certs-grid { grid-template-columns: repeat(2, 1fr); }
@@ -3158,6 +3174,9 @@ section { position: relative; }
   .section-pad, .products, .certs, .trusted, .insights, .cta { padding: 80px 0; }
   .statement { padding: 100px 0; }
   .hero-headline { font-size: clamp(40px, 12vw, 64px); }
+}
+@media (max-width: 480px) {
+  .wrap, .nav-inner, .hero-meta { padding-left: 16px; padding-right: 16px; }
 }
 
 /* ============================================================
