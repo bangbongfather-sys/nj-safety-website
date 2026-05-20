@@ -107,13 +107,13 @@
     "callouts": [
       {
         "tag": "A",
-        "title": "<span style=\"letter-spacing: 0.04em;\">Upper Panel · 그레이</span>",
-        "body": "<span style=\"letter-spacing: -0.08px;\">그레이 인서트로 컬러 블록 — 'NJ SAFETY' 리플렉티브 라벨이 위치</span>"
+        "title": "Upper Panel · 그레이",
+        "body": "그레이 인서트로 컬러 블록 — 'NJ SAFETY' 리플렉티브 라벨이 위치."
       },
       {
         "tag": "B",
-        "title": "<span style=\"letter-spacing: 0.04em;\">Front Panel · 본체</span>",
-        "body": "<span style=\"letter-spacing: -0.08px;\">차콜 네이비 워크 트윌. 4구 플랩 포켓을 지지하는 메인 패널</span>."
+        "title": "Front Panel · 본체",
+        "body": "차콜 네이비 워크 트윌. 4구 플랩 포켓을 지지하는 메인 패널."
       },
       {
         "tag": "C",
@@ -333,7 +333,7 @@
     }
   ],
   "order": {
-    "headline": "공식 대리점에서 <br><span style=\"color: rgb(255, 255, 255);\">판매 안내 및 출고 </span>가능합니다.",
+    "headline": "공식 대리점에서 <br><em>판매 안내 및 출고</em> 가능합니다.",
     "cells": [
       {
         "label": "서비스",
@@ -410,7 +410,6 @@
     "category": "ARAMID SUMMER MESH UTILITY VEST",
     "name": "아라미드 메쉬 유틸리티 조끼",
     "subtitle": "여름 현장의 가벼움과 기능성, 그 사이의 균형",
-    "tagline": "\n",
     "summarySpecs": [
       {
         "label": "원단 구성",
