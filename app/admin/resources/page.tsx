@@ -26,6 +26,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAdmin } from '@/components/admin/AdminContext';
 import { ghGetFile, ghPutFile, ghListDir, REPO_OWNER, REPO_NAME } from '@/lib/admin/github';
 import type { ProductPageData, ProductTestReportFile } from '@/lib/product-page-types';
+import DropTarget from '@/components/admin/DropTarget';
 
 const SITE_RESOURCES_PATH = 'data/site-resources.json';
 const UPLOAD_ENDPOINT = '/api/admin/upload-image';
@@ -461,9 +462,12 @@ function CatalogCard({
   const inputRef = useRef<HTMLInputElement>(null);
   const hasFile = !!catalog.pdfUrl;
   return (
-    <div
+    <DropTarget
+      onFile={onUpload}
+      accept={['application/pdf', '.pdf']}
+      disabled={busy}
       className="admin-card admin-card-flat"
-      style={{ padding: 24, display: 'grid', gap: 14 }}
+      style={{ padding: 24, display: 'grid', gap: 14, borderRadius: 14 }}
     >
       {hasFile ? (
         <>
@@ -541,7 +545,7 @@ function CatalogCard({
           </button>
         </>
       )}
-    </div>
+    </DropTarget>
   );
 }
 
@@ -561,7 +565,13 @@ function ProductReportsCard({
   const inputRef = useRef<HTMLInputElement>(null);
   const uploadBusy = busyKey === `report:${row.slug}`;
   return (
-    <div className="admin-card admin-card-flat" style={{ padding: 20 }}>
+    <DropTarget
+      onFile={onUpload}
+      accept={['application/pdf', '.pdf']}
+      disabled={uploadBusy}
+      className="admin-card admin-card-flat"
+      style={{ padding: 20, borderRadius: 12 }}
+    >
       <div
         style={{
           display: 'flex',
@@ -672,6 +682,6 @@ function ProductReportsCard({
       >
         {uploadBusy ? '⏳ 업로드 중...' : '＋ 시험성적서 PDF 추가'}
       </button>
-    </div>
+    </DropTarget>
   );
 }

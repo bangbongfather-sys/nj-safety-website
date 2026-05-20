@@ -21,6 +21,7 @@ import type {
   ProductTestReportFile,
 } from '@/lib/product-page-types';
 import type { EditorApi } from '@/components/admin/EditableText';
+import DropTarget from '@/components/admin/DropTarget';
 
 const UPLOAD_ENDPOINT = '/api/admin/upload-image';
 
@@ -65,10 +66,10 @@ export default function ProductTestReportsTab({
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
-  const handleAdd = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    e.target.value = ''; // allow re-picking the same filename later
-    if (!file || !editor?.onImagePatch || !pat) return;
+  // Shared upload flow — wired to both the file-picker change event and
+  // the DropTarget drop callback so click + drag behave identically.
+  const uploadFile = async (file: File) => {
+    if (!editor?.onImagePatch || !pat) return;
     if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
       setErr('PDF 파일만 업로드 가능합니다');
       return;
@@ -215,13 +216,23 @@ export default function ProductTestReportsTab({
       )}
 
       {editor ? (
-        <div className="ptr-foot">
+        <DropTarget
+          onFile={(f) => void uploadFile(f)}
+          accept={['application/pdf', '.pdf']}
+          disabled={busy}
+          className="ptr-foot"
+          style={{ borderRadius: 10 }}
+        >
           <input
             ref={fileRef}
             type="file"
             accept="application/pdf,.pdf"
             style={{ display: 'none' }}
-            onChange={(e) => void handleAdd(e)}
+            onChange={(e) => {
+              const f = e.target.files?.[0];
+              e.target.value = '';
+              if (f) void uploadFile(f);
+            }}
           />
           <button
             type="button"
@@ -229,10 +240,10 @@ export default function ProductTestReportsTab({
             onClick={() => fileRef.current?.click()}
             disabled={busy}
           >
-            {busy ? '⏳ 업로드 중...' : '＋ PDF 추가'}
+            {busy ? '⏳ 업로드 중...' : '＋ PDF 추가 (또는 파일 끌어놓기)'}
           </button>
           {err ? <p className="ptr-err">{err}</p> : null}
-        </div>
+        </DropTarget>
       ) : null}
     </div>
   );

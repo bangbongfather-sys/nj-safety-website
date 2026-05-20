@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAdmin } from '@/components/admin/AdminContext';
 import { ghDeleteFile, ghGetFile, ghListDir, ghPutFile, REPO_OWNER, REPO_NAME } from '@/lib/admin/github';
 import type { ProductPageData } from '@/lib/product-page-types';
+import DropTarget from '@/components/admin/DropTarget';
 
 const SITE_PREVIEW_BASE = 'https://nj-safety-website.njsafety91.workers.dev';
 const IMG_BASE = 'https://catalog-app.njsafety91.workers.dev';
@@ -396,12 +397,18 @@ function CardSlot({
         <strong>{label}</strong>
         <small>{hint}</small>
       </div>
+      <DropTarget
+        onFile={onPick}
+        accept={['image/']}
+        disabled={uploading}
+        style={{ display: 'block', borderRadius: 8 }}
+      >
       <button
         type="button"
         className={`admin-card-slot-zone${current ? ' has-image' : ''}${uploading ? ' is-busy' : ''}`}
         onClick={() => inputRef.current?.click()}
         disabled={uploading}
-        title={current ? '클릭해서 교체' : '클릭해서 사진 추가'}
+        title={current ? '클릭하거나 사진 끌어놓기' : '클릭하거나 사진 끌어놓기'}
       >
         {current ? (
           <>
@@ -416,6 +423,7 @@ function CardSlot({
           </span>
         )}
       </button>
+      </DropTarget>
       <input
         ref={inputRef}
         type="file"
