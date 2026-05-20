@@ -400,14 +400,23 @@ export function withShopHeaderDefaults(data: ProductPageData): ProductPageData {
     { label: 'made in',  value: 'Korea' },
   ];
 
+  // Treat blank/whitespace-only admin overrides as "no override" so the
+  // catalog value still shows through. Previously `??` only checked for
+  // null/undefined, which let `""` and `"\n"` from the WYSIWYG editor
+  // hide the tagline on /products/<slug>.
+  const fall = (a: string | undefined, b: string | undefined): string => {
+    if (a != null && a.replace(/<[^>]+>/g, '').trim().length > 0) return a;
+    return b ?? '';
+  };
+
   const filled: ProductShopHeaderData = {
     images:       existing.images && existing.images.length > 0 ? existing.images : seedImages,
     brand:        existing.brand      ?? 'NJ SAFETY',
-    model:        existing.model      ?? data.model      ?? '',
-    category:     existing.category   ?? data.category   ?? '',
-    name:         existing.name       ?? data.name       ?? '',
-    subtitle:     existing.subtitle   ?? data.subtitle   ?? '',
-    tagline:      existing.tagline    ?? data.tagline    ?? '',
+    model:        fall(existing.model,    data.model),
+    category:     fall(existing.category, data.category),
+    name:         fall(existing.name,     data.name),
+    subtitle:     fall(existing.subtitle, data.subtitle),
+    tagline:      fall(existing.tagline,  data.tagline),
     summarySpecs: existing.summarySpecs && existing.summarySpecs.length > 0
       ? existing.summarySpecs
       : seedSummary,
