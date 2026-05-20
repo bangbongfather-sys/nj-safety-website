@@ -64,7 +64,7 @@ export default async function ProductsPage({ params }: Props) {
             marginTop: 56,
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-            gap: 32,
+            gap: 48,
           }}
         >
           {products.map((p) => {

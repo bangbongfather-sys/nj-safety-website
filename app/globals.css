@@ -571,11 +571,12 @@ section { position: relative; }
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: minmax(280px, 320px);
-  /* Was 20px — cards were sitting almost shoulder-to-shoulder on
-   * desktop. Bumped to 32 for proper breathing room between
-   * adjacent products; matches the gap on /products + category pages
-   * so the homepage rail and the full catalog use the same rhythm. */
-  gap: 32px;
+  /* 20 → 32 → 48 (incrementally). Operator preference is more air
+   * between cards; 48 reads as "deliberately spaced" the way high-end
+   * B2B workwear sites do (Mammut Pro, Engelbert Strauss). Mobile
+   * still falls into a single column so the 48 just becomes vertical
+   * spacing — still reasonable. */
+  gap: 48px;
   padding: 0;
   margin: 0;
 }
