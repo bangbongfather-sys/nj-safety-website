@@ -463,5 +463,15 @@
         "value": "Korea"
       }
     ]
+  },
+  "testReports": {
+    "files": [
+      {
+        "url": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njs-ar204/reports/1779286023957-pk-afk185900-dark-grey.pdf?v=1779286025781",
+        "name": "PK방염 니트AFK185900 Dark Grey",
+        "size": 1483118,
+        "uploadedAt": "2026-05-20T14:07:05.781Z"
+      }
+    ]
   }
 }
