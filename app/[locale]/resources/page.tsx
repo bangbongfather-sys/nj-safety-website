@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getDictionary, isLocale, type Locale } from '@/lib/i18n';
 import { getAllProducts } from '@/lib/products';
+import { getSiteResources, hasCatalogPdf } from '@/lib/site-resources';
 
 type Props = { params: Promise<{ locale: string }> | { locale: string } };
 
@@ -32,6 +33,12 @@ export default async function ResourcesPage({ params }: Props) {
   if (!isLocale(locale)) notFound();
   const loc = locale as Locale;
   const dict = getDictionary(loc);
+  // Catalog PDF state — admin uploads land in data/site-resources.json.
+  // When pdfUrl is set the catalog card becomes a real download link;
+  // otherwise it stays the dimmed "업로드 예정" placeholder.
+  const site = getSiteResources();
+  const catalogReady = hasCatalogPdf(site);
+  const catalogUrl = site.catalog?.pdfUrl;
 
   // Aggregate test reports across every product. We project the array into
   // a flat list with the product name attached so the page can group by
@@ -86,14 +93,16 @@ export default async function ResourcesPage({ params }: Props) {
             scrollMarginTop: 112,
           }}
         >
-          {/* Catalog PDF card — disabled because no PDF asset has been
-           * registered yet. Flip `disabled` off and add `href` once the
-           * operator uploads the catalog binary (target path TBD by ops). */}
+          {/* Catalog PDF card — live download when site-resources.json
+           * has a URL, dimmed placeholder otherwise. Admin uploads via
+           * /admin/resources. */}
           <ResourceCard
             title={dict.resources.catalog.title}
             desc={dict.resources.catalog.desc}
-            cta={dict.resources.catalog.placeholder}
-            disabled
+            cta={catalogReady ? dict.resources.catalog.downloadCta : dict.resources.catalog.placeholder}
+            href={catalogReady ? catalogUrl : undefined}
+            external={catalogReady}
+            disabled={!catalogReady}
           />
 
           <ResourceCard
@@ -205,12 +214,16 @@ function ResourceCard({
   cta,
   href,
   disabled,
+  external,
 }: {
   title: string;
   desc: string;
   cta: string;
   href?: string;
   disabled?: boolean;
+  /** R2-hosted PDF etc. — opens in a new tab and skips the
+   *  Next.js client router so the browser downloads it directly. */
+  external?: boolean;
 }) {
   const body = (
     <div
@@ -246,6 +259,19 @@ function ResourceCard({
 
   if (disabled) {
     return <div style={{ pointerEvents: 'none' }}>{body}</div>;
+  }
+  if (external && href) {
+    // Skip Next.js routing for R2-hosted PDFs — open in a new tab.
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noreferrer"
+        style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
+      >
+        {body}
+      </a>
+    );
   }
   if (href?.startsWith('#')) {
     return (
