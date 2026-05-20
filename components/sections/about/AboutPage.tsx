@@ -8,7 +8,7 @@
  * components used elsewhere.
  *
  * Section order:
- *   01. Hero (40년 / 방염, 한 길)
+ *   01. Hero (34년 / 방염, 한 길)
  *   02. Stats strip (4 cells)
  *   03. CEO Message (editable portrait)
  *   04. Heritage Timeline (3 phases)

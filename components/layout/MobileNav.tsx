@@ -130,7 +130,7 @@ export default function MobileNav({
         aria-expanded={open}
         aria-controls="mobile-drawer"
         onClick={() => setOpen((o) => !o)}
-        className="nav:hidden inline-flex items-center justify-center w-11 h-11 -mr-2 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded-md"
+        className="nav:hidden inline-flex items-center justify-center w-11 h-11 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rounded-md"
       >
         {/* Two-line + middle bar; transforms into an X when open. The
             middle bar fades, top/bottom rotate. CSS transitions are

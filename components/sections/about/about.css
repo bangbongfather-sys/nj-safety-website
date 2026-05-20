@@ -110,11 +110,23 @@
 }
 .about-page .ab-hero-year .num {
   font-family: var(--display);
-  font-size: clamp(72px, 11vw, 160px);
+  /* Floor lowered (72→64) so two-digit year ("34") doesn't tower
+   * over the adjacent label stack on phones — reviewer flagged the
+   * stat as visually oversized at small widths. Max kept high so
+   * the hero stays cinematic on full desktop. */
+  font-size: clamp(64px, 11vw, 160px);
   font-weight: 900;
   letter-spacing: -0.055em;
   line-height: .85;
   color: var(--accent);
+}
+/* Phone-specific cap — the desktop fluid scale lets 11vw push the
+ * number past ~72px in the awkward 600-800px tablet/large-phone band.
+ * Lock it to ~64px there so the "34" reads as a stat, not a billboard. */
+@media (max-width: 639px) {
+  .about-page .ab-hero-year .num {
+    font-size: clamp(56px, 14vw, 72px);
+  }
 }
 .about-page .ab-hero-year .lbl {
   display: flex;
@@ -938,4 +950,11 @@
   .about-page .ab-cert-row { grid-template-columns: 80px 1fr; gap: 16px; padding: 18px 20px; }
   .about-page .ab-cert-row .status { grid-column: 1 / -1; justify-self: start; margin-top: 6px; }
   .about-page .ab-section { padding: 80px 0; }
+  /* Heritage section: the `.r` cell ("No. 1987 — 2026") sits next to
+   * the eyebrow + title on desktop, but on mobile flex-wrap stacks it
+   * beneath the eyebrow, producing a visually doubled em-dash run
+   * (eyebrow's leading "— Heritage / 1992 → Present" colliding with
+   * "No. 1992 — 2026"). The year is already encoded in the eyebrow,
+   * so hiding the redundant `.r` cell on phones is the cleanest fix. */
+  .about-page .ab-heritage .ab-section-head .r { display: none; }
 }

@@ -812,6 +812,17 @@ section { position: relative; }
   line-height: .95;
   color: #fff;
   text-wrap: balance;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+/* On small phones, the bold Korean strokes in clamp()'s 48px floor
+ * collide thanks to the -0.04em negative tracking. Relax the tracking
+ * and drop one weight step so glyphs don't visually overlap. */
+@media (max-width: 640px) {
+  .showcase-h {
+    font-weight: 800;
+    letter-spacing: -0.015em;
+  }
 }
 .showcase-sub { margin-top: 24px; max-width: 520px; color: var(--muted); font-size: 15px; line-height: 1.6; }
 
@@ -1057,6 +1068,14 @@ section { position: relative; }
   font-weight: 800;
   letter-spacing: -0.03em;
   line-height: 1.02;
+  /* Korean has no word spaces, so the default wrap can break a
+   * single Hangul word mid-syllable on narrow mobile widths.
+   * `keep-all` anchors on syllable clusters, `overflow-wrap` rescues
+   * very long unbroken runs, `text-wrap: balance` evens out the
+   * resulting ragged lines so the headline doesn't look top-heavy. */
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  text-wrap: balance;
 }
 .cta h2 em { font-style: normal; color: var(--accent); }
 .cta .sub {
@@ -3213,6 +3232,17 @@ section { position: relative; }
   .section-pad, .products, .certs, .trusted, .insights, .cta { padding: 80px 0; }
   .statement { padding: 100px 0; }
   .hero-headline { font-size: clamp(40px, 12vw, 64px); }
+  /* The hero-tagline ("ARAMID 62.3% · FR RAYON 36.6% · ANTISTATIC 1.1%")
+   * is inline-block with heavy .32em tracking, so the long mono string
+   * overflows the right edge on phones. Cap width to the available
+   * container minus a 16px breathing edge, allow the tracking to relax
+   * a touch, and let it wrap so nothing clips. */
+  .hero-tagline {
+    max-width: calc(100% - 16px);
+    letter-spacing: .18em;
+    white-space: normal;
+    word-break: break-word;
+  }
   /* Footer logo shrinks alongside the in-nav mark on mobile (P3). */
   .footer .brand-foot .logo-img { height: 60px; }
 }

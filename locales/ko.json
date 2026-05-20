@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "NJ SAFETY — 산업 안전복 전문",
-    "description": "아라미드 원단으로 설계된 산업용 방염 작업복. NFPA 2112 · HRC2 · EN ISO 11612 국제 인증. 1987년부터 나정엔터프라이즈."
+    "description": "아라미드 원단으로 설계된 산업용 방염 작업복. NFPA 2112 · HRC2 · EN ISO 11612 국제 인증. 1992년부터 나정엔터프라이즈."
   },
   "nav": {
     "about": "회사소개",
@@ -12,7 +12,7 @@
     "quoteCta": "견적 문의"
   },
   "hero": {
-    "eyebrow": "산업 안전복 · 1987년부터",
+    "eyebrow": "산업 안전복 · 1992년부터",
     "headlineLine1": "아라미드의 견고함.",
     "headlineLine2Pre": "",
     "headlineLine2Em": "안전, 그 이상의 확신.",
@@ -26,7 +26,7 @@
     "slides": [
       {
         "image": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/hero/slide-01.jpg?v=1779116571353",
-        "eyebrow": "ARAMID WORKWEAR · 1987년부터",
+        "eyebrow": "ARAMID WORKWEAR · 1992년부터",
         "headlineLine1": "아라미드의 견고함.",
         "headlineLine2Pre": "",
         "headlineLine2Em": "안전, 그 이상의 확신.",
@@ -115,7 +115,7 @@
     "quoteEm": "생명을 지키는 보호 시스템",
     "quoteMid": "을",
     "quoteEnd": "설계합니다.",
-    "sigNumber": "No. 1987 — 2026",
+    "sigNumber": "No. 1992 — 2026",
     "sigName": "— NJ Safety, Najung Enterprise Co., Ltd."
   },
   "certifications": {
@@ -161,7 +161,7 @@
     "copyright": "© 2026 NAJUNG ENTERPRISE CO., LTD."
   },
   "footer": {
-    "brandDesc": "나정엔터프라이즈는 1987년 설립된 산업안전복 전문 제조사입니다. NFPA·EN·KS 인증 기반의 OEM/ODM 생산과 글로벌 프리미엄 원단 공급을 통해 극한의 산업 현장을 보호합니다.",
+    "brandDesc": "나정엔터프라이즈는 1992년 설립된 산업안전복 전문 제조사입니다. NFPA·EN·KS 인증 기반의 OEM/ODM 생산과 글로벌 프리미엄 원단 공급을 통해 극한의 산업 현장을 보호합니다.",
     "productsHead": "Products",
     "companyHead": "Company",
     "connectHead": "Connect",
@@ -287,11 +287,11 @@
   "about": {
     "meta": {
       "title": "회사소개 — NJ SAFETY",
-      "description": "1987년 나정ETP로 시작해 40년간 산업안전복 한 분야에 집중해온 나정엔터프라이즈. 원단 개발부터 출하까지 원스톱으로 책임집니다."
+      "description": "1992년 나정ETP로 시작해 34년간 산업안전복 한 분야에 집중해온 나정엔터프라이즈. 원단 개발부터 출하까지 원스톱으로 책임집니다."
     },
     "hero": {
       "eyebrow": "About · 회사소개",
-      "yearNum": "40",
+      "yearNum": "34",
       "yearLabelK": "Years of",
       "yearLabelV": "Industrial Safety",
       "titleLine1Pre": "산업 현장이 선택한 ",
@@ -303,12 +303,12 @@
       "asidePullEm": "<em>생명을 지키는 보호 시스템</em>",
       "asidePullPost": "을 설계합니다.",
       "corpName": "NAJUNG ENTERPRISE CO., LTD.",
-      "corpEst": "EST. 1987"
+      "corpEst": "EST. 1992"
     },
     "stats": [
       {
         "lbl": "— Heritage",
-        "num": "40",
+        "num": "34",
         "unit": "YEARS",
         "desc": "창립 이래 방염복 및 산업안전복 단일 카테고리에 집중해온 시간."
       },
@@ -346,22 +346,22 @@
       "portraitImage": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/about/ceo-portrait.jpg?v=1779096958128"
     },
     "heritage": {
-      "eyebrow": "— Heritage / 1987 → Present",
-      "titlePre": "40년, ",
+      "eyebrow": "— Heritage / 1992 → Present",
+      "titlePre": "34년, ",
       "titleEm": "한 길.",
-      "no": "No. 1987 — 2026",
+      "no": "No. 1992 — 2026",
       "phases": [
         {
           "yearPre": "",
-          "yearEm": "1987",
+          "yearEm": "1992",
           "yearPost": " — 2010",
           "yearSub": "Foundation Era",
           "h3Line1": "나정ETP 창립.",
           "h3Line2": "방염복 제조의 기틀.",
-          "lede": "1987년 7월 5일, 나정ETP를 설립하며 사무복·작업복·근무복·방염복 제조에 첫발.",
+          "lede": "1992년 7월 5일, 나정ETP를 설립하며 사무복·작업복·근무복·방염복 제조에 첫발.",
           "items": [
             {
-              "y": "1987",
+              "y": "1992",
               "t": "나정ETP 설립 · 자체 봉제 라인 가동"
             },
             {
@@ -436,7 +436,7 @@
     },
     "values": {
       "eyebrow": "— Core Values / 5 Principles",
-      "titleLine1": "한 분야를 40년간 지켜온",
+      "titleLine1": "한 분야를 34년간 지켜온",
       "titleLine2Em": "다섯 가지 기준.",
       "rMicro": "Innovation · Quality · Safety · Trust · Expertise",
       "items": [
@@ -461,8 +461,8 @@
         {
           "n": "04 / 05",
           "en": "TRUST",
-          "ko": "신뢰 · 40년 한 분야",
-          "body": "유행을 따르지 않습니다. 1987년부터 같은 자리, 같은 일에 집중해온 시간이 한전·SK·LG 계열 산업 현장의 신뢰가 되었습니다."
+          "ko": "신뢰 · 34년 한 분야",
+          "body": "유행을 따르지 않습니다. 1992년부터 같은 자리, 같은 일에 집중해온 시간이 한전·SK·LG 계열 산업 현장의 신뢰가 되었습니다."
         },
         {
           "n": "05 / 05",

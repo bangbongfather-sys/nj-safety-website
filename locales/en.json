@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "NJ SAFETY — Industrial Safety Wear",
-    "description": "Aramid-engineered flame-resistant workwear for extreme industrial environments. NFPA 2112 · HRC2 · EN ISO 11612 certified. Since 1987 by Najung Enterprise."
+    "description": "Aramid-engineered flame-resistant workwear for extreme industrial environments. NFPA 2112 · HRC2 · EN ISO 11612 certified. Since 1992 by Najung Enterprise."
   },
   "nav": {
     "about": "About",
@@ -12,7 +12,7 @@
     "quoteCta": "Get a quote"
   },
   "hero": {
-    "eyebrow": "Industrial Safety Wear · Since 1987",
+    "eyebrow": "Industrial Safety Wear · Since 1992",
     "headlineLine1": "Aramid integrity.",
     "headlineLine2Pre": "",
     "headlineLine2Em": "Safety, beyond assurance.",
@@ -26,7 +26,7 @@
     "slides": [
       {
         "image": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/hero/slide-01.jpg?v=1779116571353",
-        "eyebrow": "ARAMID WORKWEAR · Since 1987",
+        "eyebrow": "ARAMID WORKWEAR · Since 1992",
         "headlineLine1": "Aramid integrity.",
         "headlineLine2Pre": "",
         "headlineLine2Em": "Safety, beyond assurance.",
@@ -115,7 +115,7 @@
     "quoteEm": "We engineer protection systems",
     "quoteMid": " that",
     "quoteEnd": "preserve life.",
-    "sigNumber": "No. 1987 — 2026",
+    "sigNumber": "No. 1992 — 2026",
     "sigName": "— NJ Safety, Najung Enterprise Co., Ltd."
   },
   "certifications": {
@@ -161,7 +161,7 @@
     "copyright": "© 2026 NAJUNG ENTERPRISE CO., LTD."
   },
   "footer": {
-    "brandDesc": "Najung Enterprise has manufactured industrial safety wear since 1987. We supply OEM/ODM production with NFPA, EN and KS certifications, sourcing premium fabrics globally to protect workers in the harshest industrial environments.",
+    "brandDesc": "Najung Enterprise has manufactured industrial safety wear since 1992. We supply OEM/ODM production with NFPA, EN and KS certifications, sourcing premium fabrics globally to protect workers in the harshest industrial environments.",
     "productsHead": "Products",
     "companyHead": "Company",
     "connectHead": "Connect",
@@ -287,11 +287,11 @@
   "about": {
     "meta": {
       "title": "About — NJ SAFETY",
-      "description": "Founded as Najung ETP in 1987, Najung Enterprise has focused on industrial safety wear for 40 years. From fabric R&D to despatch — every stage handled in-house."
+      "description": "Founded as Najung ETP in 1992, Najung Enterprise has focused on industrial safety wear for 34 years. From fabric R&D to despatch — every stage handled in-house."
     },
     "hero": {
       "eyebrow": "About · Company",
-      "yearNum": "40",
+      "yearNum": "34",
       "yearLabelK": "Years of",
       "yearLabelV": "Industrial Safety",
       "titleLine1Pre": "The flame-resistant partner ",
@@ -303,12 +303,12 @@
       "asidePullEm": "<em>We engineer protection systems that preserve life</em>",
       "asidePullPost": ".",
       "corpName": "NAJUNG ENTERPRISE CO., LTD.",
-      "corpEst": "EST. 1987"
+      "corpEst": "EST. 1992"
     },
     "stats": [
       {
         "lbl": "— Heritage",
-        "num": "40",
+        "num": "34",
         "unit": "YEARS",
         "desc": "Time spent on a single category — flame-resistant and industrial safety wear."
       },
@@ -335,7 +335,7 @@
       "eyebrow": "— CEO Message",
       "titleLine1": "Chosen on site,",
       "titleLine2Em": "the closest FR partner.",
-      "paragraph1": "We started with one conviction: the safety of the people working on industrial sites can never be a matter of compromise. Forty years on, that conviction has not changed.",
+      "paragraph1": "We started with one conviction: the safety of the people working on industrial sites can never be a matter of compromise. Thirty-four years on, that conviction has not changed.",
       "paragraph2": "Across those years we have stayed within one category — flame-resistant workwear — handling fabric, sewing, certification and after-sales in-house. The reason KEPCO partners, SK and LG affiliates and other leading Korean sites keep returning to NJ SAFETY is not that our garments look better, but that we have never once looked away from the work of protecting the people who wear them.",
       "paragraph3": "We will continue to protect the industrial floor in the closest, most certain way we know how.",
       "badge": "CEO · Message",
@@ -346,22 +346,22 @@
       "portraitImage": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/about/ceo-portrait.jpg?v=1779096958128"
     },
     "heritage": {
-      "eyebrow": "— Heritage / 1987 → Present",
-      "titlePre": "40 years, ",
+      "eyebrow": "— Heritage / 1992 → Present",
+      "titlePre": "34 years, ",
       "titleEm": "one path.",
-      "no": "No. 1987 — 2026",
+      "no": "No. 1992 — 2026",
       "phases": [
         {
           "yearPre": "",
-          "yearEm": "1987",
+          "yearEm": "1992",
           "yearPost": " — 2010",
           "yearSub": "Foundation Era",
           "h3Line1": "Najung ETP founded.",
           "h3Line2": "The base for FR manufacturing.",
-          "lede": "On 5 July 1987, Najung ETP was founded to manufacture office wear, workwear, uniforms and flame-resistant garments.",
+          "lede": "On 5 July 1992, Najung ETP was founded to manufacture office wear, workwear, uniforms and flame-resistant garments.",
           "items": [
             {
-              "y": "1987",
+              "y": "1992",
               "t": "Najung ETP established · in-house sewing line"
             },
             {
@@ -436,7 +436,7 @@
     },
     "values": {
       "eyebrow": "— Core Values / 5 Principles",
-      "titleLine1": "Forty years in one field,",
+      "titleLine1": "Thirty-four years in one field,",
       "titleLine2Em": "five standards.",
       "rMicro": "Innovation · Quality · Safety · Trust · Expertise",
       "items": [
@@ -461,8 +461,8 @@
         {
           "n": "04 / 05",
           "en": "TRUST",
-          "ko": "40 Years, One Field",
-          "body": "We do not chase trends. Forty years on the same ground, doing the same work, is what has earned the trust of KEPCO, SK and LG-affiliated sites."
+          "ko": "34 Years, One Field",
+          "body": "We do not chase trends. Thirty-four years on the same ground, doing the same work, is what has earned the trust of KEPCO, SK and LG-affiliated sites."
         },
         {
           "n": "05 / 05",
