@@ -3267,27 +3267,58 @@ section { position: relative; }
  * darker top-and-bottom vertical fade so the headline / scroll meta
  * stay legible against any background. */
 @media (max-width: 639px) {
+  /* Mobile hero stacks the image on top and the text below — so the
+   * model + featured product are never cropped by cover-fit or covered
+   * by the headline overlay (which is what the desktop full-bleed
+   * layout does). Desktop (≥640px) is unchanged. */
   .hero {
     height: auto;
     min-height: 0;
-    /* min(640px, 80vh) — leaves room for the section below to peek
-     * above the fold so users know to scroll. */
-    height: min(640px, 80vh);
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-3, #0d0d0e);
+  }
+  /* Image banner. aspect-ratio 16/10 closely matches the source photos
+   * (hero.jpg 1779×1088 ≈ 16:9.8, slides 02/03 2000×1125 = 16:9), so
+   * object-fit:cover shows the full subject with minimal side crop
+   * (~5% on the 16:9 slides, zero on hero.jpg). */
+  .hero-bg {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    flex: 0 0 auto;
   }
   .hero-img,
   .hero-bg-slide .ed-img-img {
-    object-position: 60% center;
+    object-position: center;
   }
-  /* Stronger vertical gradient on top of the existing horizontal one
-   * — covers the text block + bottom meta even when the photo is
-   * bright in the centre. Layered ON TOP of `.hero-overlay`'s own
-   * stack via a sibling element would be ideal, but `.hero-overlay`
-   * already paints multi-layer backgrounds; we just retune it here
-   * for mobile so the existing horizontal gradient still applies. */
+  /* hero-overlay / accent / grain stay absolute inset:0; they paint
+   * over the full .hero, but hero-content + hero-meta below (later in
+   * DOM, position:relative, opaque background) cover them in the text
+   * region — so visually the gradient ends at the image's bottom edge. */
   .hero-overlay {
-    background:
-      linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.35) 50%, rgba(0,0,0,.65) 100%),
-      linear-gradient(90deg, rgba(13,13,14,.85) 0%, rgba(13,13,14,.55) 50%, rgba(13,13,14,.55) 100%);
+    background: linear-gradient(180deg, rgba(0,0,0,.15) 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,.55) 100%);
+  }
+  /* Text content sits in normal flow below the image, no overlay. */
+  .hero-content {
+    position: relative;
+    inset: auto;
+    display: block;
+    padding: 32px 0 28px;
+    background: var(--bg-3, #0d0d0e);
+  }
+  .hero-content .wrap {
+    width: 100%;
+  }
+  /* Carousel controls re-anchored to the image area's centre/bottom
+   * since .hero is now much taller than the image. */
+  .hero-nav-arrow {
+    top: calc((100vw * 10 / 16) / 2);
+  }
+  .hero-dots {
+    top: calc((100vw * 10 / 16) - 36px);
+    bottom: auto;
   }
 }
 
