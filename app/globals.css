@@ -571,12 +571,12 @@ section { position: relative; }
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: minmax(280px, 320px);
-  /* 20 → 32 → 48 (incrementally). Operator preference is more air
-   * between cards; 48 reads as "deliberately spaced" the way high-end
-   * B2B workwear sites do (Mammut Pro, Engelbert Strauss). Mobile
-   * still falls into a single column so the 48 just becomes vertical
-   * spacing — still reasonable. */
-  gap: 48px;
+  /* 20 → 32 → 48 → 60 (incrementally per operator preference). At 60
+   * adjacent cards stop optically pairing — each product reads as a
+   * standalone object, which is the Mammut Pro / Engelbert Strauss
+   * catalog convention. Mobile (≤ 1 column) still works — the gap
+   * just becomes vertical row spacing. */
+  gap: 60px;
   padding: 0;
   margin: 0;
 }
