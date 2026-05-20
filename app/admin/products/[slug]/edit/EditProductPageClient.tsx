@@ -80,9 +80,12 @@ type Save =
   | { status: 'done'; sha: string }
   | { status: 'error'; message: string };
 
+const SLUG_RE = /^[a-z0-9][a-z0-9-]{0,62}[a-z0-9]$/;
+
 export default function EditProductPage() {
   const params = useParams<{ slug: string }>();
-  const slug = params?.slug ?? '';
+  const rawSlug = params?.slug ?? '';
+  const slug = SLUG_RE.test(rawSlug) ? rawSlug : '';
   const FILE_PATH = `data/products/${slug}.json`;
 
   const { state } = useAdmin();
@@ -121,7 +124,11 @@ export default function EditProductPage() {
 
   // ── Load JSON on mount ────────────────────────────────────────────
   useEffect(() => {
-    if (!pat || !slug) return;
+    if (!pat) return;
+    if (!slug) {
+      setLoad({ status: 'error', message: `잘못된 제품 슬러그: "${rawSlug}"` });
+      return;
+    }
     let cancelled = false;
     (async () => {
       try {
@@ -141,7 +148,7 @@ export default function EditProductPage() {
       }
     })();
     return () => { cancelled = true; };
-  }, [pat, slug, FILE_PATH]);
+  }, [pat, slug, rawSlug, FILE_PATH]);
 
   const dirty = useMemo(() => {
     if (load.status !== 'ready' || !draft) return false;
