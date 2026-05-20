@@ -892,8 +892,15 @@
   .about-page .ab-industries-grid { grid-template-columns: repeat(2, 1fr); }
   .about-page .ab-step::after { display: none; }
 }
-@media (max-width: 980px) {
+/* About hero stacks at <lg (1024px). Pulled out of the 980px block
+ * so the hero collapses on iPad-portrait (810px) and small laptops —
+ * at the old 980px floor the left text + right aside both ran at
+ * ~440px and the "K-Safety, since 1992." pull-quote wrapped awkwardly.
+ * The other ab-* rules at 980px stay until P3 sweeps the breakpoints. */
+@media (max-width: 1023px) {
   .about-page .ab-hero-content { grid-template-columns: 1fr; gap: 48px; }
+}
+@media (max-width: 980px) {
   .about-page .ab-stats-grid { grid-template-columns: 1fr 1fr; }
   .about-page .ab-timeline { grid-template-columns: 1fr; gap: 60px; }
   .about-page .ab-timeline::before { display: none; }
