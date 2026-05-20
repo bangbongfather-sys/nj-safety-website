@@ -370,6 +370,48 @@
     "images": [
       "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njssyyy/card-main.jpg?v=1779202660750",
       "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njssyyy/card-hover.jpg?v=1779201745018"
+    ],
+    "brand": "NJ SAFETY",
+    "model": "NJSSYYY-YY",
+    "category": "ARAMID FR SERIES · SUMMER SHIRT",
+    "name": "아라미드 하계 남방",
+    "subtitle": "현장의 일상복, 셔츠로 다시 그리다",
+    "tagline": "두 톤 패널 + 가슴 트윈 리플렉티브 + 라벨링 디테일. 정전기·내열 환경의 단정한 외근복을 위한 NJ Safety의 새 남방.",
+    "summarySpecs": [
+      {
+        "label": "원단 구성",
+        "value": "Meta-Aramid 65% / FR Rayon 33% / Antistatic 2%"
+      },
+      {
+        "label": "컬러",
+        "value": "MELANGE GRAY + LIGHT GRAY"
+      },
+      {
+        "label": "사이즈",
+        "value": "90 / 95 / 100 / 105 / 110/115/120"
+      },
+      {
+        "label": "원산지",
+        "value": "Made in Korea"
+      },
+      {
+        "label": "인증",
+        "value": "시험성적서"
+      }
+    ],
+    "contactInfo": [
+      {
+        "label": "tel.",
+        "value": "02-777-3079"
+      },
+      {
+        "label": "email.",
+        "value": "njsafety91@naver.com"
+      },
+      {
+        "label": "made in",
+        "value": "Korea"
+      }
     ]
   },
   "testReports": {
