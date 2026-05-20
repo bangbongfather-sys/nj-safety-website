@@ -68,11 +68,18 @@ function fmtDate(iso?: string): string {
 }
 
 function sanitizePdfName(name: string): string {
+  // ASCII-only — the upload Worker's KEY_RE is /^[a-z0-9_\-./]+$/i
+  // and rejects every other code point with a 400 (Invalid key).
+  // We tried keeping Korean here originally but the Worker doesn't
+  // accept it, so any 한글 파일명 strip down to hyphens here. The
+  // display name (file.name) is still stored separately on the
+  // testReport entry, so the user-visible label keeps the Korean.
   return name
     .toLowerCase()
     .replace(/\.pdf$/i, '')
-    .replace(/[^a-z0-9가-힣\-]/g, '-')
+    .replace(/[^a-z0-9\-]/g, '-')
     .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
     .slice(0, 50);
 }
 

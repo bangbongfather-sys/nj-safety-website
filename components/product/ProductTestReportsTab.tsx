@@ -83,11 +83,16 @@ export default function ProductTestReportsTab({
       // R2 key: products/<slug>/reports/<timestamp>-<safe-name>.pdf
       // Timestamp prevents collisions when the admin re-uploads a file
       // with the same name; safe-name keeps the URL human-readable.
+      // ASCII-only — Worker's KEY_RE rejects every code point outside
+      // [a-z0-9_\-./], so 한글 파일명 ("pk방염-니트.pdf" etc.) collapse
+      // to hyphens here. The display name in newFile.name preserves
+      // the original characters for the visible label.
       const safeName = file.name
         .toLowerCase()
         .replace(/\.pdf$/i, '')
-        .replace(/[^a-z0-9가-힣\-]/g, '-')
+        .replace(/[^a-z0-9\-]/g, '-')
         .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '')
         .slice(0, 50);
       const key = `products/${slug}/reports/${Date.now()}-${safeName || 'report'}.pdf`;
       const r = await fetch(
