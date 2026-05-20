@@ -450,5 +450,15 @@
         "value": "Korea"
       }
     ]
+  },
+  "testReports": {
+    "files": [
+      {
+        "url": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njs-av100/reports/1779288119608-25-afn115966.pdf?v=1779288120721",
+        "name": "25년 AFN115966 망사안감 가라미",
+        "size": 1522404,
+        "uploadedAt": "2026-05-20T14:42:00.721Z"
+      }
+    ]
   }
 }
