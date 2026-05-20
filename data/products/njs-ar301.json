@@ -392,5 +392,15 @@
       "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njs-ar301/card-main.jpg?v=1779118156217",
       "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njs-ar301/card-hover.jpg?v=1779118444980"
     ]
+  },
+  "testReports": {
+    "files": [
+      {
+        "url": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njs-ar301/reports/1779288091374-25-afp160996.pdf?v=1779288093083",
+        "name": "25년 하복 상의 자켓 데님블루(AFP160996)",
+        "size": 1549802,
+        "uploadedAt": "2026-05-20T14:41:33.083Z"
+      }
+    ]
   }
 }
