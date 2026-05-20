@@ -11,12 +11,8 @@ function stripTags(s: string | undefined): string {
   return (s ?? '').replace(/<[^>]+>/g, '').trim();
 }
 
-function formatBytes(n: number | undefined): string {
-  if (!n) return '';
-  if (n < 1024) return `${n} B`;
-  if (n < 1024 * 1024) return `${(n / 1024).toFixed(1)} KB`;
-  return `${(n / 1024 / 1024).toFixed(1)} MB`;
-}
+// formatBytes() removed alongside the inline test-reports list (2026-05) —
+// the dedicated /resources/test-reports page now owns that listing.
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
@@ -116,86 +112,15 @@ export default async function ResourcesPage({ params }: Props) {
             title={dict.resources.testReports.title}
             desc={dict.resources.testReports.desc}
             cta={loc === 'ko' ? `↓ ${reports.length}건 보기` : `↓ ${reports.length} files`}
-            href="#test-reports"
+            href={`/${loc}/resources/test-reports/`}
           />
         </div>
 
-        {/* Test reports table */}
-        <h2
-          id="test-reports"
-          style={{
-            marginTop: 80,
-            fontFamily: 'var(--display)',
-            fontSize: 'clamp(28px, 3.4vw, 44px)',
-            fontWeight: 900,
-            letterSpacing: '-.02em',
-            color: 'var(--ink, #fff)',
-            scrollMarginTop: 112,
-          }}
-        >
-          {dict.resources.testReports.title}
-        </h2>
+        {/* Inline test-reports list removed 2026-05 — moved to its own
+         * route at /resources/test-reports so each entry can carry the
+         * product photo without making the hub page too tall. */}
 
-        {reports.length === 0 ? (
-          <div
-            style={{
-              marginTop: 24,
-              padding: '48px 24px',
-              border: '1px dashed var(--border-soft)',
-              borderRadius: 12,
-              color: 'var(--muted)',
-              textAlign: 'center',
-            }}
-          >
-            {dict.resources.testReports.empty}
-          </div>
-        ) : (
-          <div style={{ marginTop: 24, display: 'grid', gap: 8 }}>
-            {reports.map((r) => (
-              <a
-                key={`${r.productSlug}-${r.url}`}
-                href={r.url}
-                target="_blank"
-                rel="noreferrer"
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: '1fr auto',
-                  alignItems: 'center',
-                  gap: 16,
-                  padding: '16px 20px',
-                  background: 'rgba(255,255,255,.03)',
-                  border: '1px solid var(--border-soft)',
-                  borderRadius: 10,
-                  textDecoration: 'none',
-                  color: 'inherit',
-                  transition: 'border-color .15s, background .15s',
-                }}
-              >
-                <div>
-                  <div
-                    style={{
-                      fontSize: 12,
-                      color: 'var(--muted)',
-                      letterSpacing: '.04em',
-                      textTransform: 'uppercase',
-                    }}
-                  >
-                    {r.productModel ? `${r.productModel} · ` : ''}
-                    {r.productName}
-                  </div>
-                  <div style={{ marginTop: 4, fontWeight: 700 }}>
-                    {r.name || r.url.split('/').pop() || 'report'}
-                  </div>
-                </div>
-                <div style={{ fontSize: 13, color: 'var(--muted)', whiteSpace: 'nowrap' }}>
-                  {formatBytes(r.size)} {r.size ? '·' : ''} ↓
-                </div>
-              </a>
-            ))}
-          </div>
-        )}
-
-        <p style={{ marginTop: 40, color: 'var(--muted)', fontSize: 13 }}>
+        <p style={{ marginTop: 80, color: 'var(--muted)', fontSize: 13 }}>
           ←{' '}
           <Link href={`/${loc}/`} style={{ color: 'inherit', textDecoration: 'underline' }}>
             {loc === 'ko' ? '홈으로' : 'Back home'}

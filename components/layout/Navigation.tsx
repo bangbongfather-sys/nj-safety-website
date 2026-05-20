@@ -48,9 +48,11 @@ function getDropdownItems(
     }));
   }
   if (key === 'resources') {
-    // Catalog + test reports live as anchored sections on the hub page
-    // (each card has scroll-margin so the offset under the sticky nav
-    // is correct); the size guide is its own route.
+    // Catalog still lives as an anchored card on the hub page (one
+    // brand-level PDF doesn't warrant its own route). Size guide
+    // and test reports each have their own page now — the test
+    // reports listing with product photos is too tall to comfortably
+    // sit under the catalog/sizeguide cards on the hub.
     return [
       {
         href: `${baseHref}#catalog`,
@@ -61,7 +63,7 @@ function getDropdownItems(
         label: locale === 'ko' ? '사이즈 가이드' : 'Size Guide',
       },
       {
-        href: `${baseHref}#test-reports`,
+        href: `/${locale}/resources/test-reports/`,
         label: locale === 'ko' ? '시험성적서' : 'Test Reports',
       },
     ];
