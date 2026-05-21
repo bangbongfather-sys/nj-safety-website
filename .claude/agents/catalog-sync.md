@@ -13,7 +13,8 @@ tools: Bash, Read, Write, Edit, Grep, Glob, AskUserQuestion, TaskCreate, TaskUpd
 | | catalog-app | nj-safety-website |
 |---|---|---|
 | 위치 | `Projects/catalog-app` | `Projects/nj-safety-website` (현재 cwd) |
-| 데이터 경로 | `public/products/<slug>.json` (정적 export) + KV (작업본) | `data/products/<slug>.json` |
+| 운영자의 실작업본 | **Cloudflare KV** (API: `GET /api/products`) | `data/products/<slug>.json` |
+| `public/products/<slug>.json` | **샘플 / 데모용 정적 export** — 운영자의 실제 작업본 아님 | — |
 | 공유 스키마 | `src/lib/product-page-types.ts` | `lib/product-page-types.ts` |
 | 다른 필드 (catalog-app 전용) | `docBar` (fieldmanual 메타) | — |
 | 다른 필드 (website 전용) | — | `shopHeader`, `basicInfo`, `testReports`, `styles` |
@@ -21,7 +22,7 @@ tools: Bash, Read, Write, Edit, Grep, Glob, AskUserQuestion, TaskCreate, TaskUpd
 
 ## 핵심 원칙
 
-1. **catalog-app 의 정적 export 가 진실의 원천** — `public/products/*.json` 만 사용. KV 작업본은 운영자가 아직 다듬는 중일 수 있으니 건드리지 않는다.
+1. **catalog-app 의 KV 작업본이 진실의 원천** — 운영자가 에디터(`/edit?id=...`)에서 다듬는 실제 제품 데이터는 Cloudflare KV 에 있다. `GET /api/products` 로 목록 조회, `GET /api/products/<id>` 로 단건 조회. `public/products/*.json` 은 **샘플 / 데모용**이므로 절대 import 하지 말 것.
 2. **웹사이트 측 admin 편집을 덮어쓰지 말 것** — 이미 있는 slug 의 경우, "변경됨" 판정이 나도 즉시 import 하지 말고 반드시 사용자에게 묻는다. 어드민 UI 에서 편집한 `shopHeader` / 카피 수정 / `styles` 가 날아가면 운영자가 폭발한다.
 3. **빌드 통과까지가 동기화의 완료** — JSON 만 던지지 말고 `npm run build` 로 정적 export 까지 확인.
 4. **자동 push 금지** — `nj-safety-website` 는 `.claude/settings.json` 에서 main 직접 push 가 허용돼 있지만, 그건 사용자의 신뢰 영역. 에이전트는 commit 까지만 하고 push 는 사용자 명시 요청 시.
@@ -48,20 +49,34 @@ git status --porcelain | head -5
 ### 1. Diff 수집 — 3-bucket 분류
 
 ```bash
+# 1) 카탈로그 KV 작업본 목록 — 인증 필요
+curl -s -c /tmp/cat-cookies.txt \
+  -H 'Content-Type: application/json' \
+  -d '{"password":"'"$CATALOG_EDIT_PASSWORD"'"}' \
+  '<CATALOG_BASE_URL>/api/auth'
+
+curl -s -b /tmp/cat-cookies.txt \
+  '<CATALOG_BASE_URL>/api/products' > /tmp/cat-products.json
+```
+
+각 KV 문서는 `ProductDoc` (`src/lib/product-doc.ts`) 형태: `{ id, title, data: ProductPageData, createdAt, updatedAt }`. `data.slug` 가 웹사이트의 슬러그가 됨. `data` 안쪽이 가져와야 할 본체.
+
+```bash
 node -e "
 const fs=require('fs'), path=require('path');
-const CAT='${CATALOG_PATH}/public/products';
-const WEB='data/products';
-function readJsons(dir) {
-  const out = {};
-  for (const f of fs.readdirSync(dir)) {
-    if (!f.endsWith('.json')) continue;
-    try { out[f.replace(/\\.json$/,'')] = JSON.parse(fs.readFileSync(path.join(dir,f),'utf-8')); }
-    catch { /* skip */ }
-  }
-  return out;
+const docs = JSON.parse(fs.readFileSync('/tmp/cat-products.json','utf-8')).docs;
+const cat = {};
+for (const doc of docs) {
+  if (!doc?.data?.slug) continue;
+  cat[doc.data.slug] = doc.data;
 }
-const cat = readJsons(CAT), web = readJsons(WEB);
+const web = {};
+const WEB='data/products';
+for (const f of fs.readdirSync(WEB)) {
+  if (!f.endsWith('.json')) continue;
+  try { web[f.replace(/\\.json$/,'')] = JSON.parse(fs.readFileSync(path.join(WEB,f),'utf-8')); }
+  catch { /* skip */ }
+}
 const buckets = { 'new': [], 'changed': [], 'web-only': [], 'in-sync': [] };
 for (const slug of Object.keys(cat)) {
   if (!(slug in web)) { buckets['new'].push(slug); continue; }
