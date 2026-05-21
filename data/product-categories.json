@@ -14,8 +14,10 @@
     {
       "id": "winter",
       "nameKo": "겨울(WINTER)",
-      "nameEn": "Spring / Fall",
-      "productSlugs": []
+      "nameEn": "Winter Season",
+      "productSlugs": [
+        "njs-aj100"
+      ]
     }
   ]
 }
