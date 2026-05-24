@@ -45,6 +45,14 @@ html, body {
   text-rendering: optimizeLegibility;
   font-feature-settings: 'ss01', 'cv11', 'kern';
   letter-spacing: -0.011em;
+  /* Lock iOS Safari to user-chosen base font-size — without this,
+   * Safari upscales body text in landscape orientation and (more
+   * importantly here) auto-zooms when a < 16px input gets focused,
+   * which has been the most-reported B2B form annoyance on the
+   * contact page. Paired with the 16px input rule below it kills
+   * the zoom completely. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body { overflow-x: hidden; }
@@ -3467,4 +3475,53 @@ section { position: relative; }
 .cb-create-btn:hover {
   filter: brightness(1.06);
   transform: translateY(-1px);
+}
+
+/* ============================================================
+ * Mobile touch-target + input-zoom guardrails (added 2026-05-22
+ * from the Claude design handoff mobile-optimization pass).
+ *
+ * 1. iOS Safari auto-zooms when a focused <input> has font-size
+ *    < 16px. The 16px floor below + text-size-adjust:100% on the
+ *    html element together kill that zoom — vital for B2B
+ *    operators filling out the /contact form on a phone.
+ * 2. Common interactive elements (footer links, .btn family,
+ *    form fields, accordion buttons) get min-height: 44px under
+ *    the 980px breakpoint so each touch target hits the iOS HIG
+ *    recommendation. Scoped to selectors that are ALWAYS
+ *    standalone — never bare `a` or `button`, which would push
+ *    inline links inside body copy into oversized rows.
+ * ============================================================ */
+@media (max-width: 980px) {
+  /* Input sizing — 16px font + 44px target. Excludes hidden /
+   * checkbox / radio. Padding stays whatever the component
+   * declared so we don't break tightly-styled fields. */
+  input:not([type='hidden']):not([type='checkbox']):not([type='radio']):not([type='range']),
+  select,
+  textarea {
+    font-size: 16px;
+    min-height: 44px;
+  }
+  textarea { min-height: 120px; }
+
+  /* Touch-target floor on standalone interactive surfaces.
+   * Bare `a` is intentionally excluded — would push inline
+   * paragraph links into 44px rows. We target list-style links
+   * (footer / legal / drawer accordions) and button-like CTAs
+   * explicitly. */
+  .footer ul li a,
+  .footer .legal a,
+  .footer .legal span,
+  .btn,
+  .btn-quote,
+  .lang,
+  .pdt-tab,
+  .menu-dropdown-all,
+  .menu-dropdown-item,
+  button.ptr-add,
+  button.ptr-del {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
 }
