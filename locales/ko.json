@@ -128,7 +128,21 @@
     "seasonItemsLabel": "Items",
     "seasonEmpty": "곧 추가될 예정입니다.",
     "tabAll": "전체",
-    "tabCountSuffix": "Products · 2026 Collection"
+    "tabCountSuffix": "Products · 2026 Collection",
+    "seasons": {
+      "summer": {
+        "headline": "여름 현장은 <em>가벼움</em>이 곧 안전입니다.",
+        "lede": "한여름 외근, 정전기 정비, 옥외 보수 — 두꺼운 자켓이 어려운 환경을 위한 메쉬 통기 구조와 가벼운 평량."
+      },
+      "sf": {
+        "headline": "사계절 표준, <em>매일의 한 벌.</em>",
+        "lede": "봄·가을의 간절기 레이어링. 셔츠 위에 한 벌, 자켓 안에 한 벌 — 어느 쪽이든 단정합니다."
+      },
+      "winter": {
+        "headline": "한랭 옥외 현장을 위해, <em>3-레이어 보온.</em>",
+        "lede": "영하의 점검·정비 현장에서도 단정한 실루엣을 유지하는 동계 라인업."
+      }
+    }
   },
   "showcase": {
     "eyebrow": "— IN THE FIELD",

@@ -128,7 +128,21 @@
     "seasonItemsLabel": "Items",
     "seasonEmpty": "Coming soon.",
     "tabAll": "All",
-    "tabCountSuffix": "Products · 2026 Collection"
+    "tabCountSuffix": "Products · 2026 Collection",
+    "seasons": {
+      "summer": {
+        "headline": "On summer sites, <em>lightness</em> is safety.",
+        "lede": "Mesh ventilation and a low gsm built for outdoor inspection, electrical maintenance, and long days under the sun."
+      },
+      "sf": {
+        "headline": "Every-season standard, <em>your daily pair.</em>",
+        "lede": "Mid-season layering: clean over a shirt, clean under a jacket — composed either way."
+      },
+      "winter": {
+        "headline": "Built for sub-zero outdoor sites: <em>3-layer warmth.</em>",
+        "lede": "A winter line that holds its silhouette even on the coldest inspection runs."
+      }
+    }
   },
   "showcase": {
     "eyebrow": "— IN THE FIELD",

@@ -32,7 +32,12 @@ type Category = {
   productSlugs: string[];
 };
 
-type CategoriesFile = { categories: Category[] };
+type CategoriesFile = {
+  categories: Category[];
+  /** Editor's Pick — the slug featured on /products in the big card.
+   *  Added 2026-05 alongside the products-page redesign. */
+  featuredSlug?: string;
+};
 
 type ProductLite = {
   slug: string;
@@ -71,6 +76,7 @@ export default function CategoriesAdminPage() {
   const pat = state.status === 'authenticated' ? state.pat : '';
 
   const [categories, setCategories] = useState<Category[] | null>(null);
+  const [featuredSlug, setFeaturedSlug] = useState<string>('');
   const [sha, setSha] = useState<string | null>(null);
   const [products, setProducts] = useState<ProductLite[] | null>(null);
   const [err, setErr] = useState<string | null>(null);
@@ -90,9 +96,11 @@ export default function CategoriesAdminPage() {
       if (f) {
         const parsed = JSON.parse(f.content) as CategoriesFile;
         setCategories(parsed.categories ?? []);
+        setFeaturedSlug(parsed.featuredSlug ?? '');
         setSha(f.sha);
       } else {
         setCategories([]);
+        setFeaturedSlug('');
         setSha(null);
       }
 
@@ -234,7 +242,12 @@ export default function CategoriesAdminPage() {
     setSaving(true);
     setErr(null);
     try {
-      const text = JSON.stringify({ categories }, null, 2) + '\n';
+      // Include featuredSlug in the write — empty string drops the
+      // Editor's Pick; the public page falls back to the first
+      // available product when featuredSlug is unset.
+      const out: CategoriesFile = { categories };
+      if (featuredSlug) out.featuredSlug = featuredSlug;
+      const text = JSON.stringify(out, null, 2) + '\n';
       const r = await ghPutFile(
         pat,
         CATEGORIES_PATH,
@@ -250,7 +263,7 @@ export default function CategoriesAdminPage() {
     } finally {
       setSaving(false);
     }
-  }, [pat, categories, sha]);
+  }, [pat, categories, sha, featuredSlug]);
 
   // Lookup helper for the product picker — turns a slug into a label.
   const productMap = useMemo(() => {
@@ -283,6 +296,61 @@ export default function CategoriesAdminPage() {
       </header>
 
       {err ? <p className="admin-err">에러: {err}</p> : null}
+
+      {/* ── Featured product (Editor's Pick) ────────────────────────
+        * Renders the big card at the top of /products. One slug only —
+        * empty = no featured picked, public page falls back to the
+        * first available product. */}
+      {products !== null ? (
+        <div
+          className="admin-card admin-card-flat"
+          style={{ padding: 20, marginBottom: 24, display: 'grid', gap: 14 }}
+        >
+          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
+            <strong style={{ fontSize: 15 }}>
+              ⭐ 이번 시즌 대표작 (Editor's Pick)
+            </strong>
+            <span style={{ fontSize: 12, color: 'var(--muted)' }}>
+              /products 페이지 상단 큰 카드에 노출됩니다
+            </span>
+          </div>
+          <label style={{ display: 'block' }}>
+            <div style={{ fontSize: 12, color: 'var(--muted)', marginBottom: 6 }}>
+              제품 선택
+            </div>
+            <select
+              value={featuredSlug}
+              onChange={(e) => {
+                setFeaturedSlug(e.target.value);
+                setDirty(true);
+                setSavedAt(null);
+              }}
+              style={{
+                width: '100%',
+                maxWidth: 480,
+                padding: '10px 12px',
+                background: 'rgba(255,255,255,.04)',
+                border: '1px solid var(--border-soft)',
+                borderRadius: 8,
+                color: 'var(--text)',
+                fontSize: 14,
+              }}
+            >
+              <option value="">— 선택 안 함 (첫 번째 제품 자동 사용) —</option>
+              {(products ?? []).map((p) => (
+                <option key={p.slug} value={p.slug}>
+                  {p.name} {p.model ? `· ${p.model}` : ''} ({p.slug})
+                </option>
+              ))}
+            </select>
+          </label>
+          {featuredSlug ? (
+            <p style={{ fontSize: 12, color: 'var(--muted)', margin: 0 }}>
+              현재 선택: <code>{featuredSlug}</code> — 저장하면 /products 페이지 상단에 큰 Featured 카드로 노출
+            </p>
+          ) : null}
+        </div>
+      ) : null}
 
       {categories === null || products === null ? (
         <p className="admin-meta">로딩 중...</p>
