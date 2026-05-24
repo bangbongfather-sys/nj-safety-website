@@ -873,7 +873,15 @@ section { position: relative; }
   text-transform: uppercase;
 }
 .certs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-.cert {
+/* IMPORTANT: scoped to `.certs-grid .cert` (not bare `.cert`) on
+ * 2026-05-22 — product-page.css ALSO defines a `.cert` block for
+ * the per-product 인증 list inside CareCert, and the bare selector
+ * was leaking `aspect-ratio: 1/1 + display: flex` over there.
+ * Symptom: each cert card on /products/<slug>/ rendered as a 550px
+ * tall square with huge gaps between them. Keeping these rules in
+ * lockstep with `.certs-grid` (the only place these tiles live on
+ * the homepage) makes the collision impossible. */
+.certs-grid .cert {
   aspect-ratio: 1 / 1;
   border: 1px solid var(--accent);
   background: transparent;
@@ -887,22 +895,22 @@ section { position: relative; }
  * after a tap. Keyboard focus (Tab) still gets the same swap via
  * `:focus-visible` so a11y is preserved. */
 @media (hover: hover) {
-  .cert:hover { background: var(--accent); color: #0d0d0e; }
-  .cert:hover .cert-id,
-  .cert:hover .cert-name,
-  .cert:hover .cert-note { color: #0d0d0e; }
+  .certs-grid .cert:hover { background: var(--accent); color: #0d0d0e; }
+  .certs-grid .cert:hover .cert-id,
+  .certs-grid .cert:hover .cert-name,
+  .certs-grid .cert:hover .cert-note { color: #0d0d0e; }
 }
-.cert:focus-visible { background: var(--accent); color: #0d0d0e; outline: 2px solid var(--accent); outline-offset: 2px; }
-.cert:focus-visible .cert-id,
-.cert:focus-visible .cert-name,
-.cert:focus-visible .cert-note { color: #0d0d0e; }
-.cert .cert-id {
+.certs-grid .cert:focus-visible { background: var(--accent); color: #0d0d0e; outline: 2px solid var(--accent); outline-offset: 2px; }
+.certs-grid .cert:focus-visible .cert-id,
+.certs-grid .cert:focus-visible .cert-name,
+.certs-grid .cert:focus-visible .cert-note { color: #0d0d0e; }
+.certs-grid .cert .cert-id {
   font-family: var(--mono); font-size: 11px;
   color: var(--accent);
   letter-spacing: .14em; font-weight: 500;
   transition: color .3s;
 }
-.cert .cert-name {
+.certs-grid .cert .cert-name {
   font-family: var(--display);
   font-size: 22px;
   font-weight: 800;
@@ -910,7 +918,7 @@ section { position: relative; }
   color: #fff; line-height: 1.05;
   transition: color .3s;
 }
-.cert .cert-note {
+.certs-grid .cert .cert-note {
   font-family: var(--mono); font-size: 10px;
   color: var(--muted);
   letter-spacing: .1em;
