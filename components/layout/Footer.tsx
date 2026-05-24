@@ -40,7 +40,7 @@ export default function Footer({ locale, dict, editor }: Props) {
                * dict array footer.company shrank from 5 → 4 to keep the
                * indices contiguous with the rendered items below. */}
               <li><Link href={`/${locale}/about`}><EditableText path="footer.company[0]" value={dict.footer.company[0]} editor={editor} /></Link></li>
-              <li><Link href={`/${locale}/certifications`}><EditableText path="footer.company[1]" value={dict.footer.company[1]} editor={editor} /></Link></li>
+              <li><Link href={`/${locale}/notices`}><EditableText path="footer.company[1]" value={dict.footer.company[1]} editor={editor} /></Link></li>
               <li><Link href={`/${locale}/resources/`}><EditableText path="footer.company[2]" value={dict.footer.company[2]} editor={editor} /></Link></li>
               <li><Link href={`/${locale}/contact`}><EditableText path="footer.company[3]" value={dict.footer.company[3]} editor={editor} /></Link></li>
             </ul>

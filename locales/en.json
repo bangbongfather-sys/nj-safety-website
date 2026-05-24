@@ -9,7 +9,8 @@
     "certifications": "Certifications",
     "resources": "Resources",
     "contact": "Contact",
-    "quoteCta": "Get a quote"
+    "quoteCta": "Get a quote",
+    "notices": "Notices"
   },
   "hero": {
     "eyebrow": "Industrial Safety Wear · Since 1992",
@@ -217,7 +218,7 @@
     ],
     "company": [
       "About",
-      "Certifications",
+      "Notices",
       "Resources",
       "Contact"
     ],
@@ -1021,5 +1022,37 @@
       "contact": "tel. +82-2-777-3079 / email. njsafety91@naver.com"
     },
     "changeNote": "This policy is effective as of the date above. Any future changes will be announced on this page."
+  },
+  "notices": {
+    "meta": {
+      "title": "Notices — NJ SAFETY",
+      "description": "New product launches, certification updates, events, and operating notices from NJ SAFETY."
+    },
+    "eyebrow": "— Notices",
+    "titlePre": "",
+    "titleEm": "Notices.",
+    "sub": "Product launches, certifications, events, and operating notes in one place. Filter by type or search.",
+    "filterTypeLabel": "Type",
+    "searchLabel": "Search",
+    "searchPlaceholder": "Enter a search term.",
+    "searchBtn": "Search",
+    "resultLabel": "Results",
+    "countUnit": "",
+    "colType": "Type",
+    "colTitle": "Title",
+    "colDate": "Date",
+    "allLabel": "All",
+    "types": {
+      "notice": "Notice",
+      "product": "Product",
+      "cert": "Certification",
+      "event": "Event"
+    },
+    "pinnedBadge": "Pinned",
+    "empty": "No results. Try a different term or type.",
+    "prev": "Prev",
+    "next": "Next",
+    "backToList": "← Back to list",
+    "postedOn": "Posted"
   }
 }

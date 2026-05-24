@@ -143,6 +143,11 @@ export default function DashboardPage() {
             <strong>새 제품 JSON 업로드</strong>
             <span className="admin-action-sub">catalog-app에서 export한 JSON 드래그&드롭</span>
           </Link>
+          <Link href="/admin/notices" className="admin-action">
+            <span className="admin-action-icon">N</span>
+            <strong>공지사항 관리</strong>
+            <span className="admin-action-sub">공지 / 제품 / 인증 / 행사 글 추가·수정·삭제</span>
+          </Link>
           <a href={`${SITE_PREVIEW_BASE}/ko/`} target="_blank" rel="noreferrer" className="admin-action">
             <span className="admin-action-icon">↗</span>
             <strong>실제 사이트 보기</strong>

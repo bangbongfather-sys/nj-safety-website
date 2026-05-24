@@ -9,7 +9,8 @@
     "certifications": "인증",
     "resources": "자료실",
     "contact": "문의",
-    "quoteCta": "견적 문의"
+    "quoteCta": "견적 문의",
+    "notices": "공지사항"
   },
   "hero": {
     "eyebrow": "산업 안전복 · 1992년부터",
@@ -217,7 +218,7 @@
     ],
     "company": [
       "About",
-      "Certifications",
+      "공지사항",
       "자료실",
       "Contact"
     ],
@@ -1021,5 +1022,37 @@
       "contact": "tel. 02-777-3079 / email. njsafety91@naver.com"
     },
     "changeNote": "본 방침은 시행일 기준으로 적용되며, 변경 시 본 페이지를 통해 공지합니다."
+  },
+  "notices": {
+    "meta": {
+      "title": "공지사항 — NJ SAFETY",
+      "description": "NJ SAFETY의 신제품 출시, 인증 갱신, 행사 및 운영 안내를 확인하세요."
+    },
+    "eyebrow": "— Notices",
+    "titlePre": "공지",
+    "titleEm": "사항.",
+    "sub": "신제품·인증·행사·운영 안내를 한곳에 모았습니다. 유형으로 거르거나 검색해 보세요.",
+    "filterTypeLabel": "유형",
+    "searchLabel": "검색어",
+    "searchPlaceholder": "검색어를 입력해 주세요.",
+    "searchBtn": "검색",
+    "resultLabel": "검색 결과",
+    "countUnit": "건",
+    "colType": "유형",
+    "colTitle": "제목",
+    "colDate": "게시일",
+    "allLabel": "전체",
+    "types": {
+      "notice": "공지",
+      "product": "제품",
+      "cert": "인증",
+      "event": "행사"
+    },
+    "pinnedBadge": "고정",
+    "empty": "검색 결과가 없습니다. 다른 검색어나 유형을 선택해 보세요.",
+    "prev": "이전",
+    "next": "다음",
+    "backToList": "← 목록으로",
+    "postedOn": "게시일"
   }
 }

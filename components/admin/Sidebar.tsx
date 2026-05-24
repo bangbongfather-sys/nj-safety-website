@@ -16,6 +16,7 @@ const ITEMS: NavItem[] = [
   { href: '/admin/products',   label: '제품 관리',                  section: 'main'  },
   { href: '/admin/products/categories', label: '↳ 카테고리 (하위탭)', section: 'main'  },
   { href: '/admin/resources',  label: '자료실 (PDF 업로드)',         section: 'main'  },
+  { href: '/admin/notices',    label: '공지사항 관리',               section: 'main'  },
   { href: '/admin/settings',   label: '설정',                       section: 'tools' },
 ];
 

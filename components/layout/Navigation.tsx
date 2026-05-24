@@ -118,7 +118,7 @@ export default function Navigation({ locale, dict, editor }: Props) {
   const links: { href: string; key: keyof typeof dict.nav }[] = [
     { href: `/${locale}/about`,          key: 'about' },
     { href: `/${locale}/products`,       key: 'products' },
-    { href: `/${locale}/certifications`, key: 'certifications' },
+    { href: `/${locale}/notices`,        key: 'notices' },
     { href: `/${locale}/resources`,      key: 'resources' },
     { href: `/${locale}/contact`,        key: 'contact' },
   ];
