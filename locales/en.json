@@ -99,7 +99,36 @@
       "weight": "WT",
       "use": "USE",
       "fit": "FIT"
-    }
+    },
+    "heroHairline": "Products · 2026 Collection",
+    "heroTitlePre": "Thirty-four years of one focus —",
+    "heroTitleEm": "six lines built by ",
+    "heroTitleEmAccent": "that time.",
+    "heroSub": "Meta-aramid since 1992. Certifications verified every season, patterns refined by site data, and a quietness that has not changed.",
+    "statsLabel": [
+      "Products",
+      "Seasons",
+      "Collection"
+    ],
+    "featuredEyebrow": "Editor's Pick · This Season",
+    "featuredTitlePre": "This season's ",
+    "featuredTitleEm": "signature.",
+    "featuredCtaLabel": "View detail →",
+    "editorialEyebrow": "— Material Philosophy",
+    "editorialQuotePre": "Flame retardancy applied as a finish\nfails after a single wash.\nNJ SAFETY uses only ",
+    "editorialQuoteEm": "inherently flame-resistant aramid",
+    "editorialQuotePost": ".",
+    "editorialSource": "— R&D Note No. 04 · NJ SAFETY Material Lab · 2026",
+    "ctaEyebrow": "— 2026 NJ Collection",
+    "ctaTitlePre": "The full collection\nin one ",
+    "ctaTitleEm": "catalog.",
+    "ctaSub": "Certifications, test reports, and the size chart included.",
+    "ctaPrimary": "Download catalog →",
+    "ctaSecondary": "Request a custom quote →",
+    "seasonItemsLabel": "Items",
+    "seasonEmpty": "Coming soon.",
+    "tabAll": "All",
+    "tabCountSuffix": "Products · 2026 Collection"
   },
   "showcase": {
     "eyebrow": "— IN THE FIELD",

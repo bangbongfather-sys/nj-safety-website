@@ -99,7 +99,36 @@
       "weight": "WT",
       "use": "USE",
       "fit": "FIT"
-    }
+    },
+    "heroHairline": "Products · 2026 Collection",
+    "heroTitlePre": "한 분야에 34년,",
+    "heroTitleEm": "그 시간이 만들어낸 ",
+    "heroTitleEmAccent": "여섯 가지 라인.",
+    "heroSub": "1992년부터 메타-아라미드 한 우물. 시즌마다 검증된 인증, 현장 데이터로 보정된 패턴, 그리고 변하지 않은 단정함.",
+    "statsLabel": [
+      "Products",
+      "Seasons",
+      "Collection"
+    ],
+    "featuredEyebrow": "Editor's Pick · 이번 시즌",
+    "featuredTitlePre": "이번 시즌의 ",
+    "featuredTitleEm": "대표작.",
+    "featuredCtaLabel": "상세 보기 →",
+    "editorialEyebrow": "— Material Philosophy",
+    "editorialQuotePre": "합성 처리만으로 만든 방염은\n한 번의 세탁에도 무력해집니다.\nNJ SAFETY는 ",
+    "editorialQuoteEm": "본질 방염 아라미드",
+    "editorialQuotePost": "만\n사용합니다.",
+    "editorialSource": "— R&D Note No. 04 · NJ SAFETY Material Lab · 2026",
+    "ctaEyebrow": "— 2026 NJ Collection",
+    "ctaTitlePre": "한 권에 담은\n전체 컬렉션 ",
+    "ctaTitleEm": "카탈로그.",
+    "ctaSub": "인증서 · 시험성적서 · 사이즈 차트 포함.",
+    "ctaPrimary": "카탈로그 다운로드 →",
+    "ctaSecondary": "맞춤 견적 문의 →",
+    "seasonItemsLabel": "Items",
+    "seasonEmpty": "곧 추가될 예정입니다.",
+    "tabAll": "전체",
+    "tabCountSuffix": "Products · 2026 Collection"
   },
   "showcase": {
     "eyebrow": "— IN THE FIELD",

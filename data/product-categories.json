@@ -12,6 +12,12 @@
       ]
     },
     {
+      "id": "sf",
+      "nameKo": "봄·가을(SPRING / FALL)",
+      "nameEn": "Spring / Fall",
+      "productSlugs": []
+    },
+    {
       "id": "winter",
       "nameKo": "겨울(WINTER)",
       "nameEn": "Winter Season",
@@ -19,5 +25,6 @@
         "njs-aj100"
       ]
     }
-  ]
+  ],
+  "featuredSlug": "njs-aj100"
 }
