@@ -2013,10 +2013,11 @@
   --rule: var(--tac-rule);
 
   /* On the black tactical canvas a #fff card swallowed its own (cream)
-   * text — flip the PDF card to a faint cream-tinted dark surface so the
-   * file name reads against the panel instead of disappearing. */
-  --surface-card: rgba(236, 230, 216, 0.05);
-  --surface-card-hover: rgba(236, 230, 216, 0.10);
+   * text. Use a solid raised charcoal panel (clearly lighter than the
+   * #0e0e0e page) so the PDF row reads as a distinct, legible card the
+   * moment the tab opens — not a faint wash that only resolves on hover. */
+  --surface-card: #20211f;
+  --surface-card-hover: #2b2c29;
 
   background: var(--tac-black);
   color: var(--tac-cream);
