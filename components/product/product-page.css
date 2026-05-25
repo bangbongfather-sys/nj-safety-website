@@ -29,6 +29,12 @@
   --rule-strong: rgba(20,23,29,0.55);
   --rule-light: rgba(230,228,221,0.22);
 
+  /* Elevated card surface (시험성적서 PDF rows, empty state). Lifts off
+   * --paper on the light default; flavors that flip --paper dark override
+   * these so the card never ends up white-on-dark (light text vanished). */
+  --surface-card: #fff;
+  --surface-card-hover: rgba(232, 93, 46, 0.04);
+
   /* Type — --font-archivo is wired via next/font in page.tsx */
   --font-display: var(--font-archivo, 'Archivo'), 'Pretendard Variable', sans-serif;
   --font-body: 'Pretendard Variable', 'Pretendard', system-ui, sans-serif;
@@ -2006,6 +2012,12 @@
   --orange-deep: var(--tac-gold-deep);
   --rule: var(--tac-rule);
 
+  /* On the black tactical canvas a #fff card swallowed its own (cream)
+   * text — flip the PDF card to a faint cream-tinted dark surface so the
+   * file name reads against the panel instead of disappearing. */
+  --surface-card: rgba(236, 230, 216, 0.05);
+  --surface-card-hover: rgba(236, 230, 216, 0.10);
+
   background: var(--tac-black);
   color: var(--tac-cream);
 }
@@ -2884,7 +2896,7 @@
   text-align: center;
   color: var(--ink-soft);
   font-size: 14px;
-  background: rgba(20, 23, 29, 0.02);
+  background: var(--surface-card);
 }
 .nj-page .ptr-list {
   list-style: none;
@@ -2906,7 +2918,7 @@
   align-items: center;
   gap: 16px;
   padding: 14px 18px;
-  background: #fff;
+  background: var(--surface-card);
   border: 1px solid var(--rule);
   border-radius: 2px;
   text-decoration: none;
@@ -2915,7 +2927,7 @@
 }
 .nj-page .ptr-link:hover {
   border-color: var(--orange);
-  background: rgba(232, 93, 46, 0.04);
+  background: var(--surface-card-hover);
 }
 .nj-page .ptr-pdf-icon {
   display: inline-flex;
