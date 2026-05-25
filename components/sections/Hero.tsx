@@ -105,6 +105,9 @@ export default function Hero({ locale, dict, editor }: Props) {
       style={heroImgStyle(dict)}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
+      // Mobile: pause auto-rotate the moment the visitor touches the hero so
+      // a slide doesn't swap out from under them while they swipe the photo.
+      onTouchStart={() => setPaused(true)}
     >
       <div className="hero-bg">
         {/*
@@ -176,6 +179,14 @@ export default function Hero({ locale, dict, editor }: Props) {
       <div className="hero-overlay" />
       <div className="hero-accent" />
       <div className="hero-grain" />
+
+      {/* Swipe affordance — mobile only (CSS hides it ≥640px). On phones the
+       * hero photo is a horizontal scroller so the full wide image can be
+       * panned into view; this pill nudges the visitor to swipe, then
+       * auto-fades after a few seconds. */}
+      <div className="hero-scroll-hint" aria-hidden="true">
+        <span className="hsh-arrows">↔</span> 좌우로 밀어 전체 사진 보기
+      </div>
 
       {/*
        * key={idx} on the inner wrap re-mounts the text every slide change,

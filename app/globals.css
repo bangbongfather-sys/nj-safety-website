@@ -354,6 +354,33 @@ p { line-height: 1.65; }
   pointer-events: none;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
 }
+/* Mobile-only swipe hint for the horizontally-scrollable hero banner.
+ * Hidden on desktop; the ≤639px block flips it on and positions it over
+ * the banner. pointer-events:none so it never blocks the swipe/tap. */
+.hero-scroll-hint {
+  display: none;
+  position: absolute;
+  right: 12px;
+  z-index: 6;
+  pointer-events: none;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 13px;
+  border-radius: 999px;
+  background: rgba(13, 13, 14, .6);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, .18);
+  color: rgba(255, 255, 255, .92);
+  font-family: var(--sans, system-ui);
+  font-size: 12px;
+  letter-spacing: .01em;
+  white-space: nowrap;
+  animation: heroHintFade .6s ease 6s forwards;
+}
+.hero-scroll-hint .hsh-arrows { font-size: 14px; opacity: .9; }
+@keyframes heroHintFade { to { opacity: 0; visibility: hidden; } }
+
 .hero-content { position: absolute; inset: 0; display: flex; align-items: center; }
 .hero-content .wrap { width: 100%; }
 .hero-tag { margin-bottom: 32px; display: flex; align-items: center; gap: 14px; }
@@ -3551,40 +3578,64 @@ section { position: relative; }
  * darker top-and-bottom vertical fade so the headline / scroll meta
  * stay legible against any background. */
 @media (max-width: 639px) {
-  /* Mobile hero stacks the image on top and the text below — so the
-   * model + featured product are never cropped by cover-fit or covered
-   * by the headline overlay (which is what the desktop full-bleed
-   * layout does). Desktop (≥640px) is unchanged. */
+  /* Mobile hero: the photo becomes a horizontally-scrollable banner so the
+   * full wide image can be swiped into view (the worker/subject often sits
+   * to one side and got cropped by cover-fit). Headline + copy sit below
+   * the banner in normal flow. Desktop (≥640px) keeps the full-bleed
+   * overlay layout, untouched. */
   .hero {
     height: auto;
     min-height: 0;
     display: flex;
     flex-direction: column;
     background: var(--bg-3, #0d0d0e);
+    --hmb: clamp(300px, 54vh, 520px); /* mobile banner height */
   }
-  /* Image banner. aspect-ratio 16/10 closely matches the source photos
-   * (hero.jpg 1779×1088 ≈ 16:9.8, slides 02/03 2000×1125 = 16:9), so
-   * object-fit:cover shows the full subject with minimal side crop
-   * (~5% on the 16:9 slides, zero on hero.jpg). */
   .hero-bg {
     position: relative;
     inset: auto;
     width: 100%;
-    aspect-ratio: 16 / 10;
+    height: var(--hmb);
+    aspect-ratio: auto;
     flex: 0 0 auto;
+    overflow: hidden; /* clip vertically; each slide scrolls horizontally */
   }
-  .hero-img,
-  .hero-bg-slide .ed-img-img {
-    object-position: center;
+  /* Turn the active slide into a horizontal scroller. Slides stay stacked
+   * (absolute + opacity fade) for the carousel; only .is-active takes
+   * touch (pointer-events:auto), so only the visible photo is swipeable. */
+  .hero-bg-slide {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .hero-bg-slide::-webkit-scrollbar { display: none; }
+  /* Collapse the link + EditableImage wrappers (each is inset:0 / 100%
+   * wide and would otherwise pin the photo to the banner width) so the
+   * <img> becomes the direct scroll content at its natural width. */
+  .hero-bg-slide .hero-bg-link,
+  .hero-bg-slide .ed-img-wrap,
+  .hero-bg-slide .ed-img-fallback {
+    display: contents;
+  }
+  /* Full banner height, natural width → overflows horizontally → swipeable.
+   * At natural ratio nothing is cropped: the whole photo is reachable. */
+  .hero-bg-slide .ed-img-img,
+  .hero-bg-slide .hero-img {
+    width: auto;
+    height: var(--hmb);
+    max-width: none;
+    object-fit: cover;
+    object-position: left center;
   }
   /* hero-overlay / accent / grain stay absolute inset:0; they paint
    * over the full .hero, but hero-content + hero-meta below (later in
    * DOM, position:relative, opaque background) cover them in the text
-   * region — so visually the gradient ends at the image's bottom edge. */
+   * region — so visually the gradient ends at the banner's bottom edge. */
   .hero-overlay {
     background: linear-gradient(180deg, rgba(0,0,0,.15) 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,.55) 100%);
   }
-  /* Text content sits in normal flow below the image, no overlay. */
+  /* Text content sits in normal flow below the banner, no overlay. */
   .hero-content {
     position: relative;
     inset: auto;
@@ -3595,14 +3646,18 @@ section { position: relative; }
   .hero-content .wrap {
     width: 100%;
   }
-  /* Carousel controls re-anchored to the image area's centre/bottom
-   * since .hero is now much taller than the image. */
+  /* Carousel controls anchored to the banner (now var(--hmb) tall). */
   .hero-nav-arrow {
-    top: calc((100vw * 10 / 16) / 2);
+    top: calc(var(--hmb) / 2);
   }
   .hero-dots {
-    top: calc((100vw * 10 / 16) - 36px);
+    top: calc(var(--hmb) - 34px);
     bottom: auto;
+  }
+  /* Swipe affordance — shown over the banner, auto-fades after a few s. */
+  .hero-scroll-hint {
+    display: inline-flex;
+    top: calc(var(--hmb) - 44px);
   }
 }
 
