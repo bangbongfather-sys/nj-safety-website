@@ -15,7 +15,10 @@
       "id": "sf",
       "nameKo": "봄·가을(SPRING / FALL)",
       "nameEn": "Spring / Fall",
-      "productSlugs": []
+      "productSlugs": [
+        "njs-aj200",
+        "njfwp25"
+      ]
     },
     {
       "id": "winter",

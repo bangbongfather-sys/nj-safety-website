@@ -1,0 +1,396 @@
+{
+  "slug": "njfwp25",
+  "model": "NJFWP25",
+  "category": "ARAMID FR SERIES · WORK PANTS",
+  "name": "아라미드 <br><span style=\"color: rgb(198, 90, 30);\">춘추</span> <br>팬츠",
+  "subtitle": "봄·가을 현장을 위한 난연 카고 워크 팬츠",
+  "tagline": "카고 플랩 포켓 + 트윈 리플렉티브 + 밴딩 허리. 아라미드 난연 성능과 하루 종일 편한 핏을 함께 담은 NJ Safety 춘추 팬츠.",
+  "flavor": "tactical",
+  "hero": {
+    "image": "/api/images/njfwp25-hero-image-1779788243062-ac3cc940c228.png",
+    "imageAlt": "아라미드 춘추 팬츠 — 정면 차콜 네이비",
+    "tag": "FIG. 01 · CARGO WORK PANTS",
+    "corner": "CHARCOAL NAVY",
+    "badges": [
+      {
+        "text": "ENGINEERED FOR FIELD · NJ SAFETY",
+        "position": "top-right"
+      }
+    ],
+    "counters": [
+      {
+        "value": "49.9",
+        "unit": "%",
+        "label": "ARAMID"
+      },
+      {
+        "value": "45.4",
+        "unit": "%",
+        "label": "FR RAYON"
+      },
+      {
+        "value": "1.7",
+        "unit": "%",
+        "label": "ANTI-STATIC"
+      },
+      {
+        "value": "3",
+        "unit": "%",
+        "label": "spandex"
+      }
+    ]
+  },
+  "gallery": {
+    "eyebrow": "PRODUCT VIEWS",
+    "headline": "구석구석, <em>정직한 디테일</em>.",
+    "note": "스튜디오 촬영, 실물 컬러는 모니터 환경에 따라 차이가 있을 수 있습니다.",
+    "items": [
+      {
+        "image": "/products/njfwp25/front.jpg",
+        "tag": "FIG. 01 · FRONT",
+        "label": "정면 — 카고 워크 팬츠",
+        "caption": "차콜 네이비 본체 + 좌측 카고 플랩 포켓 · 밴딩 허리 · 지퍼 플라이.",
+        "span": "xl"
+      },
+      {
+        "image": "/products/njfwp25/cargo-pocket.jpg",
+        "tag": "FIG. 02 · CARGO",
+        "label": "카고 플랩 포켓",
+        "caption": "좌측 허벅지 플랩 포켓 + 트윈 리플렉티브 스트라이프 · 메탈 클립 디테일.",
+        "span": "l"
+      },
+      {
+        "image": "/products/njfwp25/back-pocket.jpg",
+        "tag": "FIG. 03 · BACK",
+        "label": "후면 웰트 포켓",
+        "caption": "단정한 싱글 웰트 백 포켓 + 벨트 루프 · 후면 밴딩 허리.",
+        "span": "tall"
+      },
+      {
+        "image": "/products/njfwp25/waist-zip.jpg",
+        "tag": "FIG. 04 · WAIST",
+        "label": "밴딩 허리 + 지퍼 플라이",
+        "caption": "버튼 클로저 + 매트 블랙 지퍼 플라이. 양 사이드 밴딩으로 활동성 확보.",
+        "span": "tall"
+      },
+      {
+        "image": "/products/njfwp25/side-tab.jpg",
+        "tag": "FIG. 05 · TAB",
+        "label": "NJ SAFETY 사이드 탭",
+        "caption": "포켓 시접의 'NJ SAFETY' 'ARAMID' 레드 우븐 탭 + 플리츠 프론트 디테일.",
+        "span": "tall"
+      }
+    ]
+  },
+  "statement": {
+    "eyebrow": "ENGINEERED FOR FIELD",
+    "headline": "매일 입는 <em>작업 바지</em>가 곧 안전입니다.",
+    "body": "전기·설비·정비 현장에서 가장 오래 몸에 닿는 옷은 바지입니다. NJFWP25는 아라미드 63.5% 혼방으로 자켓과 동일한 난연·정전기 방지 성능을 유지하면서, 밴딩 허리와 플리츠 프론트로 하루 종일 쪼그려 앉고 사다리를 오르는 동작까지 편하게 받아냅니다. 카고 플랩 포켓과 트윈 리플렉티브는 공구 수납과 야간 시인성을, 단정한 실루엣은 출퇴근까지 책임집니다.",
+    "sign": "NJ SAFETY PRODUCT TEAM"
+  },
+  "material": {
+    "eyebrow": "FABRIC LAYOUT",
+    "headline": "<em>아라미드 혼방</em>이 만드는 하루 종일의 안전.",
+    "image": "/products/njfwp25/cargo-pocket.jpg",
+    "callouts": [
+      {
+        "tag": "A",
+        "title": "META - Aramid",
+        "body": "메타-아라미드 주력 혼방. 자켓과 동일한 난연 성능을 바지에 그대로."
+      },
+      {
+        "tag": "B",
+        "title": "FR Rayon 혼방의 착용감",
+        "body": "FR 레이온으로 뻣뻣함을 줄여 봄·가을 장시간 착용에도 부드러운 촉감."
+      },
+      {
+        "tag": "C",
+        "title": "Anti-Static · 정전기 방지 섬유",
+        "body": "정전기 방지사 혼입. 전기·설비 작업 환경에서 스파크 위험을 낮춤."
+      }
+    ]
+  },
+  "features": {
+    "eyebrow": "WHY THESE PANTS",
+    "headline": "현장에서 살아남는 <em>여섯</em> 가지 장치.",
+    "items": [
+      {
+        "n": "01",
+        "title": "카고 플랩 포켓",
+        "body": "좌측 허벅지 플랩 포켓. 공구·계측기·장갑을 깊게 수납.",
+        "featured": true
+      },
+      {
+        "n": "02",
+        "title": "트윈 리플렉티브",
+        "body": "카고 포켓의 2줄 리플렉티브 스트라이프. 야간·저조도 시인성 확보."
+      },
+      {
+        "n": "03",
+        "title": "사이드 밴딩 허리",
+        "body": "양 옆 신축 밴딩. 쪼그려 앉기·사다리 작업에도 허리 압박 없음."
+      },
+      {
+        "n": "04",
+        "title": "지퍼 플라이 + 버튼",
+        "body": "매트 블랙 지퍼 + 버튼 이중 클로저. 작업 중 풀림 방지."
+      },
+      {
+        "n": "05",
+        "title": "플리츠 프론트",
+        "body": "앞 주름 처리로 활동량을 확보하면서 단정한 실루엣 유지."
+      },
+      {
+        "n": "06",
+        "title": "웰트 백 포켓",
+        "body": "단정한 싱글 웰트 후면 포켓. 지갑·수첩 수납."
+      }
+    ]
+  },
+  "spec": {
+    "eyebrow": "TECHNICAL SHEET",
+    "headline": "한 페이지에 담은 <em>스펙</em>.",
+    "rows": [
+      {
+        "label": "원단 구성",
+        "value": "ARAMID 49.9% / FR rayon 45.5% / Spandex 3% / Anti 1.7%"
+      },
+      {
+        "label": "조직",
+        "value": "RIP STAOP"
+      },
+      {
+        "label": "컬러",
+        "value": "Charcoal Navy"
+      },
+      {
+        "label": "허리",
+        "value": "사이드 밴딩 + 벨트 루프"
+      },
+      {
+        "label": "포켓",
+        "value": "카고 플랩 1 + 사이드 2 + 웰트 백 1"
+      },
+      {
+        "label": "중량",
+        "value": "<span style=\"letter-spacing: -0.08px;\">300 g/m</span>"
+      },
+      {
+        "label": "지퍼",
+        "value": "매트 블랙"
+      },
+      {
+        "label": "원산지",
+        "value": "Made in Korea"
+      },
+      {
+        "label": "인증",
+        "value": "시험성적서"
+      }
+    ],
+    "sizeTable": {
+      "unit": "in · cm",
+      "headers": [
+        "허리(in)",
+        "총장(cm)",
+        "허벅지단면(cm)",
+        "밑위(cm)",
+        "밑단(cm)"
+      ],
+      "rows": [
+        [
+          "28",
+          "96",
+          "30",
+          "25.6",
+          "20"
+        ],
+        [
+          "30",
+          "98",
+          "31",
+          "26.8",
+          "20.5"
+        ],
+        [
+          "32",
+          "100",
+          "32",
+          "28",
+          "21"
+        ],
+        [
+          "34",
+          "102",
+          "33",
+          "29.2",
+          "21.5"
+        ],
+        [
+          "36",
+          "104",
+          "34",
+          "30.4",
+          "22"
+        ],
+        [
+          "38",
+          "106",
+          "35",
+          "31.6",
+          "22.5"
+        ],
+        [
+          "40",
+          "108",
+          "36",
+          "32.8",
+          "23"
+        ]
+      ]
+    }
+  },
+  "field": {
+    "eyebrow": "WHERE IT LIVES",
+    "headline": "봄·가을 현장의 <em>일상</em>을 위해.",
+    "items": [
+      {
+        "n": "01",
+        "tag": "PLANT",
+        "title": "정유·화학 플랜트",
+        "body": "플랜트 작업자를 위한 강력한 아라미드 난연 성능과 카고 포켓 수납력 제공."
+      },
+      {
+        "n": "02",
+        "tag": "MAINT.",
+        "title": "기계 정비 현장",
+        "body": "사이드 밴딩과 플리츠 프론트 적용으로 좁은 공간의 정비 작업에서도 극대화된 활동성 선사."
+      },
+      {
+        "n": "03",
+        "tag": "ELEC.",
+        "title": "전기 배전 점검",
+        "body": "정전기 방지사 함유로 스파크 위험을 낮춘 전기·설비 작업 최적화 하의. — 전기 작업의 일상 하의로 안전."
+      },
+      {
+        "n": "04",
+        "tag": "OUTDOOR",
+        "title": "옥외 외근",
+        "body": "야외 측정 및 검수 업무 시 안전을 지켜주는 2줄의 트윈 리플렉티브 고시인성 스트라이프."
+      }
+    ]
+  },
+  "care": {
+    "eyebrow": "KEEP IT SAFE",
+    "items": [
+      {
+        "icon": "세탁",
+        "title": "손세탁 권장",
+        "body": "세탁은 중성세제로 손세탁으로 하고 가볍게 털어서 응달에 건조."
+      },
+      {
+        "icon": "✕",
+        "title": "표백제 및 건조기 금지",
+        "body": "아라미드 섬유 손상 방지",
+        "warn": true
+      },
+      {
+        "icon": "↓",
+        "title": "저온 텀블 / 자연건조",
+        "body": "그늘 건조 권장"
+      },
+      {
+        "icon": "≡",
+        "title": "중간 온도 다림질",
+        "body": "다림질은 울 종류나 면 종류의 온도로 가능."
+      }
+    ]
+  },
+  "certs": [
+    {
+      "mark": "FR",
+      "title": "방염성 시험",
+      "sub": "시험성적서 -KS K 0585",
+      "highlight": true
+    },
+    {
+      "mark": "UL",
+      "title": "UL 국제 인증",
+      "sub": "NFPA 2112"
+    },
+    {
+      "mark": "CF",
+      "title": "견뢰도 TEST",
+      "sub": "시험성적서 - KS K ISO 105, >4급"
+    },
+    {
+      "mark": "DS",
+      "title": "치수 변화율",
+      "sub": "시험성적서 - KS K ISO 3759, 매우 우수"
+    }
+  ],
+  "order": {
+    "headline": "공식 대리점에서 <em>판매 안내 및 출고</em> 가능합니다.",
+    "cells": [
+      {
+        "label": "서비스",
+        "value": "특정사이즈 및 수선 제작.",
+        "body": "*소형 및 대형 사이즈 제작, 기장 수선 가능."
+      },
+      {
+        "label": "납기",
+        "value": "재고 확인 후 출고",
+        "body": "재고 보유 사이즈 기준 / 가공 시 +7일."
+      },
+      {
+        "label": "대리점",
+        "value": "전국 대리점 안내",
+        "body": "유선 및 메일 문의 시 안내."
+      }
+    ],
+    "contact": [
+      {
+        "label": "TEL",
+        "value": "02-777-3079"
+      },
+      {
+        "label": "FAX",
+        "value": "02-774-1841"
+      },
+      {
+        "label": "WEB",
+        "value": "www.njfashion.co.kr"
+      },
+      {
+        "label": "EMAIL",
+        "value": "njsafety91@naver.com"
+      }
+    ]
+  },
+  "styles": {
+    "tagline": {
+      "width": "82%"
+    },
+    "statement.body": {
+      "width": "69%"
+    },
+    "gallery.note": {
+      "width": "84%"
+    },
+    "gallery.items[0].caption": {
+      "width": "67%"
+    },
+    "gallery.items[1].caption": {
+      "width": "68%"
+    },
+    "gallery.items[3].caption": {
+      "width": "94%"
+    },
+    "gallery.items[4].caption": {
+      "width": "107%"
+    },
+    "spec.rows[0].value": {
+      "width": "68%"
+    }
+  }
+}

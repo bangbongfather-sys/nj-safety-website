@@ -1,0 +1,378 @@
+{
+  "slug": "njs-aj200",
+  "model": "NJS-AJ200",
+  "category": "ARAMID FR SERIES · MID-SEASON JACKET",
+  "name": "아라미드 <br><span style=\"color: rgb(198, 90, 30);\">춘추</span> 자켓",
+  "subtitle": "환절기 외근의 보호 성능과 가벼움, 한 벌의 자켓에",
+  "tagline": "메타-아라미드 65% 블렌드를 본체 원단에 그대로 가져왔습니다. 인디고 멜란지 상단 + 차콜 네이비 하단의 투톤 분할 + 가슴 트윈 리플렉티브로 봄·가을 외근 현장의 시인성을 확보했습니다.",
+  "flavor": "tactical",
+  "hero": {
+    "image": "/api/images/njs-aj200-hero-image-1779375568239-ee0d7b96544f.png",
+    "imageAlt": "아라미드 춘추 자켓 — 정면 풀샷 (인디고 멜란지 상단 + 차콜 네이비 하단 · 가슴 트윈 리플렉티브 · 스탠드 카라)",
+    "tag": "FIG. 00 · MID-SEASON PROTECTIVE JACKET",
+    "corner": "INDIGO MELANGE + CHARCOAL NAVY",
+    "counters": [
+      {
+        "value": "65",
+        "unit": "%",
+        "label": "META ARAMID"
+      },
+      {
+        "value": "35",
+        "unit": "%",
+        "label": "LENZING FR"
+      },
+      {
+        "value": "230",
+        "unit": "G/M²",
+        "label": "WEIGHT"
+      }
+    ]
+  },
+  "gallery": {
+    "eyebrow": "PRODUCT VIEWS",
+    "headline": "한 벌의 자켓, <em>모든 디테일</em>까지.",
+    "note": "스튜디오 촬영 · 실물 컬러는 모니터에 따라 차이가 있을 수 있습니다.",
+    "items": [
+      {
+        "image": "/products/njs-aj200/front.jpg",
+        "imageAlt": "아라미드 춘추 자켓 — 정면 풀샷 (인디고 멜란지 + 차콜 네이비 투톤 분할 · 가슴 트윈 리플렉티브 · 좌우 가슴 포켓)",
+        "tag": "FIG. 01 · FRONT",
+        "label": "정면 풀샷",
+        "caption": "인디고 멜란지 상단 + 차콜 네이비 하단의 투톤 분할. 가슴 트윈 리플렉티브 + 좌우 가슴 포켓.",
+        "span": "xl"
+      },
+      {
+        "image": "/products/njs-aj200/rear.jpg",
+        "imageAlt": "아라미드 춘추 자켓 — 후면 풀샷 (등 상단 가로 리플렉티브 라인 · 우측 소매 PVC 라벨)",
+        "tag": "FIG. 02 · REAR",
+        "label": "후면 풀샷",
+        "caption": "등 상단 50mm 가로 리플렉티브 라인 + 우측 소매 NJ SAFETY PVC 라벨. 후면 시인성도 정면과 동등하게 확보.",
+        "span": "xl"
+      },
+      {
+        "image": "/products/njs-aj200/sleeve-patch.jpg",
+        "imageAlt": "우측 소매 어깨 — NJ SAFETY 오렌지 PVC 라벨",
+        "tag": "FIG. 03 · SLEEVE PATCH",
+        "label": "소매 PVC 패치",
+        "caption": "우측 소매 어깨의 NJ SAFETY 오렌지 PVC 라벨. 멜란지 인디고 패널 위에 단정하게 자리.",
+        "span": "tall"
+      },
+      {
+        "image": "/products/njs-aj200/chest.jpg",
+        "imageAlt": "가슴 디테일 — 좌측 패치+지퍼 포켓 · LENZING 라벨 · ARAMID 적색 태그 · 가슴 트윈 리플렉티브",
+        "tag": "FIG. 04 · CHEST DETAIL",
+        "label": "가슴 디테일",
+        "caption": "좌측 패치+지퍼 듀얼 포켓 + 우측 세로 지퍼 포켓. LENZING™ for Protective Wear 흰 라벨 + ARAMID 적색 태그.",
+        "span": "l"
+      },
+      {
+        "image": "/products/njs-aj200/hem-stripe.jpg",
+        "imageAlt": "가슴 투톤 분할선 — 인디고 영역과 차콜 영역 사이 트윈 리플렉티브 + 사이드 슬릿 포켓 입구",
+        "tag": "FIG. 05 · TONE LINE",
+        "label": "투톤 분할선",
+        "caption": "인디고 멜란지와 차콜 네이비 사이를 가로지르는 가슴 트윈 리플렉티브. 차콜 영역의 사이드 슬릿 포켓 입구도 함께.",
+        "span": "l"
+      },
+      {
+        "image": "/products/njs-aj200/side-adjuster.jpg",
+        "imageAlt": "밑단 단추 2구 어드저스터 — 차콜 네이비 헴 라인",
+        "tag": "FIG. 06 · HEM ADJUSTER",
+        "label": "밑단 어드저스터",
+        "caption": "밑단 단추 2구 어드저스터. 자켓 밑단 둘레를 좁혀 바람 차단과 핏 조절.",
+        "span": "tall"
+      },
+      {
+        "image": "/products/njs-aj200/cuff.jpg",
+        "imageAlt": "벨크로 어드저스터 커프 — 인디고 멜란지 소매 끝",
+        "tag": "FIG. 07 · VELCRO CUFF",
+        "label": "벨크로 커프",
+        "caption": "벨크로 어드저스터 커프. 손목 둘레 조절로 봄·가을 외근의 통기와 차단을 함께 조절.",
+        "span": "tall"
+      }
+    ]
+  },
+  "statement": {
+    "eyebrow": "ENGINEERED FOR MID-SEASON",
+    "headline": "환절기 현장은 <em>변화의 폭</em>이 가장 큽니다.",
+    "body": "전기·플랜트 점검의 봄·가을은 새벽엔 손이 시리고, 한낮엔 땀이 차오릅니다. 패딩이 들어간 동계 자켓은 무겁고, 셔츠 한 장으로 견디기엔 바람이 찹니다. AJ200은 동계 AJ100과 동일한 메타-아라미드 65% / 리오셀 FR 35% 블렌드를 본체 원단에 적용했습니다. 안감 누빔과 니트 커프 대신 단순한 안감 + 벨크로 커프로 본체 평량을 230 g/m² 까지 낮춰, 환절기 일교차에 핏을 조절할 수 있도록 설계했습니다. 가슴 트윈 리플렉티브 2조 + 등 상단 50mm 가로 리플렉티브로 야간 외근 시인성은 동계와 동등하게 확보했습니다.",
+    "sign": "NJ SAFETY PRODUCT TEAM"
+  },
+  "material": {
+    "eyebrow": "FABRIC ENGINEERING",
+    "headline": "동계와 같은 <em>방염 성능</em>, 환절기의 무게로.",
+    "image": "/products/njs-aj200/chest.jpg",
+    "callouts": [
+      {
+        "tag": "A",
+        "title": "META ARAMID 65%",
+        "body": "Teijin Conex® 계열 메타-아라미드. LOI 30 이상 · 영구 난연 · EN ISO 11612 A1·B1·C1·F1 통과."
+      },
+      {
+        "tag": "B",
+        "title": "LENZING™ FR 35%",
+        "body": "리오셀 기반 보호복 전용 FR 섬유. 흡습성 + EN 1149-5 전하 반감기 0.2초."
+      },
+      {
+        "tag": "C",
+        "title": "TWO-TONE PANEL",
+        "body": "인디고 멜란지 상단 + 차콜 네이비 하단의 투톤 분할. 작업 마찰이 잦은 하단은 솔리드로 마감해 오염 시인성을 낮춤."
+      }
+    ]
+  },
+  "features": {
+    "eyebrow": "WHY THIS JACKET",
+    "headline": "환절기 외근의 <em>여섯 가지</em> 장치.",
+    "items": [
+      {
+        "n": "01",
+        "title": "동계와 동일한 아라미드 블렌드",
+        "body": "메타-아라미드 65% · 리오셀 FR 35%. EN ISO 11612 / KS K 0585 통과."
+      },
+      {
+        "n": "02",
+        "title": "230 g/m² 미드시즌 평량",
+        "body": "동계 AJ100 260 g/m² 대비 약 12% 감량. 안감 누빔 제거로 환절기 일교차 대응."
+      },
+      {
+        "n": "03",
+        "title": "트윈 리플렉티브 + 등 가로 라인",
+        "body": "가슴 25mm 트윈 × 2조 (상단 + 톤라인) + 등 상단 50mm 가로 1줄. 야간 점검 시인성 동계 AJ100 동등 확보.",
+        "featured": true
+      },
+      {
+        "n": "04",
+        "title": "투톤 분할 디자인",
+        "body": "인디고 멜란지 상단 + 차콜 네이비 하단. 작업 마찰이 잦은 하단은 솔리드로 오염 시인성 낮춤."
+      },
+      {
+        "n": "05",
+        "title": "벨크로 커프 + 밑단 어드저스터",
+        "body": "손목 + 밑단의 조절 장치로 핏과 통기를 현장에 맞춰 조정."
+      },
+      {
+        "n": "06",
+        "title": "이중 인증 라벨",
+        "body": "ARAMID Flame Resistant + LENZING™ for Protective Wear. 발주처 식별 용이."
+      }
+    ]
+  },
+  "spec": {
+    "eyebrow": "TECHNICAL SHEET",
+    "headline": "한 페이지에 담은 <em>스펙</em>.",
+    "rows": [
+      {
+        "label": "원단 구성",
+        "value": "Meta-Aramid 65% / Lenzing FR 35%"
+      },
+      {
+        "label": "조직",
+        "value": "Two-Tone Twill (Indigo Melange + Charcoal Solid)"
+      },
+      {
+        "label": "평량",
+        "value": "230 g/m² (본체 기준)"
+      },
+      {
+        "label": "안감",
+        "value": "단층 안감 · 카라 안쪽 체크 배색"
+      },
+      {
+        "label": "메인 여밈",
+        "value": "YKK 풀집 지퍼 (다크)"
+      },
+      {
+        "label": "포켓 여밈",
+        "value": "가슴 좌측 패치+지퍼 듀얼 · 우측 세로 지퍼 · 사이드 슬릿"
+      },
+      {
+        "label": "반사 테이프",
+        "value": "3M Scotchlite™ — 가슴 25mm 트윈 × 2조 (상단 + 톤라인) + 등 50mm 가로 1줄"
+      },
+      {
+        "label": "컬러",
+        "value": "INDIGO MELANGE (상단) + CHARCOAL NAVY (하단)"
+      },
+      {
+        "label": "사이즈",
+        "value": "90 / 95 / 100 / 105 / 110"
+      },
+      {
+        "label": "원산지",
+        "value": "MADE IN KOREA"
+      },
+      {
+        "label": "방염 인증",
+        "value": "EN ISO 11612 A1·B1·C1·F1 / KS K 0585"
+      },
+      {
+        "label": "정전기 인증",
+        "value": "EN 1149-5 · 전하 반감기 0.2초"
+      }
+    ],
+    "sizeTable": {
+      "unit": "cm",
+      "headers": [
+        "SIZE",
+        "가슴",
+        "어깨",
+        "소매",
+        "총장"
+      ],
+      "rows": [
+        [
+          "90",
+          "58",
+          "47",
+          "62",
+          "70"
+        ],
+        [
+          "95",
+          "60",
+          "48",
+          "63",
+          "72"
+        ],
+        [
+          "100",
+          "62",
+          "49",
+          "64",
+          "74"
+        ],
+        [
+          "105",
+          "64",
+          "50",
+          "65",
+          "76"
+        ],
+        [
+          "110",
+          "66",
+          "51",
+          "66",
+          "78"
+        ]
+      ]
+    }
+  },
+  "field": {
+    "eyebrow": "WHERE IT LIVES",
+    "headline": "봄·가을의 <em>일교차</em>를 한 벌로.",
+    "items": [
+      {
+        "n": "01",
+        "tag": "ELECTRICAL",
+        "title": "전기 변전 외근",
+        "body": "새벽 점검의 찬바람과 한낮의 햇볕. 230 g/m² 평량과 핏 조절로 한 벌에 대응."
+      },
+      {
+        "n": "02",
+        "tag": "PLANT",
+        "title": "플랜트 환절기 보수",
+        "body": "봄·가을 정기 보수 시즌. 동계 자켓 대비 가벼우면서 동등한 방염 등급."
+      },
+      {
+        "n": "03",
+        "tag": "GAS · RAIL",
+        "title": "도시가스 · 철도 점검",
+        "body": "이동·외근 빈도 높은 작업. 벨크로 커프 + 밑단 어드저스터로 핏 조정."
+      },
+      {
+        "n": "04",
+        "tag": "MAINT.",
+        "title": "기계 정비",
+        "body": "회전체 정비. 솔리드 하단 패널로 작업 마찰 시 오염 시인성 낮춤."
+      }
+    ]
+  },
+  "care": {
+    "eyebrow": "KEEP IT SAFE",
+    "items": [
+      {
+        "icon": "세탁",
+        "title": "손세탁 권장",
+        "body": "세탁은 중성세제로 손세탁으로 하고 가볍게 털어서 응달에 건조."
+      },
+      {
+        "icon": "✕",
+        "title": "표백제 및 건조기 금지",
+        "body": "아라미드 섬유 손상 방지",
+        "warn": true
+      },
+      {
+        "icon": "↓",
+        "title": "저온 텀블 / 자연건조",
+        "body": "그늘 건조 권장"
+      },
+      {
+        "icon": "≡",
+        "title": "중간 온도 다림질",
+        "body": "다림질은 울 종류나 면 종류의 온도로 가능."
+      }
+    ]
+  },
+  "certs": [
+    {
+      "mark": "FR",
+      "title": "방염성 시험",
+      "sub": "시험성적서 -KS K 0585",
+      "highlight": true
+    },
+    {
+      "mark": "UL",
+      "title": "UL 국제 인증",
+      "sub": "NFPA 2112"
+    },
+    {
+      "mark": "CF",
+      "title": "견뢰도 TEST",
+      "sub": "시험성적서 - KS K ISO 105, >4급"
+    },
+    {
+      "mark": "DS",
+      "title": "치수 변화율",
+      "sub": "시험성적서 - KS K ISO 3759, 매우 우수"
+    }
+  ],
+  "order": {
+    "headline": "공식 대리점에서 <em>판매 안내 및 출고</em> 가능합니다.",
+    "cells": [
+      {
+        "label": "단체 / B2B",
+        "value": "50 EA 부터",
+        "body": "사업장 사이즈 분석, 자수·실크 가공, 분할 납품 가능."
+      },
+      {
+        "label": "샘플",
+        "value": "무상 제공",
+        "body": "법인 명의 신청 시 영업일 2일 내 발송."
+      },
+      {
+        "label": "납기",
+        "value": "5—10일",
+        "body": "재고 보유 컬러·사이즈 기준 / 가공 시 +5일."
+      }
+    ],
+    "contact": [
+      {
+        "label": "TEL",
+        "value": "02—777—3079"
+      },
+      {
+        "label": "FAX",
+        "value": "02—774—1841"
+      },
+      {
+        "label": "WEB",
+        "value": "njfashion.co.kr"
+      },
+      {
+        "label": "EMAIL",
+        "value": "njsafety91@naver.com"
+      }
+    ]
+  }
+}
