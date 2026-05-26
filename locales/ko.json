@@ -8,6 +8,7 @@
     "products": "제품",
     "certifications": "인증",
     "resources": "자료실",
+    "dealers": "대리점",
     "contact": "문의",
     "quoteCta": "견적 문의",
     "notices": "공지사항"
@@ -1054,5 +1055,31 @@
     "next": "다음",
     "backToList": "← 목록으로",
     "postedOn": "게시일"
+  },
+  "dealers": {
+    "meta": {
+      "title": "공식 대리점 — NJ SAFETY",
+      "description": "NJ SAFETY 공식 대리점 안내. 지역별 상호 / 주소 / 연락처 / 영업시간."
+    },
+    "hero": {
+      "eyebrow": "— Authorised Dealers",
+      "titlePre": "전국 ",
+      "titleEm": "공식 대리점."
+    },
+    "sub": "발주·상담·반품·교환은 가까운 공식 대리점에서 처리됩니다. 지역별로 정리된 대리점에 직접 연락하거나, 본사로 문의 주시면 가장 가까운 대리점을 안내해드립니다.",
+    "emptyRegion": "등록 예정",
+    "ctaEyebrow": "— Become a Dealer",
+    "ctaTitlePre": "대리점 입점 ",
+    "ctaTitleEm": "문의.",
+    "ctaSub": "국내 산업 안전복 시장에서 NJ SAFETY 제품을 함께 유통할 파트너를 찾고 있습니다.",
+    "ctaButton": "본사로 문의 →",
+    "fieldLabels": {
+      "addr": "주소",
+      "tel": "TEL",
+      "fax": "FAX",
+      "email": "EMAIL",
+      "hours": "영업시간",
+      "manager": "담당자"
+    }
   }
 }

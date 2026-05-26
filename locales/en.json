@@ -8,6 +8,7 @@
     "products": "Products",
     "certifications": "Certifications",
     "resources": "Resources",
+    "dealers": "Dealers",
     "contact": "Contact",
     "quoteCta": "Get a quote",
     "notices": "Notices"
@@ -1054,5 +1055,31 @@
     "next": "Next",
     "backToList": "← Back to list",
     "postedOn": "Posted"
+  },
+  "dealers": {
+    "meta": {
+      "title": "Authorised Dealers — NJ SAFETY",
+      "description": "NJ SAFETY authorised dealer directory — name, address, phone, hours by region."
+    },
+    "hero": {
+      "eyebrow": "— Authorised Dealers",
+      "titlePre": "Nationwide ",
+      "titleEm": "authorised dealers."
+    },
+    "sub": "Orders, consultations, exchanges, and returns are handled by our authorised dealers. Reach out to the nearest one directly, or contact head office and we will route you to your local dealer.",
+    "emptyRegion": "Listings coming soon",
+    "ctaEyebrow": "— Become a Dealer",
+    "ctaTitlePre": "Partnership ",
+    "ctaTitleEm": "enquiries.",
+    "ctaSub": "We are open to qualified distributors in the Korean industrial safety-wear market.",
+    "ctaButton": "Contact head office →",
+    "fieldLabels": {
+      "addr": "Address",
+      "tel": "Tel",
+      "fax": "Fax",
+      "email": "Email",
+      "hours": "Hours",
+      "manager": "Contact"
+    }
   }
 }

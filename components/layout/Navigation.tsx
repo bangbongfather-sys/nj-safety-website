@@ -120,6 +120,7 @@ export default function Navigation({ locale, dict, editor }: Props) {
     { href: `/${locale}/products`,       key: 'products' },
     { href: `/${locale}/notices`,        key: 'notices' },
     { href: `/${locale}/resources`,      key: 'resources' },
+    { href: `/${locale}/dealers`,        key: 'dealers' },
     { href: `/${locale}/contact`,        key: 'contact' },
   ];
 

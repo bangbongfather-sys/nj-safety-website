@@ -1,0 +1,10 @@
+{
+  "regions": [
+    { "id": "metropolitan", "ko": "수도권", "en": "Metropolitan" },
+    { "id": "yeongnam",     "ko": "영남",   "en": "Yeongnam" },
+    { "id": "honam",        "ko": "호남",   "en": "Honam" },
+    { "id": "chungcheong",  "ko": "충청",   "en": "Chungcheong" },
+    { "id": "gangwon",      "ko": "강원",   "en": "Gangwon / Jeju" }
+  ],
+  "dealers": []
+}
