@@ -112,13 +112,22 @@ export async function ghPutFile(
 
   let r = await attempt(sha);
 
-  // 409 = SHA mismatch. Re-fetch fresh SHA and retry once.
-  if (r.status === 409) {
+  // 409 = SHA mismatch. GitHub's Contents API is eventually consistent
+  // for ~hundreds of ms after a commit, so a single retry isn't always
+  // enough — particularly when the admin loaded the page before a
+  // background commit landed and is now uploading on top of it. Retry
+  // up to 3 times with growing backoff so the page consistency window
+  // catches up. The user-visible error only fires if all 4 attempts
+  // (1 initial + 3 retries) lose the race.
+  const BACKOFFS_MS = [200, 600, 1500];
+  for (let i = 0; i < BACKOFFS_MS.length && r.status === 409; i++) {
+    await new Promise((resolve) => setTimeout(resolve, BACKOFFS_MS[i]));
     try {
       const freshSha = await ghGetFileSha(pat, filePath);
       r = await attempt(freshSha);
     } catch {
-      // If the refresh itself fails, fall through to the original error below.
+      // If the refresh itself fails, fall through to the next iteration
+      // (which will sleep again) or to the final error throw below.
     }
   }
 
