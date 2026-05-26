@@ -421,6 +421,30 @@
     },
     "basicInfo.primary[3].value": {
       "color": "#6b6b70"
+    },
+    "basicInfo.disclosure[0].value": {
+      "color": "#6b6b70"
+    },
+    "basicInfo.disclosure[1].value": {
+      "color": "#6b6b70"
+    },
+    "basicInfo.disclosure[3].value": {
+      "color": "#6b6b70"
+    },
+    "basicInfo.disclosure[4].value": {
+      "color": "#6b6b70"
+    },
+    "basicInfo.disclosure[5].value": {
+      "color": "#6b6b70"
+    },
+    "basicInfo.disclosure[6].value": {
+      "color": "#6b6b70"
+    },
+    "basicInfo.disclosure[7].value": {
+      "color": "#6b6b70"
+    },
+    "basicInfo.disclosure[8].value": {
+      "color": "#6b6b70"
     }
   },
   "shopHeader": {
