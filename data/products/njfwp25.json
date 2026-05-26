@@ -391,12 +391,72 @@
     },
     "spec.rows[0].value": {
       "width": "68%"
+    },
+    "shopHeader.summarySpecs[0].value": {
+      "size": "1.10em"
+    },
+    "shopHeader.summarySpecs[1].value": {
+      "size": "1.10em"
+    },
+    "shopHeader.summarySpecs[2].value": {
+      "size": "1.10em"
+    },
+    "shopHeader.summarySpecs[3].value": {
+      "size": "1.10em"
+    },
+    "shopHeader.summarySpecs[4].value": {
+      "size": "1.10em"
+    },
+    "shopHeader.tagline": {
+      "size": "0.70em"
     }
   },
   "shopHeader": {
     "images": [
       "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njfwp25/card-main.jpg?v=1779792640170",
       "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njfwp25/card-hover.jpg?v=1779792719413"
+    ],
+    "brand": "NJ SAFETY",
+    "model": "NJFWP25",
+    "category": "ARAMID FR SERIES · WORK PANTS",
+    "name": "아라미드 춘추 기모 팬츠",
+    "subtitle": "봄·가을 현장을 위한 난연 카고 워크 팬츠",
+    "tagline": "카고 플랩 포켓 + 트윈 리플렉티브 + 밴딩 허리. 아라미드 난연 성능과 하루 종일 편한 핏을 함께 담은 NJ Safety 춘추 팬츠.",
+    "summarySpecs": [
+      {
+        "label": "원단 구성",
+        "value": "ARAMID 49.9% / FR rayon 45.5% / Spandex 3% / Anti 1.7%"
+      },
+      {
+        "label": "중량",
+        "value": "<span style=\"letter-spacing: -0.08px;\">300 g/m2</span>"
+      },
+      {
+        "label": "컬러",
+        "value": "Charcoal Navy"
+      },
+      {
+        "label": "원산지",
+        "value": "Made in Korea"
+      },
+      {
+        "label": "인증",
+        "value": "시험성적서"
+      }
+    ],
+    "contactInfo": [
+      {
+        "label": "tel.",
+        "value": "02-777-3079"
+      },
+      {
+        "label": "email.",
+        "value": "njsafety91@naver.com"
+      },
+      {
+        "label": "made in",
+        "value": "Korea"
+      }
     ]
   }
 }
