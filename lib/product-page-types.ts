@@ -431,13 +431,34 @@ export function withShopHeaderDefaults(data: ProductPageData): ProductPageData {
  * Backfill missing rows so the renderer always sees the full structure.
  * Pure — returns a new array, never mutates the input. Rows already
  * present (matched by label) win; defaults only fill the gaps.
+ *
+ * Defensive: if a malformed setIn call (or a hand-edited JSON) left
+ * `existing` as a plain object keyed by "0", "1", ... rather than a
+ * proper array, we coerce it back to an array of values so .map() can
+ * run. Same coercion handles the case where individual rows are
+ * missing the `label` / `value` field (we drop them silently rather
+ * than throwing the whole tab into a render crash).
  */
 export function withBasicInfoDefaults(info?: ProductBasicInfo): ProductBasicInfo {
+  function toRows(existing: unknown): ProductBasicInfoRow[] {
+    if (Array.isArray(existing)) return existing as ProductBasicInfoRow[];
+    if (existing && typeof existing === 'object') {
+      // Coerce object-keyed-by-index back to an array.
+      const obj = existing as Record<string, unknown>;
+      return Object.keys(obj)
+        .filter((k) => /^\d+$/.test(k))
+        .sort((a, b) => Number(a) - Number(b))
+        .map((k) => obj[k] as ProductBasicInfoRow)
+        .filter((r): r is ProductBasicInfoRow => !!r && typeof r === 'object' && typeof (r as ProductBasicInfoRow).label === 'string');
+    }
+    return [];
+  }
   function merge(
-    existing: ProductBasicInfoRow[] | undefined,
+    existing: unknown,
     defaults: ProductBasicInfoRow[],
   ): ProductBasicInfoRow[] {
-    const existingByLabel = new Map((existing ?? []).map((r) => [r.label, r]));
+    const rows = toRows(existing);
+    const existingByLabel = new Map(rows.map((r) => [r.label, r]));
     return defaults.map((d) => existingByLabel.get(d.label) ?? { ...d });
   }
   return {

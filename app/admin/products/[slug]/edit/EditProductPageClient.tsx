@@ -50,11 +50,24 @@ function parsePath(p: string): (string | number)[] {
 function setIn(obj: unknown, path: (string | number)[], value: unknown): unknown {
   if (path.length === 0) return value;
   const [head, ...rest] = path;
+  // Numeric path segments mean we're stepping INTO an array. If the
+  // current obj isn't already an array, create one — otherwise editing
+  // `basicInfo.primary[0].value` on a product with no basicInfo block
+  // would leave behind { primary: { "0": {...} } } (an object keyed by
+  // "0") instead of [{...}], and the next .map() over that path throws.
+  if (typeof head === 'number') {
+    const arr: unknown[] = Array.isArray(obj) ? [...(obj as unknown[])] : [];
+    arr[head] = setIn(arr[head], rest, value);
+    return arr;
+  }
   if (Array.isArray(obj)) {
-    const copy = [...obj];
-    const idx = typeof head === 'number' ? head : Number(head);
-    copy[idx] = setIn(copy[idx], rest, value);
-    return copy;
+    // String head on an array — coerce if numeric, otherwise fall through.
+    const idx = Number(head);
+    if (!Number.isNaN(idx)) {
+      const copy = [...obj];
+      copy[idx] = setIn(copy[idx], rest, value);
+      return copy;
+    }
   }
   const src = (obj as Record<string, unknown>) ?? {};
   return { ...src, [String(head)]: setIn(src[String(head)], rest, value) };
