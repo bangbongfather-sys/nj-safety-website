@@ -506,10 +506,21 @@ function Order({ order }: { order?: ProductOrder }) {
           </div>
         ) : null}
         <div className="order-signoff">
-          <ImageOrPlaceholder
-            src="/brand/enterprise.png"
+          {/* Vector signoff (replaces /brand/enterprise.png — the
+            * bitmap rasterised badly at 80px height, producing jagged
+            * orange stripes on the N badge). SVG keeps the N-badge
+            * stripes + wordmark crisp at any display size.
+            *
+            * Plain <img>, NOT ImageOrPlaceholder — ImageOrPlaceholder
+            * rewrites `/brand/*` to the catalog-app domain, but this
+            * SVG lives in THIS site's public/ so the rewrite would
+            * 404. The image is also small (under 2 KB) so it doesn't
+            * need the lazy/placeholder treatment. */}
+          <img
+            src="/brand/enterprise.svg"
             alt="NJ ENTERPRISE · 나정엔터프라이즈"
             className="order-signoff-logo"
+            loading="lazy"
           />
         </div>
       </div>

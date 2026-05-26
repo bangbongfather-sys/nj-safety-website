@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  NJ ENTERPRISE closing signoff used on every product detail page's
+  order panel. Replaces the previous bitmap (/brand/enterprise.png)
+  which rasterised badly at 80px height. SVG keeps the brand mark
+  crisp at any size and stays under 2 KB.
+
+  Layout:
+    [N-badge 200×200]   NJ ENTERPRISE           (large wordmark)
+                        나정엔터프라이즈              (subtitle)
+
+  viewBox sized so the mark sits at ~88% of the height — leaves a
+  small bottom margin for the subtitle to breathe.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 220" preserveAspectRatio="xMidYMid meet" role="img" aria-label="NJ ENTERPRISE — 나정엔터프라이즈">
+  <title>NJ ENTERPRISE</title>
+
+  <!-- ─── Brand mark: stylised "N" inside a dark square ─── -->
+  <g>
+    <!-- Outer dark square -->
+    <rect x="10" y="10" width="200" height="200" fill="#1a1a1a"/>
+
+    <!-- Left + right vertical strokes of the N (cream / off-white) -->
+    <rect x="40"  y="36" width="38" height="150" fill="#f5f3ec"/>
+    <rect x="142" y="36" width="38" height="150" fill="#f5f3ec"/>
+
+    <!-- Orange diagonal band — the classic N spine echoing the
+         "tape" stripe in the original brand mark. -->
+    <polygon points="40,36 78,36 180,186 142,186" fill="#e85d2e"/>
+
+    <!-- Three short cream stripes laid over the orange diagonal,
+         evoking the measuring-tape texture. -->
+    <g fill="#f5f3ec" opacity="0.82">
+      <polygon points="62,60  84,60   86,72   64,72"/>
+      <polygon points="90,100 112,100 114,112 92,112"/>
+      <polygon points="118,140 140,140 142,152 120,152"/>
+    </g>
+  </g>
+
+  <!-- ─── Wordmark + subtitle ─── -->
+  <text
+    x="248" y="118"
+    font-family="Archivo, 'Arial Black', 'Pretendard Variable', system-ui, sans-serif"
+    font-size="84"
+    font-weight="900"
+    fill="#0d0d0d"
+    letter-spacing="-2"
+  >NJ ENTERPRISE</text>
+
+  <text
+    x="252" y="172"
+    font-family="'Pretendard Variable', 'Apple SD Gothic Neo', system-ui, sans-serif"
+    font-size="32"
+    font-weight="500"
+    fill="#0d0d0d"
+    letter-spacing="2"
+  >나정엔터프라이즈</text>
+</svg>
