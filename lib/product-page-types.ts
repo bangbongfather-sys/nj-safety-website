@@ -441,17 +441,27 @@ export function withShopHeaderDefaults(data: ProductPageData): ProductPageData {
  */
 export function withBasicInfoDefaults(info?: ProductBasicInfo): ProductBasicInfo {
   function toRows(existing: unknown): ProductBasicInfoRow[] {
-    if (Array.isArray(existing)) return existing as ProductBasicInfoRow[];
-    if (existing && typeof existing === 'object') {
+    let raw: unknown[];
+    if (Array.isArray(existing)) {
+      raw = existing;
+    } else if (existing && typeof existing === 'object') {
       // Coerce object-keyed-by-index back to an array.
       const obj = existing as Record<string, unknown>;
-      return Object.keys(obj)
+      raw = Object.keys(obj)
         .filter((k) => /^\d+$/.test(k))
         .sort((a, b) => Number(a) - Number(b))
-        .map((k) => obj[k] as ProductBasicInfoRow)
-        .filter((r): r is ProductBasicInfoRow => !!r && typeof r === 'object' && typeof (r as ProductBasicInfoRow).label === 'string');
+        .map((k) => obj[k]);
+    } else {
+      return [];
     }
-    return [];
+    // Filter out sparse-array holes (the most common cause of the
+    // earlier crash: setIn'ing into basicInfo.primary[1] on a product
+    // with no basicInfo leaves [undefined, {value:'…'}], and the .map
+    // below would dereference undefined.label).
+    return raw.filter(
+      (r): r is ProductBasicInfoRow =>
+        !!r && typeof r === 'object' && typeof (r as ProductBasicInfoRow).label === 'string',
+    );
   }
   function merge(
     existing: unknown,

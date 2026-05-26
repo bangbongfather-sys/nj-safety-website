@@ -29,7 +29,7 @@ import ResizeHandle from '@/components/admin/ResizeHandle';
 import type { FieldStyle as HomepageFieldStyle } from '@/lib/i18n';
 import { ghGetFile, ghPutFile } from '@/lib/admin/github';
 import type { ProductPageData, FieldStyle } from '@/lib/product-page-types';
-import { withShopHeaderDefaults } from '@/lib/product-page-types';
+import { withShopHeaderDefaults, withBasicInfoDefaults } from '@/lib/product-page-types';
 import ProductPage from '@/components/product/ProductPage';
 
 // Identical implementation to the homepage editor — kept inline because
@@ -153,7 +153,17 @@ export default function EditProductPage() {
         // sees the existing photos + copy in the top header. Subsequent
         // edits write only to data.shopHeader, leaving the catalog
         // hero/spec untouched.
-        const obj = withShopHeaderDefaults(raw);
+        const seeded = withShopHeaderDefaults(raw);
+        // ALSO seed basicInfo with the default row scaffold (brand /
+        // 모델명 / 제조사 / 원산지 + the 9 disclosure rows). Without
+        // this the admin's first edit to 기본정보 — say, typing into
+        // 모델명 (index 1) — leaves a sparse [undefined, {value:'…'}]
+        // array, which crashes withBasicInfoDefaults's .map() AND
+        // (even if rescued) loses every other row's label on save.
+        const obj: ProductPageData = {
+          ...seeded,
+          basicInfo: withBasicInfoDefaults(seeded.basicInfo),
+        };
         setLoad({ status: 'ready', data: obj, sha: f.sha });
         setDraft(obj);
       } catch (e: unknown) {
