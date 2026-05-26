@@ -120,19 +120,38 @@ export default function Navigation({ locale, dict, editor }: Props) {
     { href: `/${locale}/products`,       key: 'products' },
     { href: `/${locale}/notices`,        key: 'notices' },
     { href: `/${locale}/resources`,      key: 'resources' },
-    { href: `/${locale}/dealers`,        key: 'dealers' },
     { href: `/${locale}/contact`,        key: 'contact' },
   ];
 
+  // 대리점 stays OUT of the main menu — it's a utility/locator route
+  // (not part of the marketing journey), so it sits in the right
+  // group next to the language toggle instead of competing with the
+  // other top-level sections.
+  const dealersHref = `/${locale}/dealers`;
+  const dealersLabel = (dict.nav as Record<string, string | undefined>).dealers ?? '대리점';
+
   // Pre-build the list MobileNav needs — keeps the drawer dumb and
   // avoids re-importing categoriesData on the client a second time.
-  const mobileLinks = links.map((l) => ({
-    href: l.href,
-    key: l.key,
-    label: dict.nav[l.key],
-    items: getDropdownItems(l.key, locale, l.href),
-    allLabel: getAllLabel(l.key, locale),
-  }));
+  // The dealers locator is appended at the end so it still appears
+  // as a regular row in the mobile drawer (the desktop-only "utility
+  // right" treatment doesn't make sense on a phone — there the drawer
+  // already has plenty of vertical space).
+  const mobileLinks = [
+    ...links.map((l) => ({
+      href: l.href,
+      key: l.key,
+      label: dict.nav[l.key],
+      items: getDropdownItems(l.key, locale, l.href),
+      allLabel: getAllLabel(l.key, locale),
+    })),
+    {
+      href: dealersHref,
+      key: 'dealers' as const,
+      label: dealersLabel,
+      items: [] as Array<{ href: string; label: string }>,
+      allLabel: null,
+    },
+  ];
 
   return (
     <nav className={`nav${scrolled ? ' scrolled' : ''}`} id="nav">
@@ -201,9 +220,19 @@ export default function Navigation({ locale, dict, editor }: Props) {
           })}
         </div>
 
-        {/* Desktop right cluster — KO/EN toggle + quote CTA. Hidden on
-            mobile by the matching `.nav-right` @media rule below 1100px. */}
+        {/* Desktop right cluster — Dealers locator + KO/EN toggle + quote
+            CTA. Dealers sits as a quieter utility link (smaller than the
+            menu items, brand-orange on hover) so it's distinct from the
+            primary marketing nav but still visible to operators looking
+            for the nearest authorised dealer. Hidden on mobile by the
+            matching `.nav-right` @media rule below 1100px. */}
         <div className="nav-right">
+          <Link
+            href={dealersHref}
+            className={`nav-utility-link${pathname.startsWith(dealersHref) ? ' active' : ''}`}
+          >
+            <EditableText path="nav.dealers" value={dealersLabel} editor={editor} />
+          </Link>
           <Link href={toggleHref} className="lang" aria-label="Toggle language">
             <span className={locale === 'ko' ? 'on' : undefined}>KO</span>
             <span className="sep">/</span>

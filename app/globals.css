@@ -263,6 +263,24 @@ p { line-height: 1.65; }
 }
 
 .nav-right { display: flex; align-items: center; gap: 22px; }
+
+/* Dealers locator sits in the right cluster — quieter than the
+ * main menu items (smaller font, muted by default), brand orange
+ * on hover or when active. Reads as a utility link, not a primary
+ * marketing nav target. */
+.nav-utility-link {
+  font-family: var(--display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.012em;
+  color: var(--muted);
+  text-transform: none;
+  transition: color .2s ease, opacity .2s ease;
+  white-space: nowrap;
+}
+.nav-utility-link:hover { color: var(--accent); }
+.nav-utility-link.active { color: var(--accent); }
+
 .lang {
   display: flex; gap: 8px; align-items: center;
   font-family: var(--display);
