@@ -15,7 +15,19 @@ import { useRef, useState, type FormEvent } from 'react';
 import type { Dictionary, Locale } from '@/lib/i18n';
 import EditableText, { type EditorApi } from '@/components/admin/EditableText';
 import { CustomBlocksLayer } from '@/components/admin/CustomBlocks';
+import NaverMap from './NaverMap';
 import './contact.css';
+
+/**
+ * HQ coordinates for the embedded Naver Map.
+ * 서울특별시 중랑구 신내역로 111 SK V1 센터 B동 426호.
+ * If the pin lands off by a few metres, adjust these literals — the
+ * dict has no override yet because operators wouldn't realistically
+ * edit lat/lng inline.
+ */
+const HQ_LAT = 37.6111;
+const HQ_LNG = 127.1058;
+const HQ_ZOOM = 16;
 
 type InquiryType = 'quote' | 'b2b' | 'oem' | 'cert' | 'as';
 
@@ -717,47 +729,32 @@ function ContactVisit({ contact, editor }: { contact: ContactDict; editor?: Edit
           </div>
 
           <div className="ct-map">
+            {/* Real embedded Naver Map. The fake SVG grid map and the
+             * absolute-positioned .pin overlay it used to host are
+             * gone — Naver's marker (rendered via a custom HTML icon
+             * inside NaverMap.tsx) provides the pin at the actual
+             * coordinates now. The pin label still lives in the
+             * dict (contact.visit.mapPinLabel) and is passed
+             * through to the marker so admins can rename it. */}
+            <NaverMap lat={HQ_LAT} lng={HQ_LNG} zoom={HQ_ZOOM} pinLabel={v.mapPinLabel ?? 'NJ SAFETY HQ'} />
             <EditableText as="span" className="badge" path="contact.visit.mapBadge" value={v.mapBadge ?? ''} editor={editor} />
             <EditableText as="span" className="stamp" path="contact.visit.mapStamp" value={v.mapStamp ?? ''} editor={editor} />
-            <svg viewBox="0 0 600 480" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-              <defs>
-                <pattern id="ct-grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                  <path d="M40 0L0 0L0 40" fill="none" stroke="#2f2f31" strokeWidth="1" />
-                </pattern>
-              </defs>
-              <rect width="600" height="480" fill="#1c1c1e" />
-              <rect width="600" height="480" fill="url(#ct-grid)" />
-              <g stroke="#3a3a3c" strokeWidth="2.5" fill="none">
-                <path d="M0 280 Q200 250 320 240 Q450 230 600 220" />
-                <path d="M180 0 Q200 200 300 240 Q420 280 480 480" />
-                <path d="M0 100 Q150 120 280 180 Q400 240 600 380" />
-              </g>
-              <g stroke="#2a2a2c" strokeWidth="1.5" fill="none">
-                <line x1="0" y1="160" x2="600" y2="160" />
-                <line x1="0" y1="380" x2="600" y2="380" />
-                <line x1="100" y1="0" x2="100" y2="480" />
-                <line x1="420" y1="0" x2="420" y2="480" />
-              </g>
-              <path d="M260 240 L340 240 L340 270 L380 270" stroke="#ff6b1a" strokeWidth="2" fill="none" strokeOpacity=".6" />
-              <g fill="#2a2a2c">
-                <rect x="120" y="180" width="40" height="40" />
-                <rect x="180" y="290" width="50" height="35" />
-                <rect x="380" y="180" width="35" height="55" />
-                <rect x="420" y="320" width="45" height="40" />
-                <rect x="260" y="340" width="40" height="50" />
-                <rect x="80" y="380" width="55" height="40" />
-              </g>
-              <g transform="translate(180,300)">
-                <circle r="6" fill="#3a3a3c" />
-                <text x="14" y="4" fontFamily="JetBrains Mono" fontSize="10" fill="#8e8e92" letterSpacing="1">신내역</text>
-              </g>
-            </svg>
-            <div className="pin">
-              <div className="lbl">
-                <EditableText as="span" path="contact.visit.mapPinLabel" value={v.mapPinLabel ?? ''} editor={editor} />
+            {/* Admin-only chip for editing the Naver marker's label.
+             * The marker is rendered by NaverMap (custom HTML icon)
+             * so the dict field can't be wrapped in EditableText
+             * inline — this chip surfaces it in admin mode without
+             * crowding the public view. */}
+            {editor ? (
+              <div className="ct-map-pinlabel-edit">
+                <span className="hint">📍 핀 라벨</span>
+                <EditableText
+                  as="span"
+                  path="contact.visit.mapPinLabel"
+                  value={v.mapPinLabel ?? 'NJ SAFETY HQ'}
+                  editor={editor}
+                />
               </div>
-              <div className="marker" />
-            </div>
+            ) : null}
             <div className="actions">
               {actions.map((a, i) => {
                 // External map links (kakao/naver) open in a new tab so the
