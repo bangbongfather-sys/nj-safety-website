@@ -188,12 +188,37 @@ function InquiryTypes({
                   'aria-pressed': isActive,
                   'data-type': item.type,
                 };
+            // Index suffix on the key prevents React reconciliation
+            // warnings when an admin adds two cards before changing
+            // their type fields (both would otherwise share the same
+            // `type` value).
+            const reactKey = `${item.type ?? 'card'}-${i}`;
+            const totalLabel = `${String(i + 1).padStart(2, '0')} / ${String(items.length).padStart(2, '0')}`;
             return (
-              <Tag key={item.type} {...tagProps}>
+              <Tag key={reactKey} {...tagProps}>
                 <div className="top">
-                  <span className="n">{String(i + 1).padStart(2, '0')} / 05</span>
+                  <span className="n">{totalLabel}</span>
                   <span className="icon">{TYPE_ICONS[i] ?? null}</span>
                 </div>
+                {/* Admin-only: delete this inquiry-type card. Stops
+                 * the card's parent click so the public-mode button
+                 * version doesn't fire activeType change. */}
+                {editor?.onArrayDelete ? (
+                  <button
+                    type="button"
+                    className="ct-card-del"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (window.confirm(`${i + 1}번째 문의 유형 카드를 삭제할까요?`)) {
+                        editor.onArrayDelete?.('contact.types.items', i);
+                      }
+                    }}
+                    title="이 카드 삭제"
+                    aria-label="삭제"
+                  >
+                    × 삭제
+                  </button>
+                ) : null}
                 <div>
                   <EditableText as="h3" path={`contact.types.items[${i}].ko`} value={item.ko ?? ''} editor={editor} />
                   <EditableText as="div" className="en" path={`contact.types.items[${i}].en`} value={item.en ?? ''} editor={editor} />
@@ -210,6 +235,26 @@ function InquiryTypes({
             );
           })}
         </div>
+        {/* Admin-only: add a new inquiry-type card. Seeds with a
+         * placeholder type ('quote' — admin can leave it alone or
+         * change it later). Identical seed in ko + en. */}
+        {editor?.onArrayAdd ? (
+          <button
+            type="button"
+            className="ct-list-add"
+            onClick={() =>
+              editor.onArrayAdd?.('contact.types.items', {
+                type: 'quote',
+                ko: '새 문의 유형',
+                en: 'New inquiry type',
+                body: '설명을 입력하세요.',
+              })
+            }
+            title="새 문의 유형 카드 추가"
+          >
+            + 문의 유형 카드 추가
+          </button>
+        ) : null}
       </div>
     </section>
   );
@@ -602,9 +647,44 @@ function ContactProcess({ contact, editor }: { contact: ContactDict; editor?: Ed
               <EditableText as="span" className="en" path={`contact.process.steps[${i}].en`} value={s.en ?? ''} editor={editor} />
               <EditableText as="p" path={`contact.process.steps[${i}].body`} value={s.body ?? ''} editor={editor} multiline />
               <EditableText as="span" className="eta" path={`contact.process.steps[${i}].eta`} value={s.eta ?? ''} editor={editor} />
+              {/* Admin-only: delete this process step. */}
+              {editor?.onArrayDelete ? (
+                <button
+                  type="button"
+                  className="ct-card-del"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (window.confirm(`${i + 1}번째 프로세스 단계를 삭제할까요?`)) {
+                      editor.onArrayDelete?.('contact.process.steps', i);
+                    }
+                  }}
+                  title="이 단계 삭제"
+                  aria-label="삭제"
+                >
+                  × 삭제
+                </button>
+              ) : null}
             </div>
           ))}
         </div>
+        {editor?.onArrayAdd ? (
+          <button
+            type="button"
+            className="ct-list-add"
+            onClick={() =>
+              editor.onArrayAdd?.('contact.process.steps', {
+                n: String(steps.length + 1).padStart(2, '0'),
+                ko: '새 단계',
+                en: 'New step',
+                body: '단계 설명을 입력하세요.',
+                eta: '',
+              })
+            }
+            title="새 프로세스 단계 추가"
+          >
+            + 프로세스 단계 추가
+          </button>
+        ) : null}
       </div>
     </section>
   );
@@ -758,8 +838,40 @@ function ContactVisit({ contact, editor }: { contact: ContactDict; editor?: Edit
                     <EditableText as="span" path={`contact.visit.rows[${i}].v`} value={row.v ?? ''} editor={editor} />
                     <EditableText as="span" className="sub" path={`contact.visit.rows[${i}].sub`} value={row.sub ?? ''} editor={editor} />
                   </span>
+                  {editor?.onArrayDelete ? (
+                    <button
+                      type="button"
+                      className="ct-row-del"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (window.confirm(`"${row.key ?? `${i + 1}번째 행`}" 항목을 삭제할까요?`)) {
+                          editor.onArrayDelete?.('contact.visit.rows', i);
+                        }
+                      }}
+                      title="이 행 삭제"
+                      aria-label="삭제"
+                    >
+                      ×
+                    </button>
+                  ) : null}
                 </div>
               ))}
+              {editor?.onArrayAdd ? (
+                <button
+                  type="button"
+                  className="ct-list-add ct-list-add-inline"
+                  onClick={() =>
+                    editor.onArrayAdd?.('contact.visit.rows', {
+                      key: '새 항목',
+                      v: '내용을 입력하세요.',
+                      sub: '',
+                    })
+                  }
+                  title="새 방문 안내 행 추가"
+                >
+                  + 방문 안내 행 추가
+                </button>
+              ) : null}
             </div>
           </div>
 

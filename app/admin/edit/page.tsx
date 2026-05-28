@@ -68,6 +68,23 @@ function setIn(obj: unknown, path: (string | number)[], value: unknown): unknown
   return { ...src, [String(head)]: setIn(src[String(head)], rest, value) };
 }
 
+// Walk a dotted path and return the value (or undefined if any
+// intermediate segment is missing). Needed by onArrayAdd to read
+// the current array length when seeding new items.
+function getIn(obj: unknown, path: (string | number)[]): unknown {
+  let cur: unknown = obj;
+  for (const seg of path) {
+    if (cur == null) return undefined;
+    if (typeof seg === 'number') {
+      if (!Array.isArray(cur)) return undefined;
+      cur = cur[seg];
+    } else {
+      cur = (cur as Record<string, unknown>)[seg];
+    }
+  }
+  return cur;
+}
+
 type Load =
   | { status: 'loading' }
   | { status: 'ready'; ko: Dictionary; en: Dictionary; koSha: string; enSha: string }
@@ -223,6 +240,32 @@ export default function EditHomePage() {
     else setEnDraft((d) => (d ? update(d) : d));
   }, [active]);
 
+  // Generic array add / delete (used by InField sectors and any
+  // other shared array on the homepage). Patches BOTH ko + en
+  // drafts so structural indices stay aligned across locales;
+  // mirror of the same helpers in /admin/contact/edit.
+  const onArrayAdd = useCallback((arrayPath: string, item: unknown) => {
+    const segs = parsePath(arrayPath);
+    const apply = (d: Dictionary): Dictionary => {
+      const cur = getIn(d, segs);
+      const next = Array.isArray(cur) ? [...cur, item] : [item];
+      return setIn(d, segs, next) as Dictionary;
+    };
+    setKoDraft((d) => (d ? apply(d) : d));
+    setEnDraft((d) => (d ? apply(d) : d));
+  }, []);
+  const onArrayDelete = useCallback((arrayPath: string, index: number) => {
+    const segs = parsePath(arrayPath);
+    const apply = (d: Dictionary): Dictionary => {
+      const cur = getIn(d, segs);
+      if (!Array.isArray(cur)) return d;
+      const next = cur.filter((_, i) => i !== index);
+      return setIn(d, segs, next) as Dictionary;
+    };
+    setKoDraft((d) => (d ? apply(d) : d));
+    setEnDraft((d) => (d ? apply(d) : d));
+  }, []);
+
   const editor: EditorApi = useMemo(() => ({
     locale: active,
     onPatch: (pathStr, value) => {
@@ -236,7 +279,9 @@ export default function EditHomePage() {
     onDeleteHeroSlide,
     onCustomBlockCreate,
     onCustomBlockDelete,
-  }), [active, applyImagePatch, onAddHeroSlide, onDeleteHeroSlide, onCustomBlockCreate, onCustomBlockDelete]);
+    onArrayAdd,
+    onArrayDelete,
+  }), [active, applyImagePatch, onAddHeroSlide, onDeleteHeroSlide, onCustomBlockCreate, onCustomBlockDelete, onArrayAdd, onArrayDelete]);
 
   // Resolve the current image URL at a path so the ImageSlotPanel can
   // show "현재" alongside the new preview.

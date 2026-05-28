@@ -189,9 +189,45 @@ export default function InField({ dict, editor }: Props) {
                     editor={editor}
                     multiline
                   />
+                  {/* Admin-only: delete this sector cell. */}
+                  {editor?.onArrayDelete ? (
+                    <button
+                      type="button"
+                      className="infield-sector-del"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (window.confirm(`"${s.label || `${i + 1}번째 섹터`}"를 삭제할까요?`)) {
+                          editor.onArrayDelete?.('home.field.sectors', i);
+                        }
+                      }}
+                      title="이 섹터 삭제"
+                      aria-label="삭제"
+                    >
+                      × 삭제
+                    </button>
+                  ) : null}
                 </li>
               ))}
             </ul>
+            {/* Admin-only: append a new sector cell. Unique id seed
+             * (timestamp suffix) keeps React keys stable when several
+             * are added in quick succession. */}
+            {editor?.onArrayAdd ? (
+              <button
+                type="button"
+                className="infield-sector-add"
+                onClick={() =>
+                  editor.onArrayAdd?.('home.field.sectors', {
+                    id: `sector-${Date.now().toString(36)}`,
+                    label: '새 섹터',
+                    items: '대표 고객사를 입력하세요.',
+                  })
+                }
+                title="새 섹터 카드 추가"
+              >
+                + 섹터 카드 추가
+              </button>
+            ) : null}
           </div>
         </div>
       </div>
