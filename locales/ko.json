@@ -1097,7 +1097,7 @@
         {
           "id": "power",
           "label": "전력 · 발전",
-          "items": "한전 협력업체 · 발전 5사 공급사"
+          "items": "한전 협력업체 · 발전 5사 협력업체"
         },
         {
           "id": "electric",
@@ -1112,10 +1112,10 @@
         {
           "id": "energy",
           "label": "에너지 · 가스",
-          "items": "한국가스공사 · 신재생 인프라 현장"
+          "items": "SK 가스 공사 현장  · 신재생 인프라 현장"
         }
       ],
-      "heritageMeta": "EST. 1992 ─── 2026",
+      "heritageMeta": "EST. 1987 ─── 2026",
       "bandLabel": "— TRUSTED ACROSS INDUSTRIES"
     }
   }
