@@ -759,11 +759,23 @@ function ContactVisit({ contact, editor }: { contact: ContactDict; editor?: Edit
               <div className="marker" />
             </div>
             <div className="actions">
-              {actions.map((a, i) => (
-                <a key={i} href={a.href || '#'}>
-                  <EditableText as="span" path={`contact.visit.mapActions[${i}].ko`} value={a.ko ?? ''} editor={editor} />
-                </a>
-              ))}
+              {actions.map((a, i) => {
+                // External map links (kakao/naver) open in a new tab so the
+                // user doesn't lose the inquiry form they were filling in.
+                // Anchors that still point to in-page hashes (e.g. `#x`)
+                // stay same-tab.
+                const external = !!a.href && /^https?:\/\//.test(a.href);
+                return (
+                  <a
+                    key={i}
+                    href={a.href || '#'}
+                    target={external ? '_blank' : undefined}
+                    rel={external ? 'noopener noreferrer' : undefined}
+                  >
+                    <EditableText as="span" path={`contact.visit.mapActions[${i}].ko`} value={a.ko ?? ''} editor={editor} />
+                  </a>
+                );
+              })}
             </div>
           </div>
         </div>

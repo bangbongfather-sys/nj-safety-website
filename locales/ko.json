@@ -896,15 +896,15 @@
       "mapActions": [
         {
           "ko": "카카오맵 →",
-          "href": "#kakaomap"
+          "href": "https://map.kakao.com/?q=%EC%84%9C%EC%9A%B8%20%EC%A4%91%EB%9E%91%EA%B5%AC%20%EC%8B%A0%EB%82%B4%EC%97%AD%EB%A1%9C%20111%20SK%20V1%20%EC%84%BC%ED%84%B0"
         },
         {
           "ko": "네이버지도 →",
-          "href": "#navermap"
+          "href": "https://map.naver.com/p/search/%EC%84%9C%EC%9A%B8%20%EC%A4%91%EB%9E%91%EA%B5%AC%20%EC%8B%A0%EB%82%B4%EC%97%AD%EB%A1%9C%20111%20SK%20V1%20%EC%84%BC%ED%84%B0"
         },
         {
           "ko": "길찾기 →",
-          "href": "#directions"
+          "href": "https://map.naver.com/p/directions/-/-/-/walk?destination=%EC%84%9C%EC%9A%B8%20%EC%A4%91%EB%9E%91%EA%B5%AC%20%EC%8B%A0%EB%82%B4%EC%97%AD%EB%A1%9C%20111%20SK%20V1%20%EC%84%BC%ED%84%B0"
         }
       ]
     }
