@@ -3,23 +3,14 @@
 /**
  * In-the-Field + Clients/Partners section.
  *
- * Sits on the homepage in the slot previously held by Certifications
- * (which moved exclusively to /certifications + /resources so the
- * homepage doesn't duplicate it). The brief: show where NJ SAFETY
- * gear is actually deployed and the kinds of organisations buying it.
+ * Full-bleed editorial hero: the field photo fills the whole section
+ * behind everything, and all the editorial copy + the partners list
+ * sit on top as an overlay. A dark gradient on the left half (where
+ * the text lives) keeps the copy legible regardless of what the
+ * photo shows.
  *
- * Layout:
- *   ┌──── Editorial header (eyebrow + headline + sub) ────┐
- *   │                                                       │
- *   │ ┌──────── Photo (1.4fr) ───┐ ┌── Sectors (1fr) ────┐ │
- *   │ │  worker on site / cap.  │ │  4 industry rows    │ │
- *   │ │                         │ │  (label + clients)  │ │
- *   │ └─────────────────────────┘ └─────────────────────┘ │
- *   └───────────────────────────────────────────────────────┘
- *
- * Photo source defaults to the existing showcase background — the
- * admin can swap it via EditableImage on `home.field.photoSrc`.
- * Sector entries are fully inline-editable too.
+ * Mobile collapses the two-column overlay into a single stack and
+ * shortens the photo to a portrait aspect so the text still fits.
  */
 
 import type { Dictionary } from '@/lib/i18n';
@@ -48,69 +39,79 @@ export default function InField({ dict, editor }: Props) {
 
   return (
     <section className="infield" id="in-the-field" data-screen-label="In the Field">
-      <div className="wrap">
-        {/* Editorial header — eyebrow + headline + sub */}
-        <header className="infield-head">
-          <EditableText
-            as="span"
-            className="eyebrow"
-            path="home.field.eyebrow"
-            value={f.eyebrow ?? '— IN THE FIELD'}
-            editor={editor}
-          />
-          <h2 className="infield-h">
-            <EditableText
-              path="home.field.headlinePre"
-              value={f.headlinePre ?? ''}
-              editor={editor}
-            />
-            <br />
-            <em>
+      {/* Photo fills the whole section. EditableImage handles the
+       * upload UX when an admin editor is present; in read mode it
+       * renders a plain <img>. */}
+      <div className="infield-bg" aria-hidden>
+        <EditableImage
+          path="home.field.photoSrc"
+          src={f.photoSrc}
+          alt=""
+          className="infield-bg-img"
+          editor={editor}
+        />
+      </div>
+
+      {/* Dark gradient overlay — strong on the left where the text
+       * is, fading to 30 % on the right so the photo still breathes.
+       * pointer-events: none so the photo's EditableImage stays
+       * clickable underneath. */}
+      <div className="infield-scrim" aria-hidden />
+
+      {/* Content overlay — every editable surface lives here. */}
+      <div className="infield-content">
+        <div className="wrap">
+          <div className="infield-grid">
+            {/* Editorial column (left) */}
+            <div className="infield-editorial">
               <EditableText
-                path="home.field.headlineEm"
-                value={f.headlineEm ?? ''}
+                as="span"
+                className="eyebrow infield-eyebrow"
+                path="home.field.eyebrow"
+                value={f.eyebrow ?? '— IN THE FIELD'}
                 editor={editor}
               />
-            </em>
-            <EditableText
-              path="home.field.headlineSuf"
-              value={f.headlineSuf ?? ''}
-              editor={editor}
-            />
-          </h2>
-          <EditableText
-            as="p"
-            className="infield-sub"
-            path="home.field.sub"
-            value={f.sub ?? ''}
-            editor={editor}
-            multiline
-          />
-        </header>
-
-        {/* Photo + sectors grid */}
-        <div className="infield-grid">
-          <div className="infield-photo-wrap">
-            <EditableImage
-              path="home.field.photoSrc"
-              src={f.photoSrc}
-              alt="현장 작업 사진"
-              className="infield-photo"
-              editor={editor}
-            />
-            {f.photoCaption ? (
+              <h2 className="infield-h">
+                <EditableText
+                  path="home.field.headlinePre"
+                  value={f.headlinePre ?? ''}
+                  editor={editor}
+                />
+                <br />
+                <em>
+                  <EditableText
+                    path="home.field.headlineEm"
+                    value={f.headlineEm ?? ''}
+                    editor={editor}
+                  />
+                </em>
+                <EditableText
+                  path="home.field.headlineSuf"
+                  value={f.headlineSuf ?? ''}
+                  editor={editor}
+                />
+              </h2>
               <EditableText
-                as="div"
-                className="infield-photo-cap"
-                path="home.field.photoCaption"
-                value={f.photoCaption}
+                as="p"
+                className="infield-sub"
+                path="home.field.sub"
+                value={f.sub ?? ''}
                 editor={editor}
+                multiline
               />
-            ) : null}
-          </div>
+              {f.photoCaption ? (
+                <EditableText
+                  as="div"
+                  className="infield-photo-cap"
+                  path="home.field.photoCaption"
+                  value={f.photoCaption}
+                  editor={editor}
+                />
+              ) : null}
+            </div>
 
-          <div className="infield-sectors">
-            <div className="infield-sectors-head">
+            {/* Sectors column (right) */}
+            <div className="infield-sectors">
               <EditableText
                 as="h3"
                 className="infield-sectors-h"
@@ -126,28 +127,28 @@ export default function InField({ dict, editor }: Props) {
                 editor={editor}
                 multiline
               />
+              <ul className="infield-sector-list">
+                {sectors.map((s, i) => (
+                  <li key={s.id || i} className="infield-sector">
+                    <EditableText
+                      as="div"
+                      className="infield-sector-label"
+                      path={`home.field.sectors[${i}].label`}
+                      value={s.label ?? ''}
+                      editor={editor}
+                    />
+                    <EditableText
+                      as="div"
+                      className="infield-sector-items"
+                      path={`home.field.sectors[${i}].items`}
+                      value={s.items ?? ''}
+                      editor={editor}
+                      multiline
+                    />
+                  </li>
+                ))}
+              </ul>
             </div>
-            <ul className="infield-sector-list">
-              {sectors.map((s, i) => (
-                <li key={s.id || i} className="infield-sector">
-                  <EditableText
-                    as="div"
-                    className="infield-sector-label"
-                    path={`home.field.sectors[${i}].label`}
-                    value={s.label ?? ''}
-                    editor={editor}
-                  />
-                  <EditableText
-                    as="div"
-                    className="infield-sector-items"
-                    path={`home.field.sectors[${i}].items`}
-                    value={s.items ?? ''}
-                    editor={editor}
-                    multiline
-                  />
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
       </div>

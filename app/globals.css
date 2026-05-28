@@ -3825,29 +3825,89 @@ section { position: relative; }
 
 /* ============================================================
  * In-the-Field + Clients/Partners section (added 2026-05).
- * Replaces the previous Certifications block on the homepage —
- * certifications still live at /certifications + /resources, the
- * homepage just doesn't duplicate them anymore. This section
- * shows where the gear is deployed and which organisations buy it.
+ * Replaces the previous Certifications block on the homepage.
+ * Full-bleed editorial: photo fills the whole section, dark
+ * gradient on the left half keeps the overlay text legible, and
+ * the two-column layout (editorial copy + partners list) lives
+ * on top.
  * ============================================================ */
 .infield {
-  padding: 140px 0;
-  background: var(--bg);
+  position: relative;
+  min-height: clamp(640px, 80vh, 880px);
+  overflow: hidden;
+  background: #0a0a0b;
   border-top: 1px solid var(--border-soft);
 }
-.infield-head {
-  margin-bottom: 64px;
-  max-width: 880px;
+.infield-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
 }
-.infield-head .eyebrow { display: block; margin-bottom: 24px; }
+.infield-bg-img,
+.infield-bg img,
+.infield-bg .ed-img-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  /* Slight darken/desaturate so the overlay text reads cleanly even
+   * when the underlying photo has bright pockets. */
+  filter: brightness(.78) contrast(1.06) saturate(.85);
+}
+
+/* Dark gradient scrim — heavy on the left where the text lives,
+ * fades to ~30 % on the right so the photo still breathes. A second
+ * top-to-bottom gradient keeps the section legible near edges. */
+.infield-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg,
+      rgba(10, 10, 11, 0.92) 0%,
+      rgba(10, 10, 11, 0.78) 35%,
+      rgba(10, 10, 11, 0.55) 60%,
+      rgba(10, 10, 11, 0.30) 100%),
+    linear-gradient(180deg,
+      rgba(10, 10, 11, 0.30) 0%,
+      rgba(10, 10, 11, 0.00) 25%,
+      rgba(10, 10, 11, 0.00) 75%,
+      rgba(10, 10, 11, 0.45) 100%);
+}
+
+.infield-content {
+  position: relative;
+  z-index: 2;
+  padding: clamp(80px, 12vh, 140px) 0;
+  min-height: clamp(640px, 80vh, 880px);
+  display: flex;
+  align-items: center;
+}
+.infield-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 56px;
+  align-items: start;
+  width: 100%;
+}
+
+/* Editorial column (left) */
+.infield-editorial { max-width: 540px; }
+.infield-eyebrow {
+  display: block;
+  margin-bottom: 24px;
+  color: var(--accent);
+}
 .infield-h {
   font-family: var(--display);
-  font-size: clamp(36px, 5vw, 72px);
+  font-size: clamp(36px, 5vw, 68px);
   font-weight: 800;
   letter-spacing: -0.035em;
-  line-height: 1.04;
-  color: var(--text);
+  line-height: 1.05;
+  color: #fff;
   margin: 0;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, .35);
   text-wrap: balance;
   word-break: keep-all;
 }
@@ -3857,79 +3917,67 @@ section { position: relative; }
   font-weight: 900;
 }
 .infield-sub {
-  margin-top: 24px;
-  max-width: 640px;
-  color: var(--muted);
-  font-size: 16px;
+  margin: 24px 0 0;
+  color: rgba(255, 255, 255, .82);
+  font-size: 15.5px;
   line-height: 1.7;
   word-break: keep-all;
-}
-
-/* Photo + sectors grid */
-.infield-grid {
-  display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: 56px;
-  align-items: start;
-}
-
-/* Photo column */
-.infield-photo-wrap {
-  position: relative;
-}
-.infield-photo {
-  width: 100%;
-  aspect-ratio: 5 / 4;
-  object-fit: cover;
-  display: block;
-  border: 1px solid var(--border-soft);
-  filter: brightness(.85) contrast(1.08) saturate(.9);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, .3);
 }
 .infield-photo-cap {
-  margin-top: 14px;
+  margin-top: 32px;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 10.5px;
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: var(--muted-2);
+  color: rgba(255, 255, 255, .55);
 }
 
-/* Sectors column */
-.infield-sectors-head { margin-bottom: 28px; }
+/* Sectors column (right) */
+.infield-sectors {
+  /* Subtle translucent panel under the partners list so it reads as
+   * its own card on top of the photo without going full-opaque. */
+  background: rgba(10, 10, 11, 0.55);
+  border: 1px solid rgba(255, 255, 255, .08);
+  padding: 32px 28px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
 .infield-sectors-h {
   font-family: var(--display);
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 800;
   letter-spacing: -0.022em;
-  color: var(--text);
+  color: #fff;
   margin: 0;
 }
 .infield-sectors-sub {
-  margin-top: 10px;
-  color: var(--muted);
-  font-size: 13.5px;
-  line-height: 1.65;
+  margin: 8px 0 24px;
+  color: rgba(255, 255, 255, .65);
+  font-size: 13px;
+  line-height: 1.6;
+  border-bottom: 1px solid rgba(255, 255, 255, .12);
+  padding-bottom: 20px;
 }
-
 .infield-sector-list {
   list-style: none;
   padding: 0;
   margin: 0;
   display: grid;
   gap: 0;
-  border-top: 1px solid var(--border-soft);
 }
 .infield-sector {
   display: grid;
-  grid-template-columns: 140px 1fr;
-  gap: 24px;
-  padding: 20px 0;
-  border-bottom: 1px solid var(--border-soft);
+  grid-template-columns: 120px 1fr;
+  gap: 20px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
   align-items: baseline;
 }
+.infield-sector:last-child { border-bottom: 0; }
 .infield-sector-label {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 10.5px;
   letter-spacing: .16em;
   text-transform: uppercase;
   color: var(--accent);
@@ -3937,23 +3985,32 @@ section { position: relative; }
 }
 .infield-sector-items {
   font-family: var(--display);
-  font-size: 15px;
+  font-size: 14.5px;
   font-weight: 500;
   letter-spacing: -0.012em;
-  color: var(--text);
+  color: #fff;
   line-height: 1.55;
   word-break: keep-all;
 }
 
 @media (max-width: 980px) {
-  .infield { padding: 80px 0; }
-  .infield-head { margin-bottom: 40px; }
-  .infield-grid { grid-template-columns: 1fr; gap: 36px; }
-  .infield-sector { grid-template-columns: 110px 1fr; gap: 16px; padding: 16px 0; }
+  .infield { min-height: auto; }
+  .infield-content { padding: 64px 0; min-height: auto; align-items: stretch; }
+  .infield-grid { grid-template-columns: 1fr; gap: 32px; }
+  .infield-editorial { max-width: none; }
+  .infield-scrim {
+    /* On stack, both columns sit on top of the photo, so darken the
+     * whole frame more evenly instead of side-weighting. */
+    background:
+      linear-gradient(180deg,
+        rgba(10, 10, 11, 0.86) 0%,
+        rgba(10, 10, 11, 0.74) 50%,
+        rgba(10, 10, 11, 0.82) 100%);
+  }
+  .infield-sectors { padding: 24px 20px; }
 }
 @media (max-width: 680px) {
-  .infield { padding: 60px 0; }
+  .infield-content { padding: 48px 0; }
   .infield-h { font-size: 32px; }
-  .infield-photo { aspect-ratio: 4 / 5; }
-  .infield-sector { grid-template-columns: 1fr; gap: 4px; padding: 14px 0; }
+  .infield-sector { grid-template-columns: 1fr; gap: 4px; padding: 12px 0; }
 }
