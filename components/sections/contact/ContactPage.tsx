@@ -87,8 +87,8 @@ function ContactHero({ contact, editor }: { contact: ContactDict; editor?: Edito
               <div key={i} className="ct-hero-metric">
                 <EditableText as="span" className="lbl" path={`contact.hero.metrics[${i}].lbl`} value={m.lbl ?? ''} editor={editor} />
                 <span className="val">
-                  <EditableText as="span" path={`contact.hero.metrics[${i}].num`} value={m.num ?? ''} editor={editor} />
-                  <EditableText as="span" path={`contact.hero.metrics[${i}].unit`} value={m.unit ?? ''} editor={editor} />
+                  <EditableText as="span" className="num" path={`contact.hero.metrics[${i}].num`} value={m.num ?? ''} editor={editor} />
+                  <EditableText as="span" className="unit" path={`contact.hero.metrics[${i}].unit`} value={m.unit ?? ''} editor={editor} />
                 </span>
                 <EditableText
                   as="span"

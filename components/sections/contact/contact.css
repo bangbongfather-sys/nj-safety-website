@@ -130,7 +130,19 @@
   color: var(--accent);
   line-height: 1;
 }
-.contact-page .ct-hero-metric .val span {
+.contact-page .ct-hero-metric .val .num {
+  /* EditableText wraps this in a <span data-fp> (and in public mode
+   * an inner <span> too). Without an explicit font-size the number
+   * inherits the .val's 34px / accent / 900 styling correctly. */
+  color: inherit;
+  font-weight: inherit;
+}
+/* Only the unit (e.g. "영업일", "벌부터", "주") goes small + white.
+ * Targeting `.unit` instead of `.val span` keeps the rule from also
+ * hitting the .num wrapper — which would have shrunk the big number
+ * to 0.45em on admin and, due to public-mode double-span nesting,
+ * 0.20em on the live site. */
+.contact-page .ct-hero-metric .val .unit {
   font-size: .45em;
   color: #fff;
   font-weight: 400;
