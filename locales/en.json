@@ -326,6 +326,9 @@
     },
     "contact.types.items[2].ko": {
       "width": "100.0%"
+    },
+    "company.addressFull": {
+      "width": "100.0%"
     }
   },
   "siteConfig": {
