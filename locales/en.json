@@ -321,8 +321,11 @@
     "cta.titleLine2Em": {
       "size": "0.90em"
     },
+    "contact.types.items[0].en": {
+      "size": "0.90em"
+    },
     "contact.types.items[2].ko": {
-      "size": "0.60em"
+      "width": "100.0%"
     }
   },
   "siteConfig": {
