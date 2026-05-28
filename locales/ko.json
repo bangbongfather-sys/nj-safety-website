@@ -321,8 +321,11 @@
     "cta.titleLine2Em": {
       "size": "0.90em"
     },
+    "contact.types.items[0].en": {
+      "size": "0.90em"
+    },
     "contact.types.items[2].ko": {
-      "size": "0.60em"
+      "width": "100.0%"
     }
   },
   "siteConfig": {
@@ -679,15 +682,15 @@
         },
         {
           "type": "b2b",
-          "ko": "B2B 단체 주문",
+          "ko": "신규 대리점 문의",
           "en": "<br>",
           "body": "-"
         },
         {
           "type": "oem",
-          "ko": "특수 사이즈 및 요청 사항 반영 제작",
+          "ko": "요청사항 제작건",
           "en": "<br>",
-          "body": "원단 개발부터 봉제까지 본사 직접 관여."
+          "body": "원단 개발부터 봉제까지 본사 직접 관여하므로 큰사이즈, 소매, 기장조절 가능."
         },
         {
           "type": "cert",
