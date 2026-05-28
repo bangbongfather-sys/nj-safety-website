@@ -644,6 +644,26 @@ function ContactFaq({ contact, editor }: { contact: ContactDict; editor?: Editor
                   <div className="ct-faq-q" aria-disabled>
                     <span className="n">Q {String(i + 1).padStart(2, '0')}</span>
                     <EditableText as="span" className="t" path={`contact.faq.items[${i}].q`} value={item.q ?? ''} editor={editor} />
+                    {/* Admin-only: delete this FAQ row. Same trash-can
+                     * affordance pattern as CustomBlocks / hero slides.
+                     * Stops the row's parent click so the toggle SVG
+                     * doesn't also fire. */}
+                    {editor.onArrayDelete ? (
+                      <button
+                        type="button"
+                        className="ct-faq-del"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (window.confirm(`Q${String(i + 1).padStart(2, '0')} 항목을 삭제할까요?`)) {
+                            editor.onArrayDelete?.('contact.faq.items', i);
+                          }
+                        }}
+                        title="이 FAQ 항목 삭제"
+                        aria-label="삭제"
+                      >
+                        × 삭제
+                      </button>
+                    ) : null}
                     <span className="toggle" aria-hidden>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M5 12h14" /></svg>
                     </span>
@@ -677,6 +697,21 @@ function ContactFaq({ contact, editor }: { contact: ContactDict; editor?: Editor
               </div>
             );
           })}
+          {/* Admin-only: add a new FAQ row at the end of the list.
+           * Seed has the same placeholder text in ko + en — admins
+           * diverge them by clicking the inline editors. */}
+          {editor?.onArrayAdd ? (
+            <button
+              type="button"
+              className="ct-faq-add"
+              onClick={() =>
+                editor.onArrayAdd?.('contact.faq.items', { q: '새 질문', a: '새 답변을 입력하세요.' })
+              }
+              title="새 FAQ 항목 추가"
+            >
+              + FAQ 항목 추가
+            </button>
+          ) : null}
         </div>
       </div>
     </section>

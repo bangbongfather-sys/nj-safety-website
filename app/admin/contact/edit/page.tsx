@@ -184,6 +184,33 @@ export default function EditContactPage() {
     else setEnDraft((d) => (d ? update(d) : d));
   }, [active]);
 
+  // Generic array add / delete. Both helpers patch ko + en drafts
+  // so structural indices stay aligned across locales. The seed
+  // `item` is identical in both locales on creation; admins
+  // edit each locale's text via the inline EditableText that
+  // already drives the rest of this page.
+  const onArrayAdd = useCallback((arrayPath: string, item: unknown) => {
+    const segs = parsePath(arrayPath);
+    const apply = (d: Dictionary): Dictionary => {
+      const cur = getIn(d, segs);
+      const next = Array.isArray(cur) ? [...cur, item] : [item];
+      return setIn(d, segs, next) as Dictionary;
+    };
+    setKoDraft((d) => (d ? apply(d) : d));
+    setEnDraft((d) => (d ? apply(d) : d));
+  }, []);
+  const onArrayDelete = useCallback((arrayPath: string, index: number) => {
+    const segs = parsePath(arrayPath);
+    const apply = (d: Dictionary): Dictionary => {
+      const cur = getIn(d, segs);
+      if (!Array.isArray(cur)) return d;
+      const next = cur.filter((_, i) => i !== index);
+      return setIn(d, segs, next) as Dictionary;
+    };
+    setKoDraft((d) => (d ? apply(d) : d));
+    setEnDraft((d) => (d ? apply(d) : d));
+  }, []);
+
   const editor: EditorApi = useMemo(() => ({
     locale: active,
     onPatch: (pathStr, value) => {
@@ -195,7 +222,9 @@ export default function EditContactPage() {
     onImageClick: (pathStr) => setImageSlot({ path: pathStr }),
     onCustomBlockCreate,
     onCustomBlockDelete,
-  }), [active, applyImagePatch, onCustomBlockCreate, onCustomBlockDelete]);
+    onArrayAdd,
+    onArrayDelete,
+  }), [active, applyImagePatch, onCustomBlockCreate, onCustomBlockDelete, onArrayAdd, onArrayDelete]);
 
   const imageSlotCurrentSrc = useMemo(() => {
     if (!imageSlot || !koDraft) return null;

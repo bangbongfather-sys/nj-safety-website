@@ -18,6 +18,16 @@ export type EditorApi = {
   onCustomBlockCreate?: (block: unknown) => void;
   /** Remove a floating text box by id. */
   onCustomBlockDelete?: (id: string) => void;
+  /**
+   * Generic array-mutating handlers. Use these for any
+   * dict-resident list (FAQ items, sectors, process steps,
+   * mapActions, …). Both patch ko + en drafts so structural
+   * indices stay aligned across locales while per-language text
+   * inside each item starts from a placeholder and diverges via
+   * normal inline EditableText editing.
+   */
+  onArrayAdd?: (arrayPath: string, item: unknown) => void;
+  onArrayDelete?: (arrayPath: string, index: number) => void;
   /** Current display locale (for visual hint only — paths are language-agnostic). */
   locale: 'ko' | 'en';
 };
