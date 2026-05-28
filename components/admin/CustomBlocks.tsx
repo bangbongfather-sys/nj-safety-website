@@ -98,8 +98,14 @@ function CustomBlockView({
   const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
   const dragStart = useRef<{ mx: number; my: number; bx: number; by: number } | null>(null);
 
+  // Live width during a corner-resize drag. Same pattern as `pos` —
+  // local state during the gesture, persisted on mouseup.
+  const [tmpW, setTmpW] = useState<number | null>(null);
+  const resizeStart = useRef<{ mx: number; w: number } | null>(null);
+
   const x = pos?.x ?? block.x ?? 100;
   const y = pos?.y ?? block.y ?? 100;
+  const w = tmpW ?? block.width;
 
   const onHandleMouseDown = (e: React.MouseEvent) => {
     if (!editor) return;
@@ -114,30 +120,57 @@ function CustomBlockView({
     setPos({ x: block.x ?? 100, y: block.y ?? 100 });
   };
 
+  const onResizeMouseDown = (e: React.MouseEvent) => {
+    if (!editor) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const startW = block.width ?? (wrapRef.current?.getBoundingClientRect().width ?? 240);
+    resizeStart.current = { mx: e.clientX, w: startW };
+    setTmpW(startW);
+  };
+
   // Track the move + release on window so the drag doesn't lose grip
-  // when the cursor flies off the small handle area.
+  // when the cursor flies off the small handle area. One effect
+  // handles BOTH gestures (move + resize) since we only do one at a
+  // time and both follow the same persist-on-mouseup pattern.
   useEffect(() => {
     if (!editor) return;
     const onMove = (e: MouseEvent) => {
-      if (!dragStart.current) return;
-      const dx = e.clientX - dragStart.current.mx;
-      const dy = e.clientY - dragStart.current.my;
-      setPos({
-        x: Math.max(0, dragStart.current.bx + dx),
-        y: Math.max(0, dragStart.current.by + dy),
-      });
+      if (dragStart.current) {
+        const dx = e.clientX - dragStart.current.mx;
+        const dy = e.clientY - dragStart.current.my;
+        setPos({
+          x: Math.max(0, dragStart.current.bx + dx),
+          y: Math.max(0, dragStart.current.by + dy),
+        });
+      } else if (resizeStart.current) {
+        const dx = e.clientX - resizeStart.current.mx;
+        // 120px floor — under that the text becomes unreadable
+        // and the resize handle starts to overlap content.
+        setTmpW(Math.max(120, Math.round(resizeStart.current.w + dx)));
+      }
     };
     const onUp = () => {
-      if (!dragStart.current) return;
-      const final = pos;
-      dragStart.current = null;
-      if (final) {
-        // Persist final position. onPatch only takes strings — store
-        // as numeric strings; the renderer Number()s them back.
-        editor.onPatch?.(`customBlocks[${index}].x`, String(Math.round(final.x)));
-        editor.onPatch?.(`customBlocks[${index}].y`, String(Math.round(final.y)));
+      if (dragStart.current) {
+        const final = pos;
+        dragStart.current = null;
+        if (final) {
+          // Persist final position. onPatch only takes strings —
+          // store as numeric strings; the renderer Number()s them
+          // back.
+          editor.onPatch?.(`customBlocks[${index}].x`, String(Math.round(final.x)));
+          editor.onPatch?.(`customBlocks[${index}].y`, String(Math.round(final.y)));
+        }
+        setPos(null);
       }
-      setPos(null);
+      if (resizeStart.current) {
+        const finalW = tmpW;
+        resizeStart.current = null;
+        if (finalW) {
+          editor.onPatch?.(`customBlocks[${index}].width`, String(Math.round(finalW)));
+        }
+        setTmpW(null);
+      }
     };
     window.addEventListener('mousemove', onMove);
     window.addEventListener('mouseup', onUp);
@@ -145,13 +178,13 @@ function CustomBlockView({
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('mouseup', onUp);
     };
-  }, [editor, index, pos]);
+  }, [editor, index, pos, tmpW]);
 
   const style: CSSProperties = {
     position: 'absolute',
     top: `${y}px`,
     left: `${x}px`,
-    width: block.width ? `${block.width}px` : undefined,
+    width: w ? `${w}px` : undefined,
     color: block.color || undefined,
     cursor: pos ? 'grabbing' : undefined,
   };
@@ -167,7 +200,7 @@ function CustomBlockView({
             title="드래그해서 위치 이동"
             aria-label="드래그해서 위치 이동"
           >
-            ⠿
+            ⠿ 이동
           </button>
           <button
             type="button"
@@ -178,7 +211,7 @@ function CustomBlockView({
             title="삭제"
             aria-label="삭제"
           >
-            ×
+            × 삭제
           </button>
         </div>
       ) : null}
@@ -190,6 +223,17 @@ function CustomBlockView({
         editor={editor}
         multiline
       />
+      {/* Bottom-right corner — drag horizontally to resize. Mirrors
+       * the Miricanvas/Figma resize affordance so operators get a
+       * predictable visual cue that the box is sizeable. */}
+      {editor ? (
+        <div
+          className="cb-resize"
+          onMouseDown={onResizeMouseDown}
+          title="드래그해서 너비 조절"
+          aria-label="너비 조절"
+        />
+      ) : null}
     </div>
   );
 }
