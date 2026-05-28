@@ -912,7 +912,16 @@
       ]
     }
   },
-  "customBlocks": [],
+  "customBlocks": [
+    {
+      "id": "cb-mppltaim-1wol",
+      "route": "contact",
+      "text": "새 텍스트",
+      "x": "7679",
+      "y": "4115",
+      "width": 240
+    }
+  ],
   "resources": {
     "meta": {
       "title": "자료실 — NJ SAFETY",
