@@ -1097,7 +1097,7 @@
         {
           "id": "power",
           "label": "전력 · 발전",
-          "items": "한전 협력업체 · 발전 5사 협력업체"
+          "items": "한전 협력업체 · <span style=\"color: rgba(255, 255, 255, 0.82); letter-spacing: -0.174px;\">고압 송전 · 활선 작업 전문 시공사</span>"
         },
         {
           "id": "electric",
