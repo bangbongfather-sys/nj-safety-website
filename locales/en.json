@@ -1081,5 +1081,40 @@
       "hours": "Hours",
       "manager": "Contact"
     }
+  },
+  "home": {
+    "field": {
+      "eyebrow": "— IN THE FIELD",
+      "headlinePre": "Worn every day on",
+      "headlineEm": "the toughest sites",
+      "headlineSuf": ".",
+      "sub": "Power, refineries, plants, construction — Korea's heaviest industry runs in NJ SAFETY workwear.",
+      "photoSrc": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/showcase-bg.jpg?v=1779027401",
+      "photoCaption": "*Model wearing NJ SAFETY Aramid line",
+      "sectorsHead": "Clients & Partners",
+      "sectorsSub": "Established supply relationships across Korea's safety-critical industries.",
+      "sectors": [
+        {
+          "id": "power",
+          "label": "Power Generation",
+          "items": "KEPCO partners · 5 GenCo suppliers"
+        },
+        {
+          "id": "electric",
+          "label": "Electrical Works",
+          "items": "High-voltage / live-line contractors"
+        },
+        {
+          "id": "petro",
+          "label": "Refinery & Petrochem",
+          "items": "Yeosu & Ulsan turnaround crews"
+        },
+        {
+          "id": "energy",
+          "label": "Energy & Gas",
+          "items": "KOGAS · renewable infrastructure"
+        }
+      ]
+    }
   }
 }

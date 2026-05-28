@@ -5,7 +5,8 @@ import Hero from '@/components/sections/Hero';
 import Products from '@/components/sections/Products';
 import Showcase from '@/components/sections/Showcase';
 import Manifesto from '@/components/sections/Manifesto';
-import Certifications from '@/components/sections/Certifications';
+// import Certifications from '@/components/sections/Certifications';  // replaced by InField (2026-05)
+import InField from '@/components/sections/InField';
 import ContactCTA from '@/components/sections/ContactCTA';
 import { CustomBlocksLayer } from '@/components/admin/CustomBlocks';
 
@@ -23,7 +24,11 @@ export default async function HomePage({ params }: Props) {
       <Products locale={locale} dict={dict} products={getAllProducts()} />
       <Showcase dict={dict} />
       <Manifesto dict={dict} />
-      <Certifications dict={dict} />
+      {/* Certifications block replaced by InField (2026-05) — the
+       * homepage no longer duplicates what's already on /certifications
+       * and /resources. InField surfaces a single field photo + the
+       * industries / partners actually buying from NJ instead. */}
+      <InField dict={dict} />
       {/* /clients + /news sections removed 2026-05 (component files deleted). */}
       <ContactCTA locale={locale} dict={dict} />
       <CustomBlocksLayer blocks={dict.customBlocks} route="home" />

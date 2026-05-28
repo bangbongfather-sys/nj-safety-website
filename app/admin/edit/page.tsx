@@ -20,7 +20,8 @@ import Hero from '@/components/sections/Hero';
 import Products from '@/components/sections/Products';
 import Showcase from '@/components/sections/Showcase';
 import Manifesto from '@/components/sections/Manifesto';
-import Certifications from '@/components/sections/Certifications';
+// import Certifications from '@/components/sections/Certifications';  // replaced by InField (2026-05)
+import InField from '@/components/sections/InField';
 import ContactCTA from '@/components/sections/ContactCTA';
 
 const KO_PATH = 'locales/ko.json';
@@ -495,7 +496,7 @@ export default function EditHomePage() {
           <Products locale={active} dict={activeDict} editor={editor} />
           <Showcase dict={activeDict} editor={editor} />
           <Manifesto dict={activeDict} editor={editor} />
-          <Certifications dict={activeDict} editor={editor} />
+          <InField dict={activeDict} editor={editor} />
           {/* /clients + /news sections removed 2026-05 (component files deleted). */}
           <ContactCTA locale={active} dict={activeDict} editor={editor} />
           <CustomBlocksLayer blocks={activeDict.customBlocks} route="home" editor={editor} />

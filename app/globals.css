@@ -3822,3 +3822,138 @@ section { position: relative; }
     align-items: center;
   }
 }
+
+/* ============================================================
+ * In-the-Field + Clients/Partners section (added 2026-05).
+ * Replaces the previous Certifications block on the homepage —
+ * certifications still live at /certifications + /resources, the
+ * homepage just doesn't duplicate them anymore. This section
+ * shows where the gear is deployed and which organisations buy it.
+ * ============================================================ */
+.infield {
+  padding: 140px 0;
+  background: var(--bg);
+  border-top: 1px solid var(--border-soft);
+}
+.infield-head {
+  margin-bottom: 64px;
+  max-width: 880px;
+}
+.infield-head .eyebrow { display: block; margin-bottom: 24px; }
+.infield-h {
+  font-family: var(--display);
+  font-size: clamp(36px, 5vw, 72px);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.04;
+  color: var(--text);
+  margin: 0;
+  text-wrap: balance;
+  word-break: keep-all;
+}
+.infield-h em {
+  font-style: normal;
+  color: var(--accent);
+  font-weight: 900;
+}
+.infield-sub {
+  margin-top: 24px;
+  max-width: 640px;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.7;
+  word-break: keep-all;
+}
+
+/* Photo + sectors grid */
+.infield-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 56px;
+  align-items: start;
+}
+
+/* Photo column */
+.infield-photo-wrap {
+  position: relative;
+}
+.infield-photo {
+  width: 100%;
+  aspect-ratio: 5 / 4;
+  object-fit: cover;
+  display: block;
+  border: 1px solid var(--border-soft);
+  filter: brightness(.85) contrast(1.08) saturate(.9);
+}
+.infield-photo-cap {
+  margin-top: 14px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
+/* Sectors column */
+.infield-sectors-head { margin-bottom: 28px; }
+.infield-sectors-h {
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.022em;
+  color: var(--text);
+  margin: 0;
+}
+.infield-sectors-sub {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 13.5px;
+  line-height: 1.65;
+}
+
+.infield-sector-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--border-soft);
+}
+.infield-sector {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 24px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border-soft);
+  align-items: baseline;
+}
+.infield-sector-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+}
+.infield-sector-items {
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  color: var(--text);
+  line-height: 1.55;
+  word-break: keep-all;
+}
+
+@media (max-width: 980px) {
+  .infield { padding: 80px 0; }
+  .infield-head { margin-bottom: 40px; }
+  .infield-grid { grid-template-columns: 1fr; gap: 36px; }
+  .infield-sector { grid-template-columns: 110px 1fr; gap: 16px; padding: 16px 0; }
+}
+@media (max-width: 680px) {
+  .infield { padding: 60px 0; }
+  .infield-h { font-size: 32px; }
+  .infield-photo { aspect-ratio: 4 / 5; }
+  .infield-sector { grid-template-columns: 1fr; gap: 4px; padding: 14px 0; }
+}
