@@ -833,16 +833,8 @@
           "a": "Bulk quotes (with a 5% additional discount) start at <b>50 units</b>. OEM production (embroidery, custom patterns) starts at <b>100 units</b>. Regular-supply contracts are arranged separately."
         },
         {
-          "q": "How is a quotation calculated?",
-          "a": "Quotations are based on the product, quantity, size distribution, embroidery / logo options and certification requirements. The formal quote takes about <b>3–5 business days</b>, with <b>one free revision</b> included."
-        },
-        {
           "q": "What is the average lead time?",
           "a": "In-stock sizes ship in <b>5–7 business days</b>. New production runs take <b>3–6 weeks</b>; OEM production takes <b>6–10 weeks</b>. Urgent schedules can often be shortened by prior arrangement."
-        },
-        {
-          "q": "Can you handle OEM embroidery and logo work?",
-          "a": "Yes. We support <b>embroidery, heat transfer and silk printing</b>, including company logos, names and department-level customisation. Send an AI or high-resolution PNG file and our design team will review and return a proof."
         },
         {
           "q": "Can I receive test reports and certificates?",
@@ -855,10 +847,6 @@
         {
           "q": "How long is the after-sales period?",
           "a": "Manufacturing defects are exchanged or repaired free of charge within <b>one year of despatch</b>. Wear and tear repairs are quoted separately. Size exchanges are accepted <b>within 14 days</b> of despatch and only when unused."
-        },
-        {
-          "q": "Do you ship overseas / export?",
-          "a": "Yes. We work on <b>EXW / FOB / CIF terms</b> and support customs, duty and quarantine documentation. English test reports and certificates are available (English ATPV labelling follows the NFPA 2112 UL certification)."
         }
       ]
     },
