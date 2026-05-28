@@ -79,7 +79,13 @@ export default function InField({ dict, editor }: Props) {
       {editor?.onImageClick ? (
         <button
           type="button"
-          className="infield-edit-photo"
+          /* Inherits styling from .ed-img-btn (the EditableImage
+           * default affordance used everywhere else in admin), so
+           * this button matches the other "🖼️ 사진 교체" pills
+           * across the site. .infield-edit-photo only overrides the
+           * positioning + z-index needed to clear the scrim and
+           * content overlay. */
+          className="ed-img-btn ed-img-btn-replace infield-edit-photo"
           onClick={(e) => {
             e.stopPropagation();
             editor.onImageClick?.('home.field.photoSrc');
