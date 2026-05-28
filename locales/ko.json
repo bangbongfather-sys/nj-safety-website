@@ -320,6 +320,9 @@
     },
     "cta.titleLine2Em": {
       "size": "0.90em"
+    },
+    "contact.types.items[2].ko": {
+      "size": "0.60em"
     }
   },
   "siteConfig": {
@@ -671,26 +674,26 @@
         {
           "type": "quote",
           "ko": "제품·견적 문의",
-          "en": "Product & Quote",
+          "en": "<br>",
           "body": "아라미드 시즌 제품의 가격·재고·납기 관련 일반 견적 문의."
         },
         {
           "type": "b2b",
           "ko": "B2B 단체 주문",
           "en": "<br>",
-          "body": "50벌 이상 단체 주문 · 5% 추가 할인 · 전담 매니저 응대."
+          "body": "-"
         },
         {
           "type": "oem",
-          "ko": "OEM·ODM 제작",
+          "ko": "특수 사이즈 및 요청 사항 반영 제작",
           "en": "<br>",
-          "body": "자체 패턴·자수·로고 작업. 원단부터 봉제까지 본사 직접 제작."
+          "body": "원단 개발부터 봉제까지 본사 직접 관여."
         },
         {
           "type": "cert",
           "ko": "인증서·시험성적서",
           "en": "<br>",
-          "body": "NFPA 2112 UL 인증, ARC 시험성적서, 혼용률 시험 자료 요청."
+          "body": "KTITI, FITI에서 인증 받은 시험성적서\n및 아크테스트, UL인증 성적서"
         },
         {
           "type": "as",
