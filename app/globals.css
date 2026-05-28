@@ -3884,6 +3884,37 @@ section { position: relative; }
   display: flex;
   align-items: stretch;
 }
+
+/* Admin-only floating "사진 교체" button — sits at the top-right
+ * corner of the section above everything (z-index 5) so the
+ * operator can always reach it through the full-bleed scrim +
+ * text overlay. Only present when EditableImage's editor prop is
+ * wired up, so production renders never see it. */
+.infield-edit-photo {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 5;
+  background: rgba(13, 13, 14, 0.92);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .12em;
+  padding: 10px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: .85;
+  transition: opacity .15s, background .15s, transform .15s;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.infield-edit-photo:hover {
+  opacity: 1;
+  background: var(--accent);
+  color: #0d0d0e;
+  transform: translateY(-1px);
+}
 .infield-content > .wrap {
   display: grid;
   grid-template-rows: auto 1fr auto;

@@ -70,6 +70,26 @@ export default function InField({ dict, editor }: Props) {
       {/* Dark gradient scrim */}
       <div className="infield-scrim" aria-hidden />
 
+      {/* Admin-only floating edit handle. The EditableImage inside
+       * .infield-bg has its own "🖼️ 사진 교체" button, but the full-
+       * bleed scrim + text overlay sit on top of it and cover both
+       * the button's pixels AND its clicks. This dedicated button
+       * lives on the same z-layer as the content so the operator
+       * can always reach it from the top-right corner. */}
+      {editor?.onImageClick ? (
+        <button
+          type="button"
+          className="infield-edit-photo"
+          onClick={(e) => {
+            e.stopPropagation();
+            editor.onImageClick?.('home.field.photoSrc');
+          }}
+          title="배경 사진 교체"
+        >
+          🖼️ 사진 교체
+        </button>
+      ) : null}
+
       <div className="infield-content">
         <div className="wrap">
           {/* ── TOP META — eyebrow + heritage strip ─────────────── */}
