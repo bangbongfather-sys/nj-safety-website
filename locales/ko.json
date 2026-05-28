@@ -198,9 +198,9 @@
   "company": {
     "tel": "02-777-3079",
     "fax": "02-774-1841",
-    "email": "`njsafety91@naver.com",
-    "hours": "Mon–Fri · 09:00 – 18:00 KST",
-    "addressShort": "서울 중랑구 신내역로 111 SK V1 B동",
+    "email": "  njsafety91@naver.com",
+    "hours": "  Mon–Fri · 09:00 – 18:00 KST",
+    "addressShort": "  서울 중랑구 신내역로 111 SK V1 B동 426호",
     "addressFull": "서울특별시 중랑구 신내역로 111 SK V1 센터 B동 426호",
     "brn": "101-09-93896",
     "copyright": "© 2026 NAJUNG ENTERPRISE CO., LTD."
@@ -325,6 +325,9 @@
       "size": "0.90em"
     },
     "contact.types.items[2].ko": {
+      "width": "100.0%"
+    },
+    "company.addressFull": {
       "width": "100.0%"
     }
   },
