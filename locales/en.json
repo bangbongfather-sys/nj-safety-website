@@ -329,6 +329,9 @@
     },
     "company.addressFull": {
       "width": "100.0%"
+    },
+    "contact.faq.items[1].a": {
+      "width": "100.0%"
     }
   },
   "siteConfig": {
