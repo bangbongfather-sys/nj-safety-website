@@ -1,6 +1,6 @@
 'use client';
 
-import type { ElementType, ReactNode } from 'react';
+import { useCallback, useEffect, useRef, type ElementType, type ReactNode } from 'react';
 import { sanitizeHtml } from '@/lib/sanitize';
 
 export type EditorApi = {
@@ -101,6 +101,7 @@ export default function EditableText({
   // the FloatingToolbar's drag-select color picker.
   const html = sanitizeHtml(value);
 
+  // ── Read-only mode — no contentEditable, just paint the HTML ──
   if (!editor) {
     return (
       <Tag className={className} data-fp={path}>
@@ -110,8 +111,57 @@ export default function EditableText({
     );
   }
 
+  // ── Editable mode ──
+  // CRITICAL: we manage the contentEditable element's `innerHTML`
+  // imperatively rather than via React's `dangerouslySetInnerHTML`.
+  // Previously every parent re-render (autosave timer, focus state,
+  // sibling edits in /admin/edit's draft) re-applied
+  // dangerouslySetInnerHTML and wiped any unblurred typing — the user
+  // would type into a field, click anywhere else, and watch their work
+  // revert mid-sentence.
+  //
+  // Pattern:
+  //   • callback ref sets innerHTML on first mount (no flash, no
+  //     React reconciliation involved).
+  //   • useEffect re-syncs the DOM ONLY when the `value` prop actually
+  //     changes — driven by an external source like onPatch returning
+  //     from a sibling save, the FloatingToolbar applying a style,
+  //     or a remote-fetched draft replacing the current one.
+  //   • Re-renders that DON'T change `value` skip the effect entirely,
+  //     leaving the user's mid-typing intact in the DOM.
+  const ref = useRef<HTMLElement | null>(null);
+  const initialisedRef = useRef(false);
+
+  const setRef = useCallback((el: HTMLElement | null) => {
+    ref.current = el;
+    if (el && !initialisedRef.current) {
+      el.innerHTML = html;
+      initialisedRef.current = true;
+    }
+  // We intentionally read `html` from closure on first paint only —
+  // subsequent value changes flow through the useEffect below.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !initialisedRef.current) return;
+    const desired = sanitizeHtml(value);
+    // Skip work when the DOM already matches — happens after blur when
+    // onPatch flushes the same text the user just typed.
+    if (el.innerHTML === desired) return;
+    // Don't clobber the user mid-edit. If the field currently has
+    // focus, treat the in-flight DOM as authoritative — the next blur
+    // will sync state correctly. This guards the rare case where two
+    // sources race (e.g. autosave's snapshot read in parallel with
+    // continued typing).
+    if (document.activeElement === el) return;
+    el.innerHTML = desired;
+  }, [value]);
+
   return (
     <Tag
+      ref={setRef}
       className={`${className ?? ''} ed-editable`.trim()}
       data-fp={path}
       data-edit-path={path}
@@ -119,16 +169,13 @@ export default function EditableText({
       contentEditable
       suppressContentEditableWarning
       spellCheck={false}
-      // Render as HTML so drag-select colors survive a reload. React
-      // refuses to set both `dangerouslySetInnerHTML` and `children`,
-      // so the editable JSX has NO children — the value is injected
-      // straight into innerHTML.
-      dangerouslySetInnerHTML={{ __html: html }}
+      // NOTE: no `dangerouslySetInnerHTML` — see the comment above.
       onBlur={(e: React.FocusEvent<HTMLElement>) => {
         const next = normaliseHtml(e.currentTarget.innerHTML ?? '', multiline);
         if (next !== value) editor.onPatch(path, next);
         // Re-render canonical HTML so any sanitized-out markup
-        // disappears from the DOM too.
+        // disappears from the DOM too. Safe to do directly — we own
+        // this DOM imperatively.
         e.currentTarget.innerHTML = next || html;
       }}
       onKeyDown={(e: React.KeyboardEvent<HTMLElement>) => {
