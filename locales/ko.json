@@ -677,25 +677,25 @@
         {
           "type": "b2b",
           "ko": "B2B 단체 주문",
-          "en": "Bulk Order",
+          "en": "<br>",
           "body": "50벌 이상 단체 주문 · 5% 추가 할인 · 전담 매니저 응대."
         },
         {
           "type": "oem",
           "ko": "OEM·ODM 제작",
-          "en": "Custom Manufacturing",
+          "en": "<br>",
           "body": "자체 패턴·자수·로고 작업. 원단부터 봉제까지 본사 직접 제작."
         },
         {
           "type": "cert",
           "ko": "인증서·시험성적서",
-          "en": "Certification Docs",
+          "en": "<br>",
           "body": "NFPA 2112 UL 인증, ARC 시험성적서, 혼용률 시험 자료 요청."
         },
         {
           "type": "as",
           "ko": "A/S·교환·반품",
-          "en": "After-sales",
+          "en": "<br>",
           "body": "사용 중 발생한 하자·사이즈 교환·수선 등의 사후 관리."
         }
       ],
