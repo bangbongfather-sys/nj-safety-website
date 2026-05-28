@@ -80,9 +80,26 @@ export default function NaverMap({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [status, setStatus] = useState<'idle' | 'loading' | 'ready' | 'no-key' | 'error'>('idle');
 
-  // Public by design — Naver Client ID is restricted via domain
-  // whitelist on the NCP console, not via secret.
-  const clientId = process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID;
+  // Naver Cloud Platform "Web Dynamic Map" Client ID.
+  //
+  // Hardcoded here as a fallback because Cloudflare Workers auto-
+  // builds from GitHub on every push, and that build environment
+  // does NOT have access to `.env.local` (gitignored by design).
+  // Result before this fallback: every `git push` would overwrite
+  // the locally-built deploy with one that lacked the env var, so
+  // /contact would silently fall back to "API 키 미설정" until a
+  // human ran `wrangler deploy` from a machine with .env.local.
+  //
+  // The Client ID is PUBLIC by design — it's restricted via the
+  // NCP console's domain whitelist (njfashion.co.kr, the Workers
+  // preview URL, and localhost are the only origins allowed), so
+  // exposing it in the bundle / source tree is safe. The companion
+  // Client Secret stays on NCP and is never touched here.
+  //
+  // To override (e.g., for a separate staging Application), set
+  // NEXT_PUBLIC_NAVER_MAP_CLIENT_ID in .env.local before building.
+  const HARDCODED_CLIENT_ID = '0d46j2j238';
+  const clientId = process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID || HARDCODED_CLIENT_ID;
 
   useEffect(() => {
     if (!clientId) {
