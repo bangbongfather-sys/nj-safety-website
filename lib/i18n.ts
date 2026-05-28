@@ -24,6 +24,17 @@ export type FieldStyle = {
   /** CSS width — applied with display:inline-block so it sticks on inline hosts. */
   width?: string;
   align?: 'left' | 'center' | 'right';
+  /**
+   * Operator-applied positional nudge via CSS transform: translate().
+   * Set through the FloatingToolbar's "위치 조정" mode — the operator
+   * drags the field, the resulting offset is stored as a px string
+   * (e.g. "12px", "-8px"). StyleInjector emits the transform inside
+   * a `@media (min-width: 981px)` query so the nudge applies on the
+   * desktop canvas it was designed on but doesn't ruin the mobile
+   * layout where the surrounding flow is completely different.
+   */
+  translateX?: string;
+  translateY?: string;
 };
 
 /**

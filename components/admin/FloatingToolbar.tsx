@@ -44,9 +44,29 @@ function parsePct(s: string | undefined): number {
   return m ? Number(m[1]) : 100;
 }
 
+function parsePx(s: string | undefined): number {
+  if (!s) return 0;
+  const m = s.match(/^(-?[\d.]+)px$/);
+  return m ? Number(m[1]) : 0;
+}
+
 export default function FloatingToolbar({ focused, currentStyle, onPatchStyle, onClose }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState<{ top: number; left: number } | null>(null);
+
+  // "위치 조정" mode — when on, the focused field becomes draggable
+  // via CSS transform: translate(x,y). Persisted into
+  // dict.styles[path].translateX/translateY on mouseup.
+  const [moveMode, setMoveMode] = useState(false);
+  const [livePos, setLivePos] = useState<{ tx: number; ty: number } | null>(null);
+  const dragStart = useRef<{ mx: number; my: number; tx: number; ty: number } | null>(null);
+
+  // Reset move-mode any time the focused field changes — sticky
+  // mode across fields would be confusing.
+  useEffect(() => {
+    setMoveMode(false);
+    setLivePos(null);
+  }, [focused]);
 
   // Recompute position whenever the focused element changes (or page
   // scrolls / resizes underneath).
@@ -129,6 +149,89 @@ export default function FloatingToolbar({ focused, currentStyle, onPatchStyle, o
     onPatchStyle('color', color);
   }, [focused, onPatchStyle]);
 
+  // ── 위치 조정 — drag the focused field via CSS translate. ─────
+  // Bound to the focused element via document.querySelector since
+  // the toolbar lives outside the section's React tree. Cleanup
+  // removes the visual cue + listeners whenever moveMode toggles
+  // off or the focused field changes.
+  useEffect(() => {
+    if (!moveMode || !focused) return;
+    const el = document.querySelector(
+      `[data-edit-path="${CSS.escape(focused.path)}"]`,
+    ) as HTMLElement | null;
+    if (!el) return;
+
+    // Visual cue + disable text editing during the drag so the
+    // browser doesn't try to select chars while the operator is
+    // grabbing the field.
+    el.classList.add('ed-translate-active');
+    const prevCE = el.getAttribute('contenteditable');
+    el.setAttribute('contenteditable', 'false');
+
+    const startTx = parsePx(currentStyle.translateX);
+    const startTy = parsePx(currentStyle.translateY);
+    let curLive: { tx: number; ty: number } | null = null;
+
+    const onDown = (e: MouseEvent) => {
+      // Toolbar buttons live above the field — ignore mousedowns
+      // that originate inside the toolbar so move-mode doesn't
+      // hijack clicks on its own controls.
+      if (ref.current && ref.current.contains(e.target as Node)) return;
+      e.preventDefault();
+      e.stopPropagation();
+      dragStart.current = { mx: e.clientX, my: e.clientY, tx: startTx, ty: startTy };
+    };
+    const onMove = (e: MouseEvent) => {
+      if (!dragStart.current) return;
+      curLive = {
+        tx: dragStart.current.tx + (e.clientX - dragStart.current.mx),
+        ty: dragStart.current.ty + (e.clientY - dragStart.current.my),
+      };
+      setLivePos(curLive);
+      // Inline `!important` override beats StyleInjector's existing
+      // transform rule during the gesture; cleared on mouseup so
+      // the dict-driven style takes over.
+      el.style.setProperty(
+        'transform',
+        `translate(${curLive.tx}px, ${curLive.ty}px)`,
+        'important',
+      );
+    };
+    const onUp = () => {
+      if (!dragStart.current) return;
+      dragStart.current = null;
+      el.style.removeProperty('transform');
+      if (curLive) {
+        const finalTx = Math.round(curLive.tx);
+        const finalTy = Math.round(curLive.ty);
+        // Skip the patch when nothing actually moved (a clean
+        // click should not write a no-op style entry).
+        if (finalTx !== startTx || finalTy !== startTy) {
+          // Two separate patches because onPatchStyle is single-key;
+          // dict patching is dotted-path setIn so this is safe.
+          onPatchStyle('translateX', finalTx === 0 ? null : `${finalTx}px`);
+          onPatchStyle('translateY', finalTy === 0 ? null : `${finalTy}px`);
+        }
+      }
+      curLive = null;
+      setLivePos(null);
+    };
+
+    el.addEventListener('mousedown', onDown);
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
+
+    return () => {
+      el.classList.remove('ed-translate-active');
+      el.style.removeProperty('transform');
+      if (prevCE === null) el.removeAttribute('contenteditable');
+      else el.setAttribute('contenteditable', prevCE);
+      el.removeEventListener('mousedown', onDown);
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onUp);
+    };
+  }, [moveMode, focused, currentStyle.translateX, currentStyle.translateY, onPatchStyle]);
+
   if (!focused) return null;
 
   const sizeEm = parseEm(currentStyle.size);
@@ -138,6 +241,12 @@ export default function FloatingToolbar({ focused, currentStyle, onPatchStyle, o
     if (Math.abs(next - 1.0) < 0.001) onPatchStyle('size', null);
     else onPatchStyle('size', `${next.toFixed(2)}em`);
   }
+
+  const savedTx = parsePx(currentStyle.translateX);
+  const savedTy = parsePx(currentStyle.translateY);
+  const showTx = livePos ? Math.round(livePos.tx) : savedTx;
+  const showTy = livePos ? Math.round(livePos.ty) : savedTy;
+  const hasOffset = savedTx !== 0 || savedTy !== 0;
 
   return (
     <div
@@ -235,6 +344,43 @@ export default function FloatingToolbar({ focused, currentStyle, onPatchStyle, o
         <button type="button" className="ed-tb-btn reset" onClick={() => onPatchStyle('weight', null)} title="초기화">↺</button>
       </div>
 
+      {/* 위치 조정 — toggle on, then drag the field around. Stored as
+       * px translate in dict.styles[path].translateX/Y. The offset
+       * only applies on desktop (≥ 981px) via StyleInjector so it
+       * never breaks the mobile layout. */}
+      <div className="ed-toolbar-row">
+        <span className="ed-toolbar-label">위치</span>
+        <button
+          type="button"
+          className={`ed-tb-btn${moveMode ? ' is-on' : ''}`}
+          onClick={() => setMoveMode((v) => !v)}
+          title={moveMode ? '드래그 모드 종료' : '텍스트를 드래그해 위치 미세조정'}
+        >
+          {moveMode ? '↩ 종료' : '✥ 이동'}
+        </button>
+        {(moveMode || hasOffset) ? (
+          <span className="ed-toolbar-value" title="현재 오프셋 (px)">
+            {showTx}, {showTy}
+          </span>
+        ) : null}
+        <button
+          type="button"
+          className="ed-tb-btn reset"
+          onClick={() => {
+            onPatchStyle('translateX', null);
+            onPatchStyle('translateY', null);
+          }}
+          title="위치 초기화"
+        >
+          ↺
+        </button>
+      </div>
+      {moveMode ? (
+        <div className="ed-toolbar-hint">
+          💡 데스크탑에서만 적용 — 모바일은 원래 자리에 그대로 표시됩니다.
+        </div>
+      ) : null}
+
       <div className="ed-toolbar-foot">
         <button
           type="button"
@@ -245,6 +391,8 @@ export default function FloatingToolbar({ focused, currentStyle, onPatchStyle, o
             onPatchStyle('width', null);
             onPatchStyle('weight', null);
             onPatchStyle('align', null);
+            onPatchStyle('translateX', null);
+            onPatchStyle('translateY', null);
           }}
         >
           이 필드의 모든 스타일 제거

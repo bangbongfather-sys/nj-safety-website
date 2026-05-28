@@ -42,8 +42,24 @@ export default function StyleInjector({ styles }: Props) {
       decls.push(`width: ${fs.width} !important`);
       decls.push('max-width: 100% !important');
     }
-    if (!decls.length) continue;
-    rules.push(`[data-fp="${cssEscape(path)}"] { ${decls.join('; ')} }`);
+    if (decls.length) {
+      rules.push(`[data-fp="${cssEscape(path)}"] { ${decls.join('; ')} }`);
+    }
+
+    // Translate offset lives in its own desktop-only rule. The
+    // operator chose the nudge while looking at a wide canvas, so
+    // applying the same px offset on a 360px-wide phone is more
+    // likely to push text off-screen than to look intentional. The
+    // 981px breakpoint matches our existing responsive cut-over in
+    // app/globals.css.
+    if (fs.translateX || fs.translateY) {
+      const tx = fs.translateX || '0px';
+      const ty = fs.translateY || '0px';
+      rules.push(
+        `@media (min-width: 981px) { [data-fp="${cssEscape(path)}"] { transform: translate(${tx}, ${ty}) !important } }`,
+      );
+    }
+    if (!decls.length && !fs.translateX && !fs.translateY) continue;
   }
   if (!rules.length) return null;
   return <style dangerouslySetInnerHTML={{ __html: rules.join('\n') }} />;

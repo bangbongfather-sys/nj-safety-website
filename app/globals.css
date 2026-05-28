@@ -2545,6 +2545,20 @@ section { position: relative; }
 }
 .ed-editable { box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 
+/* "위치 조정" mode — toggled by the FloatingToolbar's `✥ 이동`
+ * button. The focused field gets a thick dashed outline, a grab
+ * cursor, and contentEditable is force-disabled while the mode is
+ * on (FloatingToolbar swaps the attribute back when the mode exits)
+ * so the browser doesn't try to select chars during the drag. */
+.ed-translate-active {
+  outline: 2px dashed var(--accent) !important;
+  outline-offset: 6px !important;
+  cursor: grab !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+.ed-translate-active:active { cursor: grabbing !important; }
+
 /* Preserve user-typed whitespace VISUALLY for every editable text slot.
  * Without this, the browser's default `white-space: normal` collapses runs
  * of spaces to a single space when rendering. Even though the JSON saves
