@@ -3824,16 +3824,17 @@ section { position: relative; }
 }
 
 /* ============================================================
- * In-the-Field + Clients/Partners section (added 2026-05).
- * Replaces the previous Certifications block on the homepage.
- * Full-bleed editorial: photo fills the whole section, dark
- * gradient on the left half keeps the overlay text legible, and
- * the two-column layout (editorial copy + partners list) lives
- * on top.
+ * In-the-Field + Clients/Partners section (2026-05).
+ * Editorial full-bleed: full-section photo background, dark scrim,
+ * three vertical bands of content stacked on top:
+ *   1. TOP META  — eyebrow ······· EST. 1992 ─── 2026 strip
+ *   2. HEADLINE  — commanding 2-line title + sub + photo caption
+ *   3. BOTTOM BAND — TRUSTED ACROSS INDUSTRIES + 4-up sector grid
+ *                    with big mono "01/04" indices
  * ============================================================ */
 .infield {
   position: relative;
-  min-height: clamp(640px, 80vh, 880px);
+  min-height: clamp(720px, 92vh, 980px);
   overflow: hidden;
   background: #0a0a0b;
   border-top: 1px solid var(--border-soft);
@@ -3850,64 +3851,85 @@ section { position: relative; }
   height: 100%;
   object-fit: cover;
   display: block;
-  /* Slight darken/desaturate so the overlay text reads cleanly even
-   * when the underlying photo has bright pockets. */
-  filter: brightness(.78) contrast(1.06) saturate(.85);
+  filter: brightness(.72) contrast(1.05) saturate(.82);
 }
 
-/* Dark gradient scrim — heavy on the left where the text lives,
- * fades to ~30 % on the right so the photo still breathes. A second
- * top-to-bottom gradient keeps the section legible near edges. */
+/* Scrim — strong cinematic vignette: dark at top + bottom (where
+ * meta + bottom band live), softer in the middle so the photo
+ * breathes around the headline. */
 .infield-scrim {
   position: absolute;
   inset: 0;
   z-index: 1;
   pointer-events: none;
   background:
-    linear-gradient(90deg,
-      rgba(10, 10, 11, 0.92) 0%,
-      rgba(10, 10, 11, 0.78) 35%,
-      rgba(10, 10, 11, 0.55) 60%,
-      rgba(10, 10, 11, 0.30) 100%),
     linear-gradient(180deg,
-      rgba(10, 10, 11, 0.30) 0%,
-      rgba(10, 10, 11, 0.00) 25%,
-      rgba(10, 10, 11, 0.00) 75%,
-      rgba(10, 10, 11, 0.45) 100%);
+      rgba(10, 10, 11, 0.78) 0%,
+      rgba(10, 10, 11, 0.40) 18%,
+      rgba(10, 10, 11, 0.35) 50%,
+      rgba(10, 10, 11, 0.72) 78%,
+      rgba(10, 10, 11, 0.94) 100%),
+    linear-gradient(90deg,
+      rgba(10, 10, 11, 0.55) 0%,
+      rgba(10, 10, 11, 0.25) 35%,
+      rgba(10, 10, 11, 0.25) 65%,
+      rgba(10, 10, 11, 0.55) 100%);
 }
 
 .infield-content {
   position: relative;
   z-index: 2;
-  padding: clamp(80px, 12vh, 140px) 0;
-  min-height: clamp(640px, 80vh, 880px);
+  min-height: clamp(720px, 92vh, 980px);
+  padding: clamp(56px, 8vh, 96px) 0;
   display: flex;
-  align-items: center;
+  align-items: stretch;
 }
-.infield-grid {
+.infield-content > .wrap {
   display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: 56px;
-  align-items: start;
+  grid-template-rows: auto 1fr auto;
+  gap: clamp(48px, 6vh, 80px);
   width: 100%;
 }
 
-/* Editorial column (left) */
-.infield-editorial { max-width: 540px; }
+/* ── TOP META — eyebrow + heritage strip ─────────────────────── */
+.infield-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
 .infield-eyebrow {
-  display: block;
-  margin-bottom: 24px;
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .26em;
+  text-transform: uppercase;
   color: var(--accent);
+  font-weight: 600;
+}
+.infield-heritage {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .55);
+}
+
+/* ── HEADLINE BAND ───────────────────────────────────────────── */
+.infield-hero {
+  max-width: 920px;
+  align-self: center;
 }
 .infield-h {
   font-family: var(--display);
-  font-size: clamp(36px, 5vw, 68px);
-  font-weight: 800;
-  letter-spacing: -0.035em;
-  line-height: 1.05;
+  font-size: clamp(44px, 6.6vw, 96px);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
   color: #fff;
   margin: 0;
-  text-shadow: 0 2px 24px rgba(0, 0, 0, .35);
+  text-shadow: 0 4px 28px rgba(0, 0, 0, .45);
   text-wrap: balance;
   word-break: keep-all;
 }
@@ -3917,100 +3939,134 @@ section { position: relative; }
   font-weight: 900;
 }
 .infield-sub {
-  margin: 24px 0 0;
-  color: rgba(255, 255, 255, .82);
-  font-size: 15.5px;
+  margin: 28px 0 0;
+  max-width: 620px;
+  color: rgba(255, 255, 255, .85);
+  font-size: 16px;
   line-height: 1.7;
   word-break: keep-all;
-  text-shadow: 0 1px 12px rgba(0, 0, 0, .3);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, .35);
 }
 .infield-photo-cap {
-  margin-top: 32px;
-  font-family: var(--mono);
-  font-size: 10.5px;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, .55);
-}
-
-/* Sectors column (right) */
-.infield-sectors {
-  /* Subtle translucent panel under the partners list so it reads as
-   * its own card on top of the photo without going full-opaque. */
-  background: rgba(10, 10, 11, 0.55);
-  border: 1px solid rgba(255, 255, 255, .08);
-  padding: 32px 28px;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-}
-.infield-sectors-h {
-  font-family: var(--display);
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: -0.022em;
-  color: #fff;
-  margin: 0;
-}
-.infield-sectors-sub {
-  margin: 8px 0 24px;
-  color: rgba(255, 255, 255, .65);
-  font-size: 13px;
-  line-height: 1.6;
-  border-bottom: 1px solid rgba(255, 255, 255, .12);
-  padding-bottom: 20px;
-}
-.infield-sector-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  gap: 0;
-}
-.infield-sector {
-  display: grid;
-  grid-template-columns: 120px 1fr;
-  gap: 20px;
-  padding: 16px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, .08);
-  align-items: baseline;
-}
-.infield-sector:last-child { border-bottom: 0; }
-.infield-sector-label {
+  margin-top: 28px;
   font-family: var(--mono);
   font-size: 10.5px;
   letter-spacing: .16em;
   text-transform: uppercase;
-  color: var(--accent);
-  font-weight: 700;
+  color: rgba(255, 255, 255, .5);
 }
-.infield-sector-items {
+
+/* ── BOTTOM BAND — TRUSTED ACROSS INDUSTRIES ─────────────────── */
+.infield-band {
+  position: relative;
+}
+.infield-band-rule {
+  height: 1px;
+  background: linear-gradient(90deg,
+    var(--accent) 0%,
+    var(--accent) 80px,
+    rgba(255, 255, 255, .18) 80px,
+    rgba(255, 255, 255, .18) 100%);
+  margin-bottom: 24px;
+}
+.infield-band-label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .7);
+  margin-bottom: 28px;
+}
+.infield-band-grid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+.infield-band-cell {
+  position: relative;
+  padding: 0 28px;
+  /* Vertical separators between cells — Mammut/Engelbert Strauss
+   * style, thin orange-tinted rule. */
+}
+.infield-band-cell + .infield-band-cell::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 4px;
+  bottom: 4px;
+  width: 1px;
+  background: rgba(255, 255, 255, .12);
+}
+.infield-band-cell:first-child { padding-left: 0; }
+.infield-band-cell:last-child  { padding-right: 0; }
+
+.infield-band-num {
+  display: block;
+  font-family: var(--display);
+  font-size: clamp(36px, 4.2vw, 56px);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--accent);
+  margin-bottom: 18px;
+}
+.infield-band-num-total {
+  font-size: 0.42em;
+  font-weight: 500;
+  color: rgba(255, 255, 255, .35);
+  letter-spacing: 0;
+}
+.infield-band-cell-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #fff;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.infield-band-cell-items {
   font-family: var(--display);
   font-size: 14.5px;
   font-weight: 500;
   letter-spacing: -0.012em;
-  color: #fff;
+  color: rgba(255, 255, 255, .82);
   line-height: 1.55;
   word-break: keep-all;
 }
 
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .infield-band-grid { grid-template-columns: repeat(2, 1fr); gap: 32px 0; }
+  .infield-band-cell:nth-child(3) { padding-left: 0; }
+  .infield-band-cell:nth-child(2) { padding-right: 0; }
+  .infield-band-cell:nth-child(3)::before { display: none; }
+}
 @media (max-width: 980px) {
   .infield { min-height: auto; }
-  .infield-content { padding: 64px 0; min-height: auto; align-items: stretch; }
-  .infield-grid { grid-template-columns: 1fr; gap: 32px; }
-  .infield-editorial { max-width: none; }
+  .infield-content { padding: 64px 0; min-height: auto; }
+  .infield-content > .wrap { gap: 40px; }
+  .infield-meta-row { flex-wrap: wrap; gap: 8px; }
   .infield-scrim {
-    /* On stack, both columns sit on top of the photo, so darken the
-     * whole frame more evenly instead of side-weighting. */
     background:
       linear-gradient(180deg,
-        rgba(10, 10, 11, 0.86) 0%,
-        rgba(10, 10, 11, 0.74) 50%,
-        rgba(10, 10, 11, 0.82) 100%);
+        rgba(10, 10, 11, 0.82) 0%,
+        rgba(10, 10, 11, 0.62) 50%,
+        rgba(10, 10, 11, 0.92) 100%);
   }
-  .infield-sectors { padding: 24px 20px; }
 }
 @media (max-width: 680px) {
   .infield-content { padding: 48px 0; }
-  .infield-h { font-size: 32px; }
-  .infield-sector { grid-template-columns: 1fr; gap: 4px; padding: 12px 0; }
+  .infield-band-grid { grid-template-columns: 1fr; gap: 24px; }
+  .infield-band-cell { padding: 0; }
+  .infield-band-cell + .infield-band-cell::before { display: none; }
+  .infield-band-cell + .infield-band-cell {
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, .1);
+  }
+  .infield-band-num { font-size: 32px; margin-bottom: 12px; }
 }
