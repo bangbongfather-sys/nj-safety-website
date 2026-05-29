@@ -184,6 +184,16 @@
 }
 
 /* ─── Hero ─── */
+/* CRITICAL: globals.css defines a SITE-WIDE `.hero { height: 100vh }`
+ * for the marketing homepage's full-screen hero. The product detail
+ * page's hero reuses the same `.hero` class name, so that global
+ * height leaked in and forced this 2-column grid to a full viewport
+ * height — the photo (6:7) sat at the top with a big black gap below
+ * it, and the stat counters got shoved to the very bottom. catalog-app
+ * has no homepage hero, so it never saw the clash. Scope the height
+ * back to auto here (.nj-page .hero = specificity 0,2,0 beats the
+ * global 0,1,0) so the row sizes to its content like the original. */
+.nj-page .hero { height: auto; min-height: 0; }
 .hero {
   display: grid;
   grid-template-columns: 1.05fr 1fr;
