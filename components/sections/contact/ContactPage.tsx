@@ -19,14 +19,14 @@ import NaverMap from './NaverMap';
 import './contact.css';
 
 /**
- * HQ coordinates for the embedded Naver Map.
- * 서울특별시 중랑구 신내역로 111 SK V1 센터 B동 426호.
- * If the pin lands off by a few metres, adjust these literals — the
- * dict has no override yet because operators wouldn't realistically
- * edit lat/lng inline.
+ * Fallback HQ coordinates for the embedded Naver Map (서울 중랑구
+ * 신내역로 111 SK V1 센터). Used only when the dict has no
+ * mapLat / mapLng yet. Once the admin clicks the map to place the
+ * pin, the real coords live in contact.visit.mapLat / mapLng and
+ * these literals are ignored.
  */
-const HQ_LAT = 37.6111;
-const HQ_LNG = 127.1058;
+const HQ_LAT = 37.6135;
+const HQ_LNG = 127.1015;
 const HQ_ZOOM = 16;
 
 type InquiryType = 'quote' | 'b2b' | 'oem' | 'cert' | 'as';
@@ -876,20 +876,39 @@ function ContactVisit({ contact, editor }: { contact: ContactDict; editor?: Edit
           </div>
 
           <div className="ct-map">
-            {/* Real embedded Naver Map. The fake SVG grid map and the
-             * absolute-positioned .pin overlay it used to host are
-             * gone — Naver's marker (rendered via a custom HTML icon
-             * inside NaverMap.tsx) provides the pin at the actual
-             * coordinates now. The pin label still lives in the
-             * dict (contact.visit.mapPinLabel) and is passed
-             * through to the marker so admins can rename it. */}
-            <NaverMap lat={HQ_LAT} lng={HQ_LNG} zoom={HQ_ZOOM} pinLabel={v.mapPinLabel ?? 'NJ SAFETY HQ'} />
+            {/* Real embedded Naver Map. Coordinates come from the dict
+             * (contact.visit.mapLat / mapLng) so the admin can place
+             * the pin by clicking the map; falls back to the HQ
+             * literals before the first placement. In admin mode the
+             * map is `editable` — clicking moves the pin and patches
+             * the coords. The marker label also lives in the dict
+             * (mapPinLabel). */}
+            <NaverMap
+              lat={Number(v.mapLat) || HQ_LAT}
+              lng={Number(v.mapLng) || HQ_LNG}
+              zoom={HQ_ZOOM}
+              pinLabel={v.mapPinLabel ?? 'NJ SAFETY HQ'}
+              editable={!!editor}
+              onPickCoord={
+                editor
+                  ? (newLat, newLng) => {
+                      // Coords are shared across locales — write to
+                      // both via onImagePatch (which syncs ko + en),
+                      // falling back to single-locale onPatch if the
+                      // synced handler isn't wired on this route.
+                      const setBoth = editor.onImagePatch ?? ((p: string, val: string | null) => editor.onPatch(p, val ?? ''));
+                      setBoth('contact.visit.mapLat', newLat.toFixed(6));
+                      setBoth('contact.visit.mapLng', newLng.toFixed(6));
+                    }
+                  : undefined
+              }
+            />
             <EditableText as="span" className="badge" path="contact.visit.mapBadge" value={v.mapBadge ?? ''} editor={editor} />
             <EditableText as="span" className="stamp" path="contact.visit.mapStamp" value={v.mapStamp ?? ''} editor={editor} />
-            {/* Admin-only chip for editing the Naver marker's label.
-             * The marker is rendered by NaverMap (custom HTML icon)
-             * so the dict field can't be wrapped in EditableText
-             * inline — this chip surfaces it in admin mode without
+            {/* Admin-only chips: edit the marker label + a hint that
+             * the map is click-to-place. The marker is rendered by
+             * NaverMap (custom HTML icon) so its label can't be an
+             * inline EditableText — this surfaces it without
              * crowding the public view. */}
             {editor ? (
               <div className="ct-map-pinlabel-edit">
@@ -901,6 +920,9 @@ function ContactVisit({ contact, editor }: { contact: ContactDict; editor?: Edit
                   editor={editor}
                 />
               </div>
+            ) : null}
+            {editor ? (
+              <div className="ct-map-click-hint">🖱️ 지도를 클릭하면 핀이 그 위치로 이동합니다</div>
             ) : null}
             <div className="actions">
               {actions.map((a, i) => {

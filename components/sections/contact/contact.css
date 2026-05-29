@@ -1063,6 +1063,28 @@
   text-transform: uppercase;
 }
 
+/* Admin-only "click the map to place the pin" hint, bottom-centre
+ * of the map so it doesn't collide with the action buttons (bottom-
+ * left) or the coordinate stamp (bottom-right). */
+.contact-page .ct-map-click-hint {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  background: rgba(13, 13, 14, .85);
+  border: 1px solid var(--accent);
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .03em;
+  padding: 7px 14px;
+  border-radius: 4px;
+  backdrop-filter: blur(6px);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
 /* Editorial overlays float ABOVE the map. z-index 2 keeps them
  * clear of Naver's own controls (zoom +/- which sit around z 1). */
 .contact-page .ct-map .badge {

@@ -41,6 +41,14 @@ type Props = {
   zoom?: number;
   pinLabel?: string;
   className?: string;
+  /**
+   * Admin-only. When true, clicking anywhere on the map moves the
+   * pin there and reports the new coordinates via onPickCoord.
+   * Public renders leave this undefined → static map.
+   */
+  editable?: boolean;
+  /** Fires with the clicked WGS84 coords (admin pin-placement). */
+  onPickCoord?: (lat: number, lng: number) => void;
 };
 
 const SDK_BASE = 'https://oapi.map.naver.com/openapi/v3/maps.js';
@@ -85,9 +93,18 @@ export default function NaverMap({
   zoom = 16,
   pinLabel = 'NJ SAFETY HQ',
   className,
+  editable = false,
+  onPickCoord,
 }: Props) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [status, setStatus] = useState<'idle' | 'loading' | 'ready' | 'no-key' | 'error'>('idle');
+  // Hold the live marker so the admin click handler can reposition
+  // it without tearing the whole map down. onPickCoord is held in a
+  // ref so the click listener always sees the latest callback
+  // without re-registering on every render.
+  const markerRef = useRef<{ setPosition: (p: unknown) => void } | null>(null);
+  const onPickRef = useRef(onPickCoord);
+  onPickRef.current = onPickCoord;
 
   // Naver Cloud Platform "Web Dynamic Map" Client ID.
   //
@@ -124,7 +141,13 @@ export default function NaverMap({
       .then(() => {
         if (cancelled || !containerRef.current) return;
         const naver = (window as unknown as { naver: NaverMapsNS }).naver;
-        const center = new naver.maps.LatLng(lat, lng);
+        // Guard against NaN / non-finite coords (e.g. a corrupt dict
+        // entry edited by hand). Naver's LatLng silently produces a
+        // broken map at (NaN, NaN); fall back to Seoul City Hall so
+        // the embed never renders blank.
+        const safeLat = Number.isFinite(lat) ? lat : 37.5663;
+        const safeLng = Number.isFinite(lng) ? lng : 126.9779;
+        const center = new naver.maps.LatLng(safeLat, safeLng);
 
         const map = new naver.maps.Map(containerRef.current, {
           center,
@@ -142,7 +165,7 @@ export default function NaverMap({
         // we ship in contact.css so the pin matches the existing
         // editorial pin design (orange dot + black label chip).
         const label = pinLabel.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        new naver.maps.Marker({
+        const marker = new naver.maps.Marker({
           position: center,
           map,
           icon: {
@@ -155,6 +178,19 @@ export default function NaverMap({
             anchor: new naver.maps.Point(50, 54),
           },
         });
+        markerRef.current = marker as unknown as { setPosition: (p: unknown) => void };
+
+        // Admin pin-placement: click the map to move the pin and
+        // report the coords upstream. Guarded by `editable` so the
+        // public site stays a static (non-interactive-pin) map.
+        if (editable) {
+          naver.maps.Event.addListener(map, 'click', (e: { coord: { lat: () => number; lng: () => number } }) => {
+            const newLat = e.coord.lat();
+            const newLng = e.coord.lng();
+            marker.setPosition(new naver.maps.LatLng(newLat, newLng));
+            onPickRef.current?.(newLat, newLng);
+          });
+        }
 
         setStatus('ready');
       })
@@ -165,7 +201,7 @@ export default function NaverMap({
     return () => {
       cancelled = true;
     };
-  }, [clientId, lat, lng, zoom, pinLabel]);
+  }, [clientId, lat, lng, zoom, pinLabel, editable]);
 
   if (!clientId || status === 'no-key') {
     return (
@@ -217,8 +253,15 @@ interface NaverMapsNS {
       map: MapsMap;
       icon?: { content: string; anchor?: unknown };
       title?: string;
-    }) => unknown;
+    }) => { setPosition: (p: LatLng) => void };
     Point: new (x: number, y: number) => unknown;
     Position: { TOP_RIGHT: number; TOP_LEFT: number; BOTTOM_RIGHT: number; BOTTOM_LEFT: number };
+    Event: {
+      addListener: (
+        target: unknown,
+        eventName: string,
+        handler: (e: { coord: { lat: () => number; lng: () => number } }) => void,
+      ) => unknown;
+    };
   };
 }
