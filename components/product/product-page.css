@@ -14,6 +14,13 @@
    * starts at y=0 and the top of the model's face slides under nav. */
   padding-top: 112px;
 
+  /* Breathing room before the global site footer. The product detail
+   * page ends on the full-width orange "TO ORDER" panel; without a
+   * gap that orange block butts straight into the dark company-info
+   * footer and the two read as one cramped strip. The padding shows
+   * the page background as a clean dark band separating them. */
+  padding-bottom: clamp(64px, 7vw, 120px);
+
   /* Brand */
   --orange: #e85d2e;          /* signature accent — used sparingly */
   --orange-deep: #c44a1f;
