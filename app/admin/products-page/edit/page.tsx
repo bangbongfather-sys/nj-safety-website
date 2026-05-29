@@ -78,6 +78,9 @@ function getIn(obj: unknown, path: (string | number)[]): unknown {
   return cur;
 }
 
+/** Per-product file metadata so we can PUT the right path + SHA back. */
+type ProductFile = { slug: string; path: string; sha: string };
+
 type Load =
   | { status: 'loading' }
   | {
@@ -87,6 +90,7 @@ type Load =
       koSha: string;
       enSha: string;
       products: Product[];
+      productFiles: ProductFile[];
       categories: ProductCategory[];
       featuredSlug?: string;
       catalogUrl?: string;
@@ -102,10 +106,15 @@ export default function EditProductsListPage() {
   const [load, setLoad] = useState<Load>({ status: 'loading' });
   const [koDraft, setKoDraft] = useState<Dictionary | null>(null);
   const [enDraft, setEnDraft] = useState<Dictionary | null>(null);
+  // Inline-editable product cards write to these drafts (one per
+  // product JSON). Saved back to data/products/<slug>.json on save.
+  const [productDrafts, setProductDrafts] = useState<Product[] | null>(null);
   const [active, setActive] = useState<Locale>('ko');
   const [save, setSave] = useState<Save>({ status: 'idle' });
   const [focused, setFocused] = useState<FocusInfo | null>(null);
   const [imageSlot, setImageSlot] = useState<{ path: string } | null>(null);
+  // Synchronous guard against overlapping saves (autosave vs manual).
+  const savingRef = useRef(false);
 
   // Focus tracking for FloatingToolbar
   useEffect(() => {
@@ -145,21 +154,24 @@ export default function EditProductsListPage() {
         if (!ko || !en) throw new Error('로케일 파일을 찾을 수 없습니다');
 
         // Parse products. Each product is its own JSON — load in parallel.
-        const productFiles = await Promise.all(
-          productPaths
-            .filter((p) => p.endsWith('.json'))
-            .map((p) => ghGetFile(pat, p)),
-        );
+        // Track each file's path + sha alongside the parsed product so
+        // inline edits here can PUT the right file back on save.
+        const jsonPaths = productPaths.filter((p) => p.endsWith('.json'));
+        const productFileResults = await Promise.all(jsonPaths.map((p) => ghGetFile(pat, p)));
         const products: Product[] = [];
-        for (const f of productFiles) {
-          if (!f) continue;
+        const productFiles: ProductFile[] = [];
+        jsonPaths.forEach((path, i) => {
+          const f = productFileResults[i];
+          if (!f) return;
           try {
             const obj = JSON.parse(f.content) as ProductPageData;
-            products.push(obj as Product);
+            const prod = obj as Product;
+            products.push(prod);
+            productFiles.push({ slug: prod.slug, path, sha: f.sha });
           } catch {
-            // skip
+            // skip malformed file
           }
-        }
+        });
         products.sort((a, b) => a.slug.localeCompare(b.slug));
 
         const cats = catsFile ? (JSON.parse(catsFile.content) as { categories: ProductCategory[]; featuredSlug?: string }) : { categories: [] };
@@ -175,12 +187,14 @@ export default function EditProductsListPage() {
           koSha: ko.sha,
           enSha: en.sha,
           products,
+          productFiles,
           categories: cats.categories ?? [],
           featuredSlug: cats.featuredSlug,
           catalogUrl: site.catalog?.pdfUrl,
         });
         setKoDraft(koObj);
         setEnDraft(enObj);
+        setProductDrafts(products);
       } catch (e: unknown) {
         if (!cancelled) setLoad({ status: 'error', message: e instanceof Error ? e.message : String(e) });
       }
@@ -190,9 +204,13 @@ export default function EditProductsListPage() {
 
   const dirty = useMemo(() => {
     if (load.status !== 'ready' || !koDraft || !enDraft) return false;
-    return JSON.stringify(koDraft) !== JSON.stringify(load.ko) ||
-           JSON.stringify(enDraft) !== JSON.stringify(load.en);
-  }, [load, koDraft, enDraft]);
+    const dictDirty =
+      JSON.stringify(koDraft) !== JSON.stringify(load.ko) ||
+      JSON.stringify(enDraft) !== JSON.stringify(load.en);
+    const productsDirty =
+      !!productDrafts && JSON.stringify(productDrafts) !== JSON.stringify(load.products);
+    return dictDirty || productsDirty;
+  }, [load, koDraft, enDraft, productDrafts]);
 
   const applyImagePatch = useCallback((pathStr: string, value: string | null) => {
     const path = parsePath(pathStr);
@@ -201,16 +219,48 @@ export default function EditProductsListPage() {
     setEnDraft((d) => (d ? (setIn(d, path, v) as Dictionary) : d));
   }, []);
 
+  // Inline product-field edits arrive through EditableText.onPatch as
+  // a special path: `product@<slug>@<field>`. We intercept those
+  // before the normal dotted-path locale routing and apply them to
+  // the matching product draft instead. Supported fields: name,
+  // subtitle, weight (the weight spec row's value).
+  const applyProductPatch = useCallback((slug: string, field: string, value: string) => {
+    setProductDrafts((drafts) => {
+      if (!drafts) return drafts;
+      return drafts.map((p) => {
+        if (p.slug !== slug) return p;
+        if (field === 'name') return { ...p, name: value };
+        if (field === 'subtitle') return { ...p, subtitle: value };
+        if (field === 'weight') {
+          // Update the existing weight row in place; if none exists,
+          // append one so the edit isn't silently dropped.
+          const rows = p.spec?.rows ? [...p.spec.rows] : [];
+          const idx = rows.findIndex((r) => /평량|중량|weight/i.test(r.label));
+          if (idx >= 0) rows[idx] = { ...rows[idx], value };
+          else rows.push({ label: '평량', value });
+          return { ...p, spec: { ...(p.spec ?? {}), rows } };
+        }
+        return p;
+      });
+    });
+  }, []);
+
   const editor: EditorApi = useMemo(() => ({
     locale: active,
     onPatch: (pathStr, value) => {
+      // Product-field interception — see applyProductPatch.
+      if (pathStr.startsWith('product@')) {
+        const [, slug, field] = pathStr.split('@');
+        if (slug && field) applyProductPatch(slug, field, value);
+        return;
+      }
       const path = parsePath(pathStr);
       if (active === 'ko') setKoDraft((d) => (d ? (setIn(d, path, value) as Dictionary) : d));
       else setEnDraft((d) => (d ? (setIn(d, path, value) as Dictionary) : d));
     },
     onImagePatch: applyImagePatch,
     onImageClick: (pathStr) => setImageSlot({ path: pathStr }),
-  }), [active, applyImagePatch]);
+  }), [active, applyImagePatch, applyProductPatch]);
 
   const imageSlotCurrentSrc = useMemo(() => {
     if (!imageSlot || !koDraft) return null;
@@ -241,6 +291,12 @@ export default function EditProductsListPage() {
 
   const handleSave = useCallback(async () => {
     if (load.status !== 'ready' || !koDraft || !enDraft || !pat) return;
+    // Synchronous re-entrancy guard. setSave('saving') is async, so a
+    // queued autosave timer that fires in the narrow window before the
+    // state flips could otherwise start a second concurrent save and
+    // race on the file SHAs (GitHub 409). This ref blocks that.
+    if (savingRef.current) return;
+    savingRef.current = true;
     setSave({ status: 'saving' });
     try {
       const koChanged = JSON.stringify(koDraft) !== JSON.stringify(load.ko);
@@ -262,18 +318,53 @@ export default function EditProductsListPage() {
         lastSha = r.commitSha;
         if (r.contentSha) nextEnSha = r.contentSha;
       }
-      setLoad({ ...load, ko: koSnapshot, en: enSnapshot, koSha: nextKoSha, enSha: nextEnSha });
+
+      // Save any product JSON files whose inline-edited fields changed.
+      // Each file is PUT whole (full object preserved — we only patched
+      // name / subtitle / spec.rows), so no key is dropped. SHAs are
+      // refreshed in the productFiles meta for the next save.
+      // Deep-copy each meta object (not just the array) so the in-place
+      // `meta.sha = ...` below can't mutate load.productFiles' shared
+      // references — important if a save races with another.
+      const nextProductFiles = load.productFiles.map((m) => ({ ...m }));
+      const savedProducts = productDrafts ? [...productDrafts] : [...load.products];
+      if (productDrafts) {
+        for (let i = 0; i < productDrafts.length; i++) {
+          const draft = productDrafts[i];
+          const original = load.products.find((p) => p.slug === draft.slug);
+          if (original && JSON.stringify(draft) === JSON.stringify(original)) continue;
+          const meta = nextProductFiles.find((m) => m.slug === draft.slug);
+          if (!meta) continue; // safety: only save files we loaded
+          const text = JSON.stringify(draft, null, 2) + '\n';
+          const r = await ghPutFile(pat, meta.path, text, `chore(product): inline edit ${draft.slug}`, meta.sha);
+          lastSha = r.commitSha;
+          if (r.contentSha) meta.sha = r.contentSha;
+        }
+      }
+
+      setLoad({
+        ...load,
+        ko: koSnapshot,
+        en: enSnapshot,
+        koSha: nextKoSha,
+        enSha: nextEnSha,
+        products: savedProducts,
+        productFiles: nextProductFiles,
+      });
       setSave({ status: 'done', sha: lastSha });
     } catch (e: unknown) {
       setSave({ status: 'error', message: e instanceof Error ? e.message : String(e) });
+    } finally {
+      savingRef.current = false;
     }
-  }, [load, koDraft, enDraft, pat]);
+  }, [load, koDraft, enDraft, productDrafts, pat]);
 
   const handleDiscard = useCallback(() => {
     if (load.status !== 'ready') return;
     if (!window.confirm('편집 중인 변경사항을 모두 버릴까요?')) return;
     setKoDraft(load.ko);
     setEnDraft(load.en);
+    setProductDrafts(load.products);
     setSave({ status: 'idle' });
   }, [load]);
 
@@ -293,7 +384,7 @@ export default function EditProductsListPage() {
       })();
     }, wait);
     return () => clearTimeout(t);
-  }, [koDraft, enDraft, dirty, save.status, autoSavedAt]);
+  }, [koDraft, enDraft, productDrafts, dirty, save.status, autoSavedAt]);
 
   let statusLabel = '변경사항 없음';
   let statusClass = 'ed-status-clean';
@@ -354,7 +445,7 @@ export default function EditProductsListPage() {
           <ProductsListing
             locale={active}
             dict={activeDict!}
-            products={load.products}
+            products={productDrafts ?? load.products}
             categories={load.categories}
             featuredSlug={load.featuredSlug}
             catalogReady={!!load.catalogUrl}

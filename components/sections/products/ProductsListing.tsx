@@ -215,57 +215,67 @@ export default function ProductsListing({
                 <a
                   href={`/admin/products/${featured.slug}/edit`}
                   className="pl-featured-edit"
-                  title="대표 제품의 이름·부제·스펙 편집"
+                  title="이미지·갤러리·상세 스펙 편집"
                 >
-                  ✎ 제품 편집
+                  ✎ 상세 편집
                 </a>
               ) : null}
             </div>
-            <Link
-              href={`/${locale}/products/${featured.slug}/`}
-              className="pl-featured-card"
-              aria-label={stripTags(featured.name)}
-            >
-              <div className="pl-featured-media">
-                <ImageOrPlaceholder src={getCardImages(featured).main} alt={stripTags(featured.name)} />
-                <span className="pl-featured-stamp">
-                  {featured.model ?? featured.slug.toUpperCase()}
-                  {featured.category ? ` · ${featured.category.split('·')[0].trim()}` : ''}
-                </span>
-              </div>
-              <div className="pl-featured-info">
-                {featured.category ? <span className="pl-featured-tag">{featured.category}</span> : null}
-                {/* Name is plain-text here on purpose. The product
-                 * JSON may carry `<br>` / `<em>` markup in `name` for
-                 * the DETAIL-page hero (where stacked, emphasised
-                 * words are the intended look). In a listing card that
-                 * same markup renders as broken multi-line titles —
-                 * so we strip tags and let the card wrap naturally,
-                 * matching every other product card. */}
-                <h3 className="pl-featured-name">{stripTags(featured.name) || featured.slug}</h3>
-                {featured.subtitle ? <p className="pl-featured-sub">{stripTags(featured.subtitle)}</p> : null}
-                {featured.spec?.rows && featured.spec.rows.length > 0 ? (
-                  <div className="pl-featured-spec">
-                    {/* stripTags both label + value — catalog-imported
-                     * specs sometimes carry inline <span style> markup
-                     * that would otherwise render as escaped tags. */}
-                    {featured.spec.rows.slice(0, 4).map((row, i) => (
-                      <div key={i} className="pl-featured-spec-row">
-                        <span className="pl-featured-spec-k">{stripTags(row.label)}</span>
-                        <span className="pl-featured-spec-v">{stripTags(row.value)}</span>
-                      </div>
-                    ))}
+            {(() => {
+              const fName = stripTags(featured.name) || featured.slug;
+              // Featured body — name + subtitle inline-editable in admin
+              // mode (bound to product@<slug>@<field>), read-only on the
+              // public page. The spec rows stay read-only here (edited
+              // on the per-product editor via the ✎ chip above).
+              const fBody = (
+                <>
+                  <div className="pl-featured-media">
+                    <ImageOrPlaceholder src={getCardImages(featured).main} alt={fName} />
+                    <span className="pl-featured-stamp">
+                      {featured.model ?? featured.slug.toUpperCase()}
+                      {featured.category ? ` · ${featured.category.split('·')[0].trim()}` : ''}
+                    </span>
                   </div>
-                ) : null}
-                <EditableText
-                  as="span"
-                  className="pl-featured-cta"
-                  path="products.featuredCtaLabel"
-                  value={pd.featuredCtaLabel ?? '상세 보기 →'}
-                  editor={editor}
-                />
-              </div>
-            </Link>
+                  <div className="pl-featured-info">
+                    {featured.category ? <span className="pl-featured-tag">{featured.category}</span> : null}
+                    {editor ? (
+                      <EditableText as="h3" className="pl-featured-name" path={`product@${featured.slug}@name`} value={fName} editor={editor} />
+                    ) : (
+                      <h3 className="pl-featured-name">{fName}</h3>
+                    )}
+                    {editor ? (
+                      <EditableText as="p" className="pl-featured-sub" path={`product@${featured.slug}@subtitle`} value={stripTags(featured.subtitle ?? '')} editor={editor} multiline />
+                    ) : featured.subtitle ? (
+                      <p className="pl-featured-sub">{stripTags(featured.subtitle)}</p>
+                    ) : null}
+                    {featured.spec?.rows && featured.spec.rows.length > 0 ? (
+                      <div className="pl-featured-spec">
+                        {featured.spec.rows.slice(0, 4).map((row, i) => (
+                          <div key={i} className="pl-featured-spec-row">
+                            <span className="pl-featured-spec-k">{stripTags(row.label)}</span>
+                            <span className="pl-featured-spec-v">{stripTags(row.value)}</span>
+                          </div>
+                        ))}
+                      </div>
+                    ) : null}
+                    {!editor ? (
+                      <span className="pl-featured-cta">{pd.featuredCtaLabel ?? '상세 보기 →'}</span>
+                    ) : null}
+                  </div>
+                </>
+              );
+              return editor ? (
+                <div className="pl-featured-card">{fBody}</div>
+              ) : (
+                <Link
+                  href={`/${locale}/products/${featured.slug}/`}
+                  className="pl-featured-card"
+                  aria-label={fName}
+                >
+                  {fBody}
+                </Link>
+              );
+            })()}
           </div>
         </section>
       ) : null}
@@ -322,12 +332,21 @@ export default function ProductsListing({
                   {group.items.map((p) => {
                     const { main, hover } = getCardImages(p);
                     const name = stripTags(p.name) || p.slug;
-                    const card = (
-                      <Link
-                        href={`/${locale}/products/${p.slug}/`}
-                        className="pl-card"
-                        aria-label={name}
-                      >
+                    // Spec value can carry inline markup (e.g.
+                    // <span style="letter-spacing">300 g/m</span>) from
+                    // the catalog import — strip it so the card shows
+                    // clean text, not escaped tags.
+                    const wRaw = p.spec?.rows?.find((r) => /평량|중량|weight/i.test(r.label))?.value;
+                    const w = wRaw ? stripTags(wRaw) : '';
+                    const ct = (p.spec?.rows?.length ?? 0) + ' specs';
+                    // Card body — shared between public (<Link>) and
+                    // admin (<div>, inline-editable) modes. In admin
+                    // mode the name / subtitle / weight become
+                    // EditableText bound to product@<slug>@<field>
+                    // paths, which the products-page editor routes
+                    // straight into the product JSON draft.
+                    const body = (
+                      <>
                         <div className="pl-card-frame">
                           {main ? (
                             <>
@@ -344,52 +363,55 @@ export default function ProductsListing({
                           {p.model ?? p.slug.toUpperCase()}
                           {p.category ? ` · ${p.category.split('·')[0].trim()}` : ''}
                         </span>
-                        {/* Plain text — strip any `<br>`/`<em>` the
-                         * name carries for the detail-page hero so the
-                         * card title wraps naturally (see featured
-                         * card note above). `name` is already
-                         * stripTags(p.name) || p.slug. */}
-                        <h3 className="pl-card-name">{name}</h3>
-                        {p.subtitle ? <p className="pl-card-desc">{stripTags(p.subtitle)}</p> : null}
+                        {editor ? (
+                          <EditableText as="h3" className="pl-card-name" path={`product@${p.slug}@name`} value={name} editor={editor} />
+                        ) : (
+                          <h3 className="pl-card-name">{name}</h3>
+                        )}
+                        {editor ? (
+                          <EditableText as="p" className="pl-card-desc" path={`product@${p.slug}@subtitle`} value={stripTags(p.subtitle ?? '')} editor={editor} multiline />
+                        ) : p.subtitle ? (
+                          <p className="pl-card-desc">{stripTags(p.subtitle)}</p>
+                        ) : null}
                         <div className="pl-card-foot">
                           <span className="pl-card-spec">
-                            {(() => {
-                              // Spec value can carry inline markup
-                              // (e.g. <span style="letter-spacing">300 g/m</span>)
-                              // from the catalog import — strip it so the
-                              // card shows clean text, not escaped tags.
-                              const wRaw = p.spec?.rows?.find((r) => /평량|중량|weight/i.test(r.label))?.value;
-                              const w = wRaw ? stripTags(wRaw) : '';
-                              const ct = (p.spec?.rows?.length ?? 0) + ' specs';
-                              return w ? <b>{w}</b> : ct;
-                            })()}
+                            {editor && w ? (
+                              <EditableText as="b" path={`product@${p.slug}@weight`} value={w} editor={editor} />
+                            ) : w ? (
+                              <b>{w}</b>
+                            ) : (
+                              ct
+                            )}
                           </span>
-                          <span className="pl-card-arrow">
-                            {locale === 'ko' ? '상세 →' : 'View →'}
-                          </span>
+                          {!editor ? (
+                            <span className="pl-card-arrow">{locale === 'ko' ? '상세 →' : 'View →'}</span>
+                          ) : null}
                         </div>
-                      </Link>
+                      </>
                     );
-                    // In admin mode wrap the card so we can overlay an
-                    // edit chip. The card's own <Link> goes to the
-                    // public detail page; product TEXT (name / subtitle
-                    // / spec) lives in the product JSON and is edited on
-                    // the per-product editor, so this chip deep-links
-                    // there. (Nesting an <a> inside the card <Link>
-                    // would be invalid HTML, hence the wrapper.)
+                    // Admin: render the card as a non-navigating <div>
+                    // so clicking the text fields edits instead of
+                    // jumping to the detail page; add the "✎ 제품 편집"
+                    // deep-link for spec rows / images / gallery that
+                    // aren't inline-editable here. Public: the whole
+                    // card is a <Link> to the detail page.
                     return editor ? (
                       <div key={p.slug} className="pl-card-wrap">
-                        {card}
+                        <div className="pl-card">{body}</div>
                         <a
                           href={`/admin/products/${p.slug}/edit`}
                           className="pl-card-edit"
-                          title="이 제품의 이름·부제·스펙 편집"
+                          title="이미지·갤러리·상세 스펙 편집"
                         >
-                          ✎ 제품 편집
+                          ✎ 상세 편집
                         </a>
                       </div>
                     ) : (
-                      <div key={p.slug} className="pl-card-wrap pl-card-wrap-plain">{card}</div>
+                      <div key={p.slug} className="pl-card-wrap pl-card-wrap-plain">
+                        <Link href={`/${locale}/products/${p.slug}/`} className="pl-card" aria-label={name}>
+                          {body}
+                        </Link>
+                      </div>
                     );
                   })}
                 </div>
