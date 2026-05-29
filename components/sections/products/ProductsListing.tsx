@@ -223,10 +223,14 @@ export default function ProductsListing({
               </div>
               <div className="pl-featured-info">
                 {featured.category ? <span className="pl-featured-tag">{featured.category}</span> : null}
-                <h3
-                  className="pl-featured-name"
-                  dangerouslySetInnerHTML={{ __html: featured.name ?? featured.slug }}
-                />
+                {/* Name is plain-text here on purpose. The product
+                 * JSON may carry `<br>` / `<em>` markup in `name` for
+                 * the DETAIL-page hero (where stacked, emphasised
+                 * words are the intended look). In a listing card that
+                 * same markup renders as broken multi-line titles —
+                 * so we strip tags and let the card wrap naturally,
+                 * matching every other product card. */}
+                <h3 className="pl-featured-name">{stripTags(featured.name) || featured.slug}</h3>
                 {featured.subtitle ? <p className="pl-featured-sub">{featured.subtitle}</p> : null}
                 {featured.spec?.rows && featured.spec.rows.length > 0 ? (
                   <div className="pl-featured-spec">
@@ -326,10 +330,12 @@ export default function ProductsListing({
                           {p.model ?? p.slug.toUpperCase()}
                           {p.category ? ` · ${p.category.split('·')[0].trim()}` : ''}
                         </span>
-                        <h3
-                          className="pl-card-name"
-                          dangerouslySetInnerHTML={{ __html: p.name ?? p.slug }}
-                        />
+                        {/* Plain text — strip any `<br>`/`<em>` the
+                         * name carries for the detail-page hero so the
+                         * card title wraps naturally (see featured
+                         * card note above). `name` is already
+                         * stripTags(p.name) || p.slug. */}
+                        <h3 className="pl-card-name">{name}</h3>
                         {p.subtitle ? <p className="pl-card-desc">{p.subtitle}</p> : null}
                         <div className="pl-card-foot">
                           <span className="pl-card-spec">
