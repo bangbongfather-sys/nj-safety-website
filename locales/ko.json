@@ -113,8 +113,8 @@
       "Collection"
     ],
     "featuredEyebrow": "Editor's Pick · 이번 시즌",
-    "featuredTitlePre": "이번 시즌의 ",
-    "featuredTitleEm": "대표작.",
+    "featuredTitlePre": "NJ SAFETY의 ",
+    "featuredTitleEm": "<span style=\"color: rgb(255, 107, 26);\">신제품</span>.",
     "featuredCtaLabel": "상세 보기 →",
     "editorialEyebrow": "— Material Philosophy",
     "editorialQuotePre": "합성 처리만으로 만든 방염은\n한 번의 세탁에도 무력해집니다.\nNJ SAFETY는 ",
@@ -141,7 +141,7 @@
         "lede": "봄·가을의 간절기 레이어링. 셔츠 위에 한 벌, 자켓 안에 한 벌 — 어느 쪽이든 단정합니다."
       },
       "winter": {
-        "headline": "한랭 옥외 현장을 위해, <em>3-레이어 보온.</em>",
+        "headline": "혹한 야외 현장을 위해, <em>3-레이어 보온.</em>",
         "lede": "영하의 점검·정비 현장에서도 단정한 실루엣을 유지하는 동계 라인업."
       }
     }
@@ -332,6 +332,12 @@
     },
     "contact.faq.items[1].a": {
       "width": "100.0%"
+    },
+    "products.featuredTitlePre": {
+      "weight": "700"
+    },
+    "products.featuredTitleEm": {
+      "weight": "700"
     }
   },
   "siteConfig": {
