@@ -58,7 +58,16 @@ function loadNaverSdk(clientId: string): Promise<void> {
   if (sdkPromise) return sdkPromise;
   sdkPromise = new Promise<void>((resolve, reject) => {
     const script = document.createElement('script');
-    script.src = `${SDK_BASE}?ncpClientId=${encodeURIComponent(clientId)}`;
+    // `ncpKeyId` (NOT the older `ncpClientId`) is the parameter
+    // name required by VPC Maps accounts — NCP rebranded the
+    // query string in late 2024 when they unified API key naming
+    // across services. Legacy "Classic" Maps accounts created
+    // before that still accept `ncpClientId`, but the NCP console
+    // creates new Applications under VPC by default, so this is
+    // the correct one for all 2025+ signups. Using the wrong name
+    // surfaces as "네이버 지도 Open API 인증이 실패했습니다" on
+    // every tile.
+    script.src = `${SDK_BASE}?ncpKeyId=${encodeURIComponent(clientId)}`;
     script.async = true;
     script.onload = () => resolve();
     script.onerror = () => {
