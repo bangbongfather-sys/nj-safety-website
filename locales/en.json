@@ -332,6 +332,12 @@
     },
     "contact.faq.items[1].a": {
       "width": "100.0%"
+    },
+    "products.featuredTitlePre": {
+      "weight": "700"
+    },
+    "products.featuredTitleEm": {
+      "weight": "700"
     }
   },
   "siteConfig": {
