@@ -49,18 +49,14 @@ function getDropdownItems(
   }
   if (key === 'resources') {
     // Catalog still lives as an anchored card on the hub page (one
-    // brand-level PDF doesn't warrant its own route). Size guide
-    // and test reports each have their own page now — the test
-    // reports listing with product photos is too tall to comfortably
-    // sit under the catalog/sizeguide cards on the hub.
+    // brand-level PDF doesn't warrant its own route). Test reports
+    // have their own page (the listing with product photos is too
+    // tall to sit under the catalog card on the hub).
+    // Size Guide item removed 2026-06 (per request).
     return [
       {
         href: `${baseHref}#catalog`,
         label: locale === 'ko' ? '카탈로그 PDF' : 'Catalog PDF',
-      },
-      {
-        href: `/${locale}/resources/size-guide/`,
-        label: locale === 'ko' ? '사이즈 가이드' : 'Size Guide',
       },
       {
         href: `/${locale}/resources/test-reports/`,

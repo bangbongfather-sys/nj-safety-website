@@ -101,12 +101,9 @@ export default async function ResourcesPage({ params }: Props) {
             disabled={!catalogReady}
           />
 
-          <ResourceCard
-            title={dict.resources.sizeGuide.title}
-            desc={dict.resources.sizeGuide.desc}
-            cta={dict.resources.sizeGuide.cta}
-            href={`/${loc}/resources/size-guide/`}
-          />
+          {/* Size Guide card removed 2026-06 (per request). The
+           * /resources/size-guide route + dict.resources.sizeGuide
+           * entries remain dormant in case it's restored later. */}
 
           <ResourceCard
             title={dict.resources.testReports.title}
