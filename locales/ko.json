@@ -354,7 +354,7 @@
     },
     "hero": {
       "eyebrow": "About · 회사소개",
-      "yearNum": "34",
+      "yearNum": "40",
       "yearLabelK": "Years of",
       "yearLabelV": "Industrial Safety",
       "titleLine1Pre": "산업 현장이 선택한 ",
@@ -363,7 +363,7 @@
       "sub": "NJ SAFETY는 방염복 및 산업안전복 한 분야에만 집중해 왔습니다. \n원단 개발부터 디자인·생산·출하까지 — 모든 단계를 책임지는 원스톱 시스템으로 산업 현장의 가장 가까운 곳에서 작업자를 지킵니다.",
       "asideTag": "— Brand Mission",
       "asidePullPre": "우리는 작업복을 만들지 않습니다.",
-      "asidePullEm": "<em>생명을 지키는 보호 시스템</em>",
+      "asidePullEm": "<em style=\"color: rgb(255, 107, 26);\">생명을 지키는 보호 시스템</em>",
       "asidePullPost": "을 설계합니다.",
       "corpName": "NAJUNG ENTERPRISE CO., LTD.",
       "corpEst": "EST. 1992"
@@ -371,7 +371,7 @@
     "stats": [
       {
         "lbl": "— Heritage",
-        "num": "34",
+        "num": "40",
         "unit": "YEARS",
         "desc": "창립 이래 방염복 및 산업안전복 단일 카테고리에 집중해온 시간."
       },
@@ -499,7 +499,7 @@
     },
     "values": {
       "eyebrow": "— Core Values / 5 Principles",
-      "titleLine1": "한 분야를 34년간 지켜온",
+      "titleLine1": "한 분야를 40년간 지켜온",
       "titleLine2Em": "다섯 가지 기준.",
       "rMicro": "Innovation · Quality · Safety · Trust · Expertise",
       "items": [
@@ -513,7 +513,7 @@
           "n": "02 / 05",
           "en": "QUALITY",
           "ko": "품질 · 인증 / 시험",
-          "body": "모든 원단 로트와 완제품은 자체 시험과 제3자 시험기관 검증을 거칩니다. NFPA 2112, HRC2, ARC Flash 시험 결과로 입증합니다."
+          "body": "모든 원단 로트와 완제품은 자체 시험과 제3자 시험기관 검증을 거칩니다. NFPA 2112, 아크테스트 등 시험 결과로 입증합니다."
         },
         {
           "n": "03 / 05",
@@ -524,8 +524,8 @@
         {
           "n": "04 / 05",
           "en": "TRUST",
-          "ko": "신뢰 · 34년 한 분야",
-          "body": "유행을 따르지 않습니다. 1992년부터 같은 자리, 같은 일에 집중해온 시간이 한전·SK·LG 계열 산업 현장의 신뢰가 되었습니다."
+          "ko": "신뢰 · 40년 한 분야",
+          "body": "유행을 따르지 않습니다. 1987년부터 같은 자리, 같은 일에 집중해온 시간이 한전·SK·LG 계열 산업 현장의 신뢰가 되었습니다."
         },
         {
           "n": "05 / 05",
@@ -579,25 +579,25 @@
         {
           "n": "01 · POWER",
           "ko": "전력 · 발전",
-          "en": "Power Generation",
+          "en": "<br>",
           "body": "한전 협력업체 · 발전사 공급. 송배전 · 발전 설비 점검 현장의 방염 작업복."
         },
         {
           "n": "02 · ELECTRIC",
           "ko": "전기 공사",
-          "en": "Electrical Works",
+          "en": "<br>",
           "body": "고압 송전선로 · 활선 작업 등 아크 플래시 위험이 상존하는 전기 공사 전문 보호복."
         },
         {
           "n": "03 · PETROCHEM",
           "ko": "정유 · 석유화학",
-          "en": "Refinery & Petrochem",
+          "en": "<br>",
           "body": "여수·울산 단지의 정기 보수 · 안전 점검. 정전기 방지와 통기성을 동시에 갖춘 라인."
         },
         {
           "n": "04 · ENERGY",
           "ko": "에너지 · 가스",
-          "en": "Energy & Gas",
+          "en": "<br>",
           "body": "가스 공사 · 발전 플랜트 · 신재생 에너지 인프라 현장의 고위험 보호복 솔루션."
         }
       ]
