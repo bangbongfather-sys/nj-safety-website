@@ -8,7 +8,8 @@
         "njs-av100",
         "njssyyy",
         "njs-ar301",
-        "njs-ar204"
+        "njs-ar204",
+        "njssp"
       ]
     },
     {
@@ -25,7 +26,8 @@
       "nameKo": "겨울(WINTER)",
       "nameEn": "Winter Season",
       "productSlugs": [
-        "njs-aj100"
+        "njs-aj100",
+        "njwwp26"
       ]
     }
   ],
