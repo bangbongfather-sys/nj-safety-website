@@ -1,36 +1,46 @@
 {
   "slug": "njs-ar204",
-  "model": "NJS-AR204",
+  "model": "NJSST#YY",
   "category": "ARAMID FR SERIES · Vol.04",
-  "name": "아라미드 PK 티셔츠",
+  "name": "<span style=\"color: rgb(255, 255, 255);\">아라미드</span> <br><span style=\"color: rgb(198, 90, 30);\">PK</span> <br><span style=\"color: rgb(255, 255, 255);\">티셔츠</span>",
   "subtitle": "전기·설비 현장의 일상을 위한 난연 워크웨어",
-  "tagline": "신뢰할 수 있는 원단과 뛰어난 신축성으로 완성한, 하루 종일 입을 수 있는 안전 티셔츠.",
+  "tagline": "신뢰할 수 있는 아라미드 원단과 뛰어난 신축성으로 완성한, <div style=\"\">하루 종일 입을 수 있는 PK 티셔츠.</div><div style=\"color: rgb(255, 255, 255); font-weight: 400;\"><span style=\"font-size: clamp(13px, 1.3vw, 15px); letter-spacing: 0.01em; font-weight: 700; color: rgb(29, 29, 31);\"></span></div><div style=\"color: rgb(255, 255, 255);\"><span style=\"font-size: clamp(13px, 1.3vw, 15px); letter-spacing: 0.01em; font-weight: 700; color: rgb(29, 29, 31);\"></span></div><div style=\"color: rgb(255, 255, 255);\"></div><div style=\"color: rgb(255, 255, 255);\"></div><div><span style=\"font-size: clamp(13px, 1.3vw, 15px); letter-spacing: 0.01em; font-weight: 700; color: rgb(29, 29, 31);\"><br></span></div>",
   "hero": {
-    "image": "/products/njs-ar204/front.jpg",
     "imageAlt": "아라미드 PK 하프집 티셔츠 차콜 네이비 — 정면",
-    "tag": "FIG. 01 · HALF—ZIP STAND COLLAR",
-    "corner": "CHARCOAL NAVY",
     "counters": [
       {
-        "value": "65",
+        "value": "63.8",
         "unit": "%",
         "label": "ARAMID"
       },
       {
-        "value": "38",
+        "value": "33.9",
         "unit": "%",
-        "label": "RECOVERY"
+        "label": "fr RAYON(LENZING fr)"
       },
       {
-        "value": "220",
-        "unit": "G/M²",
-        "label": "WEIGHT"
+        "value": "2.3",
+        "unit": "%",
+        "label": "anti-static fiber"
+      }
+    ],
+    "image": "/api/images/njs-ar204-hero-image-1778376783137-e6448dbe996d.jpg",
+    "badges": [
+      {
+        "text": "FIG. 01 · HALF—ZIP STAND COLLAR",
+        "position": "bottom-right",
+        "style": "tag"
+      },
+      {
+        "text": "MELANGE GRAY",
+        "position": "top-left",
+        "style": "stamp"
       }
     ]
   },
   "gallery": {
-    "eyebrow": "PRODUCT VIEWS",
-    "headline": "모든 각도에서, <em>정직하게</em>.",
+    "eyebrow": "<em>PRODUCT VIEWS</em>",
+    "headline": "모든 각도에서, <em>정직하게</em>",
     "note": "스튜디오 촬영 · 실물 컬러는 모니터 환경에 따라 차이가 있을 수 있습니다.",
     "items": [
       {
@@ -44,13 +54,13 @@
         "image": "/products/njs-ar204/back.jpg",
         "tag": "FIG. 02 · BACK",
         "label": "후면 — 풀샷",
-        "caption": "장식 없는 정직한 등판. 작업 시 걸림 요소 최소화.",
-        "span": "xl"
+        "span": "xl",
+        "caption": "견고한 마감과 단정한 핏"
       },
       {
         "image": "/products/njs-ar204/stripe.jpg",
         "tag": "FIG. 03 · CHEST DETAIL",
-        "label": "리플렉티브 스트라이프",
+        "label": "브랜드 리플렉티브 스트라이프",
         "caption": "가슴 라인의 NJ SAFETY 로고와 반사 테이프. 야간 시인성 확보.",
         "span": "l"
       },
@@ -58,7 +68,7 @@
         "image": "/products/njs-ar204/collar.jpg",
         "tag": "FIG. 04 · COLLAR & ZIP",
         "label": "스탠드 카라 · 하프 집업",
-        "caption": "목까지 보호하는 하이넥 스탠드 카라와 매끄러운 메탈 지퍼.",
+        "caption": "목까지 보호하는 하이넥 스탠드 카라와 매끄러운 지퍼.",
         "span": "l"
       },
       {
@@ -79,41 +89,41 @@
         "image": "/products/njs-ar204/sleeve.jpg",
         "tag": "FIG. 07 · SLEEVE CUFF",
         "label": "소매 · PK 조직",
-        "caption": "0.4mm 멜란지 PK 조직의 표면. 통기성과 회복력을 동시에.",
+        "caption": "멜란지 PK 조직의 표면. 통기성과 회복력을 동시에.",
         "span": "tall"
       }
     ]
   },
   "statement": {
     "eyebrow": "A NOTE FROM THE FIELD",
-    "headline": "현장은 <em>단정함</em>과 <em>안전</em>이 같이 가야 한다.",
-    "body": "한 벌의 작업복은 안전 장비이자, 매일의 유니폼입니다. 아라미드 PK 티셔츠는 두 가지 요구를 분리하지 않고 하나의 옷에 담는 것을 출발점으로 삼았습니다. 멜란지 톤의 절제된 외관 뒤에는 검증된 난연 원사와 4-way 신축 PK 조직이 있고, 그것은 12시간 동안 입어도 옷의 존재를 잊게 만듭니다.",
-    "sign": "NJ SAFETY PRODUCT TEAM"
+    "body": "한 벌의 작업복은 안전 장비이자, 매일의 유니폼입니다. <div>아라미드 PK 티셔츠는 두 가지 요구를 분리하지 않고 <span style=\"text-wrap-mode: initial; letter-spacing: -0.005em;\">하나의 옷에 담는 것을 출발점으로 삼았습니다.</span></div><div></div><div>멜란지 톤의 절제된 외관 뒤에는 검증된 난연 원사와 <span style=\"text-wrap-mode: initial; letter-spacing: -0.005em;\">4-way 신축 PK 조직이 있고, </span><span style=\"text-wrap-mode: initial; letter-spacing: -0.005em;\">그것은 12시간 동안 입어도 옷의 존재를 잊게 만듭니다.</span></div><div><div></div></div>",
+    "sign": "NJ SAFETY PRoducts",
+    "headline": "현장의 품격은 <span style=\"color: rgb(198, 90, 30);\">안전</span>과 <br>정제된 <span style=\"color: rgb(198, 90, 30);\">단정함</span>에서 시작됩니다"
   },
   "material": {
     "eyebrow": "CLOSE LOOK",
-    "headline": "0.4mm의 <em>PK 조직</em>이 말해주는 것.",
+    "headline": "<span style=\"color: rgb(198, 90, 30);\">NJ SAFETY</span>의 <br>PK 조직이 <br>말해주는 것.",
     "image": "/products/njs-ar204/collar.jpg",
     "callouts": [
       {
         "tag": "A",
-        "title": "Aramid Care Label",
-        "body": "난연 표시는 세탁 후에도 유지됩니다."
+        "body": "NJ아라미드 PK 방염 원단의 방염성은 세탁 후에도 유지됩니다.",
+        "title": "PERMANENT<span style=\"color: rgb(198, 90, 30);\"> FR</span> PERFORMANCE"
       },
       {
         "tag": "B",
-        "title": "Orange PVC Patch",
-        "body": "오렌지 라벨은 NJ Safety 제품의 시그니처입니다."
+        "body": "아라미드 특유의 강인함에 신축성을 더해, 반복적인 움직임에도 무릎이나 팔꿈치의 늘어남 없이 탄탄한 복원력을 보여줍니다.",
+        "title": "RESILIENT <span style=\"color: rgb(198, 90, 30);\">ARAMID fr</span> pk knit"
       },
       {
         "tag": "C",
-        "title": "Mélange Knit",
-        "body": "차콜 멜란지 색감은 오염이 도드라지지 않습니다."
+        "title": "color. <span style=\"color: rgb(198, 90, 30);\">Melange</span> Knit",
+        "body": "멜란지 그레이 색감은 오염이 도드라지지 않습니다."
       }
     ]
   },
   "features": {
-    "eyebrow": "WHY THIS TEE",
+    "eyebrow": "WHY THIS SHIRT",
     "headline": "현장에서 살아남는 <em>다섯</em> 가지 장치.",
     "items": [
       {
@@ -124,12 +134,12 @@
       {
         "n": "02",
         "title": "4-way 신축 PK 조직",
-        "body": "어깨·팔꿈치 회복률 38% 이상. 큰 동선의 작업에 최적화."
+        "body": "어깨·팔꿈치 회복 및 큰 동선의 작업에 최적화."
       },
       {
         "n": "03",
         "title": "멜란지 차콜 컬러",
-        "body": "오염이 도드라지지 않는 톤다운. 단정한 외관이 오래 유지됩니다.",
+        "body": "햇빛이나 땀에 의한 변색(일광/땀 견뢰도)에도 강해, 뜨거운 야외 현장에서도 처음의 단정한 외관이 무너지지 않습니다.",
         "featured": true
       },
       {
@@ -139,8 +149,8 @@
       },
       {
         "n": "05",
-        "title": "가정용 세탁",
-        "body": "별도 드라이클리닝 없이 30°C 일반 세탁."
+        "title": "변형 없는 형태 안전성",
+        "body": "반복되는 세탁에도 수축이나 늘어남 없이 처음 입었던 핏을 유지."
       }
     ]
   },
@@ -150,7 +160,7 @@
     "rows": [
       {
         "label": "원단 구성",
-        "value": "Aramid 95% / Spandex 5%"
+        "value": "Aramid 63.8% / FR Rayon(Lenzing FR) 33.9%/Spandex 2.3%"
       },
       {
         "label": "조직",
@@ -158,19 +168,19 @@
       },
       {
         "label": "평량",
-        "value": "220 g/m²"
+        "value": "185 g/m²"
       },
       {
         "label": "컬러",
-        "value": "Charcoal Navy / Black / Olive / Steel"
+        "value": "MELANGE GRAY"
       },
       {
         "label": "사이즈",
-        "value": "90 / 95 / 100 / 105 / 110"
+        "value": "90 / 95 / 100 / 105 / 110/115/120(대형 사이즈 제작 가능)"
       },
       {
         "label": "세탁",
-        "value": "30°C 중성세제 · 표백 금지"
+        "value": "손빨래 권장 및 건조기 사용 금지"
       },
       {
         "label": "원산지",
@@ -178,7 +188,7 @@
       },
       {
         "label": "인증",
-        "value": "KC · KS K 0585"
+        "value": "시험성적서"
       }
     ],
     "sizeTable": {
@@ -242,8 +252,8 @@
       {
         "n": "01",
         "tag": "HIGH—VOLTAGE",
-        "title": "고압 전기 작업",
-        "body": "배전반·변전소 정기 점검 시의 일상복. 난연 안전화 및 내전압 장갑과 함께 운용합니다."
+        "title": "전기 작업",
+        "body": "전기 공사 및 배전반·변전소 정기 점검 시의 일상복. 난연 안전화 및 내전압 장갑과 함께 운용합니다."
       },
       {
         "n": "02",
@@ -254,7 +264,7 @@
       {
         "n": "03",
         "tag": "MAINT.",
-        "title": "기계 정비 현장",
+        "title": "정비 현장",
         "body": "회전체와 가까운 정비 작업. 신축 회복력으로 동선이 큰 작업에 적합합니다."
       },
       {
@@ -299,9 +309,9 @@
       "highlight": true
     },
     {
-      "mark": "UL",
-      "title": "UL 국제 인증",
-      "sub": "NFPA 2112"
+      "mark": "ARC",
+      "title": "아크테스트",
+      "sub": "EN IEC 61482-1-1, 약 11.4 cal/cm² 노출 조건 시험"
     },
     {
       "mark": "CF",
@@ -351,6 +361,57 @@
         "value": "njsafety91@naver.com"
       }
     ]
+  },
+  "styles": {
+    "name": {
+      "color": "#1d1d1f",
+      "width": "104%",
+      "size": "0.85em"
+    },
+    "tagline": {
+      "width": "104%"
+    },
+    "gallery.note": {
+      "width": "106%",
+      "align": "left"
+    },
+    "gallery.items[3].caption": {
+      "width": "59%"
+    },
+    "gallery.items[2].caption": {
+      "width": "61%"
+    },
+    "gallery.items[6].caption": {
+      "width": "102%"
+    },
+    "material.headline": {
+      "width": "133%"
+    },
+    "category": {
+      "size": "1.70em"
+    },
+    "statement.body": {
+      "width": "98%"
+    },
+    "hero.counters[0].value": {
+      "size": "0.95em"
+    },
+    "hero.counters[1].value": {
+      "size": "0.95em"
+    },
+    "hero.counters[2].value": {
+      "size": "0.95em"
+    },
+    "spec.rows[5].value": {
+      "width": "34%",
+      "align": "left"
+    },
+    "features.items[2].body": {
+      "width": "70%"
+    },
+    "statement.headline": {
+      "width": "84%"
+    }
   },
   "flavor": "tactical",
   "shopHeader": {
@@ -415,56 +476,5 @@
         "uploadedAt": "2026-05-20T14:07:05.781Z"
       }
     ]
-  },
-  "styles": {
-    "name": {
-      "color": "#1d1d1f",
-      "width": "104%",
-      "size": "0.85em"
-    },
-    "tagline": {
-      "width": "104%"
-    },
-    "gallery.note": {
-      "width": "106%",
-      "align": "left"
-    },
-    "gallery.items[3].caption": {
-      "width": "59%"
-    },
-    "gallery.items[2].caption": {
-      "width": "61%"
-    },
-    "gallery.items[6].caption": {
-      "width": "102%"
-    },
-    "material.headline": {
-      "width": "133%"
-    },
-    "category": {
-      "size": "1.70em"
-    },
-    "statement.body": {
-      "width": "98%"
-    },
-    "hero.counters[0].value": {
-      "size": "0.95em"
-    },
-    "hero.counters[1].value": {
-      "size": "0.95em"
-    },
-    "hero.counters[2].value": {
-      "size": "0.95em"
-    },
-    "spec.rows[5].value": {
-      "width": "34%",
-      "align": "left"
-    },
-    "features.items[2].body": {
-      "width": "70%"
-    },
-    "statement.headline": {
-      "width": "84%"
-    }
   }
 }

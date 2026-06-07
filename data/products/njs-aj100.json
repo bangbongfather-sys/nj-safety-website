@@ -1,19 +1,17 @@
 {
   "slug": "njs-aj100",
-  "model": "NJS-AJ100",
+  "model": "NJWWJ26",
   "category": "ARAMID FR SERIES · WINTER JACKET",
-  "name": "아라미드 방한 자켓",
+  "name": "아라미드 <br><span style=\"color: rgb(198, 90, 30);\">방한</span> <br>솜점퍼",
   "subtitle": "한겨울 외근의 보온과 안전, 그 둘을 한 벌에",
-  "tagline": "검증된 메타-아라미드 블렌드 + 체크 누빔 안감 + 니트 커프스 + 가슴 NJ SAFETY 리플렉티브. 영하의 점검 현장을 위한 NJ Safety의 동계 자켓.",
+  "tagline": "검증된 메타-아라미드 블렌드 + 체크 누빔 안감 + 니트 커프스 + 가슴 NJ SAFETY 리플렉티브. <br>영하의 점검 현장을 위한 NJ Safety의 동계 자켓.<br>외피점퍼 + 솜 내피조끼 1SET",
   "flavor": "tactical",
   "hero": {
-    "image": "/products/njs-aj100/front.jpg",
+    "image": "/api/images/njs-aj100-hero-image-1779288803600-f0ea121e6f0c.png",
     "imageAlt": "아라미드 방한 자켓 — 정면 풀샷 (스탠드 카라·가슴 트윈 리플렉티브·옐로우 지퍼 4개)",
-    "tag": "FIG. 00 · WINTER PROTECTIVE JACKET",
-    "corner": "CHARCOAL NAVY + CHAMBRAY ACCENT",
     "counters": [
       {
-        "value": "65",
+        "value": "64",
         "unit": "%",
         "label": "META ARAMID"
       },
@@ -23,9 +21,15 @@
         "label": "LENZING FR"
       },
       {
-        "value": "260",
-        "unit": "G/M²",
-        "label": "WEIGHT"
+        "value": "1",
+        "unit": "%",
+        "label": "anti-static fiber"
+      }
+    ],
+    "badges": [
+      {
+        "text": "FIG. 00 · WINTER aramid warm JACKET",
+        "position": "bottom-right"
       }
     ]
   },
@@ -40,7 +44,7 @@
         "tag": "FIG. 01 · FRONT",
         "label": "정면 풀샷",
         "caption": "스탠드 카라 + 풀집 메인 지퍼 + 가슴 NJ SAFETY 리플렉티브 라인.",
-        "span": "xl"
+        "span": "l"
       },
       {
         "image": "/products/njs-aj100/rear.jpg",
@@ -48,14 +52,14 @@
         "tag": "FIG. 02 · REAR",
         "label": "후면 풀샷",
         "caption": "어깨 가로 리플렉티브 라인 + 팔 25mm 리플렉티브. 후면 시인성도 정면과 동등하게 확보.",
-        "span": "xl"
+        "span": "l"
       },
       {
-        "image": "/products/njs-aj100/collar.jpg",
+        "image": "/api/images/njs-aj100-gallery-items-2-image-1779288943630-3038d154fe80.jpg",
         "imageAlt": "스탠드 카라 — 안쪽 ARAMID 사이즈 라벨, 풀집 메인 지퍼",
-        "tag": "FIG. 03 · COLLAR",
-        "label": "스탠드 카라",
-        "caption": "스탠드 카라와 안쪽 ARAMID 사이즈 라벨. 풀집 블랙 메인 지퍼.",
+        "tag": "FIG. 03 · INNER VEST",
+        "label": "아라미드 내피 조끼",
+        "caption": "외피와 같이 구성해 보온력이 2배 - 단독으로 착용 가능.",
         "span": "tall"
       },
       {
@@ -64,7 +68,7 @@
         "tag": "FIG. 04 · CHEST DETAIL",
         "label": "가슴 디테일",
         "caption": "가슴 좌우 옐로우 지퍼 포켓 + 트윈 리플렉티브 + NJ SAFETY 워드마크.",
-        "span": "l"
+        "span": "tall"
       },
       {
         "image": "/products/njs-aj100/labels.jpg",
@@ -72,7 +76,7 @@
         "tag": "FIG. 05 · ARAMID + LENZING",
         "label": "이중 인증 라벨",
         "caption": "좌측 가슴 LENZING™ for Protective Wear 라벨 + ARAMID Flame Resistant 태그.",
-        "span": "l"
+        "span": "tall"
       },
       {
         "image": "/products/njs-aj100/side-pocket.jpg",
@@ -102,9 +106,9 @@
         "image": "/products/njs-aj100/cuff.jpg",
         "imageAlt": "손목 니트 커프 + 체크 누빔 안감 노출",
         "tag": "FIG. 09 · KNIT CUFF",
-        "label": "체크 누빔 + 니트 커프",
-        "caption": "손목 니트 마감 + 안감의 체크 패턴 누빔. 찬바람 차단과 보온 균형.",
-        "span": "tall"
+        "label": "체크 누빔 + 시보리 니트 커프",
+        "caption": "손목 시보리 니트 마감 + 안감의 체크 패턴 누빔. 찬바람 차단과 보온 균형.",
+        "span": "l"
       },
       {
         "image": "/products/njs-aj100/lining.jpg",
@@ -118,8 +122,8 @@
   },
   "statement": {
     "eyebrow": "ENGINEERED FOR WINTER",
-    "headline": "겨울 현장은 <em>보온</em>이 곧 안전입니다.",
-    "body": "전기·플랜트 점검은 영하의 새벽에도 멈추지 않습니다. 두꺼운 패딩만으로는 방염 등급도, 정전기 차단도 챙기지 못합니다. AJ100은 메타-아라미드 65%와 리오셀 FR 35%의 검증된 블렌드를 본체 원단에 그대로 가져왔습니다. 체크 패턴 누빔 안감과 니트 손목 마감으로 보온을 잡되, 가슴 트윈 리플렉티브와 5구의 지퍼 포켓은 한여름 자켓과 동일한 워크웨어 기능을 유지합니다. AJ100은 여름 라인(AV100·NJSSYYY)과 동일한 워크웨어 규격을 겨울 환경에 그대로 옮긴 자켓입니다.",
+    "headline": "겨울 현장은 <em>보온과 안전</em>이 생명입니다.",
+    "body": "<blockquote data-path-to-node=\"8\"><p data-path-to-node=\"8,0\">영하의 새벽, 전기와 플랜트 점검 현장은 매 순간이 추위 및 위험과의 싸움입니다. 일반적인 두꺼운 패딩으로는 방염 성능과 정전기 차단까지 챙기기 어렵습니다.</p><p data-path-to-node=\"8,1\"><br></p><p data-path-to-node=\"8,1\">본 자켓은 검증된 메타-아라미드 65%와 Lenzing FR 35% 블렌드 외피를 사용해 작업자를 안전하게 보호합니다. 내부에는 체크 패턴 누빔 안감과 니트 커프스를 적용하여 찬 바람을 완벽히 차단하고 체온을 유지해 줍니다.</p></blockquote><ul data-path-to-node=\"9\"><li><p data-path-to-node=\"9,0,0\"></p></li></ul>",
     "sign": "NJ SAFETY PRODUCT TEAM"
   },
   "material": {
@@ -129,18 +133,18 @@
     "callouts": [
       {
         "tag": "A",
-        "title": "META ARAMID 65%",
-        "body": "Teijin Conex® 계열 메타-아라미드. LOI 30 이상 · 영구 난연 · EN ISO 11612 A1·B1·C1·F1 통과."
+        "title": "META ARAMID",
+        "body": "도레이 첨단소재의 ARAWIN, 메타아라미드"
       },
       {
         "tag": "B",
-        "title": "LENZING™ FR 35%",
-        "body": "리오셀 기반 보호복 전용 FR 섬유. 흡습성 + EN 1149-5 전하 반감기 0.2초."
+        "title": "LENZING™ FR",
+        "body": "리오셀 기반 보호복 전용 FR 섬유. 흡습성"
       },
       {
         "tag": "C",
         "title": "CHECK QUILTED LINING",
-        "body": "체크 패턴 누빔 안감 + 본체 이중 구조. 패딩 없이 영하 외근 가능한 보온층."
+        "body": "체크 패턴 누빔 안감 + 아라미드 솜 PAD 이중 구조. 영하 외근 가능한 보온층."
       }
     ]
   },
@@ -151,12 +155,12 @@
       {
         "n": "01",
         "title": "검증된 아라미드 블렌드",
-        "body": "메타-아라미드 65% · 리오셀 FR 35%. EN ISO 11612 / KS K 0585 통과."
+        "body": "메타-아라미드 65% + LENZING FR 34% + Anti-Static Fiber 1%"
       },
       {
         "n": "02",
-        "title": "체크 누빔 안감",
-        "body": "본체와 안감의 이중 구조. 패딩 없이 영하 외근에서 보온층을 형성."
+        "title": "체크 누빔 패드",
+        "body": "본체와 안감의 이중 구조. 영하 외근에서 보온층을 형성."
       },
       {
         "n": "03",
@@ -177,7 +181,7 @@
       {
         "n": "06",
         "title": "이중 인증 라벨",
-        "body": "ARAMID Flame Resistant + LENZING™ for Protective Wear. 발주처 식별 용이."
+        "body": "ARAMID Flame Resistant + LENZING™ for Protective Wear. 라벨 - 보호복 신뢰성 인증."
       }
     ]
   },
@@ -187,39 +191,27 @@
     "rows": [
       {
         "label": "원단 구성",
-        "value": "Meta-Aramid 65% / Lenzing FR 35%"
+        "value": "Meta-Aramid 65% / Lenzing FR 35% / Anti-Static 1%"
       },
       {
         "label": "조직",
         "value": "Twill + Check Quilted Lining"
       },
       {
-        "label": "평량",
-        "value": "260 g/m² (본체 기준)"
+        "label": "중량",
+        "value": "450 g/m² (겉감+안감+패드)"
       },
       {
         "label": "안감",
         "value": "체크 패턴 누빔 + 손목 니트 커프"
       },
       {
-        "label": "메인 여밈",
-        "value": "YKK 풀집 지퍼 (블랙)"
-      },
-      {
-        "label": "포켓 여밈",
-        "value": "YKK 옐로우 지퍼 × 4 + 다크 슬릿 × 1"
-      },
-      {
-        "label": "반사 테이프",
-        "value": "3M Scotchlite™ — 가슴 트윈 + 어깨 가로 + 팔 25mm"
-      },
-      {
         "label": "컬러",
-        "value": "CHARCOAL NAVY (메인) + CHAMBRAY (배색)"
+        "value": "CHARCOAL NAVY (메인) + MELANGE BLUE (배색)"
       },
       {
         "label": "사이즈",
-        "value": "90 / 95 / 100 / 105 / 110"
+        "value": "90 / 95 / 100 / 105 / 110/ 115 / 120"
       },
       {
         "label": "원산지",
@@ -227,11 +219,11 @@
       },
       {
         "label": "방염 인증",
-        "value": "EN ISO 11612 A1·B1·C1·F1 / KS K 0585"
+        "value": "시험성적서"
       },
       {
         "label": "정전기 인증",
-        "value": "EN 1149-5 · 전하 반감기 0.2초"
+        "value": "정전기 방지섬유 함유"
       }
     ],
     "sizeTable": {
@@ -290,31 +282,31 @@
   },
   "field": {
     "eyebrow": "WHERE IT LIVES",
-    "headline": "영하의 점검 현장을 <em>한겨울 내내</em>.",
+    "headline": "영하의 <span style=\"color: rgb(198, 90, 30);\">작업</span> 현장을 한겨울 내내.",
     "items": [
       {
         "n": "01",
         "tag": "ELECTRICAL",
-        "title": "전기 변전 외근",
-        "body": "새벽 영하의 변전소 점검. 보온과 정전기 차단을 동시에."
+        "title": "전기 작업",
+        "body": "전기 공사 및 배전반·변전소 정기 점검 시의 일상복. 난연 안전화 및 내전압 장갑과 함께 운용합니다."
       },
       {
         "n": "02",
         "tag": "PLANT",
-        "title": "플랜트 정기 보수",
-        "body": "옥외 정기 보수 시즌. 두꺼운 점퍼 대비 가벼우면서 동등한 방염 등급."
+        "title": "플랜트 설비 점검",
+        "body": "스팀 라인, 발전기 정비 등 열 노출 환경의 베이스 레이어."
       },
       {
         "n": "03",
-        "tag": "GAS · RAIL",
-        "title": "도시가스 · 철도 점검",
-        "body": "이동·외근 빈도 높은 작업. 5구 포켓의 휴대성 + 니트 커프의 보온."
+        "tag": "MAINT",
+        "title": "<span style=\"letter-spacing: -0.08px;\">정비 현장</span>",
+        "body": "회전체와 가까운 정비 작업. 신축 회복력으로 동선이 큰 작업에 적합합니다."
       },
       {
         "n": "04",
-        "tag": "MAINT.",
-        "title": "기계 정비",
-        "body": "회전체 정비. 마찰감 완화된 체임브레이 안감 + 단정한 핏."
+        "tag": "WINTER",
+        "title": "야외 작업",
+        "body": "새벽 및 영하 환경 작업에서 보온과 안전을 동시에."
       }
     ]
   },
@@ -404,6 +396,14 @@
         "value": "njsafety91@naver.com"
       }
     ]
+  },
+  "styles": {
+    "tagline": {
+      "width": "91%"
+    },
+    "features.items[1].body": {
+      "width": "78%"
+    }
   },
   "shopHeader": {
     "images": [
@@ -514,10 +514,5 @@
         "value": "02-777-3079"
       }
     ]
-  },
-  "styles": {
-    "tagline": {
-      "width": "91%"
-    }
   }
 }
