@@ -410,13 +410,13 @@
     },
     "heritage": {
       "eyebrow": "— Heritage / 1992 → Present",
-      "titlePre": "34년, ",
+      "titlePre": "40년, ",
       "titleEm": "한 길.",
       "no": "No. 1992 — 2026",
       "phases": [
         {
           "yearPre": "",
-          "yearEm": "1992",
+          "yearEm": "1987",
           "yearPost": " — 2010",
           "yearSub": "Foundation Era",
           "h3Line1": "나정ETP 창립.",
@@ -611,7 +611,7 @@
         {
           "y": "2025",
           "title": "아크 플래시 (Arc Flash) 시험 완료",
-          "body": "전기 작업복 ATPV 등급 시험을 정식 인증기관에서 완료. 시험 성적서 발급 보유.",
+          "body": "전기 작업복(춘추,사계절 티셔츠)시험을 정식 인증기관에서 완료. 시험 성적서 발급 보유.",
           "status": "완료",
           "done": true
         },
