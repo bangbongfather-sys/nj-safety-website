@@ -1,25 +1,19 @@
 {
   "slug": "njssyyy",
-  "model": "NJSSYYY-YY",
-  "category": "ARAMID FR SERIES · SUMMER SHIRT",
-  "name": "아라미드 하계 남방",
-  "subtitle": "현장의 일상복, 셔츠로 다시 그리다",
-  "tagline": "두 톤 패널 + 가슴 트윈 리플렉티브 + 라벨링 디테일. 정전기·내열 환경의 단정한 외근복을 위한 NJ Safety의 새 남방.",
+  "model": "NJS-AR400",
+  "category": "FR · ARAMID · WORK SHIRT",
+  "name": "아라미드<br>하계<br>남방.",
+  "subtitle": "전기·설비 작업자의 한여름 외근복. 자켓의 보호 성능을 유지한 채, 통기성을 최우선으로 재설계한 패널 셔츠.",
+  "tagline": "메타-아라미드 65.5%로 자켓과 동일한 난연 성능을 유지하면서, 평량을 자켓 215g 대비 16% 줄였습니다.",
   "flavor": "tactical",
   "hero": {
-    "image": "/products/njssyyy/model.png",
-    "imageAlt": "아라미드 하계 남방 — 모델 착장 컷",
-    "tag": "FIG. 00 · ON BODY",
-    "corner": "CHARCOAL + LIGHT GREY",
-    "badges": [
-      {
-        "text": "FIELD MANUAL · NO.05 · SUMMER",
-        "position": "top-right"
-      }
-    ],
+    "image": "/products/njs-ar400/front.jpg",
+    "imageAlt": "아라미드 하계 남방 — 정면",
+    "tag": "FIELD MANUAL · No.05 · SUMMER",
+    "corner": "EST. 2018 · SEASONAL",
     "counters": [
       {
-        "value": "65",
+        "value": "65.5",
         "unit": "%",
         "label": "META ARAMID"
       },
@@ -29,259 +23,267 @@
         "label": "FR RAYON"
       },
       {
+        "value": "1.5",
+        "unit": "%",
+        "label": "ANTISTATIC"
+      },
+      {
         "value": "180",
-        "unit": "G/M²",
+        "unit": "g/m²",
         "label": "WEIGHT"
       }
     ]
   },
   "gallery": {
-    "eyebrow": "PRODUCT VIEWS",
-    "headline": "모든 각도에서, <em>정직하게</em>.",
-    "note": "스튜디오 촬영 · 실물 컬러는 모니터에 따라 차이가 있을 수 있습니다.",
+    "eyebrow": "FIG. 02 · PRODUCT VIEWS",
+    "headline": "모든 디테일을, <em>정직하게</em>.",
+    "note": "스튜디오 촬영 · 실물 컬러는 모니터 환경에 따라 차이가 있을 수 있습니다.",
     "items": [
       {
-        "image": "/products/njssyyy/front.jpg",
-        "tag": "FIG. 01 · FRONT",
-        "label": "정면 — 풀 컷",
-        "caption": "차콜 상단 + 라이트 그레이 본체 · 가슴 트윈 리플렉티브 라인.",
+        "image": "/products/njs-ar400/front.jpg",
+        "tag": "FIG. 02 · FRONT",
+        "label": "정면 — 풀샷",
+        "caption": "체임브레이 요크 + 그리드 패널 보디. 가슴 라인의 NJ SAFETY 리플렉티브.",
         "span": "xl"
       },
       {
-        "image": "/products/njssyyy/back.jpg",
-        "tag": "FIG. 02 · BACK",
-        "label": "후면 — 풀 컷",
-        "caption": "차콜 상단 + 라이트 그레이 등판 + 어깨 리플렉티브 트림.",
+        "image": "/products/njs-ar400/back.jpg",
+        "tag": "FIG. 03 · BACK",
+        "label": "후면 — 풀샷",
+        "caption": "동일한 투톤 분할로 어깨 통기성과 야간 시인성을 동시에.",
         "span": "xl"
       },
       {
-        "image": "/products/njssyyy/collar.jpg",
-        "tag": "FIG. 03 · COLLAR",
-        "label": "카라 + 가슴 리플렉티브",
-        "caption": "포인티드 카라 · 가슴 트윈 라인 · 'NJ SAFETY' 리플렉티브 텍스트.",
+        "image": "/products/njs-ar400/collar.jpg",
+        "tag": "FIG. 04 · COLLAR & STRIPE",
+        "label": "스탠다드 카라 + 가슴 리플렉티브",
+        "caption": "정장형 카라와 가슴의 NJ SAFETY 리플렉티브 워드마크.",
         "span": "l"
       },
       {
-        "image": "/products/njssyyy/pockets.jpg",
-        "tag": "FIG. 04 · CHEST PAIR",
-        "label": "가슴 듀얼 플랩 포켓",
-        "caption": "라이트 그레이 본체 위 양쪽 가슴 플랩 포켓 + 오렌지 ARAMID 케어 라벨.",
+        "image": "/products/njs-ar400/stripe.jpg",
+        "tag": "FIG. 05 · CHEST POCKETS",
+        "label": "좌우 가슴 패치 포켓",
+        "caption": "버튼 플랩 포켓 좌우 대칭. 우측 포켓엔 시그니처 아라미드 라벨.",
         "span": "l"
       },
       {
-        "image": "/products/njssyyy/pocket-detail.jpg",
-        "tag": "FIG. 05 · POCKET",
-        "label": "가슴 포켓 단독",
-        "caption": "공구·필기구 수납이 가능한 깊이의 단일 플랩 포켓.",
+        "image": "/products/njs-ar400/pocket.jpg",
+        "tag": "FIG. 06 · ARAMID TAB",
+        "label": "포켓 디테일 + 아라미드 라벨",
+        "caption": "오렌지 ARAMID 라벨 — 세탁 후에도 난연 표시 유지.",
         "span": "tall"
       },
       {
-        "image": "/products/njssyyy/sleeve-patch.jpg",
-        "tag": "FIG. 06 · SLEEVE",
-        "label": "소매 NJ SAFETY 패치",
-        "caption": "왼쪽 소매 오렌지 러버 'NJ SAFETY' 시그니처 태그.",
+        "image": "/products/njs-ar400/patch.jpg",
+        "tag": "FIG. 07 · SLEEVE PVC PATCH",
+        "label": "팔뚝 슬릿 포켓 + NJ SAFETY 패치",
+        "caption": "팔뚝의 슬릿 포켓과 NJ SAFETY 오렌지 PVC 패치.",
         "span": "tall"
       },
       {
-        "image": "/products/njssyyy/lenzing.jpg",
-        "tag": "FIG. 07 · LENZING",
-        "label": "LENZING for Protective Wear",
-        "caption": "포켓 사이드의 'LENZING for Protective Wear' 화이트 라벨.",
+        "image": "/products/njs-ar400/panel.jpg",
+        "tag": "FIG. 08 · REFLECTIVE TAPE",
+        "label": "패널 전환부 리플렉티브",
+        "caption": "체임브레이 요크와 그리드 패널 사이의 리플렉티브 테이프.",
+        "span": "tall"
+      },
+      {
+        "image": "/products/njs-ar400/sleeve.jpg",
+        "tag": "FIG. 09 · CUFF",
+        "label": "단정한 버튼 커프스",
+        "caption": "1구 버튼 커프스 + 가젯. 손목 단정 마감.",
         "span": "tall"
       }
     ]
   },
-  "statement": {
-    "eyebrow": "A NOTE FROM THE FIELD",
-    "headline": "셔츠가 가진 <em>단정함</em>, 워크웨어가 가진 <em>안전</em>.",
-    "body": "남방은 현장에서도 가장 자주 입게 되는 옷입니다. 하지만 시중의 셔츠는 난연 등급도, 정전기 차단도 챙기지 않습니다. NJSSYYY는 메타-아라미드 65%와 FR 레이온 33%의 검증된 블렌드를 셔츠 실루엣 안에 담았습니다. 차콜과 라이트 그레이의 두 톤 패널, 가슴 트윈 리플렉티브, 그리고 가벼운 180g 평량까지 — 셔츠의 격식과 워크웨어의 기능을 한 벌에 통합한 결과입니다.",
-    "sign": "NJ SAFETY PRODUCT TEAM"
-  },
   "material": {
-    "eyebrow": "FABRIC LAYOUT",
-    "headline": "<em>두 가지 원단</em>이 만드는 한 벌의 셔츠.",
-    "image": "/products/njssyyy/pockets.jpg",
+    "eyebrow": "04 · FABRIC ENGINEERING",
+    "headline": "자켓과 같은 <em>방염 성능</em>을, 180g으로.",
+    "image": "/products/njs-ar400/panel.jpg",
     "callouts": [
       {
         "tag": "A",
-        "title": "Upper Panel · 차콜",
-        "body": "어깨와 카라를 받치는 차콜 메타-아라미드 트윌."
+        "title": "Chambray Yoke",
+        "body": "어깨와 팔 부분은 짙은 체임브레이로 마감해 작업 마찰에 강합니다."
       },
       {
         "tag": "B",
-        "title": "Lower Panel · 라이트 그레이",
-        "body": "본체 패널 — 가벼운 라이트 그레이 우븐. 한여름에도 시원."
+        "title": "Grid Body Panel",
+        "body": "보디 패널은 가는 체크 그리드로 통기성과 시각적 가벼움을 확보."
       },
       {
         "tag": "C",
-        "title": "ARAMID Care Label",
-        "body": "오렌지 케어 라벨 — 메타-아라미드 65% 표시. 반복 세탁에도 유지."
+        "title": "Reflective Tape",
+        "body": "패널 전환부의 화이트 리플렉티브 테이프로 야간 시인성 확보."
       }
     ]
   },
   "features": {
-    "eyebrow": "WHY THIS SHIRT",
-    "headline": "현장에서 살아남는 <em>여섯</em> 가지 장치.",
+    "eyebrow": "03 · POCKET CONFIGURATION",
+    "headline": "현장의 <em>동선</em>대로.",
     "items": [
       {
         "n": "01",
-        "title": "검증된 아라미드 블렌드",
-        "body": "메타-아라미드 65% / FR 레이온 33% / 정전기 2%. 국내 시험기관 통과."
+        "title": "좌측 가슴 플랩 포켓",
+        "body": "펜 슬릿 2개 · 카드 슬릿 1개. 버튼 + 플랩 이중 잠금."
       },
       {
         "n": "02",
-        "title": "두 톤 패널 디자인",
-        "body": "차콜 + 라이트 그레이 컬러 블록. 셔츠 형태로 단정함 유지.",
+        "title": "우측 가슴 플랩 포켓",
+        "body": "아라미드 케어 라벨이 부착된 시그니처 포켓. 시작 작업 시 가장 자주 사용되는 위치.",
         "featured": true
       },
       {
         "n": "03",
-        "title": "가슴 트윈 리플렉티브",
-        "body": "3M Scotchlite™ 트윈 라인 + 'NJ SAFETY' 리플렉티브 텍스트."
+        "title": "팔뚝 슬릿 포켓",
+        "body": "오른팔 슬릿 포켓 + 오렌지 NJ SAFETY PVC 패치. 손이 닿기 쉬운 위치."
       },
       {
         "n": "04",
-        "title": "듀얼 플랩 포켓 + 소매 포켓",
-        "body": "가슴 2 + 소매 1. 공구·필기구·계측기 분리 수납."
-      },
-      {
-        "n": "05",
-        "title": "오렌지 러버 패치",
-        "body": "소매 'NJ SAFETY' 러버 태그. 멀리서도 시인성 확보."
-      },
-      {
-        "n": "06",
-        "title": "가벼운 180 g/m²",
-        "body": "기존 자켓 215g 대비 16% ↓. 한여름 일상 착용 가능."
+        "title": "내부 보안 포켓",
+        "body": "안쪽 가슴 영역. 영수증·소형 매뉴얼 등 비공개 휴대용."
       }
     ]
   },
   "spec": {
-    "eyebrow": "TECHNICAL SHEET",
-    "headline": "한 페이지에 담은 <em>스펙</em>.",
+    "eyebrow": "06 · TECHNICAL SHEET",
+    "headline": "세 묶음의 <em>사양</em>.",
     "rows": [
       {
-        "label": "원단 구성",
-        "value": "Meta-Aramid 65% / FR Rayon 33% / Antistatic 2%"
+        "label": "MODEL",
+        "value": "NJS-AR400"
       },
       {
-        "label": "조직",
-        "value": "Plain Weave · Two-Tone Panel"
-      },
-      {
-        "label": "평량",
+        "label": "WEIGHT",
         "value": "180 g/m²"
       },
       {
-        "label": "컬러",
-        "value": "Charcoal + Light Grey"
+        "label": "BLEND",
+        "value": "ARAMID 65.5%"
       },
       {
-        "label": "사이즈",
-        "value": "90 / 95 / 100 / 105 / 110"
+        "label": "SHIFT",
+        "value": "SUMMER '26"
+      },
+      {
+        "label": "COLOR",
+        "value": "STEEL CHAMBRAY"
+      },
+      {
+        "label": "POCKETS",
+        "value": "4 POSITIONS"
+      },
+      {
+        "label": "CERT.",
+        "value": "EN ISO 11612"
+      },
+      {
+        "label": "ORIGIN",
+        "value": "MADE IN KOREA"
+      },
+      {
+        "label": "지퍼",
+        "value": "단추 7구 · 매트 블랙"
+      },
+      {
+        "label": "반사 테이프",
+        "value": "3M Scotchlite™ 8910 · 25mm × 2"
       },
       {
         "label": "포켓",
-        "value": "3 EA · 가슴 듀얼 + 소매 1"
+        "value": "4 (체스트 2 · 슬리브 1 · 인너 1)"
       },
       {
-        "label": "리플렉티브",
-        "value": "3M Scotchlite™ · 가슴 트윈 라인"
+        "label": "봉제",
+        "value": "이중 박음 · 아라미드 봉사"
       },
       {
-        "label": "단추",
-        "value": "매트 블랙 · 폴리에스터"
+        "label": "방염",
+        "value": "EN ISO 11612 A1·B1·C1·F1"
       },
       {
-        "label": "원산지",
-        "value": "Made in Korea"
+        "label": "정전기",
+        "value": "EN 1149-5 · 0.2초 방전"
       },
       {
-        "label": "인증",
-        "value": "KC 안전인증 · EN ISO 11612"
+        "label": "난연성",
+        "value": "KS K 0585"
+      },
+      {
+        "label": "국내 인증",
+        "value": "KC—2026—AR400"
       }
     ],
     "sizeTable": {
       "unit": "cm",
       "headers": [
         "SIZE",
-        "총장",
+        "가슴",
         "어깨",
-        "소매"
+        "소매",
+        "총장"
       ],
       "rows": [
         [
           "90",
-          "64.7",
-          "45.7",
-          "55.9"
+          "55",
+          "47",
+          "61",
+          "72"
         ],
         [
           "95",
-          "66",
-          "47",
-          "57.2"
+          "58",
+          "49",
+          "62",
+          "74"
         ],
         [
           "100",
-          "67.3",
-          "49.5",
-          "58.5"
+          "61",
+          "51",
+          "63",
+          "76"
         ],
         [
           "105",
-          "68.6",
-          "52",
-          "59.8"
+          "64",
+          "53",
+          "64",
+          "78"
         ],
         [
           "110",
-          "70",
-          "54.5",
-          "61.1"
-        ],
-        [
-          "115",
-          "71.3",
-          "57",
-          "62.4"
-        ],
-        [
-          "120",
-          "72.6",
-          "59.5",
-          "63.7"
+          "67",
+          "55",
+          "65",
+          "80"
         ]
       ]
     }
   },
   "field": {
-    "eyebrow": "WHERE IT LIVES",
-    "headline": "전기·설비 작업자의 <em>여름 일상복</em>.",
+    "eyebrow": "05 · USE — SUMMER OPERATIONS",
+    "headline": "한여름, <em>땀이 마르기 전</em>의 작업.",
     "items": [
       {
         "n": "01",
-        "tag": "ELECTRICAL",
-        "title": "전기 점검",
-        "body": "배전반·변전소 정기 점검 — 정전기 차단과 단정한 외관을 동시에."
+        "tag": "ELECTRIC",
+        "title": "고압 변전소 점검",
+        "body": "땀에 절은 자켓 대신, 가볍게 입는 표준 하계 셔츠. 정전기 0.2초 방전."
       },
       {
         "n": "02",
-        "tag": "PLANT",
-        "title": "플랜트 외근",
-        "body": "스팀·발전 설비 외근에서 셔츠 한 장으로 단정함과 안전 모두."
+        "tag": "PETROCHEM",
+        "title": "정유 플랜트 보수",
+        "body": "여수·울산 단지의 여름 정기 보수. 셔츠 위에 안전 베스트 운용 시에도 통기성 확보."
       },
       {
         "n": "03",
-        "tag": "INSPECTION",
-        "title": "현장 검수",
-        "body": "공구·필기구·계측기를 3개의 플랩 포켓에 분리 수납."
-      },
-      {
-        "n": "04",
-        "tag": "SUMMER",
-        "title": "여름철 외근",
-        "body": "180g 가벼운 평량 — 한여름에도 셔츠 한 장으로 외근 가능."
+        "tag": "OFFICE-FIELD",
+        "title": "현장 사무 · 출장",
+        "body": "현장과 사무를 오가는 관리직. 단정한 카라 + 패널 디자인으로 두 환경 모두 자연스러움."
       }
     ]
   },
