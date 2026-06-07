@@ -3,12 +3,25 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getDictionary, isLocale, type Locale } from '@/lib/i18n';
 import { getAllProducts } from '@/lib/products';
+import type { Product } from '@/lib/products';
 import { getSiteResources, hasCatalogPdf } from '@/lib/site-resources';
+import ResourcesLibrary, { type ReportGroup } from '@/components/sections/resources/ResourcesLibrary';
 
 type Props = { params: Promise<{ locale: string }> | { locale: string } };
 
 function stripTags(s: string | undefined): string {
   return (s ?? '').replace(/<[^>]+>/g, '').trim();
+}
+
+/** Card image priority: shopHeader.images[0] → hero.image → first gallery. */
+function getProductImage(p: Product): string | undefined {
+  const shop = (p.shopHeader?.images ?? []).filter((s): s is string => !!s);
+  if (shop[0]) return shop[0];
+  if (p.hero?.image) return p.hero.image;
+  for (const it of p.gallery?.items ?? []) {
+    if (it.image) return it.image;
+  }
+  return undefined;
 }
 
 // formatBytes() removed alongside the inline test-reports list (2026-05) —
@@ -36,38 +49,24 @@ export default async function ResourcesPage({ params }: Props) {
   const catalogReady = hasCatalogPdf(site);
   const catalogUrl = site.catalog?.pdfUrl;
 
-  // Aggregate test reports across every product. We project the array into
-  // a flat list with the product name attached so the page can group by
-  // product without re-reading the JSONs.
-  type ReportRow = {
-    productSlug: string;
-    productName: string;
-    productModel?: string;
-    url: string;
-    name?: string;
-    size?: number;
-    uploadedAt?: string;
-  };
-  const reports: ReportRow[] = [];
-  for (const p of getAllProducts()) {
-    const files = p.testReports?.files ?? [];
-    for (const f of files) {
-      if (!f.url) continue;
-      reports.push({
-        productSlug: p.slug,
-        productName: stripTags(p.name) || p.slug,
-        productModel: p.model,
-        url: f.url,
-        name: f.name,
-        size: f.size,
-        uploadedAt: f.uploadedAt,
-      });
-    }
-  }
+  // Group test reports by product (only products with ≥1 report) so the
+  // library can render one photo card per product with its PDFs nested.
+  const reports: ReportGroup[] = getAllProducts()
+    .map((p) => ({
+      slug: p.slug,
+      name: stripTags(p.name) || p.slug,
+      model: p.model,
+      category: p.category,
+      image: getProductImage(p),
+      files: (p.testReports?.files ?? [])
+        .filter((f) => !!f.url)
+        .map((f) => ({ url: f.url as string, name: f.name, size: f.size, uploadedAt: f.uploadedAt })),
+    }))
+    .filter((row) => row.files.length > 0);
 
   return (
-    <section className="skeleton-page" style={{ paddingBottom: 120 }}>
-      <div className="wrap">
+    <section className="skeleton-page" style={{ paddingBottom: 120 }} id="catalog">
+      <div className="wrap" style={{ scrollMarginTop: 112 }}>
         <span className="eyebrow">{dict.resources.hero.eyebrow}</span>
         <h1>
           {dict.resources.hero.titlePre}
@@ -75,47 +74,27 @@ export default async function ResourcesPage({ params }: Props) {
         </h1>
         <p style={{ marginTop: 16, maxWidth: 760 }}>{dict.resources.sub}</p>
 
-        {/* Three top cards — Catalog / Size Guide / Test Reports overview.
-         * The wrapper carries id="catalog" so the nav-dropdown's
-         * "카탈로그 PDF" item lands here (the catalog card is the first
-         * of the three). scrollMarginTop offsets the sticky 112px nav. */}
-        <div
-          id="catalog"
-          style={{
-            marginTop: 56,
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: 16,
-            scrollMarginTop: 112,
+        {/* Unified library: full list by default, sub-tabs filter it
+         * (전체 / 카탈로그 / 시험성적서). Client component — owns the
+         * tab state; data is gathered here server-side. */}
+        <ResourcesLibrary
+          locale={loc}
+          catalog={{
+            ready: catalogReady,
+            url: catalogUrl,
+            title: dict.resources.catalog.title,
+            desc: dict.resources.catalog.desc,
+            downloadCta: dict.resources.catalog.downloadCta,
+            placeholder: dict.resources.catalog.placeholder,
+            size: site.catalog?.size,
+            uploadedAt: site.catalog?.uploadedAt,
           }}
-        >
-          {/* Catalog PDF card — live download when site-resources.json
-           * has a URL, dimmed placeholder otherwise. Admin uploads via
-           * /admin/resources. */}
-          <ResourceCard
-            title={dict.resources.catalog.title}
-            desc={dict.resources.catalog.desc}
-            cta={catalogReady ? dict.resources.catalog.downloadCta : dict.resources.catalog.placeholder}
-            href={catalogReady ? catalogUrl : undefined}
-            external={catalogReady}
-            disabled={!catalogReady}
-          />
-
-          {/* Size Guide card removed 2026-06 (per request). The
-           * /resources/size-guide route + dict.resources.sizeGuide
-           * entries remain dormant in case it's restored later. */}
-
-          <ResourceCard
-            title={dict.resources.testReports.title}
-            desc={dict.resources.testReports.desc}
-            cta={loc === 'ko' ? `↓ ${reports.length}건 보기` : `↓ ${reports.length} files`}
-            href={`/${loc}/resources/test-reports/`}
-          />
-        </div>
-
-        {/* Inline test-reports list removed 2026-05 — moved to its own
-         * route at /resources/test-reports so each entry can carry the
-         * product photo without making the hub page too tall. */}
+          reports={reports}
+          reportsEmpty={
+            dict.resources.testReports.empty ??
+            (loc === 'ko' ? '아직 등록된 시험성적서가 없습니다.' : 'No test reports yet.')
+          }
+        />
 
         <p style={{ marginTop: 80, color: 'var(--muted)', fontSize: 13 }}>
           ←{' '}
@@ -125,86 +104,5 @@ export default async function ResourcesPage({ params }: Props) {
         </p>
       </div>
     </section>
-  );
-}
-
-/* ───────────────────────────────────────────────────────────── */
-
-function ResourceCard({
-  title,
-  desc,
-  cta,
-  href,
-  disabled,
-  external,
-}: {
-  title: string;
-  desc: string;
-  cta: string;
-  href?: string;
-  disabled?: boolean;
-  /** R2-hosted PDF etc. — opens in a new tab and skips the
-   *  Next.js client router so the browser downloads it directly. */
-  external?: boolean;
-}) {
-  const body = (
-    <div
-      style={{
-        height: '100%',
-        padding: 24,
-        background: disabled ? 'rgba(255,255,255,.02)' : 'rgba(255,255,255,.04)',
-        border: '1px solid var(--border-soft)',
-        borderRadius: 14,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 12,
-        transition: 'border-color .15s, background .15s, transform .15s',
-        opacity: disabled ? 0.7 : 1,
-      }}
-    >
-      <h3 style={{ fontFamily: 'var(--display)', fontSize: 22, fontWeight: 800, margin: 0 }}>
-        {title}
-      </h3>
-      <p style={{ color: 'var(--muted)', fontSize: 14, lineHeight: 1.55, margin: 0, flex: 1 }}>{desc}</p>
-      <span
-        style={{
-          marginTop: 8,
-          color: disabled ? 'var(--muted)' : 'var(--accent)',
-          fontWeight: 700,
-          fontSize: 14,
-        }}
-      >
-        {cta}
-      </span>
-    </div>
-  );
-
-  if (disabled) {
-    return <div style={{ pointerEvents: 'none' }}>{body}</div>;
-  }
-  if (external && href) {
-    // Skip Next.js routing for R2-hosted PDFs — open in a new tab.
-    return (
-      <a
-        href={href}
-        target="_blank"
-        rel="noreferrer"
-        style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
-      >
-        {body}
-      </a>
-    );
-  }
-  if (href?.startsWith('#')) {
-    return (
-      <a href={href} style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
-        {body}
-      </a>
-    );
-  }
-  return (
-    <Link href={href ?? '#'} style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
-      {body}
-    </Link>
   );
 }

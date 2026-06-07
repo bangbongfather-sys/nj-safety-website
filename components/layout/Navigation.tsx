@@ -48,18 +48,17 @@ function getDropdownItems(
     }));
   }
   if (key === 'resources') {
-    // Catalog still lives as an anchored card on the hub page (one
-    // brand-level PDF doesn't warrant its own route). Test reports
-    // have their own page (the listing with product photos is too
-    // tall to sit under the catalog card on the hub).
-    // Size Guide item removed 2026-06 (per request).
+    // /resources is now a unified library with classification sub-tabs
+    // (전체 / 카탈로그 / 시험성적서). The dropdown deep-links to a tab
+    // via #catalog / #test-reports — ResourcesLibrary reads the hash on
+    // mount and selects that tab. Size Guide item removed 2026-06.
     return [
       {
         href: `${baseHref}#catalog`,
         label: locale === 'ko' ? '카탈로그 PDF' : 'Catalog PDF',
       },
       {
-        href: `/${locale}/resources/test-reports/`,
+        href: `${baseHref}#test-reports`,
         label: locale === 'ko' ? '시험성적서' : 'Test Reports',
       },
     ];
