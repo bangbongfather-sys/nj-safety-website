@@ -2,14 +2,24 @@
   "slug": "njs-ar301",
   "model": "NJS-AR301",
   "category": "ARAMID FR SERIES · STEADY No.01",
-  "name": "아라미드 <br><em>하계</em> <br>방염 자켓",
+  "name": "아라미드 하계 자켓",
   "subtitle": "전기·설비 현장의 여름을 책임지는 스테디 워크자켓",
   "tagline": "메타 아라미드 65.5%와 Lenzing FR 33.5%의 정직한 혼방. 12년간 같은 사양으로, 같은 현장을 지켜온 NJ Safety의 스테디 셀러.",
+  "flavor": "tactical",
   "hero": {
+    "image": "/products/njs-ar301/front.jpg",
     "imageAlt": "아라미드 하계 자켓 — 정면 멜란지 블루",
+    "tag": "FIG. 01 · STAND COLLAR FULL ZIP",
+    "corner": "MELANGE BLUE / NAVY",
+    "badges": [
+      {
+        "text": "EST. 2014 · STEADY SERIES · NJ SAFETY",
+        "position": "top-right"
+      }
+    ],
     "counters": [
       {
-        "value": "65",
+        "value": "65.5",
         "unit": "%",
         "label": "META ARAMID"
       },
@@ -23,34 +33,26 @@
         "unit": "%",
         "label": "ANTISTATIC"
       }
-    ],
-    "badges": [
-      {
-        "text": "ARAMID SUMMER JACKET",
-        "position": "bottom-right",
-        "style": "stamp"
-      }
-    ],
-    "image": "/api/images/njs-ar301-hero-image-1778376335618-e0f0025c41d0.png"
+    ]
   },
   "gallery": {
     "eyebrow": "PRODUCT VIEWS",
-    "headline": "12년간 같은 자리, <em>같은 사양 </em>으로.",
+    "headline": "12년간 같은 자리, <em>같은 사양</em>으로.",
     "note": "전국 120여 사업장 운용 · 누적 출고 8만 5천 벌 · 2014년 첫 출시 이후 동일 패턴 유지.",
     "items": [
       {
+        "image": "/products/njs-ar301/front.jpg",
         "tag": "FIG. 01 · FRONT",
-        "label": "정면",
+        "label": "정면 — 풀샷",
         "caption": "스탠드 카라 · 풀 집업 · 가슴 트윈 리플렉티브 라인.",
-        "span": "xl",
-        "image": "/api/images/njs-ar301-gallery-items-0-image-1778339913656-fa722bc8f98a.jpg"
+        "span": "xl"
       },
       {
+        "image": "/products/njs-ar301/back.jpg",
         "tag": "FIG. 02 · BACK",
-        "label": "후면",
+        "label": "후면 — 풀샷",
         "caption": "1줄 등판 리플렉티브 · 어드저스터블 사이드 탭.",
-        "span": "xl",
-        "image": "/api/images/njs-ar301-gallery-items-1-image-1778339951657-947e65ce73f9.jpg"
+        "span": "xl"
       },
       {
         "image": "/products/njs-ar301/chest-zip.jpg",
@@ -62,7 +64,7 @@
       {
         "image": "/products/njs-ar301/zip-detail.jpg",
         "tag": "FIG. 04 · ZIP",
-        "label": "메인 지퍼",
+        "label": "메인 지퍼 · YKK",
         "caption": "잠금 슬라이더의 정직한 매트 블랙 마감.",
         "span": "l"
       },
@@ -78,13 +80,6 @@
         "tag": "FIG. 06 · SLEEVE",
         "label": "소매 PVC 패치",
         "caption": "우측 상박, 멀리서도 식별되는 시그니처 라벨.",
-        "span": "tall"
-      },
-      {
-        "image": "/api/images/njs-ar301-gallery-7-1778339882916-c200a23dc541.jpg",
-        "tag": "",
-        "label": "",
-        "caption": "",
         "span": "tall"
       }
     ]
@@ -199,53 +194,52 @@
       "unit": "cm",
       "headers": [
         "SIZE",
-        "가슴",
+        "총장",
         "어깨",
-        "소매",
-        "총장"
+        "소매"
       ],
       "rows": [
         [
           "90",
-          "53",
-          "45",
-          "60",
-          "66"
+          "64.7",
+          "45.7",
+          "55.9"
         ],
         [
           "95",
-          "55",
+          "66",
           "47",
-          "61",
-          "68"
+          "57.2"
         ],
         [
           "100",
-          "57",
-          "49",
-          "62",
-          "70"
+          "67.3",
+          "49.5",
+          "58.5"
         ],
         [
           "105",
-          "59",
-          "51",
-          "63",
-          "72"
+          "68.6",
+          "52",
+          "59.8"
         ],
         [
           "110",
-          "61",
-          "53",
-          "64",
-          "74"
+          "70",
+          "54.5",
+          "61.1"
         ],
         [
           "115",
-          "63",
-          "55",
-          "65",
-          "76"
+          "71.3",
+          "57",
+          "62.4"
+        ],
+        [
+          "120",
+          "72.6",
+          "59.5",
+          "63.7"
         ]
       ]
     }
@@ -284,13 +278,13 @@
     "eyebrow": "KEEP IT SAFE",
     "items": [
       {
-        "icon": "40°",
-        "title": "40°C 일반 세탁",
-        "body": "중성세제 · 별도 드라이 불필요"
+        "icon": "세탁",
+        "title": "손세탁 권장",
+        "body": "세탁은 중성세제로 손세탁으로 하고 가볍게 털어서 응달에 건조."
       },
       {
         "icon": "✕",
-        "title": "표백제 금지",
+        "title": "표백제 및 건조기 금지",
         "body": "아라미드 섬유 손상 방지",
         "warn": true
       },
@@ -302,64 +296,84 @@
       {
         "icon": "≡",
         "title": "중간 온도 다림질",
-        "body": "최대 150°C · 라벨 직접 다림질 금지"
+        "body": "다림질은 울 종류나 면 종류의 온도로 가능."
       }
     ]
   },
   "certs": [
     {
-      "mark": "EN",
-      "title": "EN ISO 11612",
-      "sub": "내열·내염 성능",
+      "mark": "FR",
+      "title": "방염성 시험",
+      "sub": "시험성적서 -KS K 0585",
       "highlight": true
     },
     {
-      "mark": "AS",
-      "title": "EN 1149-5",
-      "sub": "정전기 방지 성능"
+      "mark": "UL",
+      "title": "UL 국제 인증",
+      "sub": "NFPA 2112"
     },
     {
-      "mark": "KC",
-      "title": "KC 안전인증",
-      "sub": "KC—2024—AR301"
+      "mark": "CF",
+      "title": "견뢰도 TEST",
+      "sub": "시험성적서 - KS K ISO 105, >4급"
     },
     {
-      "mark": "★",
-      "title": "현장 운용",
-      "sub": "12년 · 8만 5천 벌"
+      "mark": "DS",
+      "title": "치수 변화율",
+      "sub": "시험성적서 - KS K ISO 3759, 매우 우수"
     }
   ],
   "order": {
-    "headline": "12년간 함께해 온 사업장에는 <em>전담 매니저</em>가 배정됩니다.",
+    "headline": "공식 대리점에서 <br><span style=\"color: rgb(255, 255, 255);\">판매 안내 및 출고 </span>가능합니다.",
     "cells": [
       {
-        "label": "단체 / B2B",
-        "value": "50 EA 부터",
-        "body": "사업장 사이즈 분석, 자수·실크 가공, 분할 납품 가능."
-      },
-      {
-        "label": "샘플",
-        "value": "무상 제공",
-        "body": "법인 명의 신청 시 영업일 2일 내 발송."
+        "label": "서비스",
+        "value": "특정사이즈 및 수선 제작.",
+        "body": "*소형 및 대형 사이즈 제작, 소매길이 추가 가능."
       },
       {
         "label": "납기",
-        "value": "5—10일",
-        "body": "재고 보유 컬러·사이즈 기준 / 가공 시 +5일."
+        "value": "재고 확인 후 출고",
+        "body": "재고 보유 사이즈 기준 / 가공 시 +7일."
+      },
+      {
+        "label": "대리점",
+        "value": "전국 대리점 안내",
+        "body": "유선 및 메일 문의 시 안내."
       }
     ],
     "contact": [
       {
-        "label": "STEADY DESK",
-        "value": "02 — 0000 — 0001"
+        "label": "tel.",
+        "value": "02-777-3079"
       },
       {
-        "label": "EMAIL",
-        "value": "steady@njsafety.co.kr"
+        "label": "FAX.",
+        "value": "02-774-1841"
       },
       {
         "label": "WEB",
-        "value": "njsafety.co.kr/ar301"
+        "value": "www.njfashion.co.kr"
+      },
+      {
+        "label": "Email.",
+        "value": "njsafety91@naver.com"
+      }
+    ]
+  },
+  "shopHeader": {
+    "images": [
+      "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njs-ar301/card-main.jpg?v=1779118156217",
+      "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njs-ar301/card-hover.jpg?v=1779118444980"
+    ]
+  },
+  "testReports": {
+    "files": [
+      {
+        "url": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njs-ar301/reports/1779288091374-25-afp160996.pdf?v=1779288093083",
+        "name": "25년 하복 상의 자켓 데님블루(AFP160996)",
+        "size": 1549802,
+        "uploadedAt": "2026-05-20T14:41:33.083Z"
       }
     ]
   },
@@ -385,22 +399,5 @@
       "width": "137%",
       "align": "left"
     }
-  },
-  "flavor": "tactical",
-  "shopHeader": {
-    "images": [
-      "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njs-ar301/card-main.jpg?v=1779118156217",
-      "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njs-ar301/card-hover.jpg?v=1779118444980"
-    ]
-  },
-  "testReports": {
-    "files": [
-      {
-        "url": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njs-ar301/reports/1779288091374-25-afp160996.pdf?v=1779288093083",
-        "name": "25년 하복 상의 자켓 데님블루(AFP160996)",
-        "size": 1549802,
-        "uploadedAt": "2026-05-20T14:41:33.083Z"
-      }
-    ]
   }
 }

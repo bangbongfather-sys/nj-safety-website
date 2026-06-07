@@ -2,13 +2,15 @@
   "slug": "njs-aj100",
   "model": "NJS-AJ100",
   "category": "ARAMID FR SERIES · WINTER JACKET",
-  "name": "아라미드 <br><span style=\"color: rgb(198, 90, 30);\">방한</span> <br>솜점퍼",
+  "name": "아라미드 방한 자켓",
   "subtitle": "한겨울 외근의 보온과 안전, 그 둘을 한 벌에",
-  "tagline": "검증된 메타-아라미드 블렌드 + 체크 누빔 안감 + 니트 커프스 + 가슴 NJ SAFETY 리플렉티브. <br>영하의 점검 현장을 위한 NJ Safety의 동계 자켓.<br>외피점퍼 + 솜 내피조끼 1SET",
+  "tagline": "검증된 메타-아라미드 블렌드 + 체크 누빔 안감 + 니트 커프스 + 가슴 NJ SAFETY 리플렉티브. 영하의 점검 현장을 위한 NJ Safety의 동계 자켓.",
   "flavor": "tactical",
   "hero": {
-    "image": "/api/images/njs-aj100-hero-image-1779288803600-f0ea121e6f0c.png",
+    "image": "/products/njs-aj100/front.jpg",
     "imageAlt": "아라미드 방한 자켓 — 정면 풀샷 (스탠드 카라·가슴 트윈 리플렉티브·옐로우 지퍼 4개)",
+    "tag": "FIG. 00 · WINTER PROTECTIVE JACKET",
+    "corner": "CHARCOAL NAVY + CHAMBRAY ACCENT",
     "counters": [
       {
         "value": "65",
@@ -25,12 +27,6 @@
         "unit": "G/M²",
         "label": "WEIGHT"
       }
-    ],
-    "badges": [
-      {
-        "text": "FIG. 00 · WINTER aramid warm JACKET",
-        "position": "bottom-right"
-      }
     ]
   },
   "gallery": {
@@ -44,7 +40,7 @@
         "tag": "FIG. 01 · FRONT",
         "label": "정면 풀샷",
         "caption": "스탠드 카라 + 풀집 메인 지퍼 + 가슴 NJ SAFETY 리플렉티브 라인.",
-        "span": "l"
+        "span": "xl"
       },
       {
         "image": "/products/njs-aj100/rear.jpg",
@@ -52,14 +48,14 @@
         "tag": "FIG. 02 · REAR",
         "label": "후면 풀샷",
         "caption": "어깨 가로 리플렉티브 라인 + 팔 25mm 리플렉티브. 후면 시인성도 정면과 동등하게 확보.",
-        "span": "l"
+        "span": "xl"
       },
       {
-        "image": "/api/images/njs-aj100-gallery-items-2-image-1779288943630-3038d154fe80.jpg",
+        "image": "/products/njs-aj100/collar.jpg",
         "imageAlt": "스탠드 카라 — 안쪽 ARAMID 사이즈 라벨, 풀집 메인 지퍼",
-        "tag": "FIG. 03 · INNER VEST",
-        "label": "아라미드 내피 조끼",
-        "caption": "외피와 같이 구성해 보온력이 2배 - 단독으로 착용 가능.",
+        "tag": "FIG. 03 · COLLAR",
+        "label": "스탠드 카라",
+        "caption": "스탠드 카라와 안쪽 ARAMID 사이즈 라벨. 풀집 블랙 메인 지퍼.",
         "span": "tall"
       },
       {
@@ -68,7 +64,7 @@
         "tag": "FIG. 04 · CHEST DETAIL",
         "label": "가슴 디테일",
         "caption": "가슴 좌우 옐로우 지퍼 포켓 + 트윈 리플렉티브 + NJ SAFETY 워드마크.",
-        "span": "tall"
+        "span": "l"
       },
       {
         "image": "/products/njs-aj100/labels.jpg",
@@ -76,7 +72,7 @@
         "tag": "FIG. 05 · ARAMID + LENZING",
         "label": "이중 인증 라벨",
         "caption": "좌측 가슴 LENZING™ for Protective Wear 라벨 + ARAMID Flame Resistant 태그.",
-        "span": "tall"
+        "span": "l"
       },
       {
         "image": "/products/njs-aj100/side-pocket.jpg",
@@ -106,9 +102,9 @@
         "image": "/products/njs-aj100/cuff.jpg",
         "imageAlt": "손목 니트 커프 + 체크 누빔 안감 노출",
         "tag": "FIG. 09 · KNIT CUFF",
-        "label": "체크 누빔 + 시보리 니트 커프",
-        "caption": "손목 시보리 니트 마감 + 안감의 체크 패턴 누빔. 찬바람 차단과 보온 균형.",
-        "span": "l"
+        "label": "체크 누빔 + 니트 커프",
+        "caption": "손목 니트 마감 + 안감의 체크 패턴 누빔. 찬바람 차단과 보온 균형.",
+        "span": "tall"
       },
       {
         "image": "/products/njs-aj100/lining.jpg",
@@ -122,8 +118,8 @@
   },
   "statement": {
     "eyebrow": "ENGINEERED FOR WINTER",
-    "headline": "겨울 현장은 <em>보온과 안전</em>이 생명입니다.",
-    "body": "<blockquote data-path-to-node=\"8\"><p data-path-to-node=\"8,0\">영하의 새벽, 전기와 플랜트 점검 현장은 매 순간이 추위 및 위험과의 싸움입니다. 일반적인 두꺼운 패딩으로는 방염 성능과 정전기 차단까지 챙기기 어렵습니다.</p><p data-path-to-node=\"8,1\"><br></p><p data-path-to-node=\"8,1\">본 자켓은 검증된 메타-아라미드 65%와 Lenzing FR 35% 블렌드 외피를 사용해 작업자를 안전하게 보호합니다. 내부에는 체크 패턴 누빔 안감과 니트 커프스를 적용하여 찬 바람을 완벽히 차단하고 체온을 유지해 줍니다.</p></blockquote><ul data-path-to-node=\"9\"><li><p data-path-to-node=\"9,0,0\"></p></li></ul>",
+    "headline": "겨울 현장은 <em>보온</em>이 곧 안전입니다.",
+    "body": "전기·플랜트 점검은 영하의 새벽에도 멈추지 않습니다. 두꺼운 패딩만으로는 방염 등급도, 정전기 차단도 챙기지 못합니다. AJ100은 메타-아라미드 65%와 리오셀 FR 35%의 검증된 블렌드를 본체 원단에 그대로 가져왔습니다. 체크 패턴 누빔 안감과 니트 손목 마감으로 보온을 잡되, 가슴 트윈 리플렉티브와 5구의 지퍼 포켓은 한여름 자켓과 동일한 워크웨어 기능을 유지합니다. AJ100은 여름 라인(AV100·NJSSYYY)과 동일한 워크웨어 규격을 겨울 환경에 그대로 옮긴 자켓입니다.",
     "sign": "NJ SAFETY PRODUCT TEAM"
   },
   "material": {
@@ -144,7 +140,7 @@
       {
         "tag": "C",
         "title": "CHECK QUILTED LINING",
-        "body": "체크 패턴 누빔 안감 + 아라미드 솜 PAD 이중 구조. 영하 외근 가능한 보온층."
+        "body": "체크 패턴 누빔 안감 + 본체 이중 구조. 패딩 없이 영하 외근 가능한 보온층."
       }
     ]
   },
@@ -242,46 +238,52 @@
       "unit": "cm",
       "headers": [
         "SIZE",
-        "가슴",
+        "총장",
         "어깨",
-        "소매",
-        "총장"
+        "소매"
       ],
       "rows": [
         [
           "90",
-          "58",
-          "47",
-          "62",
-          "70"
+          "64.7",
+          "45.7",
+          "55.9"
         ],
         [
           "95",
-          "60",
-          "48",
-          "63",
-          "72"
+          "66",
+          "47",
+          "57.2"
         ],
         [
           "100",
-          "62",
-          "49",
-          "64",
-          "74"
+          "67.3",
+          "49.5",
+          "58.5"
         ],
         [
           "105",
-          "64",
-          "50",
-          "65",
-          "76"
+          "68.6",
+          "52",
+          "59.8"
         ],
         [
           "110",
-          "66",
-          "51",
-          "66",
-          "78"
+          "70",
+          "54.5",
+          "61.1"
+        ],
+        [
+          "115",
+          "71.3",
+          "57",
+          "62.4"
+        ],
+        [
+          "120",
+          "72.6",
+          "59.5",
+          "63.7"
         ]
       ]
     }
@@ -320,99 +322,88 @@
     "eyebrow": "KEEP IT SAFE",
     "items": [
       {
-        "icon": "40°",
-        "title": "40°C 일반 세탁",
-        "body": "중성세제 · 50회 반복 세탁 후 난연 잔존율 90% 이상."
+        "icon": "세탁",
+        "title": "손세탁 권장",
+        "body": "세탁은 중성세제로 손세탁으로 하고 가볍게 털어서 응달에 건조."
       },
       {
         "icon": "✕",
-        "title": "표백제 사용 금지",
-        "body": "아라미드 섬유 손상 — 난연 성능 영구 저하.",
+        "title": "표백제 및 건조기 금지",
+        "body": "아라미드 섬유 손상 방지",
         "warn": true
       },
       {
         "icon": "↓",
         "title": "저온 텀블 / 자연건조",
-        "body": "그늘 건조 권장. 안감 누빔 부위 완전 건조 확인."
+        "body": "그늘 건조 권장"
       },
       {
         "icon": "≡",
-        "title": "중간 온도 다림질 — 150°C",
-        "body": "리플렉티브 테이프 직접 다림질 금지."
-      },
-      {
-        "icon": "✕",
-        "title": "드라이클리닝 · 유기용제 금지",
-        "body": "정전기 방지 가공 손상 가능.",
-        "warn": true
+        "title": "중간 온도 다림질",
+        "body": "다림질은 울 종류나 면 종류의 온도로 가능."
       }
     ]
   },
   "certs": [
     {
-      "mark": "KC",
-      "title": "안전인증",
-      "sub": "발주 시 인증서 사본 송부"
-    },
-    {
       "mark": "FR",
-      "title": "EN ISO 11612 A1·B1·C1·F1",
-      "sub": "KOLAS 공인기관 시험성적서",
+      "title": "방염성 시험",
+      "sub": "시험성적서 -KS K 0585",
       "highlight": true
     },
     {
-      "mark": "AS",
-      "title": "EN 1149-5",
-      "sub": "정전기 — KTL 공인기관 시험성적서"
+      "mark": "UL",
+      "title": "UL 국제 인증",
+      "sub": "NFPA 2112"
     },
     {
-      "mark": "KS",
-      "title": "KS K 0585",
-      "sub": "난연성 시험 — 50회 세탁 후 잔존율 90%"
+      "mark": "CF",
+      "title": "견뢰도 TEST",
+      "sub": "시험성적서 - KS K ISO 105, >4급"
+    },
+    {
+      "mark": "DS",
+      "title": "치수 변화율",
+      "sub": "시험성적서 - KS K ISO 3759, 매우 우수"
     }
   ],
   "order": {
-    "headline": "공식 대리점에서 <em>판매 안내 및 출고</em> 가능합니다.",
+    "headline": "공식 대리점에서 <br><span style=\"color: rgb(255, 255, 255);\">판매 안내 및 출고 </span>가능합니다.",
     "cells": [
       {
-        "label": "단체 / B2B",
-        "value": "50 EA 부터",
-        "body": "사업장 사이즈 분석, 자수·실크 가공, 분할 납품 가능."
-      },
-      {
-        "label": "샘플",
-        "value": "무상 제공",
-        "body": "법인 명의 신청 시 영업일 2일 내 발송."
+        "label": "서비스",
+        "value": "특정사이즈 및 수선 제작.",
+        "body": "*소형 및 대형 사이즈 제작, 소매길이 추가 가능."
       },
       {
         "label": "납기",
-        "value": "5—10일",
-        "body": "재고 보유 컬러·사이즈 기준 / 가공 시 +5일."
+        "value": "재고 확인 후 출고",
+        "body": "재고 보유 사이즈 기준 / 가공 시 +7일."
+      },
+      {
+        "label": "대리점",
+        "value": "전국 대리점 안내",
+        "body": "유선 및 메일 문의 시 안내."
       }
     ],
     "contact": [
       {
-        "label": "TEL",
-        "value": "02—777—3079"
+        "label": "tel.",
+        "value": "02-777-3079"
       },
       {
-        "label": "FAX",
-        "value": "02—774—1841"
+        "label": "FAX.",
+        "value": "02-774-1841"
       },
       {
         "label": "WEB",
-        "value": "njfashion.co.kr"
+        "value": "www.njfashion.co.kr"
       },
       {
-        "label": "EMAIL",
+        "label": "Email.",
         "value": "njsafety91@naver.com"
       }
     ]
-  },
-  "styles": {
-    "tagline": {
-      "width": "91%"
-    }
   },
   "shopHeader": {
     "images": [
@@ -523,5 +514,10 @@
         "value": "02-777-3079"
       }
     ]
+  },
+  "styles": {
+    "tagline": {
+      "width": "91%"
+    }
   }
 }

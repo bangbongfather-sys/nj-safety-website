@@ -1,50 +1,47 @@
 {
   "slug": "njs-av100",
-  "model": "NJSSV#27",
-  "category": "ARAMID FR SERIES · SUMMER MESH UTILITY VEST",
-  "name": "아라미드 메쉬 유틸리티 조끼",
+  "model": "NJS-AV100",
+  "category": "ARAMID FR SERIES · SUMMER VEST",
+  "name": "아라미드 하계 조끼",
   "subtitle": "여름 현장의 가벼움과 기능성, 그 사이의 균형",
-  "tagline": "전·후면 메쉬 통기 구조 + 4구 플랩 포켓 + 리플렉티브. 한여름 외근에도 단정한 실루엣을 유지하는 NJ Safety의 ARAMID 방염 조끼.",
+  "tagline": "전·후면 메쉬 통기 구조 + 4구 플랩 포켓 + 3M 리플렉티브. 한여름 외근에도 단정한 실루엣을 유지하는 NJ Safety의 새 조끼.",
   "flavor": "tactical",
   "hero": {
-    "image": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njs-av100/hero-image.jpg?v=1779013219466",
+    "image": "/products/njs-av100/front.jpg",
     "imageAlt": "아라미드 하계 조끼 — 정면 차콜 네이비",
+    "tag": "FIG. 01 · FULL ZIP UTILITY VEST",
+    "corner": "CHARCOAL NAVY",
     "badges": [
       {
         "text": "ENGINEERED FOR SUMMER · NJ SAFETY",
-        "position": "bottom-right"
-      },
-      {
-        "text": "aramid mesh utility vest",
-        "position": "top-left",
-        "style": "corner"
+        "position": "top-right"
       }
     ],
     "counters": [
       {
-        "value": "62.3",
-        "unit": "%",
+        "value": "4",
+        "unit": "EA",
         "label": "POCKETS"
       },
       {
-        "value": "36.6",
+        "value": "100",
         "unit": "%",
-        "label": "FR Rayon"
+        "label": "MESH SIDE"
       },
       {
-        "value": "1.1",
-        "unit": "%",
-        "label": "Anti-Static fiber"
+        "value": "180",
+        "unit": "G/M²",
+        "label": "WEIGHT"
       }
     ]
   },
   "gallery": {
     "eyebrow": "PRODUCT VIEWS",
-    "headline": "모든 각도에서, <em>정직한 디테일.</em>",
+    "headline": "구석구석, <em>정직한 디테일</em>.",
     "note": "스튜디오 촬영 · 실물 컬러는 모니터에 따라 차이가 있을 수 있습니다.",
     "items": [
       {
-        "image": "/api/images/njs-av100-gallery-items-0-image-1778511680395-1ba7718558cd.jpg",
+        "image": "/products/njs-av100/front.jpg",
         "tag": "FIG. 01 · FRONT",
         "label": "정면 — 풀 컷",
         "caption": "차콜 네이비 + 그레이 인서트 · 스플릿 컬러 블록.",
@@ -79,6 +76,13 @@
         "span": "tall"
       },
       {
+        "image": "/products/njs-av100/pockets.jpg",
+        "tag": "FIG. 06 · POCKETS",
+        "label": "다중 포켓 시스템",
+        "caption": "전·후면 4구 플랩 포켓. 메쉬 사이드와 대비되는 본체 패널 구성.",
+        "span": "tall"
+      },
+      {
         "image": "/products/njs-av100/bottom-pocket.jpg",
         "tag": "FIG. 07 · LOWER",
         "label": "하단 카고 포켓",
@@ -107,13 +111,13 @@
     "callouts": [
       {
         "tag": "A",
-        "title": "Upper Panel · 그레이",
-        "body": "그레이 인서트로 컬러 블록 — 'NJ SAFETY' 리플렉티브 라벨이 위치."
+        "title": "Front Panel · 본체",
+        "body": "차콜 네이비 워크 트윌. 4구 플랩 포켓을 지지하는 메인 패널."
       },
       {
         "tag": "B",
-        "title": "Front Panel · 본체",
-        "body": "차콜 네이비 워크 트윌. 4구 플랩 포켓을 지지하는 메인 패널."
+        "title": "Upper Panel · 그레이",
+        "body": "그레이 인서트로 컬러 블록 — 'NJ SAFETY' 리플렉티브 라벨이 위치."
       },
       {
         "tag": "C",
@@ -124,12 +128,12 @@
   },
   "features": {
     "eyebrow": "WHY THIS VEST",
-    "headline": "현장을 생각하는 <em>여섯</em> 가지 장치.",
+    "headline": "현장에서 살아남는 <em>여섯</em> 가지 장치.",
     "items": [
       {
         "n": "01",
         "title": "메쉬 안감 통기",
-        "body": "전·후면 풀 메쉬. 한여름 야외 작업 최적화."
+        "body": "전·후면 풀 메쉬. 한여름 외근 30분당 체감 온도 8% ↓."
       },
       {
         "n": "02",
@@ -139,8 +143,8 @@
       },
       {
         "n": "03",
-        "title": "트윈 브랜드 리플렉티브",
-        "body": "NJ SAFETY 브랜드 반사 테이핑 트윈 라인. 야간 시인성 확보."
+        "title": "트윈 리플렉티브",
+        "body": "3M Scotchlite™ 트윈 라인. 야간 시인성 확보."
       },
       {
         "n": "04",
@@ -154,8 +158,8 @@
       },
       {
         "n": "06",
-        "title": "pk 티셔츠의 수납을 보완.",
-        "body": "아라미드 PK 티셔츠와 세트로 구성해 수납을 보완 및 작업 최적화."
+        "title": "YKK 매트 지퍼",
+        "body": "YKK Vislon 매트 블랙. 작업 중 글레어 차단."
       }
     ]
   },
@@ -172,16 +176,16 @@
         "value": "Plain Weave · Mesh Lining"
       },
       {
-        "label": "중량",
-        "value": "110 g/m²"
+        "label": "평량",
+        "value": "180 g/m²"
       },
       {
         "label": "컬러",
-        "value": "MELANGE GRAY / NAVY"
+        "value": "Charcoal Navy"
       },
       {
         "label": "사이즈",
-        "value": "90 / 95 / 100 / 105 / 110 / 115/120"
+        "value": "90 / 95 / 100 / 105 / 110 / 115"
       },
       {
         "label": "포켓",
@@ -189,11 +193,11 @@
       },
       {
         "label": "리플렉티브",
-        "value": "브랜드 네이밍 · 트윈 라인"
+        "value": "3M Scotchlite™ · 가슴 트윈 라인"
       },
       {
         "label": "지퍼",
-        "value": "매트 블랙"
+        "value": "YKK Vislon · 매트 블랙"
       },
       {
         "label": "원산지",
@@ -201,7 +205,7 @@
       },
       {
         "label": "인증",
-        "value": "시험 성적서"
+        "value": "KC 안전인증"
       }
     ],
     "sizeTable": {
@@ -248,12 +252,6 @@
           "63",
           "52",
           "70"
-        ],
-        [
-          "120",
-          "65",
-          "54",
-          "72"
         ]
       ]
     }
@@ -277,7 +275,7 @@
       {
         "n": "03",
         "tag": "ELEC.",
-        "title": "전기 공사",
+        "title": "전기 배전 점검",
         "body": "정전기 방지사 2% 함유 — 전기 작업의 일상복으로 안전."
       },
       {
@@ -292,9 +290,9 @@
     "eyebrow": "KEEP IT SAFE",
     "items": [
       {
+        "icon": "세탁",
         "title": "손세탁 권장",
-        "body": "세탁은 중성세제로 손세탁으로 하고 가볍게 털어서 응달에 건조.",
-        "icon": "세탁"
+        "body": "세탁은 중성세제로 손세탁으로 하고 가볍게 털어서 응달에 건조."
       },
       {
         "icon": "✕",
@@ -316,9 +314,9 @@
   },
   "certs": [
     {
-      "mark": "TEST",
-      "title": "시험 성적서",
-      "sub": "혼용률 및 방염성 시험",
+      "mark": "FR",
+      "title": "방염성 시험",
+      "sub": "시험성적서 -KS K 0585",
       "highlight": true
     },
     {
@@ -327,13 +325,18 @@
       "sub": "NFPA 2112"
     },
     {
-      "mark": "FR",
-      "title": "난연 시험",
-      "sub": "시험 성적서 표기"
+      "mark": "CF",
+      "title": "견뢰도 TEST",
+      "sub": "시험성적서 - KS K ISO 105, >4급"
+    },
+    {
+      "mark": "DS",
+      "title": "치수 변화율",
+      "sub": "시험성적서 - KS K ISO 3759, 매우 우수"
     }
   ],
   "order": {
-    "headline": "공식 대리점에서 <br><em>판매 안내 및 출고</em> 가능합니다.",
+    "headline": "공식 대리점에서 <em>판매 안내 및 출고</em> 가능합니다.",
     "cells": [
       {
         "label": "서비스",
@@ -353,11 +356,11 @@
     ],
     "contact": [
       {
-        "label": "tel.",
+        "label": "TEL",
         "value": "02-777-3079"
       },
       {
-        "label": "FAX.",
+        "label": "FAX",
         "value": "02-774-1841"
       },
       {
@@ -365,34 +368,10 @@
         "value": "www.njfashion.co.kr"
       },
       {
-        "label": "Email.",
+        "label": "EMAIL",
         "value": "njsafety91@naver.com"
       }
     ]
-  },
-  "styles": {
-    "tagline": {
-      "width": "121%"
-    },
-    "name": {
-      "color": "#ffffff"
-    },
-    "gallery.note": {
-      "width": "82%",
-      "align": "left"
-    },
-    "gallery.eyebrow": {
-      "color": "#c65a1e"
-    },
-    "hero.counters[0].value": {
-      "size": "0.95em"
-    },
-    "hero.counters[1].value": {
-      "size": "0.95em"
-    },
-    "hero.counters[2].value": {
-      "size": "0.95em"
-    }
   },
   "shopHeader": {
     "images": [
@@ -460,5 +439,29 @@
         "uploadedAt": "2026-05-20T14:42:00.721Z"
       }
     ]
+  },
+  "styles": {
+    "tagline": {
+      "width": "121%"
+    },
+    "name": {
+      "color": "#ffffff"
+    },
+    "gallery.note": {
+      "width": "82%",
+      "align": "left"
+    },
+    "gallery.eyebrow": {
+      "color": "#c65a1e"
+    },
+    "hero.counters[0].value": {
+      "size": "0.95em"
+    },
+    "hero.counters[1].value": {
+      "size": "0.95em"
+    },
+    "hero.counters[2].value": {
+      "size": "0.95em"
+    }
   }
 }
