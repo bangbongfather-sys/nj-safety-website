@@ -1,0 +1,351 @@
+{
+  "slug": "njssp",
+  "model": "NJSSP#YY",
+  "category": "ARAMID FR SERIES · SUMMER PANTS",
+  "name": "아라미드 하계 팬츠",
+  "subtitle": "한여름 현장을 위한 경량 통기 카고 워크 팬츠",
+  "tagline": "경량 통기 원단 + 카고 트윈 리플렉티브 + 사이드 밴딩 허리. 아라미드 난연 성능은 그대로, 한여름 현장의 더위를 덜어내는 NJ Safety 하계 팬츠.",
+  "flavor": "tactical",
+  "hero": {
+    "image": "/products/njssp/hero.jpg",
+    "imageAlt": "아라미드 하계 팬츠 — 모델 착용 컷",
+    "tag": "FIG. 01 · SUMMER CARGO PANTS",
+    "corner": "CHARCOAL NAVY",
+    "badges": [
+      {
+        "text": "ENGINEERED FOR SUMMER · NJ SAFETY",
+        "position": "top-right"
+      }
+    ],
+    "counters": [
+      {
+        "value": "62.9",
+        "unit": "%",
+        "label": "ARAMID"
+      },
+      {
+        "value": "35.5",
+        "unit": "%",
+        "label": "FR RAYON"
+      },
+      {
+        "value": "1.6",
+        "unit": "%",
+        "label": "ANTI-STATIC"
+      }
+    ]
+  },
+  "gallery": {
+    "eyebrow": "PRODUCT VIEWS",
+    "headline": "한여름에도 가벼운 <em>정직한 디테일</em>.",
+    "note": "스튜디오 촬영 · 실물 컬러는 모니터 환경에 따라 차이가 있을 수 있습니다.",
+    "items": [
+      {
+        "image": "/products/njssp/front.jpg",
+        "tag": "FIG. 01 · FRONT",
+        "label": "프론트 클로저",
+        "caption": "버튼 + 플리츠 프론트 + 벨트 루프 · 사이드 밴딩 허리 · 지퍼 플라이.",
+        "span": "xl"
+      },
+      {
+        "image": "/products/njssp/waist.jpg",
+        "tag": "FIG. 02 · WAIST",
+        "label": "밴딩 허리 + NJ 우븐 탭",
+        "caption": "양 사이드 신축 밴딩 + 벨트 루프. 시접의 'NJ SAFETY' 레드 우븐 탭.",
+        "span": "l"
+      },
+      {
+        "image": "/products/njssp/fabric.jpg",
+        "tag": "FIG. 03 · FABRIC",
+        "label": "경량 통기 원단",
+        "caption": "한여름용으로 얇고 가볍게 짠 아라미드 혼방. 손에 집힐 만큼 가벼운 두께.",
+        "span": "l"
+      }
+    ]
+  },
+  "statement": {
+    "eyebrow": "ENGINEERED FOR SUMMER",
+    "headline": "더운 현장일수록 <em>가벼움이 곧 안전</em>입니다.",
+    "body": "한여름 전기·설비·정비 현장에서는 더위와 땀이 곧 피로이고, 피로가 곧 집중력 저하입니다. NJSSP#YY는 아라미드 혼방을 한여름용으로 얇고 가볍게 짜, 난연·정전기 방지 성능은 유지하면서 무게와 열감을 덜어냅니다. 카고 플랩 포켓과 트윈 리플렉티브는 공구 수납과 야간 시인성을, 사이드 밴딩 허리와 플리츠 프론트는 땀이 차는 한여름에도 쪼그려 앉고 사다리를 오르는 동작까지 편하게 받아냅니다.",
+    "sign": "NJ SAFETY PRODUCT TEAM"
+  },
+  "material": {
+    "eyebrow": "FABRIC LAYOUT",
+    "headline": "<em>가볍게 짠 아라미드</em>가 만드는 한여름.",
+    "image": "/products/njssp/fabric.jpg",
+    "callouts": [
+      {
+        "tag": "A",
+        "title": "Aramid 62.9% · 본체",
+        "body": "메타-아라미드 주력 혼방. 한여름용 경량 조직으로 난연 성능은 그대로."
+      },
+      {
+        "tag": "B",
+        "title": "FR Rayon 35.5% · 통기",
+        "body": "FR 레이온으로 땀 흡수와 통기성을 높여 장시간 착용에도 쾌적한 촉감."
+      },
+      {
+        "tag": "C",
+        "title": "Anti-Static 1.6% · 정전기",
+        "body": "정전기 방지사 혼입. 전기·설비 작업 환경에서 스파크 위험을 낮춤."
+      }
+    ]
+  },
+  "features": {
+    "eyebrow": "WHY THESE PANTS",
+    "headline": "한여름 현장을 버티는 <em>여섯</em> 가지 장치.",
+    "items": [
+      {
+        "n": "01",
+        "title": "경량 통기 원단",
+        "body": "한여름용으로 얇고 가볍게 짠 아라미드 혼방. 더위와 무게를 동시에 덜어냄.",
+        "featured": true
+      },
+      {
+        "n": "02",
+        "title": "카고 플랩 포켓",
+        "body": "좌측 허벅지 플랩 포켓. 공구·계측기·장갑을 깊게 수납."
+      },
+      {
+        "n": "03",
+        "title": "트윈 리플렉티브",
+        "body": "카고 포켓의 2줄 리플렉티브 스트라이프. 야간·저조도 시인성 확보."
+      },
+      {
+        "n": "04",
+        "title": "사이드 밴딩 허리",
+        "body": "양 옆 신축 밴딩. 쪼그려 앉기·사다리 작업에도 허리 압박 없음."
+      },
+      {
+        "n": "05",
+        "title": "플리츠 프론트",
+        "body": "앞 주름 처리로 활동량을 확보하면서 단정한 실루엣 유지."
+      },
+      {
+        "n": "06",
+        "title": "지퍼 플라이 + 버튼",
+        "body": "YKK 지퍼 + 버튼 이중 클로저. 작업 중 풀림 방지."
+      }
+    ]
+  },
+  "spec": {
+    "eyebrow": "TECHNICAL SHEET",
+    "headline": "한 페이지에 담은 <em>스펙</em>.",
+    "rows": [
+      {
+        "label": "원단 구성",
+        "value": "Aramid 62.9% / FR Rayon 35.5% / Anti-Static 1.6%"
+      },
+      {
+        "label": "조직",
+        "value": "Ripstop · 하계 경량"
+      },
+      {
+        "label": "컬러",
+        "value": "Charcoal Navy"
+      },
+      {
+        "label": "허리",
+        "value": "사이드 밴딩 + 벨트 루프"
+      },
+      {
+        "label": "포켓",
+        "value": "카고 플랩 1 + 사이드 2 + 웰트 백 1"
+      },
+      {
+        "label": "리플렉티브",
+        "value": "카고 포켓 트윈 스트라이프"
+      },
+      {
+        "label": "지퍼",
+        "value": "YKK · 매트 블랙"
+      },
+      {
+        "label": "원산지",
+        "value": "Made in Korea"
+      },
+      {
+        "label": "인증",
+        "value": "KC 안전인증"
+      }
+    ],
+    "sizeTable": {
+      "unit": "in · cm",
+      "headers": [
+        "허리(in)",
+        "총장(cm)",
+        "허벅지단면(cm)",
+        "밑위(cm)",
+        "밑단(cm)"
+      ],
+      "rows": [
+        [
+          "28",
+          "96",
+          "30",
+          "25.6",
+          "20"
+        ],
+        [
+          "30",
+          "98",
+          "31",
+          "26.8",
+          "20.5"
+        ],
+        [
+          "32",
+          "100",
+          "32",
+          "28",
+          "21"
+        ],
+        [
+          "34",
+          "102",
+          "33",
+          "29.2",
+          "21.5"
+        ],
+        [
+          "36",
+          "104",
+          "34",
+          "30.4",
+          "22"
+        ],
+        [
+          "38",
+          "106",
+          "35",
+          "31.6",
+          "22.5"
+        ],
+        [
+          "40",
+          "108",
+          "36",
+          "32.8",
+          "23"
+        ]
+      ]
+    }
+  },
+  "field": {
+    "eyebrow": "WHERE IT LIVES",
+    "headline": "한여름 현장의 <em>하루</em>를 위해.",
+    "items": [
+      {
+        "n": "01",
+        "tag": "PLANT",
+        "title": "정유·화학 플랜트",
+        "body": "혹서기 옥외 정기 점검에서 난연 성능과 경량 통기를 동시에."
+      },
+      {
+        "n": "02",
+        "tag": "MAINT.",
+        "title": "기계 정비 현장",
+        "body": "카고 포켓에 계측기·공구를 분리 수납하는 한여름 회전체 정비 작업."
+      },
+      {
+        "n": "03",
+        "tag": "ELEC.",
+        "title": "전기 배전 점검",
+        "body": "정전기 방지사 1.6% 함유 — 여름 전기 작업의 경량 하의로 안전."
+      },
+      {
+        "n": "04",
+        "tag": "OUTDOOR",
+        "title": "옥외 외근",
+        "body": "한여름 야외 측정·검수 업무에서 가벼운 착용감과 트윈 리플렉티브로 시인성 확보."
+      }
+    ]
+  },
+  "care": {
+    "eyebrow": "KEEP IT SAFE",
+    "items": [
+      {
+        "icon": "세탁",
+        "title": "손세탁 권장",
+        "body": "세탁은 중성세제로 손세탁으로 하고 가볍게 털어서 응달에 건조."
+      },
+      {
+        "icon": "✕",
+        "title": "표백제 및 건조기 금지",
+        "body": "아라미드 섬유 손상 방지",
+        "warn": true
+      },
+      {
+        "icon": "↓",
+        "title": "저온 텀블 / 자연건조",
+        "body": "그늘 건조 권장"
+      },
+      {
+        "icon": "≡",
+        "title": "중간 온도 다림질",
+        "body": "다림질은 울 종류나 면 종류의 온도로 가능."
+      }
+    ]
+  },
+  "certs": [
+    {
+      "mark": "FR",
+      "title": "방염성 시험",
+      "sub": "시험성적서 -KS K 0585",
+      "highlight": true
+    },
+    {
+      "mark": "UL",
+      "title": "UL 국제 인증",
+      "sub": "NFPA 2112"
+    },
+    {
+      "mark": "CF",
+      "title": "견뢰도 TEST",
+      "sub": "시험성적서 - KS K ISO 105, >4급"
+    },
+    {
+      "mark": "DS",
+      "title": "치수 변화율",
+      "sub": "시험성적서 - KS K ISO 3759, 매우 우수"
+    }
+  ],
+  "order": {
+    "headline": "공식 대리점에서 <br><span style=\"color: rgb(255, 255, 255);\">판매 안내 및 출고 </span>가능합니다.",
+    "cells": [
+      {
+        "label": "서비스",
+        "value": "특정사이즈 및 수선 제작.",
+        "body": "*소형 및 대형 사이즈 제작, 소매길이 추가 가능."
+      },
+      {
+        "label": "납기",
+        "value": "재고 확인 후 출고",
+        "body": "재고 보유 사이즈 기준 / 가공 시 +7일."
+      },
+      {
+        "label": "대리점",
+        "value": "전국 대리점 안내",
+        "body": "유선 및 메일 문의 시 안내."
+      }
+    ],
+    "contact": [
+      {
+        "label": "tel.",
+        "value": "02-777-3079"
+      },
+      {
+        "label": "FAX.",
+        "value": "02-774-1841"
+      },
+      {
+        "label": "WEB",
+        "value": "www.njfashion.co.kr"
+      },
+      {
+        "label": "Email.",
+        "value": "njsafety91@naver.com"
+      }
+    ]
+  }
+}
