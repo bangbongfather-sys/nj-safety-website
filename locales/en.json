@@ -338,6 +338,13 @@
     },
     "products.featuredTitleEm": {
       "weight": "700"
+    },
+    "products.heroTitleEmAccent": {
+      "width": "100.0%",
+      "color": "#ffffff"
+    },
+    "products.heroTitleEm": {
+      "color": "#ff6b1a"
     }
   },
   "siteConfig": {
