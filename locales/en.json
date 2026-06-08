@@ -345,6 +345,9 @@
     },
     "products.heroTitleEm": {
       "color": "#ff6b1a"
+    },
+    "products.heroSub": {
+      "color": "#a1a1a6"
     }
   },
   "siteConfig": {
