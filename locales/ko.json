@@ -106,7 +106,7 @@
     "heroTitlePre": "ARAMID",
     "heroTitleEm": "WORKWEAR ",
     "heroTitleEmAccent": "COLLECTION",
-    "heroSub": "시즌마다 검증된 인증, 현장 데이터로 보정된 패턴, 그리고 변하지 않은 단정함.",
+    "heroSub": "<p style=\"font-style: normal; font-variant-caps: normal; font-width: normal; line-height: normal; font-family: &quot;Times New Roman&quot;; font-size-adjust: none; font-kerning: auto; font-variant-alternates: normal; font-variant-ligatures: normal; font-variant-numeric: normal; font-variant-east-asian: normal; font-variant-position: normal; font-feature-settings: normal; font-optical-sizing: auto; font-variation-settings: normal; -webkit-text-stroke-width: 0px; -webkit-text-stroke-color: rgb(255, 255, 255);\"><span style=\"font-family: TimesNewRomanPS-BoldMT; font-weight: bold; font-kerning: none;\">검증된 인증과 현장 데이터로 완성한 패턴, 어떤 순간에도 변하지 않는 방염성</span></p>",
     "statsLabel": [
       "Products",
       "Seasons",
@@ -345,6 +345,9 @@
     },
     "products.heroTitleEm": {
       "color": "#ff6b1a"
+    },
+    "products.heroSub": {
+      "color": "#a1a1a6"
     }
   },
   "siteConfig": {
