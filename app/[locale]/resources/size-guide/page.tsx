@@ -142,7 +142,14 @@ export default async function SizeGuidePage({ params }: Props) {
                     </Link>
                   </div>
 
-                  <div style={{ marginTop: 12, overflowX: 'auto' }}>
+                  <div
+                    style={{
+                      marginTop: 12,
+                      maxWidth: '100%',
+                      overflowX: 'auto',
+                      WebkitOverflowScrolling: 'touch',
+                    }}
+                  >
                     <table
                       style={{
                         width: '100%',

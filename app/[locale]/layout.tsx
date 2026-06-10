@@ -20,9 +20,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const resolved = await params;
   if (!isLocale(resolved.locale)) return {};
   const dict = getDictionary(resolved.locale);
+  const localePath = `/${resolved.locale}`;
   return {
     title: dict.meta.title,
     description: dict.meta.description,
+    alternates: {
+      canonical: localePath,
+      languages: {
+        ko: '/ko',
+        en: '/en',
+        'x-default': '/ko',
+      },
+    },
+    openGraph: {
+      title: dict.meta.title,
+      description: dict.meta.description,
+      url: localePath,
+      locale: resolved.locale === 'ko' ? 'ko_KR' : 'en_US',
+      type: 'website',
+    },
   };
 }
 

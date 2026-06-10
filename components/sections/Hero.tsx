@@ -165,7 +165,7 @@ export default function Hero({ locale, dict, editor }: Props) {
                 <Link
                   href={slideLink}
                   className="hero-bg-link"
-                  aria-label={s.headlineLine1 || s.eyebrow || '슬라이드 상세 페이지로 이동'}
+                  aria-label={s.headlineLine1 || s.eyebrow || (hero as { slideLinkAria?: string }).slideLinkAria || ''}
                 >
                   {inner}
                 </Link>
@@ -185,7 +185,8 @@ export default function Hero({ locale, dict, editor }: Props) {
        * panned into view; this pill nudges the visitor to swipe, then
        * auto-fades after a few seconds. */}
       <div className="hero-scroll-hint" aria-hidden="true">
-        <span className="hsh-arrows">↔</span> 좌우로 밀어 전체 사진 보기
+        <span className="hsh-arrows">↔</span>{' '}
+        {(hero as { swipeHint?: string }).swipeHint ?? ''}
       </div>
 
       {/*
@@ -241,7 +242,7 @@ export default function Hero({ locale, dict, editor }: Props) {
             type="button"
             className="hero-nav-arrow hero-nav-prev"
             onClick={goPrev}
-            aria-label="이전 슬라이드"
+            aria-label={(hero as { prevSlideAria?: string }).prevSlideAria ?? ''}
           >
             ‹
           </button>
@@ -249,22 +250,30 @@ export default function Hero({ locale, dict, editor }: Props) {
             type="button"
             className="hero-nav-arrow hero-nav-next"
             onClick={goNext}
-            aria-label="다음 슬라이드"
+            aria-label={(hero as { nextSlideAria?: string }).nextSlideAria ?? ''}
           >
             ›
           </button>
-          <div className="hero-dots" role="tablist" aria-label="히어로 슬라이드">
-            {slides.map((_, i) => (
-              <button
-                key={i}
-                type="button"
-                role="tab"
-                aria-selected={i === idx}
-                aria-label={`슬라이드 ${i + 1}`}
-                className={`hero-dot${i === idx ? ' is-on' : ''}`}
-                onClick={() => setCurrent(i)}
-              />
-            ))}
+          <div
+            className="hero-dots"
+            role="tablist"
+            aria-label={(hero as { slideListAria?: string }).slideListAria ?? ''}
+          >
+            {slides.map((_, i) => {
+              const tmpl = (hero as { slideAria?: string }).slideAria ?? '';
+              const label = tmpl.replace('{n}', String(i + 1));
+              return (
+                <button
+                  key={i}
+                  type="button"
+                  role="tab"
+                  aria-selected={i === idx}
+                  aria-label={label}
+                  className={`hero-dot${i === idx ? ' is-on' : ''}`}
+                  onClick={() => setCurrent(i)}
+                />
+              );
+            })}
           </div>
         </>
       ) : null}

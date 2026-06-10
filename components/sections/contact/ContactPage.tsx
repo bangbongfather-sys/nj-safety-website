@@ -299,14 +299,12 @@ function ContactForm({
                   <EditableText as="span" path="contact.form.labels.industry" value={f.labels?.industry ?? ''} editor={editor} />
                 </label>
                 <select id="industry" name="industry" defaultValue="">
-                  <option value="">선택해 주세요</option>
-                  <option>전력·발전 (Power)</option>
-                  <option>전기 공사 (Electrical)</option>
-                  <option>정유·석유화학 (Petrochem)</option>
-                  <option>에너지·가스 (Energy)</option>
-                  <option>건설·플랜트</option>
-                  <option>공공기관·군경</option>
-                  <option>기타</option>
+                  <option value="">
+                    {(f as { selectPlaceholder?: string }).selectPlaceholder ?? ''}
+                  </option>
+                  {((f as { industryOptions?: string[] }).industryOptions ?? []).map((opt) => (
+                    <option key={opt}>{opt}</option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -350,13 +348,12 @@ function ContactForm({
                   <EditableText as="span" path="contact.form.labels.quantityRange" value={f.labels?.quantityRange ?? ''} editor={editor} />
                 </label>
                 <select id="quantity_range" name="quantity_range" defaultValue="">
-                  <option value="">선택해 주세요</option>
-                  <option>1~49 벌 (소량)</option>
-                  <option>50~199 벌</option>
-                  <option>200~499 벌</option>
-                  <option>500~999 벌</option>
-                  <option>1,000 벌 이상</option>
-                  <option>미정</option>
+                  <option value="">
+                    {(f as { selectPlaceholder?: string }).selectPlaceholder ?? ''}
+                  </option>
+                  {((f as { quantityOptions?: string[] }).quantityOptions ?? []).map((opt) => (
+                    <option key={opt}>{opt}</option>
+                  ))}
                 </select>
               </div>
               <div className="ct-field">

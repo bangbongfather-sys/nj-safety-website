@@ -24,6 +24,12 @@
     "scroll": "Scroll to explore",
     "locatorName": "NJ SAFETY",
     "locatorSub": "ARAMID WORKWEAR ·",
+    "swipeHint": "Swipe to pan the full photo",
+    "prevSlideAria": "Previous slide",
+    "nextSlideAria": "Next slide",
+    "slideAria": "Slide {n}",
+    "slideListAria": "Hero slides",
+    "slideLinkAria": "Open slide detail page",
     "slides": [
       {
         "image": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/hero/slide-01.jpg?v=1779116571353",
@@ -739,7 +745,25 @@
       "submitNote": "— We reply within one business day",
       "submitButton": "Submit enquiry",
       "submitting": "Sending...",
-      "toastOk": "✓ Enquiry received. We will reply within one business day."
+      "toastOk": "✓ Enquiry received. We will reply within one business day.",
+      "selectPlaceholder": "Please select",
+      "industryOptions": [
+        "Power / Generation",
+        "Electrical contracting",
+        "Petrochemical / Refining",
+        "Energy / Gas",
+        "Construction / Plant",
+        "Public sector / Military / Police",
+        "Other"
+      ],
+      "quantityOptions": [
+        "1–49 units (small)",
+        "50–199 units",
+        "200–499 units",
+        "500–999 units",
+        "1,000+ units",
+        "Undecided"
+      ]
     },
     "sidebar": {
       "directLabel": "— Direct Line / B2B Desk",

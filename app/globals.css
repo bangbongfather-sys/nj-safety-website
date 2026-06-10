@@ -393,6 +393,10 @@ p { line-height: 1.65; }
   color: #fff;
   max-width: 1100px;
   text-wrap: balance;
+  /* Korean words must not split mid-word (audit M5 — '이상의' splitting
+   * between lines on both desktop and mobile). */
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 .hero-headline .line { display: block; overflow: visible; padding: 2px 0; }
 .hero-headline em { font-style: normal; color: var(--accent); }
@@ -883,10 +887,13 @@ section { position: relative; }
 }
 .certs-inner {
   display: grid;
-  grid-template-columns: 5fr 7fr;
+  /* minmax(0, …) so the right-hand aspect-ratio cards never push the grid
+   * past the viewport (audit M2 — desktop 1440 overflow of 116px). */
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
   gap: 80px;
   align-items: start;
 }
+.certs-grid { min-width: 0; }
 .certs .lead .eyebrow { margin-bottom: 24px; display: block; }
 .certs .lead h2 {
   font-size: clamp(40px, 4.6vw, 68px);
@@ -3654,10 +3661,12 @@ section { position: relative; }
     top: calc(var(--hmb) - 34px);
     bottom: auto;
   }
-  /* Swipe affordance — shown over the banner, auto-fades after a few s. */
+  /* Swipe affordance — shown above the dots (audit M6: the two were
+   * landing on the same row and the hint's prefix was being covered by
+   * the dot pill on first paint). Auto-fades after a few seconds. */
   .hero-scroll-hint {
     display: inline-flex;
-    top: calc(var(--hmb) - 44px);
+    top: calc(var(--hmb) - 76px);
   }
 }
 
