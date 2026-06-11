@@ -1183,7 +1183,11 @@ section { position: relative; }
 /* ---------- Footer ---------- */
 .footer {
   background: var(--bg-3);
-  padding: 100px 0 32px;
+  /* Generous top padding so the columns sit well below the divider
+   * line instead of crowding it — the footer reads as its own calm
+   * band rather than butting straight into the rule above. Bottom
+   * bumped a touch too so the copyright bar isn't cramped. */
+  padding: 152px 0 44px;
   color: var(--muted);
   border-top: 1px solid var(--border-soft);
 }
