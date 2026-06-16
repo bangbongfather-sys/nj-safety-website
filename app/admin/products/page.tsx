@@ -29,6 +29,26 @@ function stripTags(s: string | undefined): string {
   return (s ?? '').replace(/<[^>]+>/g, '').trim();
 }
 
+// Fields the website owns that a fresh catalog export never carries —
+// admin-uploaded shop photos, the 기본정보 table, test-report PDFs, and
+// per-field style overrides. A "replace JSON" must keep these or the
+// operator loses real work. Mirrors the catalog-sync preservation set
+// (+ flavor, which the operator standardises per-site, not per-export).
+const PRESERVE_ON_REPLACE = ['shopHeader', 'basicInfo', 'testReports', 'styles', 'flavor'] as const;
+const VALID_FLAVORS = new Set(['industrial', 'flagship', 'tactical']);
+
+/** Light validation for an incoming replacement JSON. Slug is NOT
+ *  required to match — the caller forces the existing slug — but the
+ *  file must at least look like a product page. */
+function validateIncomingProduct(text: string): ProductPageData {
+  const obj = JSON.parse(text);
+  if (!obj || typeof obj !== 'object') throw new Error('JSON 최상위가 객체가 아닙니다');
+  if (!obj.name || typeof obj.name !== 'string') throw new Error('`name` 필드가 없거나 문자열이 아닙니다');
+  const hasContent = obj.hero || obj.spec || obj.gallery || obj.material || obj.features || obj.order;
+  if (!hasContent) throw new Error('제품 콘텐츠(hero/spec/gallery 등)가 없습니다 — 잘못된 파일일 수 있어요');
+  return obj as ProductPageData;
+}
+
 function rewriteImage(src: string | undefined): string | undefined {
   if (!src) return undefined;
   if (/^https?:\/\//i.test(src)) return src;
@@ -119,6 +139,10 @@ export default function ProductsListPage() {
   const [busy, setBusy] = useState<string | null>(null);
   /** Per-row upload status: `${slug}:${slot}` */
   const [uploading, setUploading] = useState<Set<string>>(new Set());
+  /** Slugs whose JSON is mid-replace. */
+  const [replacing, setReplacing] = useState<Set<string>>(new Set());
+  /** Transient "교체 완료" note per slug. */
+  const [replaced, setReplaced] = useState<string | null>(null);
 
   const reload = useCallback(async () => {
     if (!pat) return;
@@ -179,6 +203,83 @@ export default function ProductsListPage() {
       setErr(e instanceof Error ? e.message : String(e));
     } finally {
       setBusy(null);
+    }
+  }, [pat, reload]);
+
+  // Replace an existing product's JSON file with a freshly-exported
+  // catalog JSON, while PRESERVING the website-only fields the admin
+  // added (shop photos / 기본정보 / test reports / styles / flavor) and
+  // keeping the existing slug + URL stable. This is the "re-import the
+  // updated catalog page without losing my admin work" path — the same
+  // merge the catalog-sync agent does, but one product at a time from
+  // the UI.
+  const handleReplaceJson = useCallback(async (row: ProductRow, file: File) => {
+    if (!pat) return;
+    setErr(null);
+    if (!file.name.toLowerCase().endsWith('.json')) {
+      setErr(`"${file.name}" 은 JSON 파일이 아닙니다 (.json 필요)`);
+      return;
+    }
+    let incoming: ProductPageData;
+    try {
+      incoming = validateIncomingProduct(await file.text());
+    } catch (e: unknown) {
+      setErr(`JSON 파싱 실패: ${e instanceof Error ? e.message : String(e)}`);
+      return;
+    }
+    const incomingSlug = typeof incoming.slug === 'string' ? incoming.slug : '(없음)';
+    const slugMismatch = incomingSlug !== row.slug;
+    const ok = window.confirm(
+      `"${row.name}" (${row.slug}) 의 JSON을 교체합니다.\n\n` +
+      `· 업로드 파일 slug: ${incomingSlug}` +
+      (slugMismatch ? `  ⚠️ 현재 슬러그와 다름 → 현재 슬러그(${row.slug}) 유지` : ' ✓') + `\n` +
+      `· 보존(유지): 카드/상세 사진 · 시험성적서 · 스타일 · flavor\n` +
+      `· 갱신(덮어씀): 이름 · 스펙 · 소재 · 갤러리 등 나머지 콘텐츠 전체\n\n` +
+      `진행할까요?`,
+    );
+    if (!ok) return;
+
+    setReplacing((s) => new Set(s).add(row.slug));
+    try {
+      // Fetch the CURRENT file fresh (admin may have edited since mount)
+      // so we preserve the latest web-only fields and PUT with a live SHA.
+      const fresh = await ghGetFile(pat, `data/products/${row.slug}.json`);
+      if (!fresh) throw new Error(`data/products/${row.slug}.json 가 사라졌습니다`);
+      const existing = JSON.parse(fresh.content) as Record<string, unknown>;
+
+      // Start from the incoming catalog content, force the stable slug,
+      // strip the catalog-only docBar, then graft the preserved fields
+      // back from the existing file.
+      const merged: Record<string, unknown> = { ...(incoming as Record<string, unknown>), slug: row.slug };
+      delete merged.docBar;
+      for (const k of PRESERVE_ON_REPLACE) {
+        if (k in existing) merged[k] = existing[k];
+        else delete merged[k];
+      }
+      // Map any unsupported flavor (e.g. fieldmanual) onto a supported one.
+      if (typeof merged.flavor === 'string' && !VALID_FLAVORS.has(merged.flavor)) {
+        merged.flavor = 'tactical';
+      }
+
+      const content = JSON.stringify(merged, null, 2) + '\n';
+      await ghPutFile(
+        pat,
+        `data/products/${row.slug}.json`,
+        content,
+        `chore(products): replace ${row.slug} json (web-only fields preserved)`,
+        fresh.sha,
+      );
+      setReplaced(row.slug);
+      setTimeout(() => setReplaced((cur) => (cur === row.slug ? null : cur)), 6000);
+      await reload();
+    } catch (e: unknown) {
+      setErr(e instanceof Error ? e.message : String(e));
+    } finally {
+      setReplacing((s) => {
+        const n = new Set(s);
+        n.delete(row.slug);
+        return n;
+      });
     }
   }, [pat, reload]);
 
@@ -275,8 +376,9 @@ export default function ProductsListPage() {
         <h1>제품 <em>관리</em></h1>
         <p>
           <code>data/products/*.json</code>에 등록된 제품들입니다. 각 카드에서
-          <strong> 메인 / 호버 사진</strong>을 바로 업로드할 수 있어요. 사이트 리스트
-          페이지에 즉시 반영됩니다.
+          <strong> 메인 / 호버 사진</strong>을 바로 업로드하거나,
+          <strong> 🔁 JSON 교체</strong>로 catalog에서 다시 export한 JSON으로 콘텐츠를
+          갈아끼울 수 있어요 (사진·시험성적서·스타일·flavor는 보존). 사이트에 ~1~2분 후 반영됩니다.
         </p>
         <div style={{ marginTop: 18, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
           <Link href="/admin/products/upload" className="btn primary">
@@ -357,6 +459,10 @@ export default function ProductsListPage() {
                   >
                     JSON
                   </a>
+                  <ReplaceJsonButton
+                    busy={replacing.has(row.slug)}
+                    onPick={(file) => void handleReplaceJson(row, file)}
+                  />
                   <button
                     type="button"
                     className="btn danger small"
@@ -366,6 +472,11 @@ export default function ProductsListPage() {
                     {busy === row.slug ? '삭제 중...' : '삭제'}
                   </button>
                 </div>
+                {replaced === row.slug ? (
+                  <p className="admin-meta admin-ok" style={{ marginTop: 10 }}>
+                    ✓ JSON 교체 완료 — 웹 전용 데이터(사진·시험성적서·스타일) 보존됨. ~1~2분 후 반영.
+                  </p>
+                ) : null}
               </div>
             </div>
           ))}
@@ -376,6 +487,46 @@ export default function ProductsListPage() {
 }
 
 /* ───────────────────────────────────────────────────────────── */
+
+/**
+ * "🔁 JSON 교체" button with its own hidden file input + drag target,
+ * so the operator can either click to pick or drop a .json straight
+ * onto the button. Self-contained so each product card gets an
+ * independent picker.
+ */
+function ReplaceJsonButton({
+  busy,
+  onPick,
+}: {
+  busy: boolean;
+  onPick: (file: File) => void;
+}) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  return (
+    <DropTarget onFile={onPick} accept={['.json', 'application/json']} disabled={busy} style={{ borderRadius: 6 }}>
+      <button
+        type="button"
+        className="btn ghost small"
+        disabled={busy}
+        onClick={() => inputRef.current?.click()}
+        title="새 catalog JSON으로 이 제품 콘텐츠 교체 (사진·시험성적서·스타일은 보존)"
+      >
+        {busy ? '교체 중...' : '🔁 JSON 교체'}
+      </button>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="application/json,.json"
+        style={{ display: 'none' }}
+        onChange={(e) => {
+          const f = e.target.files?.[0];
+          e.target.value = '';
+          if (f) onPick(f);
+        }}
+      />
+    </DropTarget>
+  );
+}
 
 function CardSlot({
   label,
