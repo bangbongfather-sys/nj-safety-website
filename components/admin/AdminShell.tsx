@@ -5,6 +5,8 @@ import { usePathname } from 'next/navigation';
 import { AdminProvider, useAdmin } from './AdminContext';
 import PatLoginForm from './PatLoginForm';
 import Sidebar from './Sidebar';
+import OfflineBar from './OfflineBar';
+import SwRegistrar from './SwRegistrar';
 
 function Gate({ children }: { children: ReactNode }) {
   const { state } = useAdmin();
@@ -32,12 +34,20 @@ function Gate({ children }: { children: ReactNode }) {
     return <PatLoginForm />;
   }
 
-  if (isFullBleed) return <>{children}</>;
+  if (isFullBleed) {
+    return (
+      <>
+        {children}
+        <OfflineBar />
+      </>
+    );
+  }
 
   return (
     <div className="admin-app">
       <Sidebar />
       <main className="admin-main">{children}</main>
+      <OfflineBar />
     </div>
   );
 }
@@ -45,6 +55,7 @@ function Gate({ children }: { children: ReactNode }) {
 export default function AdminShell({ children }: { children: ReactNode }) {
   return (
     <AdminProvider>
+      <SwRegistrar />
       <Gate>{children}</Gate>
     </AdminProvider>
   );
