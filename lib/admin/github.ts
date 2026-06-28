@@ -13,6 +13,9 @@ import {
   dropCachedFile,
   enqueueWrite,
   isNetworkError,
+  isOffline,
+  getWarmedAt,
+  setWarmedAt,
   flushQueue as flushOfflineQueue,
   type FlushResult,
 } from './offline';
@@ -318,6 +321,64 @@ export async function ghListDir(pat: string, dirPath: string): Promise<string[]>
     .map((e: { path: string }) => e.path);
   cacheFile(cacheKey, JSON.stringify(files), 'dir');
   return files;
+}
+
+// Repo-relative files the admin can edit. Everything here is fetched +
+// cached up front by warmOfflineCache so EVERY editor — not just ones the
+// user happened to open online — works in airplane mode. Product JSONs are
+// discovered dynamically (the folder grows), the rest are fixed singletons.
+const WARM_STATIC_FILES = [
+  'locales/ko.json',
+  'locales/en.json',
+  'data/notices.json',
+  'data/product-categories.json',
+  'data/site-resources.json',
+  'data/dealers.json',
+];
+const WARM_PRODUCTS_DIR = 'data/products';
+
+// Re-warm at most this often per browser (cheap GETs, but no reason to
+// hammer GitHub on every admin navigation).
+const WARM_THROTTLE_MS = 5 * 60_000;
+
+export type WarmResult = { warmed: number; failed: number; skipped?: true };
+
+/**
+ * Proactively pull every editable file into the offline cache while online,
+ * so the editors load in airplane mode regardless of which ones were opened
+ * before. Safe to call on every admin mount — it self-throttles and no-ops
+ * when offline. `force: true` ignores the throttle (used by 지금 동기화).
+ */
+export async function warmOfflineCache(
+  pat: string,
+  opts?: { force?: boolean },
+): Promise<WarmResult> {
+  if (isOffline()) return { warmed: 0, failed: 0, skipped: true };
+  if (!opts?.force && Date.now() - getWarmedAt() < WARM_THROTTLE_MS) {
+    return { warmed: 0, failed: 0, skipped: true };
+  }
+
+  let productFiles: string[] = [];
+  try {
+    productFiles = await ghListDir(pat, WARM_PRODUCTS_DIR);
+  } catch {
+    // Listing failed (offline mid-warm / transient) — fall back to whatever
+    // product files we already have cached so we still refresh those.
+    productFiles = [];
+  }
+  const allFiles = Array.from(new Set([...WARM_STATIC_FILES, ...productFiles]));
+
+  const results = await Promise.allSettled(allFiles.map((f) => ghGetFile(pat, f)));
+  let warmed = 0;
+  let failed = 0;
+  for (const r of results) {
+    if (r.status === 'fulfilled') warmed += 1;
+    else failed += 1;
+  }
+  // Only stamp the throttle when we actually reached GitHub (warmed > 0 or a
+  // clean empty run), so a fully-offline attempt retries next mount.
+  if (!isOffline()) setWarmedAt(Date.now());
+  return { warmed, failed };
 }
 
 /**

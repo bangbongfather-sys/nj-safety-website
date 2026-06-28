@@ -116,6 +116,25 @@ export function dropCachedFile(path: string): void {
   }
 }
 
+// ───────────────────────── warm throttle ─────────────────────────
+
+const WARMED_KEY = 'nj_admin_cache_warmed_at_v1';
+
+export function getWarmedAt(): number {
+  if (!hasStorage()) return 0;
+  const v = window.localStorage.getItem(WARMED_KEY);
+  return v ? Number(v) || 0 : 0;
+}
+
+export function setWarmedAt(ts: number): void {
+  if (!hasStorage()) return;
+  try {
+    window.localStorage.setItem(WARMED_KEY, String(ts));
+  } catch {
+    /* ignore */
+  }
+}
+
 // ───────────────────────── login cache ─────────────────────────
 
 export function cacheLogin(login: string): void {

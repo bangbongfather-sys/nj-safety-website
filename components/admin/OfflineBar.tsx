@@ -11,10 +11,11 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useAdmin } from './AdminContext';
-import { ghFlushOfflineQueue } from '@/lib/admin/github';
+import { ghFlushOfflineQueue, warmOfflineCache } from '@/lib/admin/github';
 import { getQueue, onQueueChange } from '@/lib/admin/offline';
 
 type FlushNote = { kind: 'ok' | 'err'; text: string } | null;
+type Warm = 'idle' | 'warming' | 'ready';
 
 export default function OfflineBar() {
   const { state } = useAdmin();
@@ -22,8 +23,32 @@ export default function OfflineBar() {
   const [queueCount, setQueueCount] = useState(0);
   const [syncing, setSyncing] = useState(false);
   const [note, setNote] = useState<FlushNote>(null);
+  const [warm, setWarm] = useState<Warm>('idle');
 
   const pat = state.status === 'authenticated' ? state.pat : null;
+
+  // Pull every editable file into the offline cache while online so all
+  // editors work in airplane mode — not just ones opened online before.
+  // Self-throttles in warmOfflineCache, so re-running on each mount/reconnect
+  // is cheap. `ready` briefly confirms the cache is primed.
+  const runWarm = useCallback(
+    async (force?: boolean) => {
+      if (!pat || (typeof navigator !== 'undefined' && !navigator.onLine)) return;
+      setWarm('warming');
+      try {
+        const r = await warmOfflineCache(pat, { force });
+        if (!r.skipped && r.warmed > 0) {
+          setWarm('ready');
+          window.setTimeout(() => setWarm('idle'), 4000);
+        } else {
+          setWarm('idle');
+        }
+      } catch {
+        setWarm('idle');
+      }
+    },
+    [pat],
+  );
 
   const flush = useCallback(async () => {
     if (!pat || syncing) return;
@@ -54,6 +79,7 @@ export default function OfflineBar() {
     const onUp = () => {
       setOnline(true);
       void flush(); // 연결 복귀 → 자동 동기화
+      void runWarm(); // 복귀 시 캐시도 최신화
     };
     const onDown = () => setOnline(false);
     window.addEventListener('online', onUp);
@@ -64,19 +90,32 @@ export default function OfflineBar() {
       window.removeEventListener('offline', onDown);
       offQueue();
     };
-  }, [flush]);
+  }, [flush, runWarm]);
 
-  // On mount: if we're online with leftovers from a previous offline
-  // session, push them through without waiting for an 'online' event.
+  // On mount (authenticated): warm the offline cache, and flush any writes
+  // left over from a previous offline session.
   useEffect(() => {
-    if (online && pat && getQueue().length > 0) void flush();
+    if (!pat) return;
+    void runWarm();
+    if (online && getQueue().length > 0) void flush();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pat]);
 
   if (state.status !== 'authenticated') return null;
-  if (online && queueCount === 0 && !note && !syncing) return null;
+  if (online && queueCount === 0 && !note && !syncing && warm !== 'warming' && warm !== 'ready')
+    return null;
 
-  const bg = !online ? '#7a4a12' : note?.kind === 'err' ? '#7a1f24' : '#1f4d2e';
+  // While online with nothing else going on, the only reason the pill is
+  // visible is the warm cycle — tint it neutral grey for that.
+  const warmingOnly =
+    online && queueCount === 0 && !note && !syncing && (warm === 'warming' || warm === 'ready');
+  const bg = !online
+    ? '#7a4a12'
+    : note?.kind === 'err'
+      ? '#7a1f24'
+      : warmingOnly
+        ? '#2a2e35'
+        : '#1f4d2e';
 
   return (
     <div
@@ -98,7 +137,17 @@ export default function OfflineBar() {
         maxWidth: 360,
       }}
     >
-      <span aria-hidden="true">{!online ? '✈' : syncing ? '⟳' : note?.kind === 'err' ? '⚠' : '✓'}</span>
+      <span aria-hidden="true">
+        {!online
+          ? '✈'
+          : syncing
+            ? '⟳'
+            : note?.kind === 'err'
+              ? '⚠'
+              : warmingOnly && warm === 'warming'
+                ? '⟳'
+                : '✓'}
+      </span>
       <span style={{ wordBreak: 'keep-all' }}>
         {!online ? (
           queueCount > 0
@@ -108,6 +157,10 @@ export default function OfflineBar() {
           '동기화 중...'
         ) : note ? (
           note.text
+        ) : warmingOnly ? (
+          warm === 'warming'
+            ? '오프라인 사용 준비 중 — 편집 데이터 저장 중...'
+            : '오프라인 사용 준비 완료 — 비행기 모드에서도 편집할 수 있습니다.'
         ) : (
           `대기 중인 변경 ${queueCount}건`
         )}
