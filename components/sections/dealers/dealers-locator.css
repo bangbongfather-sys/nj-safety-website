@@ -1,0 +1,231 @@
+/* 대리점 찾기 store-locator — map left, filterable list right.
+ * Dark to match the site; the Kakao map itself renders light tiles,
+ * so the layout reads as a light map framed by dark chrome. */
+
+.dl-locator {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 20px;
+  margin-top: 40px;
+  align-items: stretch;
+}
+
+/* ── Map ─────────────────────────────────────────────────────────── */
+.dl-map-wrap {
+  position: relative;
+  min-height: 640px;
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--bg-2);
+}
+.dl-map { position: absolute; inset: 0; width: 100%; height: 100%; }
+.dl-map-types {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 3;
+  display: flex;
+  border: 1px solid rgba(0, 0, 0, .18);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .25);
+  font-family: var(--mono, ui-monospace, monospace);
+}
+.dl-map-types button {
+  appearance: none;
+  border: 0;
+  background: #fff;
+  color: #333;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.dl-map-types button + button { border-left: 1px solid rgba(0, 0, 0, .12); }
+.dl-map-types button.on { background: var(--accent); color: #0d0d0e; }
+.dl-map-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 14px;
+  pointer-events: none;
+}
+
+/* Fallback panel when no appkey is configured yet. */
+.dl-map-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+  padding: 24px;
+  color: var(--muted);
+  background:
+    repeating-linear-gradient(45deg, rgba(255,107,26,.03), rgba(255,107,26,.03) 12px, transparent 12px, transparent 24px),
+    var(--bg-2);
+}
+.dl-map-fallback-badge {
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 10px; letter-spacing: .2em;
+  background: var(--accent); color: #0d0d0e;
+  padding: 6px 10px;
+}
+.dl-map-fallback p { margin: 4px 0; font-size: 13px; line-height: 1.5; max-width: 340px; }
+.dl-map-fallback-hint code {
+  background: var(--bg-3); padding: 2px 8px; border-radius: 4px;
+  font-family: var(--mono, ui-monospace, monospace); font-size: 11px;
+}
+
+/* ── Panel ───────────────────────────────────────────────────────── */
+.dl-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 640px;
+  min-width: 0;
+}
+.dl-controls { display: flex; flex-direction: column; gap: 10px; }
+.dl-row { display: grid; grid-template-columns: 150px 1fr; gap: 10px; }
+
+.dl-select { position: relative; }
+.dl-select select {
+  appearance: none;
+  width: 100%;
+  height: 48px;
+  padding: 0 34px 0 16px;
+  background: var(--bg-2);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 14px;
+  cursor: pointer;
+}
+.dl-select-caret {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  pointer-events: none; color: var(--muted); font-size: 12px;
+}
+
+.dl-search { position: relative; }
+.dl-search input {
+  width: 100%;
+  height: 48px;
+  padding: 0 16px 0 42px;
+  background: var(--bg-2);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 14px;
+}
+.dl-search input::placeholder { color: var(--muted-2); }
+.dl-search input:focus { outline: none; border-color: var(--accent); }
+.dl-search-icon {
+  position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
+  color: var(--muted); font-size: 18px; pointer-events: none;
+}
+
+.dl-reset {
+  width: 100%;
+  height: 48px;
+  background: var(--bg-3);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+.dl-reset:hover { border-color: var(--accent); background: rgba(255,107,26,.06); }
+
+.dl-count {
+  margin: 16px 0 8px;
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 12px; letter-spacing: .04em;
+  color: var(--muted);
+}
+
+.dl-empty {
+  border: 1px dashed var(--border-soft);
+  border-radius: 12px;
+  padding: 56px 24px;
+  text-align: center;
+  color: var(--muted);
+}
+
+/* Scrollable list — the whole point of the locator. */
+.dl-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 4px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+.dl-list::-webkit-scrollbar { width: 8px; }
+.dl-list::-webkit-scrollbar-thumb { background: var(--border-soft); border-radius: 8px; }
+
+.dl-card {
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 18px 20px;
+  background: rgba(255,255,255,.025);
+  cursor: pointer;
+  transition: border-color .15s, background .15s, transform .1s;
+}
+.dl-card:hover { border-color: rgba(255,107,26,.5); background: rgba(255,255,255,.045); }
+.dl-card.is-active { border-color: var(--accent); background: rgba(255,107,26,.08); }
+.dl-card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.dl-card-name {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 17px; font-weight: 700; letter-spacing: -.015em;
+  color: var(--text);
+}
+.dl-card-dist {
+  flex-shrink: 0;
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 12px; font-weight: 700;
+  color: var(--accent);
+}
+.dl-card-addr {
+  margin: 8px 0 0;
+  font-size: 13.5px; line-height: 1.5;
+  color: var(--muted);
+}
+.dl-card-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin-top: 14px; flex-wrap: wrap;
+}
+.dl-card-tel {
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 13px; font-weight: 700;
+  color: var(--text); text-decoration: none;
+}
+.dl-card-tel:hover { color: var(--accent); }
+.dl-card-shop {
+  font-size: 12.5px; font-weight: 700;
+  color: #4c8dff; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.dl-card-shop:hover { text-decoration: underline; }
+
+/* ── Responsive: stack map over list ─────────────────────────────── */
+@media (max-width: 900px) {
+  .dl-locator { grid-template-columns: 1fr; }
+  .dl-map-wrap { min-height: 380px; }
+  .dl-panel { min-height: 0; }
+  .dl-list { max-height: 560px; }
+}
+@media (max-width: 480px) {
+  .dl-row { grid-template-columns: 1fr; }
+}

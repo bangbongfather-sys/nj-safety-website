@@ -38,6 +38,16 @@ export type Dealer = {
   manager?: string;
   /** Free-text note shown beneath the card body. */
   note?: string;
+  /**
+   * Optional pre-resolved coordinates. When absent, the /dealers
+   * locator geocodes `addr` client-side via the Kakao Geocoder, so
+   * the operator normally only needs to type an address. Stored as
+   * numbers (WGS84).
+   */
+  lat?: number;
+  lng?: number;
+  /** Optional online store / shopping-mall link ("쇼핑몰 바로가기"). */
+  shopUrl?: string;
 };
 
 export type DealersFile = {

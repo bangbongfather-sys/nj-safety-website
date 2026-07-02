@@ -32,6 +32,11 @@ type Dealer = {
   hours?: string;
   manager?: string;
   note?: string;
+  /** Online store link — becomes the "쇼핑몰 바로가기" chip on /dealers. */
+  shopUrl?: string;
+  /** Optional pre-resolved coords; when absent the locator geocodes addr. */
+  lat?: number;
+  lng?: number;
 };
 type DealersFile = { regions: Region[]; dealers: Dealer[] };
 
@@ -188,8 +193,10 @@ export default function DealersAdminPage() {
         <span className="eyebrow">— Dealers</span>
         <h1>공식 <em>대리점 관리</em></h1>
         <p>
-          공개 <code>/dealers</code> 페이지에 노출되는 지역 + 대리점을 관리합니다.
-          저장하면 GitHub 에 커밋되고, 1~2분 뒤 라이브 사이트에 반영됩니다.
+          공개 <code>/dealers</code> 지도 로케이터에 노출되는 지역 + 대리점을 관리합니다.
+          <strong>주소</strong>만 입력하면 지도에 핀이 자동 생성되고(카카오 지오코딩),
+          <strong>쇼핑몰 URL</strong>을 넣으면 카드에 &ldquo;쇼핑몰 바로가기&rdquo; 링크가 붙습니다.
+          저장하면 GitHub 에 커밋되고 1~2분 뒤 반영됩니다.
         </p>
         <div style={{ marginTop: 18, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
           <button type="button" className="btn primary" onClick={() => addDealer()}>
@@ -471,8 +478,9 @@ function DealerEditor({
         </button>
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 8 }}>
-        <Field label="주소" value={dealer.addr ?? ''} onChange={(v) => onPatch({ addr: v })} />
+        <Field label="주소 (지도 핀 자동 생성)" value={dealer.addr ?? ''} onChange={(v) => onPatch({ addr: v })} />
         <Field label="전화" value={dealer.tel ?? ''} onChange={(v) => onPatch({ tel: v })} />
+        <Field label="쇼핑몰 URL (선택)" value={dealer.shopUrl ?? ''} onChange={(v) => onPatch({ shopUrl: v })} />
         <Field label="팩스" value={dealer.fax ?? ''} onChange={(v) => onPatch({ fax: v })} />
         <Field label="이메일" value={dealer.email ?? ''} onChange={(v) => onPatch({ email: v })} />
         <Field label="영업시간" value={dealer.hours ?? ''} onChange={(v) => onPatch({ hours: v })} />
