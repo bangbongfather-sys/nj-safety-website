@@ -218,8 +218,6 @@
   display: inline-flex; align-items: center; gap: 4px;
 }
 .dl-card-shop:hover { text-decoration: underline; }
-/* Site + shop chips sit together on the right of the card foot. */
-.dl-card-links { display: inline-flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 
 /* ── Responsive: stack map over list ─────────────────────────────── */
 @media (max-width: 900px) {
