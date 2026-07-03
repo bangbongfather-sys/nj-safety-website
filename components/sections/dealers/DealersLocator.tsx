@@ -47,6 +47,7 @@ function labelsFor(locale: 'ko' | 'en') {
     searchPlaceholder: ko ? '매장명, 주소 등으로 검색하세요' : 'Search by name or address',
     reset: ko ? '검색 초기화' : 'Reset',
     shopLink: ko ? '쇼핑몰 바로가기' : 'Visit shop',
+    siteLink: ko ? '사이트 바로가기' : 'Visit website',
     km: 'km',
     count: (n: number) => (ko ? `${n}개 매장` : `${n} store${n === 1 ? '' : 's'}`),
     empty: ko ? '조건에 맞는 대리점이 없습니다.' : 'No dealers match your search.',
@@ -375,10 +376,19 @@ export default function DealersLocator({ locale, regions, dealers, appkey }: Pro
                       <span aria-hidden>📞</span> {d.tel}
                     </a>
                   ) : <span />}
-                  {d.shopUrl ? (
-                    <a href={d.shopUrl} target="_blank" rel="noreferrer" className="dl-card-shop" onClick={(e) => e.stopPropagation()}>
-                      🛒 {labels.shopLink}
-                    </a>
+                  {d.shopUrl || d.siteUrl ? (
+                    <span className="dl-card-links">
+                      {d.siteUrl ? (
+                        <a href={d.siteUrl} target="_blank" rel="noreferrer" className="dl-card-shop" onClick={(e) => e.stopPropagation()}>
+                          🌐 {labels.siteLink}
+                        </a>
+                      ) : null}
+                      {d.shopUrl ? (
+                        <a href={d.shopUrl} target="_blank" rel="noreferrer" className="dl-card-shop" onClick={(e) => e.stopPropagation()}>
+                          🛒 {labels.shopLink}
+                        </a>
+                      ) : null}
+                    </span>
                   ) : null}
                 </div>
               </li>

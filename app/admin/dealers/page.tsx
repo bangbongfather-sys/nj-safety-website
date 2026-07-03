@@ -34,6 +34,8 @@ type Dealer = {
   note?: string;
   /** Online store link — becomes the "쇼핑몰 바로가기" chip on /dealers. */
   shopUrl?: string;
+  /** Dealer homepage link — becomes the "사이트 바로가기" chip on /dealers. */
+  siteUrl?: string;
   /** Optional pre-resolved coords; when absent the locator geocodes addr. */
   lat?: number;
   lng?: number;
@@ -481,6 +483,7 @@ function DealerEditor({
         <Field label="주소 (지도 핀 자동 생성)" value={dealer.addr ?? ''} onChange={(v) => onPatch({ addr: v })} />
         <Field label="전화" value={dealer.tel ?? ''} onChange={(v) => onPatch({ tel: v })} />
         <Field label="쇼핑몰 URL (선택)" value={dealer.shopUrl ?? ''} onChange={(v) => onPatch({ shopUrl: v })} />
+        <Field label="사이트 URL (선택)" value={dealer.siteUrl ?? ''} onChange={(v) => onPatch({ siteUrl: v })} />
         <Field label="팩스" value={dealer.fax ?? ''} onChange={(v) => onPatch({ fax: v })} />
         <Field label="이메일" value={dealer.email ?? ''} onChange={(v) => onPatch({ email: v })} />
         <Field label="영업시간" value={dealer.hours ?? ''} onChange={(v) => onPatch({ hours: v })} />

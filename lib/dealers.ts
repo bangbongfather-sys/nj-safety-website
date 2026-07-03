@@ -48,6 +48,8 @@ export type Dealer = {
   lng?: number;
   /** Optional online store / shopping-mall link ("쇼핑몰 바로가기"). */
   shopUrl?: string;
+  /** Optional dealer homepage link ("사이트 바로가기"). */
+  siteUrl?: string;
 };
 
 export type DealersFile = {
