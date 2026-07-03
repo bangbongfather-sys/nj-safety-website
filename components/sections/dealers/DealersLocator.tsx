@@ -46,7 +46,6 @@ function labelsFor(locale: 'ko' | 'en') {
     allRegions: ko ? '전체지역' : 'All regions',
     searchPlaceholder: ko ? '매장명, 주소 등으로 검색하세요' : 'Search by name or address',
     reset: ko ? '검색 초기화' : 'Reset',
-    shopLink: ko ? '쇼핑몰 바로가기' : 'Visit shop',
     siteLink: ko ? '사이트 바로가기' : 'Visit website',
     km: 'km',
     count: (n: number) => (ko ? `${n}개 매장` : `${n} store${n === 1 ? '' : 's'}`),
@@ -376,19 +375,18 @@ export default function DealersLocator({ locale, regions, dealers, appkey }: Pro
                       <span aria-hidden>📞</span> {d.tel}
                     </a>
                   ) : <span />}
-                  {d.shopUrl || d.siteUrl ? (
-                    <span className="dl-card-links">
-                      {d.siteUrl ? (
-                        <a href={d.siteUrl} target="_blank" rel="noreferrer" className="dl-card-shop" onClick={(e) => e.stopPropagation()}>
-                          🌐 {labels.siteLink}
-                        </a>
-                      ) : null}
-                      {d.shopUrl ? (
-                        <a href={d.shopUrl} target="_blank" rel="noreferrer" className="dl-card-shop" onClick={(e) => e.stopPropagation()}>
-                          🛒 {labels.shopLink}
-                        </a>
-                      ) : null}
-                    </span>
+                  {d.siteUrl || d.shopUrl ? (
+                    /* Single unified link — legacy shopUrl still resolves so
+                     * older data keeps its link until re-saved in admin. */
+                    <a
+                      href={d.siteUrl || d.shopUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="dl-card-shop"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      🌐 {labels.siteLink}
+                    </a>
                   ) : null}
                 </div>
               </li>

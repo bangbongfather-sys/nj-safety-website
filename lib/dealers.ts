@@ -46,9 +46,13 @@ export type Dealer = {
    */
   lat?: number;
   lng?: number;
-  /** Optional online store / shopping-mall link ("쇼핑몰 바로가기"). */
+  /**
+   * @deprecated Legacy shop link. The public card renders a single
+   * "사이트 바로가기" chip from `siteUrl || shopUrl`; the admin folds this
+   * value into `siteUrl` on next save.
+   */
   shopUrl?: string;
-  /** Optional dealer homepage link ("사이트 바로가기"). */
+  /** Optional dealer link ("사이트 바로가기"). */
   siteUrl?: string;
 };
 
