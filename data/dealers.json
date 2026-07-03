@@ -28,16 +28,26 @@
   ],
   "dealers": [
     {
-      "id": "dealer-mpmqk5oz-weae",
+      "id": "dealer-ganasangong",
       "regionId": "metropolitan",
-      "name": "새 대리점",
-      "tel": "02-777-3079",
-      "email": "njsafety91@gmail.com"
+      "name": "가나상공",
+      "addr": "서울특별시 강남구 언주로30길 13, 9층 3호(도곡동, 대림아크로텔)",
+      "tel": "02-558-1625",
+      "shopUrl": "https://www.canamiracle.com"
     },
     {
-      "id": "dealer-mpmqld2l-71wx",
+      "id": "dealer-dain-safety",
       "regionId": "metropolitan",
-      "name": "새 대리점"
+      "name": "주식회사 다인산업안전",
+      "addr": "경기도 남양주시 순화궁로 282 (별내동) 에이스하이엔드타워 별내1동 제209, 210호",
+      "tel": "031-573-5526"
+    },
+    {
+      "id": "dealer-daerim-jeonseol",
+      "regionId": "metropolitan",
+      "name": "대림전설(주)",
+      "addr": "경기도 구리시 갈매중앙로 190 휴밸나인지식산업센터 A동 2층 2003",
+      "tel": "02-966-8783"
     }
   ]
 }
