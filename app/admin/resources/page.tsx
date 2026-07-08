@@ -332,19 +332,39 @@ export default function ResourcesAdminPage() {
         )
       )
         return;
-      const key = `report:${row.slug}:${idx}`;
-      setBusyKey(key);
       setErr(null);
+      // Optimistic: drop the row instantly so the click feels immediate,
+      // instead of waiting out the GitHub commit round-trip. Match on the
+      // file's URL (stable) rather than index so duplicate-named entries
+      // and rapid deletes never remove the wrong one.
+      setProducts((cur) =>
+        cur?.map((r) =>
+          r.slug !== row.slug
+            ? r
+            : { ...r, testReports: r.testReports.filter((f) => f.url !== file.url) },
+        ) ?? cur,
+      );
       try {
         await updateProductReports(
           row.slug,
-          (current) => current.filter((_, i) => i !== idx),
-          `chore(products): remove test report ${idx} from ${row.slug}`,
+          (current) => current.filter((f) => f.url !== file.url),
+          `chore(products): remove test report from ${row.slug}`,
         );
       } catch (e: unknown) {
-        setErr(e instanceof Error ? e.message : String(e));
-      } finally {
-        setBusyKey(null);
+        // Commit failed — put the file back where it was and surface the
+        // error loudly (the top banner is usually scrolled off-screen).
+        setProducts((cur) =>
+          cur?.map((r) => {
+            if (r.slug !== row.slug) return r;
+            if (r.testReports.some((f) => f.url === file.url)) return r;
+            const arr = [...r.testReports];
+            arr.splice(Math.min(idx, arr.length), 0, file);
+            return { ...r, testReports: arr };
+          }) ?? cur,
+        );
+        const msg = e instanceof Error ? e.message : String(e);
+        setErr(`삭제 실패: ${msg}`);
+        window.alert(`삭제에 실패했습니다.\n${msg}`);
       }
     },
     [updateProductReports],
