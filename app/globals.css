@@ -605,6 +605,41 @@ section { position: relative; }
   border: 1px dashed var(--border);
 }
 
+/* Rail wrapper hosts the absolutely-positioned prev/next arrows over the
+ * scroll container. */
+.products-light-rail { position: relative; }
+
+/* Prev/next carousel arrows. Hidden (faded + non-interactive) at each end
+ * and when the rail doesn't overflow, via the .is-hidden modifier. */
+.pl-nav {
+  position: absolute;
+  top: calc(50% - 26px); /* bias upward — meta text sits below the frame */
+  z-index: 6;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, .22);
+  background: rgba(13, 13, 14, .6);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background .18s, border-color .18s, opacity .25s, transform .18s;
+}
+.pl-nav:hover { background: var(--accent); border-color: var(--accent); color: #0d0d0e; }
+.pl-nav-prev { left: -6px; }
+.pl-nav-next { right: -6px; }
+.pl-nav.is-hidden { opacity: 0; pointer-events: none; }
+@media (max-width: 767px) {
+  /* On phones the rail is a 1-up flick scroller — arrows just crowd it. */
+  .pl-nav { display: none; }
+}
+
 /* Horizontal scroll rail — snap-aligned so users can flick / arrow
  * through one card at a time without overshooting. */
 .products-light-scroll {
