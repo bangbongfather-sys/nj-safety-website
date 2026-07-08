@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { getDictionary, isLocale, type Locale } from '@/lib/i18n';
 import { getAllProducts } from '@/lib/products';
 import Hero from '@/components/sections/Hero';
+import BrandIntro from '@/components/layout/BrandIntro';
 import Products from '@/components/sections/Products';
 import Showcase from '@/components/sections/Showcase';
 import Manifesto from '@/components/sections/Manifesto';
@@ -20,6 +21,8 @@ export default async function HomePage({ params }: Props) {
 
   return (
     <div className="cb-page-root">
+      {/* First-visit animated splash — once per session, skippable. */}
+      <BrandIntro locale={locale} />
       <Hero locale={locale} dict={dict} />
       <Products locale={locale} dict={dict} products={getAllProducts()} />
       <Showcase dict={dict} />
