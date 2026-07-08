@@ -220,6 +220,7 @@ export default function ProductTestReportsTab({
           onFile={(f) => void uploadFile(f)}
           accept={['application/pdf', '.pdf']}
           disabled={busy}
+          hint="PDF 끌어놓기"
           className="ptr-foot"
           style={{ borderRadius: 10 }}
         >

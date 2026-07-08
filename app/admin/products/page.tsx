@@ -552,6 +552,7 @@ function CardSlot({
         onFile={onPick}
         accept={['image/']}
         disabled={uploading}
+        hint="사진 끌어놓기"
         style={{ display: 'block', borderRadius: 8 }}
       >
       <button
