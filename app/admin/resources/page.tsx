@@ -359,6 +359,7 @@ export default function ResourcesAdminPage() {
         <h1>자료실 <em>관리</em></h1>
         <p>
           공개 <code>/resources</code> 페이지에 노출되는 모든 다운로드 자료를 한 곳에서 관리합니다.
+          각 카드에 <strong>파일을 끌어다 놓거나</strong> 버튼으로 선택하면 업로드됩니다.
           업로드하면 GitHub 에 커밋되고, 1~2분 뒤 라이브 사이트에 반영됩니다.
         </p>
         <div style={{ marginTop: 18, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
@@ -466,6 +467,7 @@ function CatalogCard({
       onFile={onUpload}
       accept={['application/pdf', '.pdf']}
       disabled={busy}
+      hint="PDF 끌어놓기"
       className="admin-card admin-card-flat"
       style={{ padding: 24, display: 'grid', gap: 14, borderRadius: 14 }}
     >
@@ -569,6 +571,7 @@ function ProductReportsCard({
       onFile={onUpload}
       accept={['application/pdf', '.pdf']}
       disabled={uploadBusy}
+      hint="PDF 끌어놓기"
       className="admin-card admin-card-flat"
       style={{ padding: 20, borderRadius: 12 }}
     >

@@ -29,6 +29,13 @@ export type DropTargetProps = {
   accept?: string[];
   /** Suppress drop handling — e.g. while a previous upload is in flight. */
   disabled?: boolean;
+  /**
+   * When set, a small persistent corner chip advertises that files can be
+   * dragged onto the card — so operators discover drag-and-drop without
+   * having to try it. `true` uses the default label; a string overrides it.
+   * The chip hides while a drag is hovering (the drop overlay takes over).
+   */
+  hint?: boolean | string;
   children: ReactNode;
   className?: string;
   style?: CSSProperties;
@@ -54,6 +61,7 @@ export default function DropTarget({
   onFile,
   accept,
   disabled,
+  hint,
   children,
   className,
   style,
@@ -122,6 +130,32 @@ export default function DropTarget({
       }}
     >
       {children}
+      {hint && !hover && !disabled ? (
+        <div
+          aria-hidden
+          style={{
+            position: 'absolute',
+            top: 8,
+            right: 8,
+            pointerEvents: 'none',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 4,
+            padding: '3px 8px',
+            borderRadius: 999,
+            background: 'rgba(13, 13, 14, 0.6)',
+            border: '1px dashed rgba(255, 107, 26, 0.5)',
+            color: 'var(--accent)',
+            fontSize: 10.5,
+            fontWeight: 700,
+            letterSpacing: '-.01em',
+            whiteSpace: 'nowrap',
+            zIndex: 1,
+          }}
+        >
+          ⤓ {typeof hint === 'string' ? hint : '드래그해서 놓기'}
+        </div>
+      ) : null}
       {hover && !disabled ? (
         <div
           aria-hidden
