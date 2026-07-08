@@ -196,9 +196,11 @@
     "button": "견적 문의하기"
   },
   "company": {
+    "name": "나정엔터프라이즈",
+    "ceo": "나승민",
     "tel": "02-777-3079",
     "fax": "02-774-1841",
-    "email": "  njsafety91@naver.com",
+    "email": "njsafety91@naver.com",
     "hours": "  Mon–Fri · 09:00 – 18:00 KST",
     "addressShort": "  서울 중랑구 신내역로 111 SK V1 B동 426호",
     "addressFull": "서울특별시 중랑구 신내역로 111 SK V1 센터 B동 426호",
@@ -232,7 +234,23 @@
       "privacy": "Privacy",
       "terms": "Terms",
       "sitemap": "Sitemap"
-    }
+    },
+    "bottomNav": {
+      "home": "홈",
+      "about": "회사소개",
+      "terms": "이용약관",
+      "privacy": "개인정보처리방침"
+    },
+    "biz": {
+      "companyLabel": "회사명",
+      "ceoLabel": "대표자",
+      "addrLabel": "주소",
+      "emailLabel": "이메일",
+      "telLabel": "전화",
+      "faxLabel": "팩스",
+      "brnLabel": "사업자등록번호"
+    },
+    "copyrightLine": "COPYRIGHT (c) 나정엔터프라이즈 ALL RIGHTS RESERVED."
   },
   "skeleton": {
     "products": {
