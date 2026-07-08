@@ -353,5 +353,15 @@
       "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njssp/card-main.jpg?v=1780838105201",
       "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njssp/card-hover.jpg?v=1780838010870"
     ]
+  },
+  "testReports": {
+    "files": [
+      {
+        "url": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njssp/reports/1783495548674-25-afl165995.pdf?v=1783495549597",
+        "name": "25년 하복 하의겉감 스판 네이비(AFL165995)",
+        "size": 1462531,
+        "uploadedAt": "2026-07-08T07:25:49.597Z"
+      }
+    ]
   }
 }
