@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Dictionary, Locale } from '@/lib/i18n';
 import type { Product } from '@/lib/products';
 import EditableText, { type EditorApi } from '@/components/admin/EditableText';
@@ -57,6 +58,48 @@ export default function Products({ locale, dict, products, editor }: Props) {
   // anyway, so it's not worth re-fetching here.
   const items = products ?? [];
 
+  // ── Carousel arrows ────────────────────────────────────────────────
+  // The rail is a native overflow-x scroller; the arrows just nudge it by
+  // one card (card width + gap) and reflect scroll position so we can
+  // disable each end + hide both when nothing overflows.
+  const railRef = useRef<HTMLDivElement>(null);
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(false);
+
+  const syncArrows = useCallback(() => {
+    const el = railRef.current;
+    if (!el) return;
+    // The rail has a left inset (padding) so the first card bleeds toward
+    // the section edge; snap rests the first card at scrollLeft ≈ paddingLeft,
+    // NOT 0. Use that as the "start" baseline so 이전 arrow hides at the start.
+    const padLeft = parseFloat(getComputedStyle(el).paddingLeft) || 0;
+    const max = el.scrollWidth - el.clientWidth;
+    setCanPrev(el.scrollLeft > padLeft + 4);
+    setCanNext(el.scrollLeft < max - 4);
+  }, []);
+
+  useEffect(() => {
+    const el = railRef.current;
+    if (!el) return;
+    syncArrows();
+    el.addEventListener('scroll', syncArrows, { passive: true });
+    window.addEventListener('resize', syncArrows);
+    return () => {
+      el.removeEventListener('scroll', syncArrows);
+      window.removeEventListener('resize', syncArrows);
+    };
+  }, [syncArrows, items.length]);
+
+  const scrollByCard = useCallback((dir: -1 | 1) => {
+    const el = railRef.current;
+    if (!el) return;
+    // One card = first li width + the grid gap; fall back to 80% viewport.
+    const li = el.querySelector<HTMLElement>('.pl-card-li');
+    const gap = parseFloat(getComputedStyle(el.querySelector('.products-light-grid') as Element).columnGap || '0') || 0;
+    const step = li ? li.offsetWidth + gap : el.clientWidth * 0.8;
+    el.scrollBy({ left: dir * step, behavior: 'smooth' });
+  }, []);
+
   return (
     <section className="products products-light" id="products" data-screen-label="02 Products">
       <div className="wrap">
@@ -82,7 +125,24 @@ export default function Products({ locale, dict, products, editor }: Props) {
               : 'No products yet. Add some at /admin/products.'}
           </div>
         ) : (
-          <div className="products-light-scroll">
+          <div className="products-light-rail">
+            <button
+              type="button"
+              className={`pl-nav pl-nav-prev${canPrev ? '' : ' is-hidden'}`}
+              onClick={() => scrollByCard(-1)}
+              aria-label={locale === 'ko' ? '이전 제품' : 'Previous products'}
+            >
+              ‹
+            </button>
+            <button
+              type="button"
+              className={`pl-nav pl-nav-next${canNext ? '' : ' is-hidden'}`}
+              onClick={() => scrollByCard(1)}
+              aria-label={locale === 'ko' ? '다음 제품' : 'Next products'}
+            >
+              ›
+            </button>
+          <div className="products-light-scroll" ref={railRef}>
             <ul className="products-light-grid">
               {items.map((prod) => {
                 const { main, hover } = getCardImages(prod);
@@ -147,6 +207,7 @@ export default function Products({ locale, dict, products, editor }: Props) {
                 );
               })}
             </ul>
+          </div>
           </div>
         )}
       </div>
