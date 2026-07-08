@@ -196,8 +196,10 @@
     "button": "Request a quote"
   },
   "company": {
+    "name": "Najung Enterprise",
+    "ceo": "Na Seung-min",
     "tel": "02-777-3079",
-    "fax": "",
+    "fax": "02-774-1841",
     "email": "njsafety91@naver.com",
     "hours": "Mon–Fri · 09:00 – 18:00 KST",
     "addressShort": "111 Sinnae-yeok-ro, Jungnang-gu, Seoul",
@@ -232,7 +234,23 @@
       "privacy": "Privacy",
       "terms": "Terms",
       "sitemap": "Sitemap"
-    }
+    },
+    "bottomNav": {
+      "home": "Home",
+      "about": "About",
+      "terms": "Terms",
+      "privacy": "Privacy Policy"
+    },
+    "biz": {
+      "companyLabel": "Company",
+      "ceoLabel": "CEO",
+      "addrLabel": "Address",
+      "emailLabel": "Email",
+      "telLabel": "Tel",
+      "faxLabel": "Fax",
+      "brnLabel": "Business Reg. No."
+    },
+    "copyrightLine": "COPYRIGHT (c) NAJUNG ENTERPRISE CO., LTD. ALL RIGHTS RESERVED."
   },
   "skeleton": {
     "products": {

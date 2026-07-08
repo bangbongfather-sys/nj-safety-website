@@ -1218,76 +1218,65 @@ section { position: relative; }
 /* ---------- Footer ---------- */
 .footer {
   background: var(--bg-3);
-  /* Generous top padding so the columns sit well below the divider
-   * line instead of crowding it — the footer reads as its own calm
-   * band rather than butting straight into the rule above. Bottom
-   * bumped a touch too so the copyright bar isn't cramped. */
-  padding: 152px 0 44px;
+  padding: 100px 0 48px;
   color: var(--muted);
   border-top: 1px solid var(--border-soft);
 }
-.footer-grid {
-  display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
-  gap: 60px;
-  margin-bottom: 80px;
+
+/* ---------- Simplified corporate footer (2026-07) ---------- */
+.footer-simple .ft-logo { display: inline-block; margin-bottom: 28px; }
+.footer-simple .ft-logo .logo-img { height: 40px; width: auto; }
+
+.footer-simple .ft-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 28px;
+  padding-bottom: 28px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--border-soft);
 }
-.footer h4 {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--muted-2);
-  font-weight: 500;
-  margin-bottom: 24px;
-}
-.footer .brand-foot .logo { margin-bottom: 24px; }
-.footer .brand-foot .logo-img { height: 84px; }
-.footer .brand-foot p {
-  font-size: 13px;
-  line-height: 1.7;
-  color: var(--muted);
-  max-width: 280px;
-}
-.footer ul {
-  list-style: none;
-  display: flex; flex-direction: column;
-  gap: 14px;
-  padding: 0; margin: 0;
-}
-.footer li a {
-  font-size: 13px;
+.footer-simple .ft-nav a,
+.footer-simple .ft-nav .ft-nav-static {
+  font-size: 14px;
   color: var(--muted);
   transition: color .2s;
 }
-.footer li a:hover { color: var(--accent); }
-.footer .connect-list {
-  font-size: 13px;
-  line-height: 1.85;
+.footer-simple .ft-nav a:hover { color: var(--text); }
+.footer-simple .ft-nav a.is-strong { color: var(--text); font-weight: 700; }
+
+.footer-simple .ft-biz {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 26px;
+}
+.footer-simple .ft-biz-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 34px;
+  font-size: 13.5px;
+  line-height: 1.6;
   color: var(--muted);
 }
-.footer .connect-list .k {
+.footer-simple .ft-pair { display: inline-flex; gap: 6px; align-items: baseline; word-break: keep-all; }
+/* Keep the label glued to its colon so the ":" never drops to a new line
+ * when a long value (e.g. the address) wraps. */
+.footer-simple .ft-k { color: var(--muted-2); white-space: nowrap; }
+.footer-simple .ft-k::after { content: ':'; margin-left: 4px; }
+.footer-simple .ft-v { color: var(--muted); }
+
+.footer-simple .ft-copy {
+  font-size: 12px;
+  letter-spacing: .04em;
   color: var(--muted-2);
-  width: 50px;
-  display: inline-block;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: .1em;
-  text-transform: uppercase;
 }
-.footer-bar {
-  border-top: 1px solid var(--border-soft);
-  padding-top: 28px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--muted-2);
-  letter-spacing: .1em;
+
+@media (max-width: 640px) {
+  .footer { padding: 72px 0 40px; }
+  .footer-simple .ft-nav { gap: 18px; }
+  .footer-simple .ft-biz-row { flex-direction: column; gap: 6px; }
 }
-.footer-bar .legal { display: flex; gap: 24px; }
-.footer-bar .legal a:hover { color: var(--accent); }
 
 /* ---------- Image placeholders (SVG stripes) ---------- */
 .ph-svg .stripes { stroke: #3a3a3c; stroke-width: 1; opacity: .4; }
