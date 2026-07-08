@@ -49,6 +49,7 @@ type Props = {
   editor?: EditorApi;
 };
 
+// redeploy: products page trim (editorial + CTA removed) — cache-bust 2026-07
 export default function ProductsListing({
   locale,
   dict,
