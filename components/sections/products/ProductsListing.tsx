@@ -55,8 +55,9 @@ export default function ProductsListing({
   products,
   categories,
   featuredSlug,
-  catalogReady,
-  catalogUrl,
+  // catalogReady / catalogUrl still arrive as props but are unused since the
+  // Collection CTA was removed (2026-07). Kept on the Props type so the
+  // server page keeps compiling; re-destructure if the CTA is reinstated.
   editor,
 }: Props) {
   const bySlug = new Map(products.map((p) => [p.slug, p] as const));
@@ -375,8 +376,12 @@ export default function ProductsListing({
                         ) : null}
                         <div className="pl-card-foot">
                           <span className="pl-card-spec">
-                            {editor && w ? (
-                              <EditableText as="b" path={`product@${p.slug}@weight`} value={w} editor={editor} />
+                            {editor ? (
+                              // Always editable in admin — even with no weight
+                              // yet — so the operator can add one (which seeds
+                              // a 평량 spec row). Empty shows a click hint
+                              // instead of the "N specs" fallback.
+                              <EditableText as="b" path={`product@${p.slug}@weight`} value={w} editor={editor} placeholder="+ 평량 입력 (예: 160 g/m²)" />
                             ) : w ? (
                               <b>{w}</b>
                             ) : (
@@ -421,105 +426,10 @@ export default function ProductsListing({
         );
       })}
 
-      {/* ── Editorial quote ─────────────────────────────── */}
-      <section className="pl-editorial">
-        <div className="wrap pl-editorial-inner">
-          <EditableText
-            as="span"
-            className="pl-editorial-eyebrow"
-            path="products.editorialEyebrow"
-            value={pd.editorialEyebrow ?? ''}
-            editor={editor}
-          />
-          <blockquote className="pl-editorial-quote">
-            <EditableText
-              path="products.editorialQuotePre"
-              value={pd.editorialQuotePre ?? ''}
-              editor={editor}
-              multiline
-            />
-            <em>
-              <EditableText
-                path="products.editorialQuoteEm"
-                value={pd.editorialQuoteEm ?? ''}
-                editor={editor}
-              />
-            </em>
-            <EditableText
-              path="products.editorialQuotePost"
-              value={pd.editorialQuotePost ?? ''}
-              editor={editor}
-              multiline
-            />
-          </blockquote>
-          <EditableText
-            as="div"
-            className="pl-editorial-source"
-            path="products.editorialSource"
-            value={pd.editorialSource ?? ''}
-            editor={editor}
-            multiline
-          />
-        </div>
-      </section>
-
-      {/* ── Collection CTA ──────────────────────────────── */}
-      <section className="pl-cta">
-        <div className="wrap">
-          <div className="pl-cta-rule" aria-hidden />
-          <EditableText
-            as="span"
-            className="pl-cta-eyebrow"
-            path="products.ctaEyebrow"
-            value={pd.ctaEyebrow ?? ''}
-            editor={editor}
-          />
-          <h2 className="pl-cta-title">
-            <EditableText
-              path="products.ctaTitlePre"
-              value={pd.ctaTitlePre ?? ''}
-              editor={editor}
-              multiline
-            />
-            <em>
-              <EditableText path="products.ctaTitleEm" value={pd.ctaTitleEm ?? ''} editor={editor} />
-            </em>
-          </h2>
-          <EditableText
-            as="p"
-            className="pl-cta-sub"
-            path="products.ctaSub"
-            value={pd.ctaSub ?? ''}
-            editor={editor}
-          />
-          <div className="pl-cta-actions">
-            {catalogReady && catalogUrl ? (
-              <a href={catalogUrl} target="_blank" rel="noreferrer" className="pl-cta-btn primary">
-                <EditableText
-                  path="products.ctaPrimary"
-                  value={pd.ctaPrimary ?? '카탈로그 다운로드 →'}
-                  editor={editor}
-                />
-              </a>
-            ) : (
-              <span className="pl-cta-btn disabled" title="카탈로그 PDF 업로드 대기">
-                <EditableText
-                  path="products.ctaPrimary"
-                  value={pd.ctaPrimary ?? '카탈로그 준비 중'}
-                  editor={editor}
-                />
-              </span>
-            )}
-            <Link href={`/${locale}/contact`} className="pl-cta-btn ghost">
-              <EditableText
-                path="products.ctaSecondary"
-                value={pd.ctaSecondary ?? '맞춤 견적 문의 →'}
-                editor={editor}
-              />
-            </Link>
-          </div>
-        </div>
-      </section>
+      {/* Editorial quote (MATERIAL PHILOSOPHY) + Collection CTA sections
+       * removed 2026-07 per operator request — the products page ends on
+       * the season grids. The dict keys (products.editorial* / products.cta*)
+       * and catalog wiring are left intact in case either is reinstated. */}
     </>
   );
 }

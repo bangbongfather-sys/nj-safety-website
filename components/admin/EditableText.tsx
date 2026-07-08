@@ -47,6 +47,13 @@ type Props = {
   multiline?: boolean;
   /** Extra children rendered after the value (e.g. trailing arrow). Only used in read-only mode. */
   children?: ReactNode;
+  /**
+   * Editor-only hint shown when the field is empty, so a blank value still
+   * presents a clickable target (an empty contentEditable span is
+   * zero-width). Rendered via `[data-ph]:empty::before` in globals.css.
+   * Ignored in read-only mode.
+   */
+  placeholder?: string;
 };
 
 /**
@@ -105,6 +112,7 @@ export default function EditableText({
   className,
   multiline = false,
   children,
+  placeholder,
 }: Props) {
   const Tag = (as ?? 'span') as ElementType;
   // Sanitize once for output — values may contain inline color spans from
@@ -175,6 +183,7 @@ export default function EditableText({
       className={`${className ?? ''} ed-editable`.trim()}
       data-fp={path}
       data-edit-path={path}
+      data-ph={placeholder || undefined}
       title={`편집: ${path}`}
       contentEditable
       suppressContentEditableWarning
