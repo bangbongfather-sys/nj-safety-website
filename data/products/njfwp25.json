@@ -552,5 +552,15 @@
         "value": "02-777-3079"
       }
     ]
+  },
+  "testReports": {
+    "files": [
+      {
+        "url": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njfwp25/reports/1783495443133-300847.pdf?v=1783495447822",
+        "name": "방염춘추하의300847",
+        "size": 1416182,
+        "uploadedAt": "2026-07-08T07:24:07.822Z"
+      }
+    ]
   }
 }
