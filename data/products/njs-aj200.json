@@ -429,5 +429,15 @@
         "value": "Korea"
       }
     ]
+  },
+  "testReports": {
+    "files": [
+      {
+        "url": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njs-aj200/reports/1783495472674-225948.pdf?v=1783495475775",
+        "name": "방염춘추상의배색 225948",
+        "size": 1491330,
+        "uploadedAt": "2026-07-08T07:24:35.775Z"
+      }
+    ]
   }
 }
