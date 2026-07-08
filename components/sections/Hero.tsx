@@ -58,6 +58,15 @@ export default function Hero({ locale, dict, editor }: Props) {
 
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
+  // Bumped when the BrandIntro curtain lifts — feeding it into the text
+  // wrap's key re-mounts the headline block, so the staggered entrance
+  // fires exactly as the splash reveals the hero (skip or natural end).
+  const [introEpoch, setIntroEpoch] = useState(0);
+  useEffect(() => {
+    const onIntroDone = () => setIntroEpoch((e) => e + 1);
+    window.addEventListener('nj:intro-done', onIntroDone);
+    return () => window.removeEventListener('nj:intro-done', onIntroDone);
+  }, []);
 
   // Clamp when total shrinks (e.g. a slide was deleted).
   useEffect(() => {
@@ -195,7 +204,7 @@ export default function Hero({ locale, dict, editor }: Props) {
        * stays mounted so the layout doesn't reflow.
        */}
       <div className="hero-content">
-        <div className="wrap hero-content-anim" key={`slide-text-${idx}`}>
+        <div className="wrap hero-content-anim" key={`slide-text-${idx}-${introEpoch}`}>
           <div className="hero-tag">
             <span className="hairline" />
             <EditableText as="span" className="eyebrow" path={`${basePath}.eyebrow`} value={slide.eyebrow ?? ''} editor={editor} />

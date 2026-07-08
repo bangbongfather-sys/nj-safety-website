@@ -1,0 +1,121 @@
+/* BrandIntro — first-visit splash (브랜드 인트로).
+ *
+ * The boot script stamps exactly one of these on <html> BEFORE paint:
+ *   .nj-intro-skip → overlay hard-hidden (repeat visit / reduced motion)
+ *   .nj-intro-play → overlay visible + choreography armed
+ * Keep every duration in sync with the constants in BrandIntro.tsx. */
+
+/* Hidden unless the boot script explicitly armed playback. This makes the
+ * safe state the DEFAULT: repeat visits, reduced-motion, JS-disabled
+ * crawlers, and client-side back-navigation all render nothing — only a
+ * genuine first visit (html.nj-intro-play, stamped pre-paint) shows it. */
+.nj-intro { display: none; }
+html.nj-intro-play .nj-intro { display: flex; }
+
+.nj-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 9998; /* above nav (which sits ~100), below nothing that matters */
+  align-items: center;
+  justify-content: center;
+  background: #0d0d0e;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+/* Curtain exit — wipes upward revealing the hero underneath. */
+html.nj-intro-play .nj-intro {
+  animation: nj-intro-curtain .65s cubic-bezier(.76, 0, .24, 1) 1.85s forwards;
+}
+.nj-intro.is-exiting {
+  animation: nj-intro-curtain .5s cubic-bezier(.76, 0, .24, 1) 0s forwards !important;
+}
+@keyframes nj-intro-curtain {
+  to { transform: translateY(-100%); }
+}
+
+.nj-intro-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 0 24px;
+  text-align: center;
+}
+
+/* 1 — orange hairline grows from centre */
+.nj-intro-hairline {
+  width: 72px;
+  height: 2px;
+  background: var(--accent, #ff6b1a);
+  transform: scaleX(0);
+}
+html.nj-intro-play .nj-intro-hairline {
+  animation: nj-intro-grow .5s cubic-bezier(.22, .61, .36, 1) .1s forwards;
+}
+@keyframes nj-intro-grow { to { transform: scaleX(1); } }
+
+/* 2 — eyebrow */
+.nj-intro-eyebrow {
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 11px;
+  letter-spacing: .34em;
+  color: rgba(244, 241, 234, .55);
+  opacity: 0;
+  transform: translateY(14px);
+  word-break: keep-all;
+}
+html.nj-intro-play .nj-intro-eyebrow {
+  animation: nj-intro-up .6s cubic-bezier(.22, .61, .36, 1) .3s forwards;
+}
+
+/* 3 — logo wipes in left→right + settles */
+.nj-intro-logo-wrap {
+  margin-top: 6px;
+  clip-path: inset(0 100% 0 0);
+}
+html.nj-intro-play .nj-intro-logo-wrap {
+  animation: nj-intro-wipe .7s cubic-bezier(.76, 0, .24, 1) .5s forwards;
+}
+@keyframes nj-intro-wipe { to { clip-path: inset(0 0 0 0); } }
+.nj-intro-logo {
+  display: block;
+  width: min(340px, 62vw);
+  height: auto;
+  transform: scale(1.04);
+}
+html.nj-intro-play .nj-intro-logo {
+  animation: nj-intro-settle .9s cubic-bezier(.22, .61, .36, 1) .5s forwards;
+}
+@keyframes nj-intro-settle { to { transform: scale(1); } }
+
+/* 4 — tagline */
+.nj-intro-tagline {
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 12px;
+  letter-spacing: .22em;
+  color: var(--accent, #ff6b1a);
+  opacity: 0;
+  transform: translateY(14px);
+}
+html.nj-intro-play .nj-intro-tagline {
+  animation: nj-intro-up .6s cubic-bezier(.22, .61, .36, 1) 1s forwards;
+}
+
+@keyframes nj-intro-up {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Skip hint — bottom corner, appears late so it never competes. */
+.nj-intro-skip-hint {
+  position: absolute;
+  bottom: 22px;
+  right: 26px;
+  font-size: 11.5px;
+  letter-spacing: .06em;
+  color: rgba(244, 241, 234, .4);
+  opacity: 0;
+}
+html.nj-intro-play .nj-intro-skip-hint {
+  animation: nj-intro-up .5s ease .9s forwards;
+}

@@ -2590,14 +2590,32 @@ section { position: relative; }
   pointer-events: auto;
 }
 
-/* Fade + small upward drift on the slide's foreground text. Triggered on
- * every slide change because the wrap div re-mounts via `key={idx}`. */
-.hero-content-anim {
-  animation: hero-content-enter .7s cubic-bezier(.22, .61, .36, 1) both;
+/* Cinematic staggered entrance on the slide's foreground text. Triggered
+ * on every slide change AND when the BrandIntro curtain lifts, because the
+ * wrap div re-mounts via `key={idx}-${introEpoch}`. Each child fades up on
+ * its own beat: eyebrow → headline line 1 → line 2 → tagline → sub. */
+.hero-content-anim { animation: none; }
+.hero-content-anim .hero-tag,
+.hero-content-anim .hero-headline .line,
+.hero-content-anim .hero-tagline,
+.hero-content-anim .hero-sub {
+  opacity: 0;
+  animation: hero-content-enter .75s cubic-bezier(.22, .61, .36, 1) both;
 }
+.hero-content-anim .hero-tag { animation-delay: .05s; }
+.hero-content-anim .hero-headline .line:nth-child(1) { animation-delay: .16s; }
+.hero-content-anim .hero-headline .line:nth-child(2) { animation-delay: .3s; }
+.hero-content-anim .hero-tagline { animation-delay: .48s; }
+.hero-content-anim .hero-sub { animation-delay: .6s; }
 @keyframes hero-content-enter {
-  from { opacity: 0; transform: translateY(18px); }
+  from { opacity: 0; transform: translateY(22px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-content-anim .hero-tag,
+  .hero-content-anim .hero-headline .line,
+  .hero-content-anim .hero-tagline,
+  .hero-content-anim .hero-sub { animation: none; opacity: 1; }
 }
 
 .hero-nav-arrow {
