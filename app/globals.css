@@ -1224,8 +1224,8 @@ section { position: relative; }
 }
 
 /* ---------- Simplified corporate footer (2026-07) ---------- */
-.footer-simple .ft-logo { display: inline-block; margin-bottom: 28px; }
-.footer-simple .ft-logo .logo-img { height: 40px; width: auto; }
+.footer-simple .ft-logo { display: inline-block; margin-bottom: 32px; }
+.footer-simple .ft-logo .logo-img { height: 72px; width: auto; }
 
 .footer-simple .ft-nav {
   display: flex;
@@ -1274,6 +1274,7 @@ section { position: relative; }
 
 @media (max-width: 640px) {
   .footer { padding: 72px 0 40px; }
+  .footer-simple .ft-logo .logo-img { height: 56px; }
   .footer-simple .ft-nav { gap: 18px; }
   .footer-simple .ft-biz-row { flex-direction: column; gap: 6px; }
 }
