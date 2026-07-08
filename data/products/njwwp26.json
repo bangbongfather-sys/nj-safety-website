@@ -382,5 +382,15 @@
       "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njwwp26/card-main.jpg?v=1780838051297",
       "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njwwp26/card-hover.jpg?v=1780838194583"
     ]
+  },
+  "testReports": {
+    "files": [
+      {
+        "url": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njwwp26/reports/1783495569232-afr205947.pdf?v=1783495570241",
+        "name": "방염점퍼겉감 AFR205947",
+        "size": 1344053,
+        "uploadedAt": "2026-07-08T07:26:10.241Z"
+      }
+    ]
   }
 }
