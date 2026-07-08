@@ -2573,6 +2573,14 @@ section { position: relative; }
   outline-offset: 3px;
 }
 .ed-editable { box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+/* Empty-field hint so a blank editable value still offers a clickable
+ * target (an empty contentEditable span is otherwise zero-width). */
+.ed-editable[data-ph]:empty::before {
+  content: attr(data-ph);
+  color: var(--muted-2);
+  font-weight: 400;
+  opacity: .8;
+}
 
 /* "위치 조정" mode — toggled by the FloatingToolbar's `✥ 이동`
  * button. The focused field gets a thick dashed outline, a grab
