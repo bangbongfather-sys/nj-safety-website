@@ -517,7 +517,7 @@
     "disclosure": [
       {
         "label": "제품소재",
-        "value": "<span style=\"font-size: 14.3px; letter-spacing: -0.176px;\">ARAMID 49.9% / FR rayon 45.5% / Spandex 3% / Anti 1.7%</span>"
+        "value": "<span style=\"color: rgb(236, 230, 216); font-size: 13px; letter-spacing: -0.176px; white-space: normal;\">ARAMID 49.9% / FR rayon 45.5% / Spandex 3% / Anti 1.7%</span>\n"
       },
       {
         "label": "색상",
