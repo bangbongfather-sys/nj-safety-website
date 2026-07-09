@@ -28,7 +28,7 @@ const HQ: Coord = { lat: 37.6135, lng: 127.1015 };
 // Whole-country view centre + zoom level for the initial paint.
 const KOREA_CENTER: Coord = { lat: 36.3, lng: 127.8 };
 // Dealer cards per page in the right-hand list.
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 4;
 
 type Coord = { lat: number; lng: number };
 
