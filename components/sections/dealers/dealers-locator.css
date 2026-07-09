@@ -219,6 +219,42 @@
 }
 .dl-card-shop:hover { text-decoration: underline; }
 
+/* ── Pager (5 dealers per page) ──────────────────────────────────── */
+.dl-pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 16px;
+  padding-top: 4px;
+  flex: none;
+}
+.dl-pager-btn,
+.dl-pager-num {
+  min-width: 34px;
+  height: 34px;
+  padding: 0 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-2);
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color .15s, background .15s, color .15s;
+}
+.dl-pager-btn:hover:not(:disabled),
+.dl-pager-num:hover { border-color: var(--accent); }
+.dl-pager-btn:disabled { opacity: .35; cursor: default; }
+.dl-pager-num.is-on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #0d0d0e;
+}
+
 /* ── Responsive: stack map over list ─────────────────────────────── */
 @media (max-width: 900px) {
   .dl-locator { grid-template-columns: 1fr; }

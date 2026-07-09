@@ -27,6 +27,8 @@ import './dealers-locator.css';
 const HQ: Coord = { lat: 37.6135, lng: 127.1015 };
 // Whole-country view centre + zoom level for the initial paint.
 const KOREA_CENTER: Coord = { lat: 36.3, lng: 127.8 };
+// Dealer cards per page in the right-hand list.
+const PAGE_SIZE = 5;
 
 type Coord = { lat: number; lng: number };
 
@@ -155,6 +157,8 @@ export default function DealersLocator({ locale, regions, dealers, appkey }: Pro
   const [query, setQuery] = useState('');
   const [activeId, setActiveId] = useState<string | null>(null);
   const [mapType, setMapType] = useState<'ROADMAP' | 'SKYVIEW'>('ROADMAP');
+  const [page, setPage] = useState(0);
+  const listTopRef = useRef<HTMLDivElement | null>(null);
 
   const cardRefs = useRef<Map<string, HTMLLIElement>>(new Map());
 
@@ -285,6 +289,29 @@ export default function DealersLocator({ locale, regions, dealers, appkey }: Pro
     return rows;
   }, [dealers, regionFilter, query, coords, userLoc, center]);
 
+  // ── Pagination (5 per page) ─────────────────────────────────────
+  const pageCount = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
+  // Clamp when the filtered list shrinks below the current page.
+  const safePage = Math.min(page, pageCount - 1);
+  const paged = list.slice(safePage * PAGE_SIZE, safePage * PAGE_SIZE + PAGE_SIZE);
+
+  // Reset to the first page whenever the filter / search changes.
+  useEffect(() => { setPage(0); }, [regionFilter, query]);
+  // Keep React state in sync if the clamp above moved us.
+  useEffect(() => { if (page !== safePage) setPage(safePage); }, [page, safePage]);
+
+  const goToPage = useCallback((p: number) => {
+    setPage(p);
+    listTopRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, []);
+
+  // When a map pin sets the active dealer, jump to the page holding it.
+  useEffect(() => {
+    if (!activeId) return;
+    const idx = list.findIndex((r) => r.dealer.id === activeId);
+    if (idx >= 0) setPage(Math.floor(idx / PAGE_SIZE));
+  }, [activeId, list]);
+
   const onSelectCard = useCallback((d: Dealer) => {
     setActiveId(d.id);
     const c = coords[d.id];
@@ -349,13 +376,13 @@ export default function DealersLocator({ locale, regions, dealers, appkey }: Pro
           </button>
         </div>
 
-        <div className="dl-count">{labels.count(list.length)}</div>
+        <div className="dl-count" ref={listTopRef}>{labels.count(list.length)}</div>
 
         {list.length === 0 ? (
           <div className="dl-empty">{labels.empty}</div>
         ) : (
           <ul className="dl-list">
-            {list.map(({ dealer: d, dist }) => (
+            {paged.map(({ dealer: d, dist }) => (
               <li
                 key={d.id}
                 ref={(el) => { if (el) cardRefs.current.set(d.id, el); else cardRefs.current.delete(d.id); }}
@@ -393,6 +420,40 @@ export default function DealersLocator({ locale, regions, dealers, appkey }: Pro
             ))}
           </ul>
         )}
+
+        {pageCount > 1 ? (
+          <nav className="dl-pager" aria-label={locale === 'ko' ? '대리점 페이지' : 'Dealer pages'}>
+            <button
+              type="button"
+              className="dl-pager-btn"
+              disabled={safePage === 0}
+              onClick={() => goToPage(safePage - 1)}
+              aria-label={locale === 'ko' ? '이전 페이지' : 'Previous page'}
+            >
+              ‹
+            </button>
+            {Array.from({ length: pageCount }, (_, i) => (
+              <button
+                key={i}
+                type="button"
+                className={`dl-pager-num${i === safePage ? ' is-on' : ''}`}
+                aria-current={i === safePage ? 'page' : undefined}
+                onClick={() => goToPage(i)}
+              >
+                {i + 1}
+              </button>
+            ))}
+            <button
+              type="button"
+              className="dl-pager-btn"
+              disabled={safePage >= pageCount - 1}
+              onClick={() => goToPage(safePage + 1)}
+              aria-label={locale === 'ko' ? '다음 페이지' : 'Next page'}
+            >
+              ›
+            </button>
+          </nav>
+        ) : null}
       </div>
     </div>
   );
