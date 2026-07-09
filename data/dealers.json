@@ -48,6 +48,47 @@
       "name": "대림전설(주)",
       "addr": "경기도 구리시 갈매중앙로 190 휴밸나인지식산업센터 A동 2층 2003",
       "tel": "02-966-8783"
+    },
+    {
+      "id": "dealer-gaon",
+      "regionId": "metropolitan",
+      "name": "주식회사 가온",
+      "manager": "강해구",
+      "addr": "경기도 남양주시 홍유릉로 221 (금곡동) 가온빌딩",
+      "tel": "031-574-7220",
+      "email": "gaon0901@wehago.com"
+    },
+    {
+      "id": "dealer-jeil-hydraulic",
+      "regionId": "metropolitan",
+      "name": "제일유압안전",
+      "manager": "고승권",
+      "addr": "서울특별시 구로구 구로중앙로 198 (구로동) 구로기계공구상가 26동 106호",
+      "email": "imt7220@naver.com"
+    },
+    {
+      "id": "dealer-hyundai-jeonseol",
+      "regionId": "honam",
+      "name": "현대전설공구",
+      "manager": "백현화",
+      "addr": "광주광역시 서구 매월동 948 광주산업용재유통센타 10-107",
+      "email": "bhh65@hanmail.net"
+    },
+    {
+      "id": "dealer-junghyun-industry",
+      "regionId": "metropolitan",
+      "name": "정현인더스트리(주)",
+      "manager": "조윤호",
+      "addr": "서울특별시 금천구 시흥동 984 시흥유통상가 31-107",
+      "email": "junghyun2046@naver.com"
+    },
+    {
+      "id": "dealer-hansol-emt",
+      "regionId": "metropolitan",
+      "name": "(주)한솔이엠티",
+      "manager": "백원섭",
+      "addr": "경기도 화성시 송산동 183-57",
+      "email": "hansolemt@naver.com"
     }
   ]
 }
