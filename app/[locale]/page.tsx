@@ -3,6 +3,7 @@ import { getDictionary, isLocale, type Locale } from '@/lib/i18n';
 import { getAllProducts } from '@/lib/products';
 import Hero from '@/components/sections/Hero';
 import BrandIntro from '@/components/layout/BrandIntro';
+import ProductFilm from '@/components/sections/ProductFilm';
 import Products from '@/components/sections/Products';
 import Showcase from '@/components/sections/Showcase';
 import Manifesto from '@/components/sections/Manifesto';
@@ -25,6 +26,8 @@ export default async function HomePage({ params }: Props) {
       <BrandIntro locale={locale} />
       <Hero locale={locale} dict={dict} />
       <Products locale={locale} dict={dict} products={getAllProducts()} />
+      {/* PK 티셔츠 제품 필름 — cinematic video band right after the lineup. */}
+      <ProductFilm locale={locale} />
       <Showcase dict={dict} />
       <Manifesto dict={dict} />
       {/* Certifications block replaced by InField (2026-05) — the
