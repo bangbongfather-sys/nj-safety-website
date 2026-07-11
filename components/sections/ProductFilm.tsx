@@ -15,6 +15,7 @@ import type { Locale } from '@/lib/i18n';
 import './product-film.css';
 
 const PK_SLUG = 'njs-ar204';
+// redeploy: ensure PK product-film band is live (cache-bust)
 
 export default function ProductFilm({ locale }: { locale: Locale }) {
   const ko = locale === 'ko';
