@@ -1,0 +1,119 @@
+/* Cinematic product-film band (아라미드 PK 티셔츠) — full-bleed video with
+ * a bottom-anchored copy overlay. Dark to match the site chrome. */
+
+.pf {
+  position: relative;
+  min-height: clamp(460px, 72vh, 780px);
+  overflow: hidden;
+  background: #0a0a0c;
+  display: flex;
+  align-items: flex-end;
+  isolation: isolate;
+}
+
+.pf-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* Gradient so the bottom copy stays legible over any frame. */
+.pf-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(
+      to top,
+      rgba(10, 10, 12, 0.9) 0%,
+      rgba(10, 10, 12, 0.35) 42%,
+      rgba(10, 10, 12, 0.1) 70%,
+      rgba(10, 10, 12, 0.45) 100%
+    );
+  pointer-events: none;
+}
+
+.pf-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 0 0 clamp(44px, 7vw, 96px);
+}
+
+.pf-eyebrow {
+  display: block;
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent, #ff6b1a);
+  margin-bottom: 18px;
+}
+
+.pf-title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(30px, 5vw, 62px);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: #fff;
+  word-break: keep-all;
+}
+.pf-title em { font-style: normal; color: var(--accent, #ff6b1a); }
+
+.pf-sub {
+  margin: 20px 0 0;
+  max-width: 560px;
+  font-size: clamp(14px, 1.4vw, 16px);
+  line-height: 1.6;
+  color: rgba(244, 241, 234, 0.82);
+  word-break: keep-all;
+}
+
+.pf-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 30px;
+  padding: 13px 26px;
+  background: var(--accent, #ff6b1a);
+  color: #0d0d0e;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: transform 0.15s, filter 0.15s;
+}
+.pf-cta:hover { filter: brightness(1.08); transform: translateY(-1px); }
+
+/* Sound toggle — top-right corner. */
+.pf-sound {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 3;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(13, 13, 14, 0.55);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.pf-sound:hover { background: var(--accent, #ff6b1a); border-color: var(--accent, #ff6b1a); }
+
+@media (max-width: 640px) {
+  .pf { min-height: clamp(420px, 80vh, 620px); }
+  .pf-sound { top: 14px; right: 14px; width: 40px; height: 40px; }
+}
