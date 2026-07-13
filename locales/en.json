@@ -27,6 +27,19 @@
     "locatorSub": "ARAMID WORKWEAR ·",
     "slides": [
       {
+        "image": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/hero/slide-03.jpg?v=1779031477758",
+        "eyebrow": "— NEW · 2026",
+        "headlineLine1": "2026",
+        "headlineLine2Pre": "",
+        "headlineLine2Em": "Aramid PK tee.",
+        "tagline": "NEW ARRIVAL.",
+        "sub": "A flame-resistant PK tee for everyday electrical and plant work. 4-way stretch knit, built for full-day wear.",
+        "ctaPrimary": "View details",
+        "ctaSecondary": "Enquire",
+        "linkHref": "https://nj-safety-website.njsafety91.workers.dev/ko/products/njs-ar204/",
+        "video": "/media/pk-tshirt-film.mp4"
+      },
+      {
         "image": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/hero/slide-01.jpg?v=1779116571353",
         "eyebrow": "ARAMID WORKWEAR · Since 1992",
         "headlineLine1": "Aramid integrity.",
@@ -49,18 +62,6 @@
         "ctaPrimary": "View details",
         "ctaSecondary": "Enquire",
         "linkHref": "https://nj-safety-website.njsafety91.workers.dev/ko/products/njs-av100/"
-      },
-      {
-        "image": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/hero/slide-03.jpg?v=1779031477758",
-        "eyebrow": "— NEW · 2026",
-        "headlineLine1": "2026",
-        "headlineLine2Pre": "",
-        "headlineLine2Em": "Aramid PK tee.",
-        "tagline": "COMING SOON.",
-        "sub": "A flame-resistant PK tee for everyday electrical and plant work. 4-way stretch knit, built for full-day wear.",
-        "ctaPrimary": "View details",
-        "ctaSecondary": "Enquire",
-        "linkHref": "https://nj-safety-website.njsafety91.workers.dev/ko/products/njs-ar204/"
       }
     ]
   },
@@ -279,11 +280,11 @@
     "manifesto.quoteEm": {
       "color": "#ff6b1a"
     },
-    "hero.slides[0].headlineLine1": {
+    "hero.slides[1].headlineLine1": {
       "size": "0.90em",
       "weight": "900"
     },
-    "hero.slides[1].sub": {
+    "hero.slides[2].sub": {
       "size": "1.10em"
     },
     "showcase.sub": {
@@ -293,14 +294,14 @@
     "showcase.eyebrow": {
       "weight": "900"
     },
-    "hero.slides[2].headlineLine2Em": {
+    "hero.slides[0].headlineLine2Em": {
       "weight": "900",
       "size": "0.90em"
     },
-    "hero.slides[2].headlineLine1": {
+    "hero.slides[0].headlineLine1": {
       "weight": "900"
     },
-    "hero.slides[0].headlineLine2Em": {
+    "hero.slides[1].headlineLine2Em": {
       "weight": "900"
     },
     "about.hero.sub": {
@@ -464,7 +465,7 @@
       "portraitPlaceholder": "",
       "signoffTitle": "Chief Executive Officer",
       "signoffName": "",
-      "portraitImage": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/about/ceo-portrait.jpg?v=1783955095624"
+      "portraitImage": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/showcase-bg.jpg?v=1779027401239"
     },
     "heritage": {
       "eyebrow": "— Heritage / 1992 → Present",
