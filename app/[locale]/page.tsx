@@ -4,7 +4,6 @@ import { getAllProducts } from '@/lib/products';
 import Hero from '@/components/sections/Hero';
 import BrandIntro from '@/components/layout/BrandIntro';
 import Products from '@/components/sections/Products';
-import Showcase from '@/components/sections/Showcase';
 import Manifesto from '@/components/sections/Manifesto';
 // import Certifications from '@/components/sections/Certifications';  // replaced by InField (2026-05)
 import InField from '@/components/sections/InField';
@@ -26,8 +25,9 @@ export default async function HomePage({ params }: Props) {
       <Hero locale={locale} dict={dict} />
       <Products locale={locale} dict={dict} products={getAllProducts()} />
       {/* ProductFilm band removed 2026-07 — the PK film now plays as the
-       * FIRST hero slide (hero.slides[0].video), per operator request. */}
-      <Showcase dict={dict} />
+       * FIRST hero slide (hero.slides[0].video). Showcase (현장에서 증명됩니다)
+       * removed 2026-07 too — its field photo moved to the About page's
+       * CEO section as a wide cinematic band. */}
       <Manifesto dict={dict} />
       {/* Certifications block replaced by InField (2026-05) — the
        * homepage no longer duplicates what's already on /certifications

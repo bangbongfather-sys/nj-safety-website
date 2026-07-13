@@ -279,9 +279,12 @@ function AboutCeo({ about, editor }: { about: AboutDict; editor?: EditorApi }) {
   const c = about.ceo;
   return (
     <section className="ab-ceo ab-section" data-screen-label="03 CEO Message">
-      <div className="wrap">
-        <div className="ab-ceo-grid">
-          <div className="ab-ceo-portrait">
+      {/* Full-bleed cinematic field photo (2026-07): the portrait moved out
+       * of the old 2-col grid into a wide band so the photo isn't cropped
+       * into a narrow column. .ab-ceo-shade darkens it like the homepage
+       * hero treatment. */}
+      <div className="ab-ceo-wide">
+        <div className="ab-ceo-portrait">
             <EditableText
               as="span"
               className="badge"
@@ -336,7 +339,11 @@ function AboutCeo({ about, editor }: { about: AboutDict; editor?: EditorApi }) {
               value={c.stamp ?? ''}
               editor={editor}
             />
+            <div className="ab-ceo-shade" aria-hidden />
           </div>
+      </div>
+      <div className="wrap">
+        <div className="ab-ceo-grid">
           <div className="ab-ceo-body">
             <EditableText
               as="span"
