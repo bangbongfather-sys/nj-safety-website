@@ -74,14 +74,18 @@ export default function Hero({ locale, dict, editor }: Props) {
   }, [current, total]);
 
   // Public-side auto-rotate. Disabled while the admin is editing so the
-  // user doesn't lose focus mid-typing.
+  // user doesn't lose focus mid-typing. Timeout (not interval) so film
+  // slides can hold longer — a video slide stays up for one full loop
+  // (~10s film) before rotating; photo slides keep the 7s cadence.
   useEffect(() => {
     if (editor || total <= 1 || paused) return;
-    const t = window.setInterval(() => {
+    const cur = slides[Math.min(current, total - 1)];
+    const delay = cur?.video ? 10500 : AUTO_ROTATE_MS;
+    const t = window.setTimeout(() => {
       setCurrent((c) => (c + 1) % total);
-    }, AUTO_ROTATE_MS);
-    return () => window.clearInterval(t);
-  }, [editor, total, paused]);
+    }, delay);
+    return () => window.clearTimeout(t);
+  }, [editor, total, paused, current, slides]);
 
   const idx = Math.min(current, total - 1);
   const slide = slides[idx];
@@ -134,7 +138,22 @@ export default function Hero({ locale, dict, editor }: Props) {
         {slides.map((s, i) => {
           const active = i === idx;
           const sBase = usingSlides ? `hero.slides[${i}]` : 'hero';
-          const inner = (
+          const inner = s.video ? (
+            /* Film slide — muted/looped autoplay (the only autoplay
+             * browsers permit). key remounts the element when the slide
+             * becomes active so the film restarts from 0:00 each pass. */
+            <video
+              key={`${s.video}-${active ? 'on' : 'off'}`}
+              className="hero-video"
+              src={s.video}
+              poster={s.image || undefined}
+              autoPlay={active}
+              muted
+              loop
+              playsInline
+              preload={active ? 'auto' : 'metadata'}
+            />
+          ) : (
             <EditableImage
               path={`${sBase}.image`}
               src={s.image}

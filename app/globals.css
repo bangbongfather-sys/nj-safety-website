@@ -345,6 +345,15 @@ p { line-height: 1.65; }
   object-fit: cover;
   object-position: 62% 35%;
 }
+/* Film slides — the <video> fills the slide exactly like a photo and
+ * receives the same admin brightness/contrast filter. */
+.hero-bg-slide .hero-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+  filter: var(--hero-filter);
+}
 .hero-overlay {
   position: absolute; inset: 0;
   /* Purely decorative — let clicks pass through to .hero-bg / .hero-bg-link
@@ -3714,6 +3723,13 @@ section { position: relative; }
     max-width: none;
     object-fit: cover;
     object-position: left center;
+  }
+  /* Film slides don't pan — the video simply fills the banner. */
+  .hero-bg-slide .hero-video {
+    width: 100%;
+    height: var(--hmb);
+    object-fit: cover;
+    object-position: center center;
   }
   /* hero-overlay / accent / grain stay absolute inset:0; they paint
    * over the full .hero, but hero-content + hero-meta below (later in

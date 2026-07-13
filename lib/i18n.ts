@@ -68,6 +68,11 @@ export type SiteConfig = {
  */
 export type HeroSlide = {
   image?: string;
+  /**
+   * Optional background film for the slide (muted/looped autoplay).
+   * When set it replaces the photo; `image` stays as a poster/fallback.
+   */
+  video?: string;
   eyebrow?: string;
   headlineLine1?: string;
   headlineLine2Pre?: string;
