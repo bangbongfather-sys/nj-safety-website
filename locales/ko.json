@@ -27,19 +27,6 @@
     "locatorSub": "ARAMID WORKWEAR ·",
     "slides": [
       {
-        "image": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/hero/slide-03.jpg?v=1779031477758",
-        "eyebrow": "— NEW · 2026",
-        "headlineLine1": "2026년형",
-        "headlineLine2Pre": "",
-        "headlineLine2Em": "아라미드 PK티셔츠.",
-        "tagline": "NEW ARRIVAL.",
-        "sub": "전기·설비 현장의 일상을 위한 아라미드 PK 티셔츠. 4-way 신축 조직으로 한여름 외근에도 단정한 실루엣 유지.",
-        "ctaPrimary": "자세히 보기",
-        "ctaSecondary": "문의",
-        "linkHref": "https://nj-safety-website.njsafety91.workers.dev/ko/products/njs-ar204/",
-        "video": "/media/pk-tshirt-film.mp4"
-      },
-      {
         "image": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/hero/slide-01.jpg?v=1779116571353",
         "eyebrow": "ARAMID WORKWEAR · 1992년부터",
         "headlineLine1": "아라미드의 견고함.",
@@ -62,6 +49,18 @@
         "ctaPrimary": "자세히 보기",
         "ctaSecondary": "문의",
         "linkHref": "https://nj-safety-website.njsafety91.workers.dev/ko/products/njs-av100/"
+      },
+      {
+        "image": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/hero/slide-03.jpg?v=1779031477758",
+        "eyebrow": "— NEW · 2026",
+        "headlineLine1": "2026년형",
+        "headlineLine2Pre": "",
+        "headlineLine2Em": "아라미드 PK티셔츠.",
+        "tagline": "COMING SOON.",
+        "sub": "전기·설비 현장의 일상을 위한 아라미드 PK 티셔츠. 4-way 신축 조직으로 한여름 외근에도 단정한 실루엣 유지.",
+        "ctaPrimary": "자세히 보기",
+        "ctaSecondary": "문의",
+        "linkHref": "https://nj-safety-website.njsafety91.workers.dev/ko/products/njs-ar204/"
       }
     ]
   },
@@ -280,11 +279,11 @@
     "manifesto.quoteEm": {
       "color": "#ff6b1a"
     },
-    "hero.slides[1].headlineLine1": {
+    "hero.slides[0].headlineLine1": {
       "size": "0.90em",
       "weight": "900"
     },
-    "hero.slides[2].sub": {
+    "hero.slides[1].sub": {
       "size": "1.10em"
     },
     "showcase.sub": {
@@ -294,14 +293,14 @@
     "showcase.eyebrow": {
       "weight": "900"
     },
-    "hero.slides[0].headlineLine2Em": {
+    "hero.slides[2].headlineLine2Em": {
       "weight": "900",
       "size": "0.90em"
     },
-    "hero.slides[0].headlineLine1": {
+    "hero.slides[2].headlineLine1": {
       "weight": "900"
     },
-    "hero.slides[1].headlineLine2Em": {
+    "hero.slides[0].headlineLine2Em": {
       "weight": "900"
     },
     "about.hero.sub": {
@@ -391,6 +390,12 @@
     },
     "about.oneStop.steps[3].body": {
       "weight": "700"
+    },
+    "about.ceo.paragraph1": {
+      "width": "100.0%"
+    },
+    "about.ceo.paragraph2": {
+      "width": "100.0%"
     }
   },
   "siteConfig": {
@@ -450,14 +455,14 @@
     "ceo": {
       "eyebrow": "— CEO Message",
       "titleLine1": "산업 현장이 선택한,",
-      "titleLine2Em": "방염의 가장 가까운 파트너.",
-      "paragraph1": "단 한 가지 신념으로 시작했습니다. 산업 현장에서 일하는 사람의 안전은 결코 타협의 대상이 될 수 없다는 것. 40년이 지난 지금도 그 신념은 변하지 않았습니다.",
-      "paragraph2": "그동안 우리는 방염 작업복 한 분야에 집중하며 원단부터 봉제, 인증, 사후 관리까지 모든 단계를 직접 다뤄왔습니다. 한전 협력사, SK 계열, LG 계열을 비롯한 국내 주요 산업 현장이 NJ SAFETY를 선택한 이유 — 그것은 우리가 만든 옷이 좋아서가 아니라, 작업자를 지키는 일에 한 번도 한눈팔지 않았기 때문입니다.",
+      "titleLine2Em": "방염 파트너.",
+      "paragraph1": "단 한 가지 신념으로 시작했습니다. 산업 현장에서 일하는 사람의 안전은 결코 타협의 대상이 될 수 없다는 것. \n40년이 지난 지금도 그 신념은 변하지 않았습니다.",
+      "paragraph2": "그동안 우리는 방염 작업복 한 분야에 집중하며 원단부터 봉제, 인증, 사후 관리까지 모든 단계를 직접 다뤄왔습니다. 한전 협력사, 발전소, SK 계열사, LG 계열사를 비롯한 국내 주요 산업 현장이 NJ SAFETY를 선택한 이유 — \n그것은 우리가 만든 옷이 좋아서가 아니라, 작업자를 지키는 일에 한 번도 한눈팔지 않았기 때문입니다.",
       "paragraph3": "앞으로도 우리는 가장 가까운 곳에서, 가장 확실한 방식으로 산업 현장을 지키겠습니다.",
       "badge": "CEO · 대표 인사말",
       "stamp": "2026 / SEOUL",
       "portraitPlaceholder": "",
-      "signoffTitle": "대표이사",
+      "signoffTitle": "대표이사 나승민",
       "signoffName": "",
       "portraitImage": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/about/ceo-portrait.jpg?v=1783955095624"
     },
