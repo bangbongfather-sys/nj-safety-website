@@ -366,6 +366,30 @@
     },
     "products.heroSub": {
       "color": "#a1a1a6"
+    },
+    "about.oneStop.steps[0].ko": {
+      "size": "1.30em"
+    },
+    "about.oneStop.steps[1].ko": {
+      "size": "1.30em"
+    },
+    "about.oneStop.steps[2].ko": {
+      "size": "1.30em"
+    },
+    "about.oneStop.steps[3].ko": {
+      "size": "1.30em"
+    },
+    "about.oneStop.steps[0].body": {
+      "weight": "700"
+    },
+    "about.oneStop.steps[1].body": {
+      "weight": "700"
+    },
+    "about.oneStop.steps[2].body": {
+      "weight": "700"
+    },
+    "about.oneStop.steps[3].body": {
+      "weight": "700"
     }
   },
   "siteConfig": {
@@ -434,12 +458,12 @@
       "portraitPlaceholder": "",
       "signoffTitle": "대표이사",
       "signoffName": "",
-      "portraitImage": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/about/ceo-portrait.jpg?v=1779096958128"
+      "portraitImage": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/about/ceo-portrait.jpg?v=1783955095624"
     },
     "heritage": {
       "eyebrow": "— Heritage / 1992 → Present",
-      "titlePre": "40년, ",
-      "titleEm": "한 길.",
+      "titlePre": " HISTORY",
+      "titleEm": ".",
       "no": "No. 1992 — 2026",
       "phases": [
         {
@@ -449,7 +473,7 @@
           "yearSub": "Foundation Era",
           "h3Line1": "나정ETP 창립.",
           "h3Line2": "작업복 및 안전복 제조의 기틀.",
-          "lede": "1987년, 나정ETP를 설립하며 사무복·작업복·근무복·방염복 제조에 첫발.",
+          "lede": "<br>",
           "items": [
             {
               "y": "1987",
@@ -476,7 +500,7 @@
           "yearSub": "Specialization Era",
           "h3Line1": "방염복으로의 집중.",
           "h3Line2": "한전 협력사 진입.",
-          "lede": "방염 제품군에 본격적으로 집중하며 한전 협력업체로 등록, 전국구로 확장.",
+          "lede": "<br>",
           "items": [
             {
               "y": "2010s",
@@ -501,7 +525,7 @@
           "yearSub": "Expansion Era",
           "h3Line1": "대기업 협력 확장.",
           "h3Line2": "국제 인증 가속.",
-          "lede": "서울 신내동으로 본사 확장 이전, 대형 산업군과의 계약 본격화.",
+          "lede": "<br>",
           "items": [
             {
               "y": "2021",
@@ -601,7 +625,7 @@
     "industries": {
       "eyebrow": "— Industries Served",
       "titleLine1": "네 가지 핵심 산업,",
-      "titleLine2Em": "가장 위험한 현장.",
+      "titleLine2Em": "현장의 방염 파트너.",
       "rMicro": "Power · Electric · Petrochem · Energy",
       "items": [
         {
