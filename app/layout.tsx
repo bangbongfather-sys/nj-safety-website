@@ -1,10 +1,35 @@
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
+import { SITE_URL } from '@/lib/site';
 import './globals.css';
 
+const OG_DESC =
+  '아라미드 방염 작업복 전문 · NFPA 2112 · HRC2 · EN ISO 11612 국제 인증. 1992년부터 나정엔터프라이즈.';
+
 export const metadata: Metadata = {
-  title: 'NJ SAFETY — Industrial Safety Wear',
-  description: 'Aramid-engineered flame-resistant workwear. NFPA 2112 · HRC2 · EN ISO 11612 certified. Since 1992 by Najung Enterprise.',
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: 'NJ SAFETY — 산업 안전복 전문',
+    template: '%s | NJ SAFETY',
+  },
+  description: OG_DESC,
+  applicationName: 'NJ SAFETY',
+  openGraph: {
+    type: 'website',
+    siteName: 'NJ SAFETY',
+    locale: 'ko_KR',
+    url: '/',
+    title: 'NJ SAFETY — 산업 안전복 전문',
+    description: OG_DESC,
+    images: [{ url: '/og.jpg', width: 1200, height: 630, alt: 'NJ SAFETY — 산업 안전복 전문' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'NJ SAFETY — 산업 안전복 전문',
+    description: OG_DESC,
+    images: ['/og.jpg'],
+  },
+  robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {
