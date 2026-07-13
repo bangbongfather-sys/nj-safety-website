@@ -366,6 +366,30 @@
     },
     "products.heroSub": {
       "color": "#a1a1a6"
+    },
+    "about.oneStop.steps[0].ko": {
+      "size": "1.30em"
+    },
+    "about.oneStop.steps[1].ko": {
+      "size": "1.30em"
+    },
+    "about.oneStop.steps[2].ko": {
+      "size": "1.30em"
+    },
+    "about.oneStop.steps[3].ko": {
+      "size": "1.30em"
+    },
+    "about.oneStop.steps[0].body": {
+      "weight": "700"
+    },
+    "about.oneStop.steps[1].body": {
+      "weight": "700"
+    },
+    "about.oneStop.steps[2].body": {
+      "weight": "700"
+    },
+    "about.oneStop.steps[3].body": {
+      "weight": "700"
     }
   },
   "siteConfig": {
@@ -434,7 +458,7 @@
       "portraitPlaceholder": "",
       "signoffTitle": "Chief Executive Officer",
       "signoffName": "",
-      "portraitImage": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/about/ceo-portrait.jpg?v=1779096958128"
+      "portraitImage": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/about/ceo-portrait.jpg?v=1783955095624"
     },
     "heritage": {
       "eyebrow": "— Heritage / 1992 → Present",
