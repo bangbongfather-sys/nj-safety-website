@@ -378,16 +378,16 @@
       "size": "1.30em"
     },
     "about.oneStop.steps[0].body": {
-      "weight": "700"
+      "weight": "900"
     },
     "about.oneStop.steps[1].body": {
-      "weight": "700"
+      "weight": "900"
     },
     "about.oneStop.steps[2].body": {
-      "weight": "700"
+      "weight": "900"
     },
     "about.oneStop.steps[3].body": {
-      "weight": "700"
+      "weight": "900"
     },
     "about.ceo.paragraph1": {
       "width": "100.0%"
@@ -412,6 +412,30 @@
     },
     "about.heritage.phases[1].yearPre": {
       "width": "100.0%"
+    },
+    "about.heritage.phases[1].items[1].y": {
+      "size": "0.80em"
+    },
+    "about.heritage.phases[1].items[0].y": {
+      "width": "100.0%"
+    },
+    "about.heritage.phases[0].items[1].y": {
+      "width": "100.0%"
+    },
+    "about.values.items[0].body": {
+      "weight": "900"
+    },
+    "about.values.items[1].body": {
+      "weight": "900"
+    },
+    "about.values.items[2].body": {
+      "weight": "900"
+    },
+    "about.values.items[3].body": {
+      "weight": "900"
+    },
+    "about.values.items[4].body": {
+      "weight": "900"
     }
   },
   "siteConfig": {
