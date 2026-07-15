@@ -397,6 +397,18 @@
     },
     "about.hero.titleLine1Pre": {
       "size": "1.10em"
+    },
+    "about.stats[0].desc": {
+      "size": "0.70em"
+    },
+    "about.stats[1].desc": {
+      "size": "0.70em"
+    },
+    "about.stats[2].desc": {
+      "size": "0.70em"
+    },
+    "about.stats[3].desc": {
+      "size": "0.70em"
     }
   },
   "siteConfig": {
