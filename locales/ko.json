@@ -409,6 +409,9 @@
     },
     "about.stats[3].desc": {
       "size": "0.70em"
+    },
+    "about.heritage.phases[1].yearPre": {
+      "width": "100.0%"
     }
   },
   "siteConfig": {
@@ -513,11 +516,11 @@
           "current": false
         },
         {
-          "yearPre": "2010 — 2020",
+          "yearPre": "2010 -2020",
           "yearEm": "",
           "yearPost": "",
           "yearSub": "Specialization Era",
-          "h3Line1": "방염복으로의 집중.",
+          "h3Line1": " 방염복으로의 집중.",
           "h3Line2": "한전 협력사 진입.",
           "lede": "<br>",
           "items": [
@@ -539,7 +542,7 @@
         },
         {
           "yearPre": "2021 — ",
-          "yearEm": "    현재",
+          "yearEm": "현재",
           "yearPost": "",
           "yearSub": "Expansion Era",
           "h3Line1": "대기업 협력 확장.",
