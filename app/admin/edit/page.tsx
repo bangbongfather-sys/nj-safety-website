@@ -18,7 +18,6 @@ import Navigation from '@/components/layout/Navigation';
 import Footer from '@/components/layout/Footer';
 import Hero from '@/components/sections/Hero';
 import Products from '@/components/sections/Products';
-import Showcase from '@/components/sections/Showcase';
 import Manifesto from '@/components/sections/Manifesto';
 // import Certifications from '@/components/sections/Certifications';  // replaced by InField (2026-05)
 import InField from '@/components/sections/InField';
@@ -539,7 +538,8 @@ export default function EditHomePage() {
         <main className="cb-page-root">
           <Hero locale={active} dict={activeDict} editor={editor} />
           <Products locale={active} dict={activeDict} editor={editor} />
-          <Showcase dict={activeDict} editor={editor} />
+          {/* Showcase (현장에서 증명됩니다) removed 2026-07 to match the
+           * public homepage — its field photo moved to the About page. */}
           <Manifesto dict={activeDict} editor={editor} />
           <InField dict={activeDict} editor={editor} />
           {/* /clients + /news sections removed 2026-05 (component files deleted). */}
