@@ -378,16 +378,16 @@
       "size": "1.30em"
     },
     "about.oneStop.steps[0].body": {
-      "weight": "700"
+      "weight": "900"
     },
     "about.oneStop.steps[1].body": {
-      "weight": "700"
+      "weight": "900"
     },
     "about.oneStop.steps[2].body": {
-      "weight": "700"
+      "weight": "900"
     },
     "about.oneStop.steps[3].body": {
-      "weight": "700"
+      "weight": "900"
     },
     "about.ceo.paragraph1": {
       "width": "100.0%"
@@ -412,6 +412,30 @@
     },
     "about.heritage.phases[1].yearPre": {
       "width": "100.0%"
+    },
+    "about.heritage.phases[1].items[1].y": {
+      "size": "0.80em"
+    },
+    "about.heritage.phases[1].items[0].y": {
+      "width": "100.0%"
+    },
+    "about.heritage.phases[0].items[1].y": {
+      "width": "100.0%"
+    },
+    "about.values.items[0].body": {
+      "weight": "900"
+    },
+    "about.values.items[1].body": {
+      "weight": "900"
+    },
+    "about.values.items[2].body": {
+      "weight": "900"
+    },
+    "about.values.items[3].body": {
+      "weight": "900"
+    },
+    "about.values.items[4].body": {
+      "weight": "900"
     }
   },
   "siteConfig": {
@@ -486,7 +510,7 @@
       "eyebrow": "— Heritage / 1992 → Present",
       "titlePre": " HISTORY",
       "titleEm": ".",
-      "no": "No. 1992 — 2026",
+      "no": "No. 1987 — 2026",
       "phases": [
         {
           "yearPre": "",
@@ -498,11 +522,11 @@
           "lede": "<br>",
           "items": [
             {
-              "y": "1987",
+              "y": "1987~",
               "t": "나정ETP 설립 · 자체 봉제 라인 가동"
             },
             {
-              "y": "~2010",
+              "y": "2010",
               "t": "국내 자체 생산 공장 설립 · 다품종 생산 체계 정착"
             }
           ],
@@ -516,7 +540,7 @@
           "current": false
         },
         {
-          "yearPre": "2010 -2020",
+          "yearPre": "2010 - 2020",
           "yearEm": "",
           "yearPost": "",
           "yearSub": "Specialization Era",
@@ -525,15 +549,15 @@
           "lede": "<br>",
           "items": [
             {
-              "y": "2010s",
+              "y": "2010~",
               "t": "방염복 제품 분야 본격 확장 · R&D 강화"
             },
             {
               "y": "2017",
-              "t": "나정ETP 창립 30주년 · 자체 홈페이지 오픈"
+              "t": "나정ETP 창립 30주년 "
             },
             {
-              "y": "2018+",
+              "y": "2018~",
               "t": "한전 협력업체 방염복 제작 · 전국구 공급망 확립"
             }
           ],
@@ -699,7 +723,7 @@
         {
           "y": "2026",
           "title": "국제 인증 다수 추가 진행",
-          "body": "EN ISO 11612, HRC Level 2, IEC 61482 등 글로벌 인증 체계 확대 추진.",
+          "body": "EN ISO 11612, HRC Level 2 등 글로벌 인증 체계 확대 추진.",
           "status": "진행중",
           "done": false
         }
