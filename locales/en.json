@@ -409,6 +409,9 @@
     },
     "about.stats[3].desc": {
       "size": "0.70em"
+    },
+    "about.heritage.phases[1].yearPre": {
+      "width": "100.0%"
     }
   },
   "siteConfig": {
