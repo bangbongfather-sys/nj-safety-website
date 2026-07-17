@@ -96,6 +96,14 @@ export default function EditAboutPage() {
   const [koDraft, setKoDraft] = useState<Dictionary | null>(null);
   const [enDraft, setEnDraft] = useState<Dictionary | null>(null);
   const [active, setActive] = useState<Locale>('ko');
+  // Which half of the 회사소개 page this editor is currently showing.
+  // 'story' = 회사 이야기 (Hero/Stats/CEO/Heritage → public /about),
+  // 'capabilities' = 역량 및 시스템 (Values/OneStop/Industries/Recent →
+  // public /about/capabilities). Both halves edit the same ko/en drafts,
+  // so switching tabs never loses in-progress edits and one publish saves
+  // everything. Split into tabs because the full page is very long and
+  // the capabilities half scrolled off the bottom felt "missing".
+  const [view, setView] = useState<'story' | 'capabilities'>('story');
   const [save, setSave] = useState<Save>({ status: 'idle' });
   const [focused, setFocused] = useState<FocusInfo | null>(null);
   const [imageSlot, setImageSlot] = useState<{ path: string } | null>(null);
@@ -304,6 +312,26 @@ export default function EditAboutPage() {
         <div className="ed-bar-l">
           <Link href="/admin" className="ed-bar-back">← Admin</Link>
           <span className="ed-bar-mode">ABOUT · 회사소개</span>
+          <div className="ed-subtabs" role="tablist" aria-label="회사소개 편집 섹션">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={view === 'story'}
+              className={view === 'story' ? 'on' : ''}
+              onClick={() => setView('story')}
+            >
+              회사 이야기
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={view === 'capabilities'}
+              className={view === 'capabilities' ? 'on' : ''}
+              onClick={() => setView('capabilities')}
+            >
+              역량 및 시스템
+            </button>
+          </div>
           <span className={`ed-status ${statusClass}`}>{statusLabel}</span>
         </div>
         <div className="ed-bar-r">
@@ -313,7 +341,7 @@ export default function EditAboutPage() {
             <button type="button" className={active === 'en' ? 'on' : ''} onClick={() => setActive('en')} disabled={save.status === 'saving'}>EN</button>
           </div>
           <a
-            href={`/ko/about/`}
+            href={view === 'capabilities' ? `/ko/about/capabilities/` : `/ko/about/`}
             target="_blank"
             rel="noreferrer"
             className="btn ghost small"
@@ -341,7 +369,7 @@ export default function EditAboutPage() {
         <StyleInjector styles={activeDict?.styles} />
         <Navigation locale={active} dict={activeDict!} editor={editor} />
         <main>
-          <AboutPageView locale={active} dict={activeDict!} editor={editor} />
+          <AboutPageView locale={active} dict={activeDict!} editor={editor} view={view} />
         </main>
         <Footer locale={active} dict={activeDict!} editor={editor} />
       </div>

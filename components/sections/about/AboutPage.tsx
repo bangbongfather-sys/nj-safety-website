@@ -74,7 +74,7 @@ export default function AboutPage({ locale, dict, editor, view = 'full' }: Props
       {/* Capabilities sub-page gets its own intro band so the screen
        * doesn't open mid-content. Hidden on the full admin view to
        * avoid duplicating headings during editing. */}
-      {view === 'capabilities' ? <CapabilitiesIntro about={about} /> : null}
+      {view === 'capabilities' && !editor ? <CapabilitiesIntro about={about} /> : null}
 
       {showCapabilities ? <AboutValues about={about} editor={editor} /> : null}
       {showCapabilities ? <AboutOneStop about={about} editor={editor} /> : null}

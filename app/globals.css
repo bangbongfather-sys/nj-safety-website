@@ -2499,6 +2499,38 @@ section { position: relative; }
   text-overflow: ellipsis;
 }
 
+/* Sub-tab switcher inside the 회사소개 editor: 회사 이야기 / 역량 및 시스템.
+ * The full About page is long, so its capabilities half scrolled off the
+ * bottom and read as "not editable". These tabs surface each half. */
+.ed-subtabs {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+  padding: 3px;
+  background: var(--bg-3, rgba(255,255,255,.04));
+  border: 1px solid var(--border-soft);
+  border-radius: 4px;
+}
+.ed-subtabs button {
+  background: none;
+  border: 0;
+  border-radius: 3px;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .01em;
+  padding: 5px 12px;
+  white-space: nowrap;
+  transition: background .15s, color .15s;
+}
+.ed-subtabs button:hover { color: var(--text); }
+.ed-subtabs button.on {
+  color: #fff;
+  background: var(--accent);
+}
+
 .ed-status {
   font-family: var(--mono);
   font-size: 11px;
