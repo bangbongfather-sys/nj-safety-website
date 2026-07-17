@@ -366,28 +366,32 @@
       "color": "#a1a1a6"
     },
     "about.oneStop.steps[0].ko": {
-      "size": "1.30em"
+      "size": "1.60em"
     },
     "about.oneStop.steps[1].ko": {
-      "size": "1.30em"
+      "size": "1.60em"
     },
     "about.oneStop.steps[2].ko": {
-      "size": "1.30em"
+      "size": "1.60em"
     },
     "about.oneStop.steps[3].ko": {
-      "size": "1.30em"
+      "size": "1.60em"
     },
     "about.oneStop.steps[0].body": {
-      "weight": "900"
+      "weight": "900",
+      "size": "1.10em"
     },
     "about.oneStop.steps[1].body": {
-      "weight": "900"
+      "weight": "900",
+      "size": "1.10em"
     },
     "about.oneStop.steps[2].body": {
-      "weight": "900"
+      "weight": "900",
+      "size": "1.10em"
     },
     "about.oneStop.steps[3].body": {
-      "weight": "900"
+      "weight": "900",
+      "size": "1.10em"
     },
     "about.ceo.paragraph1": {
       "width": "100.0%"
