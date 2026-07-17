@@ -440,6 +440,9 @@
     },
     "about.values.items[4].body": {
       "weight": "900"
+    },
+    "about.heritage.phases[0].yearPost": {
+      "width": "100.0%"
     }
   },
   "siteConfig": {
@@ -519,7 +522,7 @@
         {
           "yearPre": "",
           "yearEm": "1987",
-          "yearPost": " — 2010",
+          "yearPost": "-2010",
           "yearSub": "Foundation Era",
           "h3Line1": "나정ETP 창립.",
           "h3Line2": "작업복 및 안전복 제조의 기틀.",
@@ -544,11 +547,11 @@
           "current": false
         },
         {
-          "yearPre": "2010 - 2020",
+          "yearPre": "2010  -<span style=\"color: rgb(255, 107, 26);\">2020</span>",
           "yearEm": "",
           "yearPost": "",
           "yearSub": "Specialization Era",
-          "h3Line1": " 방염복으로의 집중.",
+          "h3Line1": "방염복으로의 집중.",
           "h3Line2": "한전 협력사 진입.",
           "lede": "<br>",
           "items": [
@@ -569,8 +572,8 @@
           "current": false
         },
         {
-          "yearPre": "2021 — ",
-          "yearEm": "현재",
+          "yearPre": "<span style=\"color: rgb(255, 107, 26);\">2021</span>                  - 현재            ",
+          "yearEm": "                      ",
           "yearPost": "",
           "yearSub": "Expansion Era",
           "h3Line1": "대기업 협력 확장.",
