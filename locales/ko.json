@@ -427,19 +427,24 @@
       "width": "100.0%"
     },
     "about.values.items[0].body": {
-      "weight": "900"
+      "weight": "900",
+      "size": "1.10em"
     },
     "about.values.items[1].body": {
-      "weight": "900"
+      "weight": "900",
+      "size": "1.10em"
     },
     "about.values.items[2].body": {
-      "weight": "900"
+      "weight": "900",
+      "size": "1.10em"
     },
     "about.values.items[3].body": {
-      "weight": "900"
+      "weight": "900",
+      "size": "1.10em"
     },
     "about.values.items[4].body": {
-      "weight": "900"
+      "weight": "900",
+      "size": "1.10em"
     },
     "about.heritage.phases[0].yearPost": {
       "width": "100.0%"
