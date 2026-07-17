@@ -440,6 +440,9 @@
     },
     "about.values.items[4].body": {
       "weight": "900"
+    },
+    "about.heritage.phases[0].yearPost": {
+      "width": "100.0%"
     }
   },
   "siteConfig": {
