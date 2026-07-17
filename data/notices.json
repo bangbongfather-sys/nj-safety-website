@@ -1,16 +1,6 @@
 {
   "notices": [
     {
-      "id": "customer-center-guide",
-      "type": "notice",
-      "pinned": true,
-      "date": "2026-05-15",
-      "titleKo": "고객센터 · AS 접수 안내 : 1670-0000",
-      "titleEn": "Customer Center & After-Sales Service: 1670-0000",
-      "bodyKo": "NJ SAFETY 고객센터 운영 시간과 AS(수선·교환) 접수 절차를 안내드립니다.\n\n운영 시간: 평일 09:00 ~ 18:00 (점심 12:00 ~ 13:00 / 주말·공휴일 휴무)\n대표 전화: 1670-0000\n이메일: njsafety91@gmail.com\n\nAS 접수 시 제품 모델명, 구매처, 증상 사진을 함께 보내주시면 처리가 빠릅니다. 단체 주문 / 대량 발주 견적은 별도 영업 담당자가 안내드립니다.",
-      "bodyEn": "Operating hours and the after-sales (repair / exchange) intake process for the NJ SAFETY customer center.\n\nHours: Weekdays 09:00–18:00 (lunch 12:00–13:00 / closed weekends & holidays)\nPhone: 1670-0000\nEmail: njsafety91@gmail.com\n\nFor faster handling, include the product model, place of purchase, and photos of the issue. Bulk / corporate order quotes are handled by a dedicated sales contact."
-    },
-    {
       "id": "njww26-winter-jacket-launch",
       "type": "product",
       "pinned": false,
@@ -21,26 +11,6 @@
       "bodyEn": "We've launched the NJWW26 aramid insulated winter jacket, built for cold-season work on power, refinery, and gas sites.\n\n· Shell: aramid-blend flame-resistant fabric\n· Lining: high-loft insulation fill\n· Certifications: NFPA 2112 · HRC2 · EN ISO 11612\n· Mobility pattern informed by on-site measurement data\n\nFor sizing/colors and bulk-order quotes, reach us via the contact page."
     },
     {
-      "id": "nfpa-2112-recertification-2026",
-      "type": "cert",
-      "pinned": false,
-      "date": "2026-04-28",
-      "titleKo": "NFPA 2112 인증 갱신 완료 안내",
-      "titleEn": "NFPA 2112 Recertification Completed",
-      "bodyKo": "주력 아라미드 방염 작업복 라인의 NFPA 2112 인증 갱신 심사를 통과했습니다.\n\nNFPA 2112는 산업용 순간화염(flash fire) 노출에 대한 방염 의류 표준으로, 열전달·열수축·잔염 시험 등을 포함합니다. 갱신된 시험성적서는 자료실에서 확인하실 수 있습니다.",
-      "bodyEn": "Our core aramid flame-resistant workwear line has passed its NFPA 2112 recertification audit.\n\nNFPA 2112 is the standard for flame-resistant garments protecting against industrial flash-fire exposure, covering heat transfer, thermal shrinkage, and after-flame testing. Updated test reports are available in the Resources section."
-    },
-    {
-      "id": "kiss-2026-exhibition",
-      "type": "event",
-      "pinned": false,
-      "date": "2026-04-10",
-      "titleKo": "2026 국제안전보건전시회(KISS) 참가 안내",
-      "titleEn": "Exhibiting at the 2026 Korea International Safety & Health Show (KISS)",
-      "bodyKo": "NJ SAFETY가 2026 국제안전보건전시회(KISS)에 참가합니다.\n\n신제품 동절기 라인업과 아라미드 방염 작업복 전 제품을 직접 착용·확인하실 수 있습니다. 부스 위치와 사전 상담 예약은 추후 공지로 안내드립니다. 현장 발주 상담 시 특별 견적을 제공합니다.",
-      "bodyEn": "NJ SAFETY will be exhibiting at the 2026 Korea International Safety & Health Show (KISS).\n\nYou can try on and inspect our new winter lineup and the full aramid flame-resistant workwear range. Booth location and pre-booking details will follow in a later notice. On-site order consultations qualify for a special quote."
-    },
-    {
       "id": "njs-ar301-lineup-added",
       "type": "product",
       "pinned": false,
@@ -49,36 +19,6 @@
       "titleEn": "Aramid Workwear Lineup Expanded (NJS-AR301)",
       "bodyKo": "3계절용 아라미드 방염 작업복 NJS-AR301을 라인업에 추가했습니다.\n\n경량 아라미드 원단으로 통기성과 활동성을 높였으며, 정유·화학 현장의 상시 착용을 고려한 구성입니다. 상·하의 세트 및 부자재 옵션은 제품 페이지에서 확인하세요.",
       "bodyEn": "We've added the NJS-AR301 three-season aramid flame-resistant workwear to the lineup.\n\nA lightweight aramid fabric improves breathability and mobility, configured for everyday wear on refinery and chemical sites. Top/bottom sets and trim options are detailed on the product page."
-    },
-    {
-      "id": "may-2026-holiday-schedule",
-      "type": "notice",
-      "pinned": false,
-      "date": "2026-04-30",
-      "titleKo": "5월 연휴 배송 및 고객센터 휴무 안내",
-      "titleEn": "May Holiday Shipping & Customer Center Closure",
-      "bodyKo": "5월 연휴 기간 배송 및 고객센터 운영 일정을 안내드립니다.\n\n휴무 기간 중 접수된 주문/문의는 연휴 종료 후 순차적으로 처리됩니다. 긴급 현장 발주 건은 이메일(njsafety91@gmail.com)로 남겨주시면 우선 확인하겠습니다. 이용에 참고 부탁드립니다.",
-      "bodyEn": "Please note our shipping and customer center schedule during the May holidays.\n\nOrders/inquiries received during the closure will be processed in order once the holiday ends. For urgent on-site orders, email njsafety91@gmail.com and we'll prioritize it. Thank you for your understanding."
-    },
-    {
-      "id": "en-iso-11612-test-reports-updated",
-      "type": "cert",
-      "pinned": false,
-      "date": "2026-03-05",
-      "titleKo": "EN ISO 11612 시험성적서 업데이트",
-      "titleEn": "EN ISO 11612 Test Reports Updated",
-      "bodyKo": "EN ISO 11612(열·화염 방호복) 시험성적서를 최신 버전으로 업데이트했습니다.\n\n해당 표준은 대류열·복사열·용융금속 등 다양한 열 위험에 대한 보호 성능을 평가합니다. 최신 성적서는 자료실 > 시험성적서에서 다운로드하실 수 있습니다.",
-      "bodyEn": "We've updated our EN ISO 11612 (protective clothing against heat and flame) test reports to the latest versions.\n\nThe standard evaluates protection against various thermal hazards including convective heat, radiant heat, and molten metal. Download the latest reports from Resources > Test Reports."
-    },
-    {
-      "id": "macro-misuse-policy",
-      "type": "notice",
-      "pinned": false,
-      "date": "2026-02-18",
-      "titleKo": "온라인 주문 시스템 정상 이용 안내",
-      "titleEn": "Notice on Proper Use of the Online Order System",
-      "bodyKo": "안정적인 발주 환경을 위해 자동화 프로그램(매크로 등)을 이용한 비정상 접근은 제한될 수 있습니다.\n\n대량/단체 발주는 전용 견적 절차를 통해 더 정확한 납기와 단가를 안내받으실 수 있으니 문의 페이지를 이용해 주세요.",
-      "bodyEn": "To keep ordering stable, abnormal access using automation tools (macros, etc.) may be restricted.\n\nFor large / group orders, the dedicated quote process gives you more accurate lead times and pricing — please use the contact page."
     }
   ]
 }
