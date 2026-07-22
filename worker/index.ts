@@ -399,6 +399,18 @@ export default {
       return handleContact(req, env);
     }
 
+    // Machine-readable product directory (built by
+    // scripts/build-products-index.mjs). The catalog-app editor fetches
+    // this cross-origin to validate 웹사이트 연동 targets, so it needs an
+    // explicit CORS allow — static assets don't get one by default.
+    if (url.pathname === '/products-index.json' && req.method === 'GET') {
+      const res = await env.ASSETS.fetch(req);
+      const headers = new Headers(res.headers);
+      headers.set('Access-Control-Allow-Origin', '*');
+      headers.set('Cache-Control', 'public, max-age=300');
+      return new Response(res.body, { status: res.status, headers });
+    }
+
     // Everything else — static assets passthrough.
     return env.ASSETS.fetch(req);
   },
