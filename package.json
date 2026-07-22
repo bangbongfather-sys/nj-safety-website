@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && node scripts/postbuild-html-lang.mjs",
+    "build": "next build && node scripts/postbuild-html-lang.mjs && node scripts/build-products-index.mjs",
     "start": "next start",
     "lint": "next lint"
   },
