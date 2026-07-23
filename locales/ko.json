@@ -767,27 +767,7 @@
       "titleLine2Pre": "",
       "titleLine2Em": "",
       "titleLine2Post": "<em>NJ SAFETY</em>와 함께합니다.",
-      "sub": "제품 견적, B2B 단체 주문부터 OEM 제작까지. NJ SAFETY에서 1영업일 이내에 빠르고 확실하게 회신해 드립니다.",
-      "metrics": [
-        {
-          "lbl": "— Response",
-          "num": "1",
-          "unit": "영업일",
-          "desc": "평균 회신 시간 (B2B 우선 처리)"
-        },
-        {
-          "lbl": "— MOQ",
-          "num": "30",
-          "unit": "벌부터",
-          "desc": "단체 견적 최소 수량 "
-        },
-        {
-          "lbl": "— Lead Time",
-          "num": "3",
-          "unit": "",
-          "desc": "평균 납기 · 양산 기준"
-        }
-      ]
+      "sub": "제품 견적, B2B 단체 주문부터 OEM 제작까지. NJ SAFETY에서 1영업일 이내에 빠르고 확실하게 회신해 드립니다."
     },
     "types": {
       "eyebrow": "— Inquiry Types / 5 Categories",

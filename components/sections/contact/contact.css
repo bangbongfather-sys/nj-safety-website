@@ -100,62 +100,6 @@
   font-weight: 300;
 }
 
-.contact-page .ct-hero-metrics {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0;
-  border: 1px solid var(--border-soft);
-  background: var(--card);
-}
-.contact-page .ct-hero-metric {
-  padding: 32px 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  border-right: 1px solid var(--border-soft);
-}
-.contact-page .ct-hero-metric:last-child { border-right: 0; }
-.contact-page .ct-hero-metric .lbl {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: .18em;
-  color: var(--muted-2);
-  text-transform: uppercase;
-}
-.contact-page .ct-hero-metric .val {
-  font-family: var(--display);
-  font-size: 34px;
-  font-weight: 900;
-  letter-spacing: -0.025em;
-  color: var(--accent);
-  line-height: 1;
-}
-.contact-page .ct-hero-metric .val .num {
-  /* EditableText wraps this in a <span data-fp> (and in public mode
-   * an inner <span> too). Without an explicit font-size the number
-   * inherits the .val's 34px / accent / 900 styling correctly. */
-  color: inherit;
-  font-weight: inherit;
-}
-/* Only the unit (e.g. "영업일", "벌부터", "주") goes small + white.
- * Targeting `.unit` instead of `.val span` keeps the rule from also
- * hitting the .num wrapper — which would have shrunk the big number
- * to 0.45em on admin and, due to public-mode double-span nesting,
- * 0.20em on the live site. */
-.contact-page .ct-hero-metric .val .unit {
-  font-size: .45em;
-  color: #fff;
-  font-weight: 400;
-  margin-left: 3px;
-  letter-spacing: .04em;
-}
-.contact-page .ct-hero-metric .desc {
-  font-size: 12.5px;
-  color: var(--muted);
-  line-height: 1.5;
-  margin-top: 6px;
-}
-
 /* ─── 02. Inquiry Types ─────────────────────────────────────── */
 .contact-page .ct-types {
   background: var(--bg-2);
@@ -1168,8 +1112,7 @@
  * actual layout these rules trigger hasn't changed; only the
  * threshold did. */
 @media (max-width: 639px) {
-  .contact-page .ct-process-grid,
-  .contact-page .ct-hero-metrics { grid-template-columns: 1fr; }
+  .contact-page .ct-process-grid { grid-template-columns: 1fr; }
   .contact-page .ct-form-row { grid-template-columns: 1fr; }
   .contact-page .ct-form { padding: 32px 20px; }
   .contact-page .ct-faq-q { grid-template-columns: 50px 1fr 28px; gap: 16px; }
