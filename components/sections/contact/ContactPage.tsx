@@ -66,7 +66,6 @@ export default function ContactPage({ locale, dict, editor }: Props) {
 /* ─── 01. Hero ───────────────────────────────────────────────────── */
 function ContactHero({ contact, editor }: { contact: ContactDict; editor?: EditorApi }) {
   const h = contact.hero;
-  const metrics = h.metrics ?? [];
   return (
     <section className="ct-hero" data-screen-label="01 Hero">
       <div className="wrap">
@@ -93,25 +92,6 @@ function ContactHero({ contact, editor }: { contact: ContactDict; editor?: Edito
               editor={editor}
               multiline
             />
-          </div>
-          <div className="ct-hero-metrics">
-            {metrics.map((m, i) => (
-              <div key={i} className="ct-hero-metric">
-                <EditableText as="span" className="lbl" path={`contact.hero.metrics[${i}].lbl`} value={m.lbl ?? ''} editor={editor} />
-                <span className="val">
-                  <EditableText as="span" className="num" path={`contact.hero.metrics[${i}].num`} value={m.num ?? ''} editor={editor} />
-                  <EditableText as="span" className="unit" path={`contact.hero.metrics[${i}].unit`} value={m.unit ?? ''} editor={editor} />
-                </span>
-                <EditableText
-                  as="span"
-                  className="desc"
-                  path={`contact.hero.metrics[${i}].desc`}
-                  value={m.desc ?? ''}
-                  editor={editor}
-                  multiline
-                />
-              </div>
-            ))}
           </div>
         </div>
       </div>

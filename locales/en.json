@@ -767,27 +767,7 @@
       "titleLine2Pre": "",
       "titleLine2Em": "",
       "titleLine2Post": "delivered with <em>NJ SAFETY</em>.",
-      "sub": "From product quotes and B2B bulk orders to OEM production — NJ SAFETY replies within one business day, clearly and directly.",
-      "metrics": [
-        {
-          "lbl": "— Response",
-          "num": "1",
-          "unit": "BUS. DAY",
-          "desc": "Average reply time (B2B prioritised)"
-        },
-        {
-          "lbl": "— MOQ",
-          "num": "50",
-          "unit": "UNITS+",
-          "desc": "Bulk-quote minimum · 5% additional discount"
-        },
-        {
-          "lbl": "— Lead Time",
-          "num": "3",
-          "unit": "–6 WK",
-          "desc": "Average delivery · production run"
-        }
-      ]
+      "sub": "From product quotes and B2B bulk orders to OEM production — NJ SAFETY replies within one business day, clearly and directly."
     },
     "types": {
       "eyebrow": "— Inquiry Types / 5 Categories",
