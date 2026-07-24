@@ -2,16 +2,10 @@
   "slug": "njssyyy",
   "model": "NJSSYYY-YY",
   "category": "ARAMID FR SERIES · SUMMER SHIRT",
-  "name": "하계 <span style=\"color: rgb(198, 90, 30);\">아라미드 </span> Y셔츠",
+  "name": "하계 <span style=\"color: rgb(198, 90, 30);\">아라미드 </span> Y셔츠.",
   "subtitle": "현장의 일상복, 셔츠로 다시 그리다",
   "tagline": "두 톤 패널 + 가슴 트윈 리플렉티브 + 라벨링 디테일. 정전기·내열 환경의 단정한 외근복을 위한 NJ Safety의 새 남방.",
   "flavor": "tactical",
-  "docBar": {
-    "documentNumber": "NJSSYYY-YY",
-    "revision": "2026.05",
-    "page": 1,
-    "pageCount": 8
-  },
   "hero": {
     "image": "/products/njssyyy/model.png",
     "imageAlt": "아라미드 하계 남방 — 모델 착장 컷",
@@ -23,17 +17,17 @@
     ],
     "counters": [
       {
-        "value": "62.9",
+        "value": "64.6",
         "unit": "%",
         "label": "META ARAMID"
       },
       {
-        "value": "35.5",
+        "value": "34.2",
         "unit": "%",
         "label": "FR RAYON"
       },
       {
-        "value": "1.6",
+        "value": "1.2",
         "unit": "%",
         "label": "anti-static fiber"
       }
@@ -84,7 +78,7 @@
   "statement": {
     "eyebrow": "A NOTE FROM THE FIELD",
     "headline": "셔츠가 가진 <em>단정함</em>, 워크웨어가 가진 <em>안전</em>.",
-    "body": "남방은 현장에서도 가장 자주 입게 되는 옷입니다. 하지만 시중의 셔츠는 난연 등급도, 정전기 차단도 챙기지 않습니다. NJSSYYY는 메타-아라미드와 FR 레이온 및 정전기 방지 섬유의 검증된 블렌드를 셔츠 실루엣 안에 담았습니다. 멜란지 그레이와 라이트 그레이의 두 톤 패널, 가슴 트윈 리플렉티브, 그리고 가벼운 중량까지 — 셔츠의 격식과 워크웨어의 기능을 한 벌에 통합한 결과입니다.",
+    "body": "남방은 현장에서도 가장 자주 입게 되는 옷입니다. <br>아라미드 남방은 메타-아라미드와 FR 레이온 및 정전기 방지 섬유의 검증된 블렌드를 셔츠 실루엣 안에 담았습니다. <br>멜란지 그레이와 라이트 그레이의 두 톤 패널, 가슴 트윈 리플렉티브, 그리고 가벼운 중량까지 — 셔츠의 격식과 워크웨어의 기능을 한 벌에 통합한 결과입니다.",
     "sign": "NJ SAFETY PRODUCT TEAM"
   },
   "material": {
@@ -155,7 +149,7 @@
       },
       {
         "label": "중량",
-        "value": "-"
+        "value": "160 g/m²"
       },
       {
         "label": "컬러",
@@ -367,10 +361,13 @@
       "width": "91%"
     },
     "statement.body": {
-      "width": "73%"
+      "width": "103%"
     },
     "features.items[0].body": {
       "width": "104%"
+    },
+    "gallery.note": {
+      "width": "82%"
     }
   },
   "shopHeader": {
@@ -418,16 +415,6 @@
       {
         "label": "made in",
         "value": "Korea"
-      }
-    ]
-  },
-  "testReports": {
-    "files": [
-      {
-        "url": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njssyyy/reports/1779288154355-25-afp160996.pdf?v=1779288156395",
-        "name": "25년 하복 상의 자켓 데님블루(AFP160996)",
-        "size": 1549802,
-        "uploadedAt": "2026-05-20T14:42:36.395Z"
       }
     ]
   },
@@ -486,6 +473,16 @@
       {
         "label": "AS책임자와 전화번호",
         "value": "02-777-3079"
+      }
+    ]
+  },
+  "testReports": {
+    "files": [
+      {
+        "url": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njssyyy/reports/1779288154355-25-afp160996.pdf?v=1779288156395",
+        "name": "25년 하복 상의 자켓 데님블루(AFP160996)",
+        "size": 1549802,
+        "uploadedAt": "2026-05-20T14:42:36.395Z"
       }
     ]
   }
