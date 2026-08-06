@@ -2,24 +2,24 @@
   "slug": "njs-ar301",
   "model": "NJSSJ#YY",
   "category": "ARAMID FR SERIES · STEADY No.01",
-  "name": "아라미드 <br><span style=\"color: rgb(198, 90, 30);\">하계</span> <br>방염 자켓",
+  "name": "아라미드 <br><span style=\"color: rgb(198, 90, 30);\">하계</span> <br>방염 자켓.",
   "subtitle": "전기·설비 현장의 여름을 책임지는 스테디 워크자켓",
   "tagline": "한여름 작업 현장을 위해 더 가볍고 시원하게 디자인된 프리미엄 아라미드 자켓",
   "hero": {
     "imageAlt": "아라미드 하계 자켓 — 정면 멜란지 블루",
     "counters": [
       {
-        "value": "65",
+        "value": "62.9",
         "unit": "%",
         "label": "META ARAMID"
       },
       {
-        "value": "33.5",
+        "value": "35.5",
         "unit": "%",
         "label": "LENZING FR"
       },
       {
-        "value": "1.5",
+        "value": "1.6",
         "unit": "%",
         "label": "ANTISTATIC"
       }
@@ -102,17 +102,17 @@
     "callouts": [
       {
         "tag": "A",
-        "title": "Meta-Aramid 65.5%",
+        "title": "Meta-Aramid 62.9%",
         "body": "용융·점화점이 없는 본질적 슈퍼 섬유."
       },
       {
         "tag": "B",
-        "title": "Lenzing FR® Rayon 33.5%",
+        "title": "Lenzing FR® Rayon 35.5%",
         "body": "Lenzing 사의 영구 난연 비스코스. 흡습과 촉감을 담당."
       },
       {
         "tag": "C",
-        "title": "Antistatic fiber 1.5%",
+        "title": "Antistatic fiber 1.6%",
         "body": "탄소 도전사 그리드. 정전기 방전으로 전기 작업 위험 차단."
       }
     ]
@@ -163,7 +163,7 @@
       },
       {
         "label": "중량",
-        "value": "-"
+        "value": "160 g/m²"
       },
       {
         "label": "컬러",
@@ -242,31 +242,31 @@
   },
   "field": {
     "eyebrow": "WHERE IT LIVES",
-    "headline": "12년간 <em>같은 현장</em>에서.",
+    "headline": "전기·기타 산업 현장 작업자의 <span style=\"color: rgb(198, 90, 30);\">여름 일상복</span>.",
     "items": [
       {
         "n": "01",
-        "tag": "KEPCO",
-        "title": "한국전력 변전 정비",
-        "body": "전국 변전소 정기 점검의 표준 하계 자켓. 2016년부터 누적 4만 2천 벌 운용."
+        "tag": "ELECTRICAL",
+        "title": "전기 작업",
+        "body": "전기 공사 및 배전반·변전소 정기 점검 시의 일상복. 절 안전화 및 내전압 장갑과 함께 운용합니다."
       },
       {
         "n": "02",
         "tag": "PLANT",
         "title": "정유·화학 플랜트",
-        "body": "여수·울산 단지의 여름 정기 보수 시즌 베이스 레이어."
+        "body": "고온·화학 물질 및 가스 화재 위험이 존재하는 정유·화학 단지의 여름 정기 보수(TA) 현장 최적화 워크웨어."
       },
       {
         "n": "03",
-        "tag": "GAS",
-        "title": "도시가스 배관",
-        "body": "메탄 누설 점검 작업의 정전기 방지 자켓."
+        "tag": "MAINT.",
+        "title": "정비현장",
+        "body": "철도·차량·기계 정비 현장의 마찰 스파크 방지 및 하계 작업 최적화."
       },
       {
-        "n": "04",
-        "tag": "MAINT.",
-        "title": "철도·차량 정비",
-        "body": "코레일 차량 기지의 여름철 외근 표준복."
+        "n": "4",
+        "tag": "SUMMER",
+        "title": "여름철 외근",
+        "body": "옥외 작업 감독, 현장 점검 및 여름철 외부 활동 시의 쾌적한 방염 일상복."
       }
     ]
   },
@@ -378,6 +378,24 @@
     "gallery.note": {
       "width": "137%",
       "align": "left"
+    },
+    "statement.body": {
+      "width": "69%"
+    },
+    "features.items[1].body": {
+      "width": "83%"
+    },
+    "features.items[0].title": {
+      "size": "1.50em"
+    },
+    "features.items[2].title": {
+      "size": "1.50em"
+    },
+    "features.items[3].title": {
+      "size": "1.50em"
+    },
+    "features.items[2].body": {
+      "width": "87%"
     }
   },
   "flavor": "tactical",
@@ -385,16 +403,6 @@
     "images": [
       "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njs-ar301/card-main.jpg?v=1779118156217",
       "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njs-ar301/card-hover.jpg?v=1779118444980"
-    ]
-  },
-  "testReports": {
-    "files": [
-      {
-        "url": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njs-ar301/reports/1779288091374-25-afp160996.pdf?v=1779288093083",
-        "name": "25년 하복 상의 자켓 데님블루(AFP160996)",
-        "size": 1549802,
-        "uploadedAt": "2026-05-20T14:41:33.083Z"
-      }
     ]
   },
   "basicInfo": {
@@ -452,6 +460,16 @@
       {
         "label": "AS책임자와 전화번호",
         "value": "02-777-3079"
+      }
+    ]
+  },
+  "testReports": {
+    "files": [
+      {
+        "url": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njs-ar301/reports/1779288091374-25-afp160996.pdf?v=1779288093083",
+        "name": "25년 하복 상의 자켓 데님블루(AFP160996)",
+        "size": 1549802,
+        "uploadedAt": "2026-05-20T14:41:33.083Z"
       }
     ]
   }
