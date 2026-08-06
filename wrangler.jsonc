@@ -2,9 +2,10 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "nj-safety-website",
   "compatibility_date": "2025-04-01",
-  // mimetext (used by /api/contact for MIME message composition) pulls
-  // mime-types -> node 'path' / 'os'. nodejs_compat enables those built-ins
-  // inside the Worker runtime; without it the build fails to resolve "path".
+  // Kept from when /api/contact composed MIME messages with mimetext.
+  // Nothing in the Worker needs node built-ins today, but the flag is
+  // harmless and dropping it changes runtime resolution behaviour, so
+  // it stays until there's a reason to touch it.
   "compatibility_flags": ["nodejs_compat"],
 
   // Worker entry — handles /api/admin/upload-image, falls back to static
@@ -32,37 +33,16 @@
     }
   ],
 
-  // Outbound transactional email.
+  // NOTE — no email binding, on purpose.
   //
-  // PRIMARY TRANSPORT — Resend. The Worker uses it whenever the
-  // RESEND_API_KEY secret exists:
-  //
-  //   wrangler secret put RESEND_API_KEY
-  //
-  // Sign the Resend account up with the address that should RECEIVE
-  // the inquiries (njsafety91@naver.com). Resend's shared sandbox
-  // sender (onboarding@resend.dev, the RESEND_FROM default) only
-  // delivers to the account's own address; verifying a domain on
-  // Resend lifts that and lets RESEND_FROM be a real @njfashion.co.kr
-  // sender.
-  //
-  // FALLBACK — Cloudflare's own send_email binding, used only when
-  // RESEND_API_KEY is unset. It CANNOT deliver today: Cloudflare
-  // rejects any sender whose domain the account doesn't own
-  // ("email from naver.com not allowed because domain is not owned by
-  // the same account"), and this account has no zones with Email
-  // Routing. Making it work needs a domain moved onto Cloudflare with
-  // Email Routing enabled, plus the destination address verified
-  // under Workers & Pages → nj-safety-website → Settings → Send Email.
-  //
-  // The binding name 'CONTACT_EMAIL' is what worker/index.ts calls —
-  // keep the two in sync if you rename.
-  "send_email": [
-    {
-      "name": "CONTACT_EMAIL",
-      "destination_address": "njsafety91@naver.com"
-    }
-  ],
+  // 문의 폼 submissions are stored in R2 under `inquiries/` and read
+  // from /admin/inquiries. Emailing them out was tried and dropped:
+  // Cloudflare's send_email binding refuses any sender whose domain
+  // the account doesn't own ("email from naver.com not allowed because
+  // domain is not owned by the same account"), and this account has no
+  // zones with Email Routing. Reviving it would mean moving a domain
+  // onto Cloudflare (or paying for a third-party mail API) — see git
+  // history for the working Resend implementation if that day comes.
 
   // Public-facing R2 URL. After the bucket's Public Access is enabled,
   // copy the `https://pub-<hash>.r2.dev` URL from the bucket Settings

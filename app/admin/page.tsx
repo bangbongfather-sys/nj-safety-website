@@ -7,7 +7,20 @@ import { ghListDir, REPO_OWNER, REPO_NAME, REPO_BRANCH } from '@/lib/admin/githu
 
 const SITE_PREVIEW_BASE = 'https://nj-safety-website.njsafety91.workers.dev';
 
-type Counts = { products: number | null; lastCommitSha: string | null; lastCommitDate: string | null; lastCommitMessage: string | null };
+type Counts = { products: number | null; newInquiries: number | null; lastCommitSha: string | null; lastCommitDate: string | null; lastCommitMessage: string | null };
+
+/** Unhandled 문의 count for the dashboard tile. Null when unreachable. */
+async function fetchNewInquiryCount(pat: string): Promise<number | null> {
+  try {
+    const r = await fetch('/api/admin/inquiries', { headers: { Authorization: `token ${pat}` } });
+    if (!r.ok) return null;
+    const data = (await r.json()) as { ok?: boolean; items?: { status?: string }[] };
+    if (!data.ok || !Array.isArray(data.items)) return null;
+    return data.items.filter((i) => i.status === 'new').length;
+  } catch {
+    return null;
+  }
+}
 
 async function fetchLastCommit(pat: string): Promise<{ sha: string; date: string; message: string } | null> {
   try {
@@ -32,20 +45,22 @@ async function fetchLastCommit(pat: string): Promise<{ sha: string; date: string
 export default function DashboardPage() {
   const { state } = useAdmin();
   const pat = state.status === 'authenticated' ? state.pat : '';
-  const [counts, setCounts] = useState<Counts>({ products: null, lastCommitSha: null, lastCommitDate: null, lastCommitMessage: null });
+  const [counts, setCounts] = useState<Counts>({ products: null, newInquiries: null, lastCommitSha: null, lastCommitDate: null, lastCommitMessage: null });
 
   useEffect(() => {
     if (!pat) return;
     let cancelled = false;
     (async () => {
       try {
-        const [files, lastCommit] = await Promise.all([
+        const [files, lastCommit, newInquiries] = await Promise.all([
           ghListDir(pat, 'data/products'),
           fetchLastCommit(pat),
+          fetchNewInquiryCount(pat),
         ]);
         if (cancelled) return;
         setCounts({
           products: files.filter((p) => p.endsWith('.json')).length,
+          newInquiries,
           lastCommitSha: lastCommit?.sha ?? null,
           lastCommitDate: lastCommit?.date ?? null,
           lastCommitMessage: lastCommit?.message ?? null,
@@ -73,6 +88,18 @@ export default function DashboardPage() {
       </header>
 
       <section className="admin-stat-grid">
+        {/* Inquiries land in R2 with no email alert, so the count has to
+         *  be visible the moment the admin opens the dashboard. */}
+        <div className="admin-stat">
+          <span className="admin-stat-label">새 문의</span>
+          <span
+            className="admin-stat-value"
+            style={counts.newInquiries ? { color: 'var(--accent)' } : undefined}
+          >
+            {counts.newInquiries ?? '—'}
+          </span>
+          <Link href="/admin/inquiries" className="admin-stat-cta">문의 접수함 →</Link>
+        </div>
         <div className="admin-stat">
           <span className="admin-stat-label">등록된 제품</span>
           <span className="admin-stat-value">{counts.products ?? '—'}</span>

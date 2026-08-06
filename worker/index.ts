@@ -1,7 +1,7 @@
 /**
  * NJ SAFETY — Cloudflare Worker.
  *
- * Two jobs:
+ * Three jobs:
  *
  *   1. `PUT /api/admin/upload-image?key=<path>` — admin image uploads.
  *      Authenticates the caller against GitHub (the same PAT the admin
@@ -10,52 +10,49 @@
  *      Side-steps the Cloudflare build/deploy cycle entirely — uploads
  *      go live the moment the R2 PUT acknowledges.
  *
- *   2. Everything else — passes through to env.ASSETS (the Workers
+ *   2. The 문의(inquiry) inbox. `POST /api/contact` stores each public
+ *      submission as a JSON object in R2 under `inquiries/`; the
+ *      `/api/admin/inquiries*` routes let the admin UI read, mark and
+ *      delete them. There is deliberately NO email in this path — see
+ *      the note on handleContact.
+ *
+ *   3. Everything else — passes through to env.ASSETS (the Workers
  *      Static Assets binding that serves `out/`). Same behaviour the
  *      site had before this Worker existed.
  */
 
+interface R2ObjectMeta {
+  key: string;
+  size: number;
+  uploaded: Date;
+}
+interface R2ObjectBody extends R2ObjectMeta {
+  text(): Promise<string>;
+}
 interface R2Bucket {
   put(
     key: string,
-    body: ArrayBuffer | ReadableStream | Blob,
+    body: ArrayBuffer | ReadableStream | Blob | string,
     options?: { httpMetadata?: { contentType?: string } },
   ): Promise<unknown>;
-  get(key: string): Promise<unknown>;
+  get(key: string): Promise<R2ObjectBody | null>;
   delete(key: string): Promise<void>;
-}
-
-/**
- * Cloudflare's send_email binding. Activated when wrangler.jsonc has
- * a verified destination address. See the `send_email` block there
- * for one-time setup notes.
- */
-interface SendEmailBinding {
-  send(message: unknown): Promise<void>;
+  list(options?: {
+    prefix?: string;
+    limit?: number;
+    cursor?: string;
+  }): Promise<{ objects: R2ObjectMeta[]; truncated: boolean; cursor?: string }>;
 }
 
 interface Env {
   /** Auto-bound by `[assets]` in wrangler.jsonc — serves the static export. */
   ASSETS: Fetcher;
-  /** R2 bucket for admin-uploaded images. Set via wrangler.jsonc r2_buckets. */
+  /** R2 bucket for admin-uploaded images + the 문의 inbox. Set via wrangler.jsonc r2_buckets. */
   IMAGES_R2: R2Bucket;
   /** Public base URL of the R2 bucket (R2.dev subdomain or custom domain). */
   R2_PUBLIC_BASE: string;
-  /** GitHub login allowed to upload. Defaults to bangbongfather-sys. */
+  /** GitHub login allowed to upload / read the inquiry inbox. Defaults to bangbongfather-sys. */
   ADMIN_GH_LOGIN?: string;
-  /** Cloudflare Email Workers binding — see wrangler.jsonc. Optional
-   *  so the rest of the Worker keeps running before the destination
-   *  is verified. Only usable once the sender's domain is a zone on
-   *  this account, so it sits behind RESEND_API_KEY. */
-  CONTACT_EMAIL?: SendEmailBinding;
-  /** Resend API key. Set as a secret: `wrangler secret put RESEND_API_KEY`.
-   *  Present ⇒ contact-form mail goes out through Resend. */
-  RESEND_API_KEY?: string;
-  /** Sender for the Resend path. Defaults to Resend's shared sandbox
-   *  address; override once a domain is verified on Resend. */
-  RESEND_FROM?: string;
-  /** Inbox the inquiry notifications go to. Defaults to njsafety91@naver.com. */
-  CONTACT_TO?: string;
 }
 
 // Allow only safe path characters in R2 keys. Reject "..", absolute paths,
@@ -66,7 +63,7 @@ const KEY_RE = /^[a-z0-9_\-./]+$/i;
 function corsHeaders(): Record<string, string> {
   return {
     'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, PUT, POST, OPTIONS',
+    'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   };
 }
@@ -89,7 +86,13 @@ async function verifyGitHubPat(pat: string): Promise<{ ok: true; login: string }
   }
 }
 
-async function handleUpload(req: Request, env: Env): Promise<Response> {
+/**
+ * Gate for every `/api/admin/*` route. Reuses the GitHub PAT the admin
+ * UI already holds, so there's no second credential to manage.
+ * Resolves to null when the caller is allowed, or to the Response that
+ * should be returned instead.
+ */
+async function requireAdmin(req: Request, env: Env): Promise<Response | null> {
   const auth = req.headers.get('Authorization');
   if (!auth?.startsWith('token ')) {
     return new Response('Missing token (Authorization: token <PAT>)', {
@@ -97,8 +100,7 @@ async function handleUpload(req: Request, env: Env): Promise<Response> {
       headers: corsHeaders(),
     });
   }
-  const pat = auth.slice(6).trim();
-  const verify = await verifyGitHubPat(pat);
+  const verify = await verifyGitHubPat(auth.slice(6).trim());
   if (!verify.ok) {
     return new Response(`Auth failed: ${verify.reason}`, { status: 401, headers: corsHeaders() });
   }
@@ -109,6 +111,12 @@ async function handleUpload(req: Request, env: Env): Promise<Response> {
       headers: corsHeaders(),
     });
   }
+  return null;
+}
+
+async function handleUpload(req: Request, env: Env): Promise<Response> {
+  const denied = await requireAdmin(req, env);
+  if (denied) return denied;
 
   const url = new URL(req.url);
   const key = url.searchParams.get('key');
@@ -169,121 +177,35 @@ function sanitizeFilename(name: string): string {
     .slice(0, 80);
 }
 
-/** Inbox the inquiry notifications land in. Override with the CONTACT_TO var. */
-const DEFAULT_CONTACT_TO = 'njsafety91@naver.com';
+/** R2 key prefix the inquiry inbox lives under. */
+const INBOX_PREFIX = 'inquiries/';
 
-/**
- * Resend's shared sandbox sender. Works with no domain setup at all,
- * but Resend then only delivers to the address the Resend account was
- * registered with. Point RESEND_FROM at an address on a verified
- * domain to lift that restriction.
- */
-const DEFAULT_RESEND_FROM = 'NJ SAFETY 문의 <onboarding@resend.dev>';
-
-type Mail = {
-  to: string;
-  subject: string;
-  textBody: string;
-  htmlBody: string;
-  replyToAddr: string;
-  replyToName: string;
+/** One stored submission. Written by handleContact, read by the admin UI. */
+type Inquiry = {
+  /** R2 key without the prefix — the id the admin routes address it by. */
+  id: string;
+  receivedAt: string;
+  status: 'new' | 'done';
+  inquiryType: string;
+  inquiryLabel: string;
+  company: string;
+  contactName: string;
+  phone: string;
+  email: string;
+  message: string;
+  attachments: { name: string; url: string; size: number }[];
 };
 
-/** Primary transport — Resend's HTTP API. */
-async function sendViaResend(env: Env, m: Mail): Promise<void> {
-  const r = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${env.RESEND_API_KEY}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      from: env.RESEND_FROM || DEFAULT_RESEND_FROM,
-      to: [m.to],
-      subject: m.subject,
-      text: m.textBody,
-      html: m.htmlBody,
-      reply_to: `${m.replyToName} <${m.replyToAddr}>`,
-    }),
-  });
-  if (!r.ok) {
-    throw new Error(`resend ${r.status}: ${(await r.text()).slice(0, 300)}`);
-  }
-}
-
 /**
- * Fallback transport — Cloudflare's send_email binding. Only delivers
- * when the sender's domain is a zone on this Cloudflare account, which
- * is why Resend is tried first.
+ * Public inquiry submission.
+ *
+ * Deliberately does NOT send email. Cloudflare's send_email binding
+ * only accepts senders on a domain the account owns, and this account
+ * has no zones — every send failed with "email from naver.com not
+ * allowed because domain is not owned by the same account". Rather
+ * than take on a third-party mail provider, submissions are stored in
+ * R2 and read from /admin/inquiries.
  */
-async function sendViaBinding(env: Env, m: Mail): Promise<void> {
-  // Dynamic imports keep these out of the cold-start bundle on the
-  // Resend path, which is the one that normally runs.
-  const { createMimeMessage, Mailbox } = await import('mimetext');
-  const { EmailMessage } = await import('cloudflare:email');
-
-  const msg = createMimeMessage();
-  msg.setSender({ name: 'NJ SAFETY · 문의 알림', addr: m.to });
-  msg.setRecipient(m.to);
-  msg.setSubject(m.subject);
-  // Reply-To must be a Mailbox instance — mimetext validates this
-  // header with `instanceof Mailbox` and throws
-  // MIMETEXT_INVALID_HEADER_VALUE on a plain "Name <addr>" string.
-  // The object form also gets the display name RFC 2047 encoded,
-  // which a Korean 담당자명 needs.
-  msg.setHeader('Reply-To', new Mailbox({ addr: m.replyToAddr, name: m.replyToName }));
-  // contentType must be the bare MIME type — mimetext rejects
-  // 'text/plain; charset=utf-8' outright and takes the charset as its
-  // own option.
-  //
-  // Bodies go out base64-encoded. mimetext doesn't encode the data
-  // itself — it only writes the Content-Transfer-Encoding header — so
-  // we encode here. The default (7bit) would declare Korean UTF-8
-  // bytes as 7-bit ASCII, which relays are free to mangle.
-  msg.addMessage({ contentType: 'text/plain', charset: 'utf-8', encoding: 'base64', data: toBase64(m.textBody) });
-  msg.addMessage({ contentType: 'text/html', charset: 'utf-8', encoding: 'base64', data: toBase64(m.htmlBody) });
-
-  await env.CONTACT_EMAIL!.send(new EmailMessage(m.to, m.to, msg.asRaw()));
-}
-
-/**
- * Shared failure response. Attachments are already in R2 by this
- * point, so 502 signals "delivery didn't happen" rather than "the
- * submission is lost" — the real cause goes to the Worker log.
- */
-function emailFailure(e: unknown, to: string): Response {
-  console.error('contact email send failed:', e);
-  return new Response(
-    JSON.stringify({
-      ok: false,
-      error: `메일 발송 실패. 곧 다시 시도하시거나 ${to} 으로 직접 보내주세요.`,
-    }),
-    { status: 502, headers: { ...corsHeaders(), 'Content-Type': 'application/json' } },
-  );
-}
-
-/**
- * UTF-8 safe base64. `btoa` only accepts latin1, so the string is run
- * through TextEncoder first and the bytes are widened back to chars.
- * Used for the email bodies (Content-Transfer-Encoding: base64) and
- * wrapped at 76 columns as RFC 2045 requires.
- */
-function toBase64(s: string): string {
-  const bytes = new TextEncoder().encode(s);
-  let bin = '';
-  for (const b of bytes) bin += String.fromCharCode(b);
-  return (btoa(bin).match(/.{1,76}/g) ?? []).join('\r\n');
-}
-
-function escapeHtml(s: string): string {
-  return s
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-
 async function handleContact(req: Request, env: Env): Promise<Response> {
   let form: FormData;
   try {
@@ -335,9 +257,9 @@ async function handleContact(req: Request, env: Env): Promise<Response> {
     );
   }
 
-  // Upload attachments to R2 (under contact/ prefix) and collect URLs
-  // for the email body. Sending the actual bytes inline would blow the
-  // 25 MB raw-email cap fast; link-based delivery scales better.
+  // Upload attachments to R2 (under contact/ prefix). The inquiry
+  // record stores their public URLs rather than the bytes, so the
+  // admin list stays small and the files download on demand.
   const base = (env.R2_PUBLIC_BASE || '').replace(/\/+$/, '');
   const attachments: { name: string; url: string; size: number }[] = [];
   const files = form.getAll('attachments').filter((v): v is File => v instanceof File && v.size > 0);
@@ -377,95 +299,133 @@ async function handleContact(req: Request, env: Env): Promise<Response> {
     }
   }
 
-  // Compose the notification email once; the transport is picked
-  // below. Cheap enough to build even when nothing is configured.
-  const submittedAt = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
-  const typeLabel = INQUIRY_LABELS[data.inquiry_type] ?? data.inquiry_type;
-  const to = env.CONTACT_TO || DEFAULT_CONTACT_TO;
-
-  const textBody = [
-    `[NJ SAFETY 문의 접수] ${typeLabel}`,
-    '',
-    `접수 시각: ${submittedAt}`,
-    '',
-    '─── 담당자 정보 ────────────────────',
-    `회사명     : ${data.company}`,
-    `담당자     : ${data.contact_name}`,
-    `연락처     : ${data.phone}`,
-    `이메일     : ${data.email}`,
-    `문의 유형  : ${typeLabel}`,
-    '',
-    '─── 문의 내용 ────────────────────',
-    data.message,
-    '',
-    '─── 첨부 파일 ────────────────────',
-    attachments.length === 0
-      ? '(없음)'
-      : attachments.map((a) => `• ${a.name} (${Math.round(a.size / 1024)} KB)\n  ${a.url}`).join('\n'),
-    '',
-    '— 이 메일은 NJ SAFETY 문의 폼에서 자동 발송된 알림입니다.',
-  ].join('\n');
-
-  const htmlRows = (label: string, value: string) =>
-    `<tr><td style="padding:6px 12px;color:#666;font-family:monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;width:120px;vertical-align:top">${escapeHtml(label)}</td><td style="padding:6px 12px;color:#111;font-size:14px">${escapeHtml(value || '-')}</td></tr>`;
-  const htmlBody = `<!doctype html><html><body style="font-family:-apple-system,BlinkMacSystemFont,'Pretendard',sans-serif;background:#f5f5f5;margin:0;padding:24px">
-<div style="max-width:680px;margin:0 auto;background:#fff;border:1px solid #e5e5e5;padding:32px">
-  <div style="border-bottom:2px solid #ff6b1a;padding-bottom:16px;margin-bottom:24px">
-    <div style="font-family:monospace;font-size:11px;letter-spacing:.2em;color:#ff6b1a;text-transform:uppercase">— NJ SAFETY · Inquiry Received</div>
-    <h1 style="margin:8px 0 0;font-size:22px;font-weight:800;color:#0d0d0e">${escapeHtml(typeLabel)}</h1>
-    <div style="margin-top:8px;font-size:12px;color:#888">${escapeHtml(submittedAt)} KST</div>
-  </div>
-  <h2 style="font-size:13px;color:#0d0d0e;margin:24px 0 8px;letter-spacing:.05em">담당자 정보</h2>
-  <table style="width:100%;border-collapse:collapse;background:#fafafa;border:1px solid #eee">
-    ${htmlRows('회사명', data.company)}
-    ${htmlRows('담당자', data.contact_name)}
-    ${htmlRows('연락처', data.phone)}
-    ${htmlRows('이메일', data.email)}
-    ${htmlRows('문의 유형', typeLabel)}
-  </table>
-  <h2 style="font-size:13px;color:#0d0d0e;margin:24px 0 8px;letter-spacing:.05em">문의 내용</h2>
-  <div style="background:#fafafa;border:1px solid #eee;padding:16px;white-space:pre-wrap;font-size:14px;line-height:1.7;color:#222">${escapeHtml(data.message)}</div>
-  ${attachments.length > 0 ? `
-  <h2 style="font-size:13px;color:#0d0d0e;margin:24px 0 8px;letter-spacing:.05em">첨부 파일 (${attachments.length})</h2>
-  <ul style="list-style:none;padding:0;margin:0">
-    ${attachments.map((a) => `<li style="padding:10px 12px;border:1px solid #eee;margin-bottom:6px;font-size:13px"><a href="${escapeHtml(a.url)}" style="color:#ff6b1a;text-decoration:none">${escapeHtml(a.name)}</a> <span style="color:#888;font-size:11px">(${Math.round(a.size / 1024)} KB)</span></li>`).join('')}
-  </ul>` : ''}
-  <div style="margin-top:32px;padding-top:16px;border-top:1px solid #eee;font-size:11px;color:#999;font-family:monospace;letter-spacing:.06em">© NJ SAFETY · 자동 발송 — 회신은 ${escapeHtml(data.email)}로</div>
-</div></body></html>`;
-
-  const mail: Mail = {
-    to,
-    subject: `[NJ SAFETY 문의] ${typeLabel} · ${data.company}`,
-    textBody,
-    htmlBody,
-    replyToAddr: data.email,
-    replyToName: data.contact_name,
+  // Store the submission. The R2 key is timestamp-first so a plain
+  // lexicographic list() comes back in chronological order — the admin
+  // UI just reverses it for newest-first.
+  const receivedAt = new Date().toISOString();
+  const id = `${receivedAt.replace(/[:.]/g, '-')}-${Math.random().toString(36).slice(2, 8)}`;
+  const record: Inquiry = {
+    id,
+    receivedAt,
+    status: 'new',
+    inquiryType: data.inquiry_type,
+    inquiryLabel: INQUIRY_LABELS[data.inquiry_type] ?? data.inquiry_type,
+    company: data.company,
+    contactName: data.contact_name,
+    phone: data.phone,
+    email: data.email,
+    message: data.message,
+    attachments,
   };
 
-  // Resend is the primary transport. Cloudflare's own send_email
-  // binding stays as a fallback, but it can only send once the
-  // account owns the sender's domain — see wrangler.jsonc.
-  if (env.RESEND_API_KEY) {
-    try {
-      await sendViaResend(env, mail);
-    } catch (e: unknown) {
-      return emailFailure(e, to);
-    }
-  } else if (env.CONTACT_EMAIL) {
-    try {
-      await sendViaBinding(env, mail);
-    } catch (e: unknown) {
-      return emailFailure(e, to);
-    }
+  try {
+    await env.IMAGES_R2.put(`${INBOX_PREFIX}${id}.json`, JSON.stringify(record), {
+      httpMetadata: { contentType: 'application/json; charset=utf-8' },
+    });
+  } catch (e: unknown) {
+    // Unlike the old email path there is no other copy of the text
+    // fields, so a failed write means the inquiry is genuinely lost —
+    // tell the visitor instead of pretending it went through.
+    console.error('inquiry store failed:', e);
+    return new Response(
+      JSON.stringify({
+        ok: false,
+        error: '문의 저장에 실패했습니다. 잠시 후 다시 시도하시거나 02-777-3079 로 연락 주세요.',
+      }),
+      { status: 500, headers: { ...corsHeaders(), 'Content-Type': 'application/json' } },
+    );
   }
-  // (With neither transport configured we still return 200 — the
-  // submission's attachments are captured in R2 and the visitor gets
-  // a positive UX; the admin wires a transport when ready.)
 
   return new Response(
     JSON.stringify({ ok: true, attachments: attachments.length }),
     { status: 200, headers: { ...corsHeaders(), 'Content-Type': 'application/json' } },
   );
+}
+
+/* ─── Admin inbox ────────────────────────────────────────────────── */
+
+/** Ids are generated by handleContact — reject anything else outright. */
+const INQUIRY_ID_RE = /^[0-9TZa-z-]{1,80}$/;
+
+function json(body: unknown, status = 200): Response {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { ...corsHeaders(), 'Content-Type': 'application/json' },
+  });
+}
+
+/**
+ * `GET /api/admin/inquiries` — the whole inbox, newest first.
+ *
+ * Reads every object under `inquiries/`. Fine at this volume (a B2B
+ * inquiry inbox, not a mail server); if it ever outgrows one page this
+ * needs a cursor instead.
+ */
+async function handleInquiryList(req: Request, env: Env): Promise<Response> {
+  const denied = await requireAdmin(req, env);
+  if (denied) return denied;
+
+  const items: Inquiry[] = [];
+  let cursor: string | undefined;
+  do {
+    const page = await env.IMAGES_R2.list({ prefix: INBOX_PREFIX, limit: 1000, cursor });
+    const bodies = await Promise.all(page.objects.map((o) => env.IMAGES_R2.get(o.key)));
+    for (const body of bodies) {
+      if (!body) continue;
+      try {
+        items.push(JSON.parse(await body.text()) as Inquiry);
+      } catch {
+        // A corrupt object shouldn't blank the whole inbox — skip it.
+        console.error('inquiry parse failed:', body.key);
+      }
+    }
+    cursor = page.truncated ? page.cursor : undefined;
+  } while (cursor);
+
+  items.sort((a, b) => (a.receivedAt < b.receivedAt ? 1 : -1));
+  return json({ ok: true, items });
+}
+
+/**
+ * `POST /api/admin/inquiries/status` — flip one entry between
+ * 신규(new) and 처리완료(done). Body: `{ id, status }`.
+ */
+async function handleInquiryStatus(req: Request, env: Env): Promise<Response> {
+  const denied = await requireAdmin(req, env);
+  if (denied) return denied;
+
+  const body = (await req.json().catch(() => ({}))) as { id?: string; status?: string };
+  const id = body.id ?? '';
+  const status = body.status;
+  if (!INQUIRY_ID_RE.test(id)) return json({ ok: false, error: 'invalid id' }, 400);
+  if (status !== 'new' && status !== 'done') return json({ ok: false, error: 'invalid status' }, 400);
+
+  const key = `${INBOX_PREFIX}${id}.json`;
+  const existing = await env.IMAGES_R2.get(key);
+  if (!existing) return json({ ok: false, error: 'not found' }, 404);
+
+  const record = JSON.parse(await existing.text()) as Inquiry;
+  record.status = status;
+  await env.IMAGES_R2.put(key, JSON.stringify(record), {
+    httpMetadata: { contentType: 'application/json; charset=utf-8' },
+  });
+  return json({ ok: true, item: record });
+}
+
+/**
+ * `DELETE /api/admin/inquiries?id=<id>` — drop one entry.
+ *
+ * Only the inquiry record goes; any attachments stay in R2 under
+ * `contact/`, matching how the 자료실 admin treats removed files.
+ */
+async function handleInquiryDelete(req: Request, env: Env): Promise<Response> {
+  const denied = await requireAdmin(req, env);
+  if (denied) return denied;
+
+  const id = new URL(req.url).searchParams.get('id') ?? '';
+  if (!INQUIRY_ID_RE.test(id)) return json({ ok: false, error: 'invalid id' }, 400);
+  await env.IMAGES_R2.delete(`${INBOX_PREFIX}${id}.json`);
+  return json({ ok: true });
 }
 
 export default {
@@ -478,6 +438,15 @@ export default {
 
     if (url.pathname === '/api/admin/upload-image' && req.method === 'PUT') {
       return handleUpload(req, env);
+    }
+
+    if (url.pathname === '/api/admin/inquiries') {
+      if (req.method === 'GET') return handleInquiryList(req, env);
+      if (req.method === 'DELETE') return handleInquiryDelete(req, env);
+    }
+
+    if (url.pathname === '/api/admin/inquiries/status' && req.method === 'POST') {
+      return handleInquiryStatus(req, env);
     }
 
     if (url.pathname === '/api/contact' && req.method === 'POST') {

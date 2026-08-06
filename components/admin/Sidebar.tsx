@@ -8,6 +8,7 @@ type NavItem = { href: string; label: string; section: 'main' | 'tools' };
 
 const ITEMS: NavItem[] = [
   { href: '/admin',            label: '대시보드',                  section: 'main'  },
+  { href: '/admin/inquiries',  label: '📥 문의 접수함',              section: 'main'  },
   { href: '/admin/edit',       label: '✎ 메인 페이지 편집',         section: 'main'  },
   { href: '/admin/about/edit', label: '✎ 회사소개 편집',           section: 'main'  },
   { href: '/admin/contact/edit', label: '✎ 문의 편집',             section: 'main'  },
