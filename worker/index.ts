@@ -160,6 +160,19 @@ function sanitizeFilename(name: string): string {
     .slice(0, 80);
 }
 
+/**
+ * UTF-8 safe base64. `btoa` only accepts latin1, so the string is run
+ * through TextEncoder first and the bytes are widened back to chars.
+ * Used for the email bodies (Content-Transfer-Encoding: base64) and
+ * wrapped at 76 columns as RFC 2045 requires.
+ */
+function toBase64(s: string): string {
+  const bytes = new TextEncoder().encode(s);
+  let bin = '';
+  for (const b of bytes) bin += String.fromCharCode(b);
+  return (btoa(bin).match(/.{1,76}/g) ?? []).join('\r\n');
+}
+
 function escapeHtml(s: string): string {
   return s
     .replace(/&/g, '&amp;')
@@ -270,7 +283,7 @@ async function handleContact(req: Request, env: Env): Promise<Response> {
       // Dynamic imports keep these out of the cold-start bundle when
       // the binding isn't configured yet (e.g. on a fresh deploy
       // before the destination address is verified).
-      const { createMimeMessage } = await import('mimetext');
+      const { createMimeMessage, Mailbox } = await import('mimetext');
       const { EmailMessage } = await import('cloudflare:email');
 
       const submittedAt = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
@@ -334,9 +347,22 @@ async function handleContact(req: Request, env: Env): Promise<Response> {
       msg.setSender({ name: 'NJ SAFETY · 문의 알림', addr: 'njsafety91@naver.com' });
       msg.setRecipient('njsafety91@naver.com');
       msg.setSubject(`[NJ SAFETY 문의] ${typeLabel} · ${data.company}`);
-      msg.setHeader('Reply-To', `${data.contact_name} <${data.email}>`);
-      msg.addMessage({ contentType: 'text/plain; charset=utf-8', data: textBody });
-      msg.addMessage({ contentType: 'text/html;  charset=utf-8', data: htmlBody });
+      // Reply-To must be a Mailbox instance — mimetext validates this
+      // header with `instanceof Mailbox` and throws
+      // MIMETEXT_INVALID_HEADER_VALUE on a plain "Name <addr>" string.
+      // Passing the object form also gets the display name RFC 2047
+      // base64-encoded, which a Korean 담당자명 needs.
+      msg.setHeader('Reply-To', new Mailbox({ addr: data.email, name: data.contact_name }));
+      // contentType must be the bare MIME type — mimetext rejects
+      // 'text/plain; charset=utf-8' outright and takes the charset as
+      // its own option (it defaults to UTF-8, passed here explicitly).
+      //
+      // Bodies go out base64-encoded. mimetext doesn't encode the data
+      // itself — it only writes the Content-Transfer-Encoding header —
+      // so we encode here. The default (7bit) would declare Korean
+      // UTF-8 bytes as 7-bit ASCII, which relays are free to mangle.
+      msg.addMessage({ contentType: 'text/plain', charset: 'utf-8', encoding: 'base64', data: toBase64(textBody) });
+      msg.addMessage({ contentType: 'text/html', charset: 'utf-8', encoding: 'base64', data: toBase64(htmlBody) });
 
       const emailMessage = new EmailMessage(
         'njsafety91@naver.com',
