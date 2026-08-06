@@ -322,6 +322,10 @@ async function handleContact(req: Request, env: Env): Promise<Response> {
     await env.IMAGES_R2.put(`${INBOX_PREFIX}${id}.json`, JSON.stringify(record), {
       httpMetadata: { contentType: 'application/json; charset=utf-8' },
     });
+    // The R2 key is the only handle on a stored inquiry — log it so a
+    // submission can still be found from the Worker logs if the admin
+    // list ever misbehaves.
+    console.log('inquiry stored:', `${INBOX_PREFIX}${id}.json`);
   } catch (e: unknown) {
     // Unlike the old email path there is no other copy of the text
     // fields, so a failed write means the inquiry is genuinely lost —
