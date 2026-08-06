@@ -32,19 +32,31 @@
     }
   ],
 
-  // Outbound transactional email via Cloudflare Email Workers.
+  // Outbound transactional email.
   //
-  // MANUAL SETUP REQUIRED (one-time):
-  //   1. In the Cloudflare dashboard go to Workers & Pages →
-  //      `nj-safety-website` → Settings → Send Email.
-  //   2. Add `njsafety91@naver.com` as the destination address. Click
-  //      'Send verification' — Cloudflare emails Naver a verify link.
-  //   3. Open the email + click the link to confirm.
-  //   4. After that the binding below activates and the contact form
-  //      can POST to /api/contact → email lands in the inbox.
+  // PRIMARY TRANSPORT — Resend. The Worker uses it whenever the
+  // RESEND_API_KEY secret exists:
   //
-  // The send_email binding name 'CONTACT_EMAIL' is what worker/index.ts
-  // calls — keep the two in sync if you rename.
+  //   wrangler secret put RESEND_API_KEY
+  //
+  // Sign the Resend account up with the address that should RECEIVE
+  // the inquiries (njsafety91@naver.com). Resend's shared sandbox
+  // sender (onboarding@resend.dev, the RESEND_FROM default) only
+  // delivers to the account's own address; verifying a domain on
+  // Resend lifts that and lets RESEND_FROM be a real @njfashion.co.kr
+  // sender.
+  //
+  // FALLBACK — Cloudflare's own send_email binding, used only when
+  // RESEND_API_KEY is unset. It CANNOT deliver today: Cloudflare
+  // rejects any sender whose domain the account doesn't own
+  // ("email from naver.com not allowed because domain is not owned by
+  // the same account"), and this account has no zones with Email
+  // Routing. Making it work needs a domain moved onto Cloudflare with
+  // Email Routing enabled, plus the destination address verified
+  // under Workers & Pages → nj-safety-website → Settings → Send Email.
+  //
+  // The binding name 'CONTACT_EMAIL' is what worker/index.ts calls —
+  // keep the two in sync if you rename.
   "send_email": [
     {
       "name": "CONTACT_EMAIL",

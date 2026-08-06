@@ -45,8 +45,17 @@ interface Env {
   ADMIN_GH_LOGIN?: string;
   /** Cloudflare Email Workers binding — see wrangler.jsonc. Optional
    *  so the rest of the Worker keeps running before the destination
-   *  is verified. */
+   *  is verified. Only usable once the sender's domain is a zone on
+   *  this account, so it sits behind RESEND_API_KEY. */
   CONTACT_EMAIL?: SendEmailBinding;
+  /** Resend API key. Set as a secret: `wrangler secret put RESEND_API_KEY`.
+   *  Present ⇒ contact-form mail goes out through Resend. */
+  RESEND_API_KEY?: string;
+  /** Sender for the Resend path. Defaults to Resend's shared sandbox
+   *  address; override once a domain is verified on Resend. */
+  RESEND_FROM?: string;
+  /** Inbox the inquiry notifications go to. Defaults to njsafety91@naver.com. */
+  CONTACT_TO?: string;
 }
 
 // Allow only safe path characters in R2 keys. Reject "..", absolute paths,
@@ -158,6 +167,99 @@ function sanitizeFilename(name: string): string {
     .replace(/[\x00-\x1f<>:"|?*]+/g, '')
     .replace(/\s+/g, '-')
     .slice(0, 80);
+}
+
+/** Inbox the inquiry notifications land in. Override with the CONTACT_TO var. */
+const DEFAULT_CONTACT_TO = 'njsafety91@naver.com';
+
+/**
+ * Resend's shared sandbox sender. Works with no domain setup at all,
+ * but Resend then only delivers to the address the Resend account was
+ * registered with. Point RESEND_FROM at an address on a verified
+ * domain to lift that restriction.
+ */
+const DEFAULT_RESEND_FROM = 'NJ SAFETY 문의 <onboarding@resend.dev>';
+
+type Mail = {
+  to: string;
+  subject: string;
+  textBody: string;
+  htmlBody: string;
+  replyToAddr: string;
+  replyToName: string;
+};
+
+/** Primary transport — Resend's HTTP API. */
+async function sendViaResend(env: Env, m: Mail): Promise<void> {
+  const r = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${env.RESEND_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: env.RESEND_FROM || DEFAULT_RESEND_FROM,
+      to: [m.to],
+      subject: m.subject,
+      text: m.textBody,
+      html: m.htmlBody,
+      reply_to: `${m.replyToName} <${m.replyToAddr}>`,
+    }),
+  });
+  if (!r.ok) {
+    throw new Error(`resend ${r.status}: ${(await r.text()).slice(0, 300)}`);
+  }
+}
+
+/**
+ * Fallback transport — Cloudflare's send_email binding. Only delivers
+ * when the sender's domain is a zone on this Cloudflare account, which
+ * is why Resend is tried first.
+ */
+async function sendViaBinding(env: Env, m: Mail): Promise<void> {
+  // Dynamic imports keep these out of the cold-start bundle on the
+  // Resend path, which is the one that normally runs.
+  const { createMimeMessage, Mailbox } = await import('mimetext');
+  const { EmailMessage } = await import('cloudflare:email');
+
+  const msg = createMimeMessage();
+  msg.setSender({ name: 'NJ SAFETY · 문의 알림', addr: m.to });
+  msg.setRecipient(m.to);
+  msg.setSubject(m.subject);
+  // Reply-To must be a Mailbox instance — mimetext validates this
+  // header with `instanceof Mailbox` and throws
+  // MIMETEXT_INVALID_HEADER_VALUE on a plain "Name <addr>" string.
+  // The object form also gets the display name RFC 2047 encoded,
+  // which a Korean 담당자명 needs.
+  msg.setHeader('Reply-To', new Mailbox({ addr: m.replyToAddr, name: m.replyToName }));
+  // contentType must be the bare MIME type — mimetext rejects
+  // 'text/plain; charset=utf-8' outright and takes the charset as its
+  // own option.
+  //
+  // Bodies go out base64-encoded. mimetext doesn't encode the data
+  // itself — it only writes the Content-Transfer-Encoding header — so
+  // we encode here. The default (7bit) would declare Korean UTF-8
+  // bytes as 7-bit ASCII, which relays are free to mangle.
+  msg.addMessage({ contentType: 'text/plain', charset: 'utf-8', encoding: 'base64', data: toBase64(m.textBody) });
+  msg.addMessage({ contentType: 'text/html', charset: 'utf-8', encoding: 'base64', data: toBase64(m.htmlBody) });
+
+  await env.CONTACT_EMAIL!.send(new EmailMessage(m.to, m.to, msg.asRaw()));
+}
+
+/**
+ * Shared failure response. Attachments are already in R2 by this
+ * point, so 502 signals "delivery didn't happen" rather than "the
+ * submission is lost" — the real cause goes to the Worker log.
+ */
+function emailFailure(e: unknown, to: string): Response {
+  console.error('contact email send failed:', e);
+  return new Response(
+    JSON.stringify({
+      ok: false,
+      error: `메일 발송 실패. 곧 다시 시도하시거나 ${to} 으로 직접 보내주세요.`,
+    }),
+    { status: 502, headers: { ...corsHeaders(), 'Content-Type': 'application/json' } },
+  );
 }
 
 /**
@@ -275,46 +377,38 @@ async function handleContact(req: Request, env: Env): Promise<Response> {
     }
   }
 
-  // Compose + send the notification email via Cloudflare's
-  // send_email binding. The MIME message is built with `mimetext`,
-  // which is the package Cloudflare's own docs recommend for this.
-  if (env.CONTACT_EMAIL) {
-    try {
-      // Dynamic imports keep these out of the cold-start bundle when
-      // the binding isn't configured yet (e.g. on a fresh deploy
-      // before the destination address is verified).
-      const { createMimeMessage, Mailbox } = await import('mimetext');
-      const { EmailMessage } = await import('cloudflare:email');
+  // Compose the notification email once; the transport is picked
+  // below. Cheap enough to build even when nothing is configured.
+  const submittedAt = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+  const typeLabel = INQUIRY_LABELS[data.inquiry_type] ?? data.inquiry_type;
+  const to = env.CONTACT_TO || DEFAULT_CONTACT_TO;
 
-      const submittedAt = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
-      const typeLabel = INQUIRY_LABELS[data.inquiry_type] ?? data.inquiry_type;
+  const textBody = [
+    `[NJ SAFETY 문의 접수] ${typeLabel}`,
+    '',
+    `접수 시각: ${submittedAt}`,
+    '',
+    '─── 담당자 정보 ────────────────────',
+    `회사명     : ${data.company}`,
+    `담당자     : ${data.contact_name}`,
+    `연락처     : ${data.phone}`,
+    `이메일     : ${data.email}`,
+    `문의 유형  : ${typeLabel}`,
+    '',
+    '─── 문의 내용 ────────────────────',
+    data.message,
+    '',
+    '─── 첨부 파일 ────────────────────',
+    attachments.length === 0
+      ? '(없음)'
+      : attachments.map((a) => `• ${a.name} (${Math.round(a.size / 1024)} KB)\n  ${a.url}`).join('\n'),
+    '',
+    '— 이 메일은 NJ SAFETY 문의 폼에서 자동 발송된 알림입니다.',
+  ].join('\n');
 
-      const textBody = [
-        `[NJ SAFETY 문의 접수] ${typeLabel}`,
-        '',
-        `접수 시각: ${submittedAt}`,
-        '',
-        '─── 담당자 정보 ────────────────────',
-        `회사명     : ${data.company}`,
-        `담당자     : ${data.contact_name}`,
-        `연락처     : ${data.phone}`,
-        `이메일     : ${data.email}`,
-        `문의 유형  : ${typeLabel}`,
-        '',
-        '─── 문의 내용 ────────────────────',
-        data.message,
-        '',
-        '─── 첨부 파일 ────────────────────',
-        attachments.length === 0
-          ? '(없음)'
-          : attachments.map((a) => `• ${a.name} (${Math.round(a.size / 1024)} KB)\n  ${a.url}`).join('\n'),
-        '',
-        '— 이 메일은 NJ SAFETY 문의 폼에서 자동 발송된 알림입니다.',
-      ].join('\n');
-
-      const htmlRows = (label: string, value: string) =>
-        `<tr><td style="padding:6px 12px;color:#666;font-family:monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;width:120px;vertical-align:top">${escapeHtml(label)}</td><td style="padding:6px 12px;color:#111;font-size:14px">${escapeHtml(value || '-')}</td></tr>`;
-      const htmlBody = `<!doctype html><html><body style="font-family:-apple-system,BlinkMacSystemFont,'Pretendard',sans-serif;background:#f5f5f5;margin:0;padding:24px">
+  const htmlRows = (label: string, value: string) =>
+    `<tr><td style="padding:6px 12px;color:#666;font-family:monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;width:120px;vertical-align:top">${escapeHtml(label)}</td><td style="padding:6px 12px;color:#111;font-size:14px">${escapeHtml(value || '-')}</td></tr>`;
+  const htmlBody = `<!doctype html><html><body style="font-family:-apple-system,BlinkMacSystemFont,'Pretendard',sans-serif;background:#f5f5f5;margin:0;padding:24px">
 <div style="max-width:680px;margin:0 auto;background:#fff;border:1px solid #e5e5e5;padding:32px">
   <div style="border-bottom:2px solid #ff6b1a;padding-bottom:16px;margin-bottom:24px">
     <div style="font-family:monospace;font-size:11px;letter-spacing:.2em;color:#ff6b1a;text-transform:uppercase">— NJ SAFETY · Inquiry Received</div>
@@ -339,55 +433,34 @@ async function handleContact(req: Request, env: Env): Promise<Response> {
   <div style="margin-top:32px;padding-top:16px;border-top:1px solid #eee;font-size:11px;color:#999;font-family:monospace;letter-spacing:.06em">© NJ SAFETY · 자동 발송 — 회신은 ${escapeHtml(data.email)}로</div>
 </div></body></html>`;
 
-      // Use the verified destination (njsafety91@naver.com) as both
-      // sender and recipient — Cloudflare's send_email allows this when
-      // the address is verified, and Naver's spam filter trusts it
-      // because it's a self-delivery.
-      const msg = createMimeMessage();
-      msg.setSender({ name: 'NJ SAFETY · 문의 알림', addr: 'njsafety91@naver.com' });
-      msg.setRecipient('njsafety91@naver.com');
-      msg.setSubject(`[NJ SAFETY 문의] ${typeLabel} · ${data.company}`);
-      // Reply-To must be a Mailbox instance — mimetext validates this
-      // header with `instanceof Mailbox` and throws
-      // MIMETEXT_INVALID_HEADER_VALUE on a plain "Name <addr>" string.
-      // Passing the object form also gets the display name RFC 2047
-      // base64-encoded, which a Korean 담당자명 needs.
-      msg.setHeader('Reply-To', new Mailbox({ addr: data.email, name: data.contact_name }));
-      // contentType must be the bare MIME type — mimetext rejects
-      // 'text/plain; charset=utf-8' outright and takes the charset as
-      // its own option (it defaults to UTF-8, passed here explicitly).
-      //
-      // Bodies go out base64-encoded. mimetext doesn't encode the data
-      // itself — it only writes the Content-Transfer-Encoding header —
-      // so we encode here. The default (7bit) would declare Korean
-      // UTF-8 bytes as 7-bit ASCII, which relays are free to mangle.
-      msg.addMessage({ contentType: 'text/plain', charset: 'utf-8', encoding: 'base64', data: toBase64(textBody) });
-      msg.addMessage({ contentType: 'text/html', charset: 'utf-8', encoding: 'base64', data: toBase64(htmlBody) });
+  const mail: Mail = {
+    to,
+    subject: `[NJ SAFETY 문의] ${typeLabel} · ${data.company}`,
+    textBody,
+    htmlBody,
+    replyToAddr: data.email,
+    replyToName: data.contact_name,
+  };
 
-      const emailMessage = new EmailMessage(
-        'njsafety91@naver.com',
-        'njsafety91@naver.com',
-        msg.asRaw(),
-      );
-      await env.CONTACT_EMAIL.send(emailMessage);
+  // Resend is the primary transport. Cloudflare's own send_email
+  // binding stays as a fallback, but it can only send once the
+  // account owns the sender's domain — see wrangler.jsonc.
+  if (env.RESEND_API_KEY) {
+    try {
+      await sendViaResend(env, mail);
     } catch (e: unknown) {
-      // Even if email fails, we already stored the attachments. Return
-      // 502 so the client knows delivery itself didn't happen but the
-      // data isn't lost — we log + the admin can recover from R2.
-      console.error('contact email send failed:', e);
-      return new Response(
-        JSON.stringify({
-          ok: false,
-          error:
-            '메일 발송 실패. 곧 다시 시도하시거나 njsafety91@naver.com 으로 직접 보내주세요.',
-        }),
-        { status: 502, headers: { ...corsHeaders(), 'Content-Type': 'application/json' } },
-      );
+      return emailFailure(e, to);
+    }
+  } else if (env.CONTACT_EMAIL) {
+    try {
+      await sendViaBinding(env, mail);
+    } catch (e: unknown) {
+      return emailFailure(e, to);
     }
   }
-  // (If env.CONTACT_EMAIL is undefined we still return 200 — the
-  // submission is captured in R2/logs and the user gets a positive
-  // UX; admin sets up the binding when ready.)
+  // (With neither transport configured we still return 200 — the
+  // submission's attachments are captured in R2 and the visitor gets
+  // a positive UX; the admin wires a transport when ready.)
 
   return new Response(
     JSON.stringify({ ok: true, attachments: attachments.length }),
