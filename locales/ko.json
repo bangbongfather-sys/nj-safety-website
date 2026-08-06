@@ -812,8 +812,8 @@
     },
     "form": {
       "sectionEyebrow": "— Inquiry Form / Step 02",
-      "sectionTitlePre": "담당자 정보를 ",
-      "sectionTitleEm": "알려주세요.",
+      "sectionTitlePre": "간편 ",
+      "sectionTitleEm": "문의.",
       "sectionR": "* 표시는 필수",
       "title": "문의 양식",
       "labels": {
@@ -847,8 +847,8 @@
     "sidebar": {
       "directLabel": "— Direct Line / B2B 전담",
       "tel": "02-777-3079",
-      "hoursLine1": "평일 09:00 – 18:00 KST",
-      "hoursLine2": "점심 12:30 – 13:30 · 주말 휴무",
+      "hoursLine1": "평일 09:00 – 17:00 KST",
+      "hoursLine2": "Email. njsafety91@naver.com",
       "reassurePre": "",
       "reassureEm": "평균 회신 1영업일",
       "reassurePost": " — 대형 견적·OEM은 2~3일 소요"
