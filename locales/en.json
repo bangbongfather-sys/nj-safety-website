@@ -818,24 +818,18 @@
       "title": "Inquiry form",
       "labels": {
         "company": "Company",
-        "industry": "Industry",
         "contactName": "Contact name",
-        "position": "Position",
         "phone": "Phone",
         "email": "Email",
-        "quantityRange": "Estimated quantity",
-        "deliveryDate": "Required delivery",
         "message": "Message",
         "fileAttach": "Attachments"
       },
       "placeholders": {
         "company": "e.g. KEPCO Partner ○○○",
         "contactName": "Full name",
-        "position": "e.g. Safety Manager",
         "phone": "010-0000-0000",
         "email": "name@company.co.kr",
-        "deliveryDate": "e.g. End of July 2026 / Regular supply",
-        "message": "e.g. Request a quote for 200 units of the Aramid Summer Season for a KEPCO partner site, with embroidery included. Size distribution will follow."
+        "message": "e.g. Request a quote for 200 units of the Aramid Summer Season, embroidery included. Required delivery: end of July."
       },
       "fileHintMini": "(spec sheets, logos, size tables, etc.)",
       "fileHintTitle": "Up to 5 files",
@@ -855,29 +849,6 @@
       "tel": "02-777-3079",
       "hoursLine1": "Mon–Fri 09:00 – 18:00 KST",
       "hoursLine2": "Lunch 12:30 – 13:30 · Closed weekends",
-      "otherLabel": "— Other Channels",
-      "rows": [
-        {
-          "key": "Email",
-          "value": "njsafety91@naver.com",
-          "href": "mailto:njsafety91@naver.com"
-        },
-        {
-          "key": "Web",
-          "value": "www.njfashion.co.kr",
-          "href": "https://www.njfashion.co.kr"
-        }
-      ],
-      "actions": [
-        {
-          "ko": "Catalogue PDF",
-          "href": "#catalog"
-        },
-        {
-          "ko": "KakaoTalk channel",
-          "href": "#kakao"
-        }
-      ],
       "reassurePre": "",
       "reassureEm": "Average reply: one business day",
       "reassurePost": " — larger quotes and OEM take 2–3 days"

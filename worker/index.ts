@@ -186,13 +186,9 @@ async function handleContact(req: Request, env: Env): Promise<Response> {
   const data = {
     inquiry_type:    get('inquiry_type') || 'quote',
     company:         get('company'),
-    industry:        get('industry'),
     contact_name:    get('contact_name'),
-    position:        get('position'),
     phone:           get('phone'),
     email:           get('email'),
-    quantity_range:  get('quantity_range'),
-    delivery_date:   get('delivery_date'),
     message:         get('message'),
     agreed:          form.get('agreed') === 'on' || form.get('agreed') === 'true',
   };
@@ -287,15 +283,10 @@ async function handleContact(req: Request, env: Env): Promise<Response> {
         '',
         '─── 담당자 정보 ────────────────────',
         `회사명     : ${data.company}`,
-        `담당자     : ${data.contact_name}${data.position ? ` (${data.position})` : ''}`,
+        `담당자     : ${data.contact_name}`,
         `연락처     : ${data.phone}`,
         `이메일     : ${data.email}`,
-        `산업군     : ${data.industry || '-'}`,
-        '',
-        '─── 견적 정보 ────────────────────',
         `문의 유형  : ${typeLabel}`,
-        `예상 수량  : ${data.quantity_range || '-'}`,
-        `희망 납기  : ${data.delivery_date || '-'}`,
         '',
         '─── 문의 내용 ────────────────────',
         data.message,
@@ -320,15 +311,10 @@ async function handleContact(req: Request, env: Env): Promise<Response> {
   <h2 style="font-size:13px;color:#0d0d0e;margin:24px 0 8px;letter-spacing:.05em">담당자 정보</h2>
   <table style="width:100%;border-collapse:collapse;background:#fafafa;border:1px solid #eee">
     ${htmlRows('회사명', data.company)}
-    ${htmlRows('담당자', `${data.contact_name}${data.position ? ` (${data.position})` : ''}`)}
+    ${htmlRows('담당자', data.contact_name)}
     ${htmlRows('연락처', data.phone)}
     ${htmlRows('이메일', data.email)}
-    ${htmlRows('산업군', data.industry)}
-  </table>
-  <h2 style="font-size:13px;color:#0d0d0e;margin:24px 0 8px;letter-spacing:.05em">견적 정보</h2>
-  <table style="width:100%;border-collapse:collapse;background:#fafafa;border:1px solid #eee">
-    ${htmlRows('예상 수량', data.quantity_range)}
-    ${htmlRows('희망 납기', data.delivery_date)}
+    ${htmlRows('문의 유형', typeLabel)}
   </table>
   <h2 style="font-size:13px;color:#0d0d0e;margin:24px 0 8px;letter-spacing:.05em">문의 내용</h2>
   <div style="background:#fafafa;border:1px solid #eee;padding:16px;white-space:pre-wrap;font-size:14px;line-height:1.7;color:#222">${escapeHtml(data.message)}</div>

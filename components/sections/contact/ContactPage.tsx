@@ -332,35 +332,11 @@ function ContactForm({
                 <input id="company" name="company" type="text" placeholder={f.placeholders?.company} required />
               </div>
               <div className="ct-field">
-                <label htmlFor="industry">
-                  <EditableText as="span" path="contact.form.labels.industry" value={f.labels?.industry ?? ''} editor={editor} />
-                </label>
-                <select id="industry" name="industry" defaultValue="">
-                  <option value="">선택해 주세요</option>
-                  <option>전력·발전 (Power)</option>
-                  <option>전기 공사 (Electrical)</option>
-                  <option>정유·석유화학 (Petrochem)</option>
-                  <option>에너지·가스 (Energy)</option>
-                  <option>건설·플랜트</option>
-                  <option>공공기관·군경</option>
-                  <option>기타</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="ct-form-row">
-              <div className="ct-field">
                 <label htmlFor="contact_name">
                   <EditableText as="span" path="contact.form.labels.contactName" value={f.labels?.contactName ?? ''} editor={editor} />
                   {' '}<span className="req">*</span>
                 </label>
                 <input id="contact_name" name="contact_name" type="text" placeholder={f.placeholders?.contactName} required />
-              </div>
-              <div className="ct-field">
-                <label htmlFor="position">
-                  <EditableText as="span" path="contact.form.labels.position" value={f.labels?.position ?? ''} editor={editor} />
-                </label>
-                <input id="position" name="position" type="text" placeholder={f.placeholders?.position} />
               </div>
             </div>
 
@@ -378,29 +354,6 @@ function ContactForm({
                   {' '}<span className="req">*</span>
                 </label>
                 <input id="email" name="email" type="email" placeholder={f.placeholders?.email} required />
-              </div>
-            </div>
-
-            <div className="ct-form-row">
-              <div className="ct-field">
-                <label htmlFor="quantity_range">
-                  <EditableText as="span" path="contact.form.labels.quantityRange" value={f.labels?.quantityRange ?? ''} editor={editor} />
-                </label>
-                <select id="quantity_range" name="quantity_range" defaultValue="">
-                  <option value="">선택해 주세요</option>
-                  <option>1~49 벌 (소량)</option>
-                  <option>50~199 벌</option>
-                  <option>200~499 벌</option>
-                  <option>500~999 벌</option>
-                  <option>1,000 벌 이상</option>
-                  <option>미정</option>
-                </select>
-              </div>
-              <div className="ct-field">
-                <label htmlFor="delivery_date">
-                  <EditableText as="span" path="contact.form.labels.deliveryDate" value={f.labels?.deliveryDate ?? ''} editor={editor} />
-                </label>
-                <input id="delivery_date" name="delivery_date" type="text" placeholder={f.placeholders?.deliveryDate} />
               </div>
             </div>
 
@@ -520,8 +473,6 @@ function ContactForm({
 
 function ContactSidebar({ contact, editor }: { contact: ContactDict; editor?: EditorApi }) {
   const s = contact.sidebar;
-  const rows = s.rows ?? [];
-  const actions = s.actions ?? [];
   return (
     <aside className="ct-sidebar">
       <div className="ct-sb-card accent">
@@ -532,45 +483,6 @@ function ContactSidebar({ contact, editor }: { contact: ContactDict; editor?: Ed
           <br />
           <EditableText as="span" path="contact.sidebar.hoursLine2" value={s.hoursLine2 ?? ''} editor={editor} />
         </p>
-      </div>
-
-      <div className="ct-sb-card">
-        <EditableText as="span" className="lbl" path="contact.sidebar.otherLabel" value={s.otherLabel ?? ''} editor={editor} />
-        <div className="ct-sb-list">
-          {rows.map((row, i) => (
-            <div key={i} className="ct-sb-row">
-              <EditableText as="span" className="k" path={`contact.sidebar.rows[${i}].key`} value={row.key ?? ''} editor={editor} />
-              <span className="v">
-                {row.href ? (
-                  <a href={row.href} target={row.href.startsWith('http') ? '_blank' : undefined} rel={row.href.startsWith('http') ? 'noreferrer' : undefined}>
-                    <EditableText as="span" path={`contact.sidebar.rows[${i}].value`} value={row.value ?? ''} editor={editor} />
-                  </a>
-                ) : (
-                  <EditableText as="span" path={`contact.sidebar.rows[${i}].value`} value={row.value ?? ''} editor={editor} />
-                )}
-              </span>
-            </div>
-          ))}
-        </div>
-        <div className="ct-sb-actions">
-          {actions.map((a, i) => (
-            <a key={i} href={a.href || '#'}>
-              <span className="ic">
-                {i === 0 ? (
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                    <polyline points="14 2 14 8 20 8" />
-                  </svg>
-                ) : (
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-                  </svg>
-                )}
-              </span>
-              <EditableText as="span" path={`contact.sidebar.actions[${i}].ko`} value={a.ko ?? ''} editor={editor} />
-            </a>
-          ))}
-        </div>
       </div>
 
       <div className="ct-sb-reassure">
