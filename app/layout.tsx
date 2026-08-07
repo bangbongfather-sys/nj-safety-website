@@ -8,8 +8,11 @@ const OG_DESC =
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  // Company name leads the title: "나정엔터프라이즈" is what existing
+  // customers search for on Naver, and the previous njfashion.co.kr site
+  // ranked on it. The brand follows in parentheses so both queries land.
   title: {
-    default: 'NJ SAFETY — 산업 안전복 전문',
+    default: '나정엔터프라이즈 (NJ SAFETY) — 산업 안전복 전문',
     template: '%s | NJ SAFETY',
   },
   description: OG_DESC,
@@ -19,13 +22,13 @@ export const metadata: Metadata = {
     siteName: 'NJ SAFETY',
     locale: 'ko_KR',
     url: '/',
-    title: 'NJ SAFETY — 산업 안전복 전문',
+    title: '나정엔터프라이즈 (NJ SAFETY) — 산업 안전복 전문',
     description: OG_DESC,
-    images: [{ url: '/og.jpg', width: 1200, height: 630, alt: 'NJ SAFETY — 산업 안전복 전문' }],
+    images: [{ url: '/og.jpg', width: 1200, height: 630, alt: '나정엔터프라이즈 (NJ SAFETY) — 산업 안전복 전문' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'NJ SAFETY — 산업 안전복 전문',
+    title: '나정엔터프라이즈 (NJ SAFETY) — 산업 안전복 전문',
     description: OG_DESC,
     images: ['/og.jpg'],
   },

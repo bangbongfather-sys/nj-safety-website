@@ -29,7 +29,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // parent openGraph, so images must be repeated for locale pages to keep
   // the share card image).
   return {
-    title: dict.meta.title,
+    // `absolute` so the root layout's "%s | NJ SAFETY" template doesn't
+    // append the brand to a title that already carries it — the locale
+    // titles are the full "나정엔터프라이즈 (NJ SAFETY) — ..." string.
+    // Sub-pages keep the template.
+    title: { absolute: dict.meta.title },
     description: dict.meta.description,
     alternates: {
       canonical: `/${loc}`,
