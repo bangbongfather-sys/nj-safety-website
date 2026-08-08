@@ -4,8 +4,17 @@ import { notFound } from 'next/navigation';
 import { getDictionary, isLocale, type Locale } from '@/lib/i18n';
 import { getAllProducts } from '@/lib/products';
 import type { Product } from '@/lib/products';
-import { getSiteResources, hasCatalogPdf } from '@/lib/site-resources';
-import ResourcesLibrary, { type ReportGroup } from '@/components/sections/resources/ResourcesLibrary';
+import {
+  getSiteResources,
+  hasCatalogPdf,
+  getDocuments,
+  documentCategoryLabel,
+  fileExt,
+} from '@/lib/site-resources';
+import ResourcesLibrary, {
+  type ReportGroup,
+  type DocumentItem,
+} from '@/components/sections/resources/ResourcesLibrary';
 
 type Props = { params: Promise<{ locale: string }> | { locale: string } };
 
@@ -49,6 +58,22 @@ export default async function ResourcesPage({ params }: Props) {
   const catalogReady = hasCatalogPdf(site);
   const catalogUrl = site.catalog?.pdfUrl;
 
+  // General 자료실 board. Titles/descriptions carry an optional English
+  // variant; fall back to the Korean one so a row never renders blank on
+  // /en just because the admin only filled in Korean.
+  const documents: DocumentItem[] = getDocuments(site).map((d) => ({
+    id: d.id,
+    title: (loc === 'en' ? d.titleEn : d.title) || d.title,
+    desc: (loc === 'en' ? d.descEn : d.desc) || d.desc,
+    category: d.category,
+    categoryLabel: documentCategoryLabel(d.category, loc),
+    fileUrl: d.fileUrl,
+    fileName: d.fileName,
+    ext: d.ext || fileExt(d.fileName),
+    size: d.size,
+    uploadedAt: d.uploadedAt,
+  }));
+
   // Group test reports by product (only products with ≥1 report) so the
   // library can render one photo card per product with its PDFs nested.
   const reports: ReportGroup[] = getAllProducts()
@@ -89,6 +114,7 @@ export default async function ResourcesPage({ params }: Props) {
             size: site.catalog?.size,
             uploadedAt: site.catalog?.uploadedAt,
           }}
+          documents={documents}
           reports={reports}
           reportsEmpty={
             dict.resources.testReports.empty ??

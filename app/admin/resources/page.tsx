@@ -6,6 +6,8 @@
  * One screen to manage every downloadable on the site:
  *   - The brand-level **카탈로그 PDF** (stored in
  *     `data/site-resources.json`).
+ *   - The general **자료실 게시판** — any file type with a free-text
+ *     title, description and category (same JSON, `documents` array).
  *   - **시험성적서 PDF** per product (stored on each product's
  *     `data/products/<slug>.json` under `testReports.files`).
  *
@@ -27,10 +29,23 @@ import { useAdmin } from '@/components/admin/AdminContext';
 import { ghGetFile, ghPutFile, ghListDir, REPO_OWNER, REPO_NAME } from '@/lib/admin/github';
 import type { ProductPageData, ProductTestReportFile } from '@/lib/product-page-types';
 import DropTarget from '@/components/admin/DropTarget';
+// Shared module, not '@/lib/site-resources' — that one reads the JSON
+// with node:fs, which webpack can't bundle into a client component.
+import { DOCUMENT_CATEGORIES, fileExt, type SiteDocument } from '@/lib/site-resources-shared';
 
 const SITE_RESOURCES_PATH = 'data/site-resources.json';
 const UPLOAD_ENDPOINT = '/api/admin/upload-image';
 const MAX_PDF_BYTES = 20 * 1024 * 1024; // 20 MB — matches the Worker cap
+
+/**
+ * Extensions refused on the board. Everything else is allowed — the
+ * point of the board is that it takes 한글 문서, 스프레드시트, 도면,
+ * whatever. These are blocked because a public bucket serving them
+ * invites a visitor to run something.
+ */
+const BLOCKED_EXTS = new Set([
+  'EXE', 'BAT', 'CMD', 'COM', 'SCR', 'MSI', 'SH', 'PS1', 'JAR', 'APP', 'DMG', 'PKG', 'DLL',
+]);
 
 type CatalogFile = {
   pdfUrl?: string;
@@ -38,7 +53,7 @@ type CatalogFile = {
   size?: number;
   label?: string;
 };
-type SiteResources = { catalog?: CatalogFile };
+type SiteResources = { catalog?: CatalogFile; documents?: SiteDocument[] };
 
 type ProductRow = {
   slug: string;
@@ -84,10 +99,29 @@ function sanitizePdfName(name: string): string {
     .slice(0, 50);
 }
 
+/**
+ * Filename → R2-key-safe stem. The Worker's KEY_RE only accepts
+ * `[a-z0-9_\-./]`, so 한글 파일명 collapses to hyphens here. The
+ * original name is kept separately on the document entry, so what the
+ * visitor sees and downloads is still the Korean filename.
+ */
+function sanitizeFileBase(name: string): string {
+  return (
+    name
+      .toLowerCase()
+      .replace(/\.[a-z0-9]{1,8}$/i, '')
+      .replace(/[^a-z0-9\-]/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '')
+      .slice(0, 50) || 'file'
+  );
+}
+
 async function uploadPdfToR2(
   pat: string,
   key: string,
   file: File,
+  contentType = 'application/pdf',
 ): Promise<{ publicUrl: string; size: number }> {
   if (file.size > MAX_PDF_BYTES) {
     throw new Error(`파일이 너무 큽니다 (최대 ${MAX_PDF_BYTES / 1024 / 1024}MB)`);
@@ -96,7 +130,7 @@ async function uploadPdfToR2(
     method: 'PUT',
     headers: {
       Authorization: `token ${pat}`,
-      'Content-Type': 'application/pdf',
+      'Content-Type': contentType,
     },
     body: file,
   });
@@ -114,6 +148,7 @@ export default function ResourcesAdminPage() {
   const pat = state.status === 'authenticated' ? state.pat : '';
 
   const [catalog, setCatalog] = useState<CatalogFile | null>(null);
+  const [documents, setDocuments] = useState<SiteDocument[] | null>(null);
   const [catalogSha, setCatalogSha] = useState<string | null>(null);
   const [products, setProducts] = useState<ProductRow[] | null>(null);
   const [err, setErr] = useState<string | null>(null);
@@ -131,11 +166,13 @@ export default function ResourcesAdminPage() {
       if (catFile) {
         const parsed = JSON.parse(catFile.content) as SiteResources;
         setCatalog(parsed.catalog ?? {});
+        setDocuments(parsed.documents ?? []);
         setCatalogSha(catFile.sha);
       } else {
         // File missing — seed with empty catalog block. We won't PUT
         // until the admin actually uploads something.
         setCatalog({});
+        setDocuments([]);
         setCatalogSha(null);
       }
 
@@ -243,6 +280,110 @@ export default function ResourcesAdminPage() {
       setBusyKey(null);
     }
   }, [pat, catalogSha]);
+
+  /* ──────────────── 자료실 게시판 handlers ──────────────── */
+
+  /**
+   * Read-modify-write of the `documents` array. Always re-reads the
+   * file first so two edits in a row don't clobber each other with a
+   * stale sha — same pattern the catalog handlers use.
+   */
+  const commitDocuments = useCallback(
+    async (mutate: (current: SiteDocument[]) => SiteDocument[], message: string) => {
+      const fresh = await ghGetFile(pat, SITE_RESOURCES_PATH);
+      const parsed = fresh ? (JSON.parse(fresh.content) as SiteResources) : {};
+      const next = mutate(parsed.documents ?? []);
+      const merged: SiteResources = { ...parsed, documents: next };
+      const r = await ghPutFile(
+        pat,
+        SITE_RESOURCES_PATH,
+        JSON.stringify(merged, null, 2) + '\n',
+        message,
+        fresh?.sha ?? catalogSha,
+      );
+      setCatalogSha(r.contentSha || fresh?.sha || null);
+      setDocuments(next);
+    },
+    [pat, catalogSha],
+  );
+
+  const handleDocUpload = useCallback(
+    async (file: File, meta: { title: string; desc: string; category: string }) => {
+      if (!pat) return;
+      const ext = fileExt(file.name);
+      if (BLOCKED_EXTS.has(ext)) {
+        setErr(`업로드할 수 없는 파일 형식입니다: .${ext.toLowerCase()}`);
+        return;
+      }
+      setBusyKey('doc-new');
+      setErr(null);
+      try {
+        const key = `resources/docs/${Date.now()}-${sanitizeFileBase(file.name)}.${ext.toLowerCase()}`;
+        const up = await uploadPdfToR2(pat, key, file, file.type || 'application/octet-stream');
+        const doc: SiteDocument = {
+          id: `doc-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+          title: meta.title.trim() || file.name,
+          desc: meta.desc.trim() || undefined,
+          category: meta.category,
+          fileUrl: up.publicUrl,
+          fileName: file.name,
+          ext,
+          size: up.size,
+          uploadedAt: new Date().toISOString(),
+        };
+        await commitDocuments((cur) => [doc, ...cur], `chore(resources): add 자료 "${doc.title}"`);
+      } catch (e: unknown) {
+        setErr(e instanceof Error ? e.message : String(e));
+      } finally {
+        setBusyKey(null);
+      }
+    },
+    [pat, commitDocuments],
+  );
+
+  const handleDocPatch = useCallback(
+    async (id: string, patch: Partial<SiteDocument>) => {
+      if (!pat) return;
+      setBusyKey(id);
+      setErr(null);
+      try {
+        await commitDocuments(
+          (cur) => cur.map((d) => (d.id === id ? { ...d, ...patch } : d)),
+          `chore(resources): edit 자료 ${id}`,
+        );
+      } catch (e: unknown) {
+        setErr(e instanceof Error ? e.message : String(e));
+      } finally {
+        setBusyKey(null);
+      }
+    },
+    [pat, commitDocuments],
+  );
+
+  const handleDocDelete = useCallback(
+    async (doc: SiteDocument) => {
+      if (!pat) return;
+      if (
+        !window.confirm(
+          `"${doc.title}" 자료를 목록에서 삭제할까요?\n(업로드된 파일 자체는 R2 에 남고, 사이트에서만 안 보이게 됩니다.)`,
+        )
+      )
+        return;
+      setBusyKey(doc.id);
+      setErr(null);
+      try {
+        await commitDocuments(
+          (cur) => cur.filter((d) => d.id !== doc.id),
+          `chore(resources): remove 자료 "${doc.title}"`,
+        );
+      } catch (e: unknown) {
+        setErr(e instanceof Error ? e.message : String(e));
+      } finally {
+        setBusyKey(null);
+      }
+    },
+    [pat, commitDocuments],
+  );
 
   /* ──────────────── Per-product test-reports handlers ──────────────── */
 
@@ -428,7 +569,49 @@ export default function ResourcesAdminPage() {
         )}
       </section>
 
-      {/* ─── Section 2: Test reports per product ────────────────────── */}
+      {/* ─── Section 2: 자료실 게시판 ───────────────────────────────── */}
+      <section style={{ marginTop: 48 }}>
+        <h2
+          style={{
+            fontFamily: 'var(--display)',
+            fontSize: 20,
+            fontWeight: 800,
+            letterSpacing: '-.012em',
+            marginBottom: 12,
+          }}
+        >
+          📁 자료실 게시판
+        </h2>
+        <p style={{ color: 'var(--muted)', fontSize: 13, margin: '0 0 16px' }}>
+          단가표 · 서식 · 안내서 등 <strong>어떤 파일이든</strong> 올릴 수 있습니다 (한글·엑셀·이미지·압축파일 등, 개당 최대 20MB).
+          분류를 정하면 공개 자료실에 그 분류 탭이 자동으로 생깁니다. 최신 자료가 위에 표시됩니다.
+        </p>
+
+        {documents === null ? (
+          <p className="admin-meta">로딩 중...</p>
+        ) : (
+          <>
+            <DocumentUploadForm busy={busyKey === 'doc-new'} onUpload={handleDocUpload} />
+            {documents.length === 0 ? (
+              <p style={{ color: 'var(--muted)', marginTop: 16 }}>아직 등록된 자료가 없습니다.</p>
+            ) : (
+              <div style={{ display: 'grid', gap: 12, marginTop: 20 }}>
+                {documents.map((doc) => (
+                  <DocumentRow
+                    key={doc.id}
+                    doc={doc}
+                    busy={busyKey === doc.id}
+                    onPatch={(patch) => void handleDocPatch(doc.id, patch)}
+                    onDelete={() => void handleDocDelete(doc)}
+                  />
+                ))}
+              </div>
+            )}
+          </>
+        )}
+      </section>
+
+      {/* ─── Section 3: Test reports per product ────────────────────── */}
       <section style={{ marginTop: 48 }}>
         <h2
           style={{
@@ -706,5 +889,198 @@ function ProductReportsCard({
         {uploadBusy ? '⏳ 업로드 중...' : '＋ 시험성적서 PDF 추가'}
       </button>
     </DropTarget>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────── */
+
+/**
+ * New-document form for the 자료실 게시판. Title/description/category
+ * are captured BEFORE the file is picked so a single click uploads and
+ * publishes in one step — picking the file last is what the operator
+ * expects from a 게시판 write form.
+ */
+function DocumentUploadForm({
+  busy,
+  onUpload,
+}: {
+  busy: boolean;
+  onUpload: (file: File, meta: { title: string; desc: string; category: string }) => void;
+}) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [title, setTitle] = useState('');
+  const [desc, setDesc] = useState('');
+  const [category, setCategory] = useState<string>(DOCUMENT_CATEGORIES[0].key);
+
+  const submit = (file: File) => {
+    onUpload(file, { title, desc, category });
+    setTitle('');
+    setDesc('');
+    if (inputRef.current) inputRef.current.value = '';
+  };
+
+  return (
+    <DropTarget
+      onFile={submit}
+      disabled={busy}
+      hint="파일 끌어놓기"
+      className="admin-card admin-card-flat"
+      style={{ padding: 24, display: 'grid', gap: 12, borderRadius: 14 }}
+    >
+      <div style={{ display: 'grid', gap: 12, gridTemplateColumns: '1fr 200px' }}>
+        <label style={{ display: 'grid', gap: 6 }}>
+          <span className="admin-meta">제목</span>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="예) 2026년 단가표"
+            disabled={busy}
+          />
+        </label>
+        <label style={{ display: 'grid', gap: 6 }}>
+          <span className="admin-meta">분류</span>
+          <select value={category} onChange={(e) => setCategory(e.target.value)} disabled={busy}>
+            {DOCUMENT_CATEGORIES.map((c) => (
+              <option key={c.key} value={c.key}>
+                {c.ko}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+
+      <label style={{ display: 'grid', gap: 6 }}>
+        <span className="admin-meta">설명 (선택)</span>
+        <input
+          type="text"
+          value={desc}
+          onChange={(e) => setDesc(e.target.value)}
+          placeholder="예) 2026년 1월 기준 · 부가세 별도"
+          disabled={busy}
+        />
+      </label>
+
+      <input
+        ref={inputRef}
+        type="file"
+        hidden
+        onChange={(e) => {
+          const f = e.target.files?.[0];
+          if (f) submit(f);
+        }}
+      />
+      <button
+        type="button"
+        className="btn primary"
+        disabled={busy}
+        onClick={() => inputRef.current?.click()}
+        style={{ justifySelf: 'start' }}
+      >
+        {busy ? '⏳ 업로드 중...' : '＋ 파일 선택하고 등록'}
+      </button>
+      <p style={{ color: 'var(--muted)', fontSize: 12, margin: 0 }}>
+        제목을 비워두면 파일 이름이 제목이 됩니다. 실행파일(.exe · .bat 등)은 올릴 수 없습니다.
+      </p>
+    </DropTarget>
+  );
+}
+
+/** One board row — inline edit of title/description/category, plus delete. */
+function DocumentRow({
+  doc,
+  busy,
+  onPatch,
+  onDelete,
+}: {
+  doc: SiteDocument;
+  busy: boolean;
+  onPatch: (patch: Partial<SiteDocument>) => void;
+  onDelete: () => void;
+}) {
+  const [editing, setEditing] = useState(false);
+  const [title, setTitle] = useState(doc.title);
+  const [desc, setDesc] = useState(doc.desc ?? '');
+  const [category, setCategory] = useState(doc.category);
+
+  const save = () => {
+    onPatch({ title: title.trim() || doc.fileName, desc: desc.trim() || undefined, category });
+    setEditing(false);
+  };
+
+  return (
+    <div className="admin-card admin-card-flat" style={{ padding: 18, opacity: busy ? 0.55 : 1 }}>
+      {editing ? (
+        <div style={{ display: 'grid', gap: 10 }}>
+          <div style={{ display: 'grid', gap: 10, gridTemplateColumns: '1fr 200px' }}>
+            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} disabled={busy} />
+            <select value={category} onChange={(e) => setCategory(e.target.value)} disabled={busy}>
+              {DOCUMENT_CATEGORIES.map((c) => (
+                <option key={c.key} value={c.key}>
+                  {c.ko}
+                </option>
+              ))}
+            </select>
+          </div>
+          <input
+            type="text"
+            value={desc}
+            onChange={(e) => setDesc(e.target.value)}
+            placeholder="설명 (선택)"
+            disabled={busy}
+          />
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button type="button" className="btn primary small" onClick={save} disabled={busy}>
+              저장
+            </button>
+            <button type="button" className="btn ghost small" onClick={() => setEditing(false)} disabled={busy}>
+              취소
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start', flexWrap: 'wrap' }}>
+          <span
+            style={{
+              flexShrink: 0,
+              minWidth: 46,
+              padding: '8px 6px',
+              textAlign: 'center',
+              background: 'rgba(255,107,26,.12)',
+              color: 'var(--accent)',
+              borderRadius: 8,
+              fontFamily: 'var(--mono, monospace)',
+              fontSize: 11,
+              fontWeight: 800,
+            }}
+          >
+            {doc.ext || fileExt(doc.fileName)}
+          </span>
+          <div style={{ flex: 1, minWidth: 220 }}>
+            <div className="admin-meta" style={{ marginBottom: 2 }}>
+              {DOCUMENT_CATEGORIES.find((c) => c.key === doc.category)?.ko ?? doc.category}
+            </div>
+            <strong style={{ fontSize: 15 }}>{doc.title}</strong>
+            {doc.desc ? (
+              <div style={{ color: 'var(--muted)', fontSize: 13, marginTop: 4 }}>{doc.desc}</div>
+            ) : null}
+            <div style={{ color: 'var(--muted)', fontSize: 12, marginTop: 6 }}>
+              {doc.fileName} · {fmtSize(doc.size)} · {fmtDate(doc.uploadedAt)}
+            </div>
+          </div>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            <a className="btn ghost small" href={doc.fileUrl} target="_blank" rel="noreferrer">
+              열기 ↗
+            </a>
+            <button type="button" className="btn ghost small" onClick={() => setEditing(true)} disabled={busy}>
+              수정
+            </button>
+            <button type="button" className="btn danger small" onClick={onDelete} disabled={busy}>
+              삭제
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

@@ -40,8 +40,22 @@ export type CatalogInfo = {
   size?: number;
   uploadedAt?: string;
 };
+/** One row of the general 자료실 board, already localised by the page. */
+export type DocumentItem = {
+  id: string;
+  title: string;
+  desc?: string;
+  category: string;
+  categoryLabel: string;
+  fileUrl: string;
+  fileName: string;
+  ext: string;
+  size?: number;
+  uploadedAt?: string;
+};
 
-type TabKey = 'all' | 'catalog' | 'reports';
+/** 'all' | 'catalog' | 'reports' | `doc:<category>` */
+type TabKey = string;
 
 type Props = {
   locale: 'ko' | 'en';
@@ -49,6 +63,7 @@ type Props = {
   reports: ReportGroup[];
   /** dict.resources.testReports.empty */
   reportsEmpty: string;
+  documents: DocumentItem[];
 };
 
 function fmtBytes(n: number | undefined): string {
@@ -64,7 +79,7 @@ function fmtDate(iso?: string): string {
   return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`;
 }
 
-export default function ResourcesLibrary({ locale, catalog, reports, reportsEmpty }: Props) {
+export default function ResourcesLibrary({ locale, catalog, reports, reportsEmpty, documents }: Props) {
   const [tab, setTab] = useState<TabKey>('all');
 
   // Deep-link support: /resources/#test-reports or #catalog selects
@@ -77,16 +92,34 @@ export default function ResourcesLibrary({ locale, catalog, reports, reportsEmpt
 
   const reportCount = reports.reduce((n, r) => n + r.files.length, 0);
   const catalogCount = catalog.ready ? 1 : 0;
-  const totalCount = catalogCount + reportCount;
+  const totalCount = catalogCount + reportCount + documents.length;
+
+  // One tab per board category that actually has documents — an empty
+  // "서식·양식" tab would just be a dead end. Order follows first
+  // appearance in the (already newest-first) document list.
+  const docTabs: { key: TabKey; label: string; count: number }[] = [];
+  for (const d of documents) {
+    const key = `doc:${d.category}`;
+    const existing = docTabs.find((t) => t.key === key);
+    if (existing) existing.count += 1;
+    else docTabs.push({ key, label: d.categoryLabel, count: 1 });
+  }
 
   const tabs: { key: TabKey; label: string; count: number }[] = [
     { key: 'all', label: locale === 'ko' ? '전체' : 'All', count: totalCount },
     { key: 'catalog', label: locale === 'ko' ? '카탈로그' : 'Catalog', count: catalogCount },
+    ...docTabs,
     { key: 'reports', label: locale === 'ko' ? '시험성적서' : 'Test Reports', count: reportCount },
   ];
 
   const showCatalog = tab === 'all' || tab === 'catalog';
   const showReports = tab === 'all' || tab === 'reports';
+  const shownDocuments =
+    tab === 'all'
+      ? documents
+      : tab.startsWith('doc:')
+        ? documents.filter((d) => `doc:${d.category}` === tab)
+        : [];
 
   return (
     <div style={{ marginTop: 48 }}>
@@ -138,6 +171,37 @@ export default function ResourcesLibrary({ locale, catalog, reports, reportsEmpt
               <span className="rl-item-cta is-mute">{catalog.placeholder}</span>
             </div>
           )
+        ) : null}
+
+        {/* ── General board documents ───────────────────────────── */}
+        {shownDocuments.map((doc) => (
+          <a
+            key={doc.id}
+            href={doc.fileUrl}
+            target="_blank"
+            rel="noreferrer"
+            download={doc.fileName}
+            className="rl-item"
+          >
+            <span className="rl-badge">{doc.ext}</span>
+            <span style={{ minWidth: 0, flex: 1 }}>
+              <span className="rl-doc-cat">{doc.categoryLabel}</span>
+              <span className="rl-item-title">{doc.title}</span>
+              <span className="rl-item-sub">
+                {doc.desc ? `${doc.desc} · ` : ''}
+                {doc.fileName}
+                {doc.size ? ` · ${fmtBytes(doc.size)}` : ''}
+                {doc.uploadedAt ? ` · ${fmtDate(doc.uploadedAt)}` : ''}
+              </span>
+            </span>
+            <span className="rl-item-cta">{locale === 'ko' ? '다운로드 ↓' : 'Download ↓'}</span>
+          </a>
+        ))}
+
+        {/* Category tab selected but nothing in it — only reachable if a
+         * document is deleted between render and click. */}
+        {tab.startsWith('doc:') && shownDocuments.length === 0 ? (
+          <div className="rl-empty">{locale === 'ko' ? '자료가 없습니다.' : 'No documents.'}</div>
         ) : null}
 
         {/* ── Test reports (photo cards, grouped by product) ────── */}
@@ -253,6 +317,18 @@ export default function ResourcesLibrary({ locale, catalog, reports, reportsEmpt
         .rl-item-sub { display: block; margin-top: 4px; color: var(--muted); font-size: 13.5px; line-height: 1.5; }
         .rl-item-cta { color: var(--accent); font-weight: 700; font-size: 14px; white-space: nowrap; }
         .rl-item-cta.is-mute { color: var(--muted); }
+        .rl-doc-cat {
+          display: block;
+          margin-bottom: 4px;
+          font-family: var(--mono, ui-monospace, monospace);
+          font-size: 11px;
+          letter-spacing: .14em;
+          text-transform: uppercase;
+          color: var(--muted);
+        }
+        /* Longer extensions (XLSX, HWPX) need to shrink to stay inside
+         * the fixed-size badge the PDF label was designed for. */
+        .rl-badge { font-size: clamp(9px, 2.4vw, 12px); padding: 0 4px; }
 
         .rl-badge {
           display: inline-flex; align-items: center; justify-content: center;

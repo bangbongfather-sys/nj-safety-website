@@ -1,34 +1,31 @@
 /**
- * Brand-level downloadable resources (currently: the catalog PDF).
+ * Site-wide downloadable resources — server-side readers.
  *
  * Lives at `data/site-resources.json` and is managed from
- * `/admin/resources`. Separate from `data/product-categories.json`
- * and per-product `data/products/<slug>.json` so a single
- * single-file write covers all "site-wide" downloads — the catalog
- * card on /resources, future site-wide PDFs etc.
+ * `/admin/resources`. Two kinds live here:
  *
- * Test-report PDFs are still per-product (they live on each
- * product's `testReports.files`) because each cert is tied to a
- * specific SKU. Only files that are not product-specific belong here.
+ *   - `catalog` — the single brand catalog PDF, which keeps its own
+ *     featured card at the top of /resources.
+ *   - `documents` — the general 자료실 board. Any file the admin wants
+ *     to publish (단가표, 서식, 안내서, 인증서 …) with a free-text title
+ *     and description. This is the open-ended list; `catalog` stays
+ *     separate only because it has a dedicated card design.
+ *
+ * Test-report PDFs are still per-product (they live on each product's
+ * `testReports.files`) because each cert is tied to a specific SKU.
+ * Only files that are not product-specific belong here.
+ *
+ * Types and category constants live in `site-resources-shared.ts` so
+ * the client-side admin can import them without dragging `node:fs`
+ * into its bundle.
  */
 import fs from 'node:fs';
 import path from 'node:path';
 import raw from '@/data/site-resources.json';
+import type { SiteDocument, SiteResources } from './site-resources-shared';
 
-export type CatalogFile = {
-  /** Public R2 URL (with cache-bust query). Empty string = no file yet. */
-  pdfUrl?: string;
-  /** ISO timestamp of last upload. */
-  uploadedAt?: string;
-  /** Byte size — drives the "1.2 MB" hint on the resources card. */
-  size?: number;
-  /** Display label on the resources card. Edited via /admin/resources. */
-  label?: string;
-};
-
-export type SiteResources = {
-  catalog?: CatalogFile;
-};
+export type { CatalogFile, SiteDocument, SiteResources } from './site-resources-shared';
+export { DOCUMENT_CATEGORIES, documentCategoryLabel, fileExt } from './site-resources-shared';
 
 const RESOURCES_PATH = path.join(process.cwd(), 'data', 'site-resources.json');
 
@@ -44,4 +41,15 @@ export function getSiteResources(): SiteResources {
 
 export function hasCatalogPdf(s: SiteResources): boolean {
   return !!s.catalog?.pdfUrl;
+}
+
+/**
+ * Board rows, newest first, with anything missing a file dropped —
+ * a half-written entry shouldn't render as a dead link.
+ */
+export function getDocuments(s: SiteResources): SiteDocument[] {
+  return (s.documents ?? [])
+    .filter((d) => !!d?.fileUrl && !!d?.title)
+    .slice()
+    .sort((a, b) => ((a.uploadedAt ?? '') < (b.uploadedAt ?? '') ? 1 : -1));
 }
