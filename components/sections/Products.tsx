@@ -117,14 +117,23 @@ export default function Products({ locale, dict, products, editor }: Props) {
             <EditableText path="products.viewAll" value={p.viewAll} editor={editor} />
           </Link>
         </div>
+      </div>
 
-        {items.length === 0 ? (
+      {/* The rail deliberately sits OUTSIDE .wrap so it can run to the
+       * viewport edges on wide monitors — at 1440px-capped width the
+       * track was clipping mid-card and leaving big empty margins. The
+       * heading above stays in .wrap (long headings need the measure);
+       * .products-light-scroll re-creates the wrap inset with padding so
+       * the first card still lines up under the title. */}
+      {items.length === 0 ? (
+        <div className="wrap">
           <div className="products-light-empty">
             {locale === 'ko'
               ? '등록된 제품이 없습니다. /admin/products 에서 추가하세요.'
               : 'No products yet. Add some at /admin/products.'}
           </div>
-        ) : (
+        </div>
+      ) : (
           <div className="products-light-rail">
             <button
               type="button"
@@ -209,8 +218,7 @@ export default function Products({ locale, dict, products, editor }: Props) {
             </ul>
           </div>
           </div>
-        )}
-      </div>
+      )}
     </section>
   );
 }

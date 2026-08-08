@@ -641,8 +641,11 @@ section { position: relative; }
   transition: background .18s, border-color .18s, opacity .25s, transform .18s;
 }
 .pl-nav:hover { background: var(--accent); border-color: var(--accent); color: #0d0d0e; }
-.pl-nav-prev { left: -6px; }
-.pl-nav-next { right: -6px; }
+/* The rail is full-bleed, so the arrows track the wrap inset rather than
+ * the rail's own edge — otherwise they'd float out in the empty margin
+ * on a wide monitor, far from the cards they scroll. */
+.pl-nav-prev { left: max(10px, calc((100% - 1440px) / 2 + 10px)); }
+.pl-nav-next { right: max(10px, calc((100% - 1440px) / 2 + 10px)); }
 .pl-nav.is-hidden { opacity: 0; pointer-events: none; }
 @media (max-width: 767px) {
   /* On phones the rail is a 1-up flick scroller — arrows just crowd it. */
@@ -652,10 +655,21 @@ section { position: relative; }
 /* Horizontal scroll rail — snap-aligned so users can flick / arrow
  * through one card at a time without overshooting. */
 .products-light-scroll {
-  margin: 0 -56px;
-  padding: 0 56px 16px;
+  /* Full-bleed track. The rail sits outside .wrap, so this padding
+   * re-creates the wrap's inset — first card lines up under the section
+   * title, and everything past the last visible card runs off the
+   * viewport edge instead of being clipped by a 1440px container.
+   * `100%` here is the section width, not 100vw, so a vertical
+   * scrollbar can't push the page sideways. */
+  padding-left: max(56px, calc((100% - 1440px) / 2 + 56px));
+  padding-right: max(56px, calc((100% - 1440px) / 2 + 56px));
+  padding-bottom: 16px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
+  /* Must mirror padding-left. Snap positions are measured from the
+   * scrollport edge, so without this the first card snaps flush to the
+   * viewport edge on load and the inset above is silently undone. */
+  scroll-padding-left: max(56px, calc((100% - 1440px) / 2 + 56px));
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, .25) transparent;
 }
@@ -758,7 +772,9 @@ section { position: relative; }
 
 @media (max-width: 720px) {
   .products.products-light { padding: 72px 0; }
-  .products-light-scroll { margin: 0 -20px; padding: 0 20px 12px; }
+  /* The negative margin is gone — the rail is already full-bleed. Just
+   * match the phone .wrap inset so the first card lines up with the title. */
+  .products-light-scroll { padding: 0 20px 12px; scroll-padding-left: 20px; }
   .products-light-grid { grid-auto-columns: 70vw; gap: 12px; }
 }
 .products-grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
@@ -3609,6 +3625,8 @@ section { position: relative; }
 /* ---------- Responsive ---------- */
 @media (max-width: 1100px) {
   .wrap, .nav-inner, .hero-meta { padding-left: 32px; padding-right: 32px; }
+  /* Keep the full-bleed product rail aligned with the narrower wrap. */
+  .products-light-scroll { padding-left: 32px; padding-right: 32px; scroll-padding-left: 32px; }
   .insights-grid { grid-template-columns: 1fr 1fr; }
   .insights-grid .article:nth-child(3) { grid-column: 1 / -1; }
   .certs-inner { grid-template-columns: 1fr; gap: 48px; }
@@ -3634,6 +3652,7 @@ section { position: relative; }
   /* Pull container padding in further so cards/text reach closer to
    * the screen edge — 32px was eating ~15% of a 360px viewport. */
   .wrap, .nav-inner, .hero-meta { padding-left: 20px; padding-right: 20px; }
+  .products-light-scroll { padding-left: 20px; padding-right: 20px; scroll-padding-left: 20px; }
   .insights-grid, .stats { grid-template-columns: 1fr; }
   .logos { grid-template-columns: repeat(3, 1fr); }
   .hero-meta { display: none; }
@@ -3657,6 +3676,7 @@ section { position: relative; }
 }
 @media (max-width: 480px) {
   .wrap, .nav-inner, .hero-meta { padding-left: 16px; padding-right: 16px; }
+  .products-light-scroll { padding-left: 16px; padding-right: 16px; scroll-padding-left: 16px; }
 }
 
 /* ---------- Ultra-narrow (≤360px) polish (P4) ----------
