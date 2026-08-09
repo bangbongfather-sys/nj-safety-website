@@ -89,6 +89,12 @@
       "manager": "백원섭",
       "addr": "경기도 화성시 송산동 183-57",
       "email": "hansolemt@naver.com"
+    },
+    {
+      "id": "dealer-mslyryej-fyh4",
+      "regionId": "metropolitan",
+      "name": "삼원툴",
+      "addr": "서울특별시 강동구 양재대로124길 32,1동 1층 132호(길동, 동서울오네뜨)"
     }
   ]
 }
