@@ -1,6 +1,16 @@
 {
   "notices": [
     {
+      "id": "notice-mslyi4z3",
+      "type": "notice",
+      "pinned": false,
+      "date": "2026-08-10",
+      "titleKo": "홈페이지 리뉴얼 안내",
+      "titleEn": "New notice",
+      "bodyKo": "나정엔터프라이즈(NJ SAFETY) 홈페이지 리뉴얼 했습니다.",
+      "bodyEn": ""
+    },
+    {
       "id": "njww26-winter-jacket-launch",
       "type": "product",
       "pinned": false,
