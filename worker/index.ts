@@ -356,6 +356,14 @@ async function handleContact(req: Request, env: Env): Promise<Response> {
  * redirect rather than 404. 301 so search engines consolidate onto the
  * apex instead of splitting the site's standing three ways.
  *
+ * NOTE: the redirect that actually fires for most traffic is a
+ * zone-level Cloudflare Redirect Rule ("www / m → apex (canonical)"),
+ * not this function. Static assets are served before the Worker runs,
+ * so a request for `/` on www never reaches this code. The rule runs
+ * ahead of both. This stays as a backstop for paths with no matching
+ * asset, and so the behaviour is visible in the repo rather than only
+ * in the dashboard.
+ *
  * workers.dev is deliberately NOT redirected: it stays reachable as a
  * fallback for the admin if the domain ever has trouble.
  */
