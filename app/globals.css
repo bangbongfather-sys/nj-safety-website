@@ -3592,7 +3592,16 @@ section { position: relative; }
   line-height: 1.15;
   margin: 0 0 32px;
 }
-.notice-article-body { border-top: 1px solid var(--border-soft); padding-top: 32px; }
+/* Optional notice photo, between the headline and the body copy. */
+.notice-article-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 28px 0 0;
+  border-radius: 12px;
+  border: 1px solid var(--border-soft);
+}
+.notice-article-body { border-top: 1px solid var(--border-soft); padding-top: 32px; margin-top: 32px; }
 .notice-article-body p { color: #d4d4d8; font-size: 17px; line-height: 1.85; margin: 0 0 22px; }
 .notice-detail-foot { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 56px; }
 

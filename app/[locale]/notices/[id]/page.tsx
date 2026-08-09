@@ -60,6 +60,10 @@ export default async function NoticeDetailPage({ params }: Props) {
             </span>
           </div>
           <h1 className="notice-article-title">{title}</h1>
+          {notice.image ? (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img src={notice.image} alt="" className="notice-article-image" />
+          ) : null}
           <div className="notice-article-body">
             {paragraphs.map((p, i) => (
               <p key={i}>

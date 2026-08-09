@@ -6,6 +6,8 @@ import Navigation from '@/components/layout/Navigation';
 import Footer from '@/components/layout/Footer';
 import HtmlLang from '@/components/layout/HtmlLang';
 import StyleInjector from '@/components/admin/StyleInjector';
+import NoticePopup from '@/components/sections/notices/NoticePopup';
+import { getAllNotices } from '@/lib/notices';
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -63,6 +65,11 @@ export default async function LocaleLayout({ children, params }: Props) {
   const locale = resolved.locale as Locale;
   const dict = getDictionary(locale);
 
+  // Popup candidates are baked in at build time; NoticePopup does the
+  // expiry check in the browser so a passed `until` date takes effect
+  // without waiting for a redeploy.
+  const popupNotices = getAllNotices().filter((n) => n.popup?.enabled);
+
   return (
     <>
       <HtmlLang locale={locale} />
@@ -70,6 +77,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       <Navigation locale={locale} dict={dict} />
       <main>{children}</main>
       <Footer locale={locale} dict={dict} />
+      <NoticePopup locale={locale} candidates={popupNotices} />
     </>
   );
 }
