@@ -5,5 +5,16 @@
     "size": 4757575,
     "label": "NJ SAFETY 2026 카탈로그"
   },
-  "documents": []
+  "documents": [
+    {
+      "id": "doc-1786288379910-rk1fl",
+      "title": "의류 사이즈표",
+      "category": "general",
+      "fileUrl": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/resources/docs/1786288378473-nj-safety.pdf",
+      "fileName": "NJ_SAFETY_상의_상세사이즈표.pdf",
+      "ext": "PDF",
+      "size": 401301,
+      "uploadedAt": "2026-08-09T15:12:59.910Z"
+    }
+  ]
 }
