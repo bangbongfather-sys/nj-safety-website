@@ -346,6 +346,29 @@ async function handleContact(req: Request, env: Env): Promise<Response> {
   );
 }
 
+/* ─── Canonical host ─────────────────────────────────────────────── */
+
+/**
+ * One address is the real one; the rest send visitors there.
+ *
+ * `www` is the historical alternate and `m` was the old site's mobile
+ * host — both are in Naver's index and on printed material, so they
+ * redirect rather than 404. 301 so search engines consolidate onto the
+ * apex instead of splitting the site's standing three ways.
+ *
+ * workers.dev is deliberately NOT redirected: it stays reachable as a
+ * fallback for the admin if the domain ever has trouble.
+ */
+const CANONICAL_HOST = 'njfashion.co.kr';
+const ALIAS_HOSTS = new Set(['www.njfashion.co.kr', 'm.njfashion.co.kr']);
+
+function canonicalHostRedirect(url: URL): Response | null {
+  if (!ALIAS_HOSTS.has(url.hostname)) return null;
+  const target = new URL(url.toString());
+  target.hostname = CANONICAL_HOST;
+  return Response.redirect(target.toString(), 301);
+}
+
 /* ─── Legacy URL redirects ───────────────────────────────────────── */
 
 /**
@@ -468,6 +491,13 @@ export default {
 
     if (req.method === 'OPTIONS' && url.pathname.startsWith('/api/')) {
       return new Response(null, { status: 204, headers: corsHeaders() });
+    }
+
+    // www / m → apex, before anything else so every other rule below
+    // only ever sees the canonical host.
+    if (req.method === 'GET' || req.method === 'HEAD') {
+      const hostRedirect = canonicalHostRedirect(url);
+      if (hostRedirect) return hostRedirect;
     }
 
     // Addresses from the previous njfashion.co.kr site. Checked before

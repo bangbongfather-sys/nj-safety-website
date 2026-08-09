@@ -118,7 +118,7 @@ export default function UploadProductPage() {
   }, [pat, parsed]);
 
   const previewUrl = useMemo(
-    () => (parsed ? `https://nj-safety-website.njsafety91.workers.dev/ko/products/${parsed.slug}/` : null),
+    () => (parsed ? `https://njfashion.co.kr/ko/products/${parsed.slug}/` : null),
     [parsed],
   );
 

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useAdmin } from '@/components/admin/AdminContext';
 import { ghListDir, REPO_OWNER, REPO_NAME, REPO_BRANCH } from '@/lib/admin/github';
 
-const SITE_PREVIEW_BASE = 'https://nj-safety-website.njsafety91.workers.dev';
+const SITE_PREVIEW_BASE = 'https://njfashion.co.kr';
 
 type Counts = { products: number | null; newInquiries: number | null; lastCommitSha: string | null; lastCommitDate: string | null; lastCommitMessage: string | null };
 

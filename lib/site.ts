@@ -7,4 +7,4 @@
  * domain (e.g. https://www.njfashion.co.kr) is pointed at the Worker, switch
  * this one line and redeploy.
  */
-export const SITE_URL = 'https://nj-safety-website.njsafety91.workers.dev';
+export const SITE_URL = 'https://njfashion.co.kr';

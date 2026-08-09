@@ -13,6 +13,20 @@
   // Worker is essentially a passthrough.
   "main": "worker/index.ts",
 
+  // Live domain. Declared here rather than only in the dashboard so the
+  // binding is version-controlled and a fresh deploy re-asserts it.
+  // `custom_domain` makes Cloudflare manage the DNS record and issue the
+  // certificate; njfashion.co.kr's nameservers point at Cloudflare
+  // (registrar is still 가비아). www and m are attached so the Worker can
+  // 301 them onto the apex — see CANONICAL_HOST in worker/index.ts.
+  // The nj-safety-website.njsafety91.workers.dev address stays live
+  // alongside these as an admin fallback.
+  "routes": [
+    { "pattern": "njfashion.co.kr", "custom_domain": true },
+    { "pattern": "www.njfashion.co.kr", "custom_domain": true },
+    { "pattern": "m.njfashion.co.kr", "custom_domain": true }
+  ],
+
   // Static export (`out/`) served via the ASSETS binding. The Worker
   // delegates to env.ASSETS.fetch(req) for any path it doesn't handle.
   "assets": {

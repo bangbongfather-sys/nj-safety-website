@@ -44,8 +44,9 @@ export default function SettingsPage() {
         <h2>배포</h2>
         <div className="admin-kv-grid">
           <span className="k">호스팅</span><span className="v">Cloudflare Workers + Static Assets</span>
-          <span className="k">URL</span><span className="v"><a href="https://nj-safety-website.njsafety91.workers.dev" target="_blank" rel="noreferrer">nj-safety-website.njsafety91.workers.dev</a></span>
-          <span className="k">최종 도메인</span><span className="v">njfashion.co.kr (사이트 완성 후 가비아 배포 예정)</span>
+          <span className="k">URL</span><span className="v"><a href="https://njfashion.co.kr" target="_blank" rel="noreferrer">njfashion.co.kr</a></span>
+          <span className="k">예비 주소</span><span className="v"><a href="https://nj-safety-website.njsafety91.workers.dev" target="_blank" rel="noreferrer">nj-safety-website.njsafety91.workers.dev</a> (도메인 장애 시 우회 접속용)</span>
+          <span className="k">도메인</span><span className="v">가비아 등록 · 네임서버는 Cloudflare</span>
         </div>
         <p className="admin-help">
           main 브랜치에 커밋이 푸시될 때마다 Cloudflare가 자동으로 빌드 + 재배포합니다 (~1~2분).

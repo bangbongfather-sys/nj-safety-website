@@ -7,7 +7,7 @@ import { ghDeleteFile, ghGetFile, ghListDir, ghPutFile, REPO_OWNER, REPO_NAME } 
 import type { ProductPageData } from '@/lib/product-page-types';
 import DropTarget from '@/components/admin/DropTarget';
 
-const SITE_PREVIEW_BASE = 'https://nj-safety-website.njsafety91.workers.dev';
+const SITE_PREVIEW_BASE = 'https://njfashion.co.kr';
 const IMG_BASE = 'https://catalog-app.njsafety91.workers.dev';
 const UPLOAD_ENDPOINT = '/api/admin/upload-image';
 
