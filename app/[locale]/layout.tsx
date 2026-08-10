@@ -23,10 +23,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!isLocale(resolved.locale)) return {};
   const dict = getDictionary(resolved.locale);
   const loc = resolved.locale;
-  const ogDesc =
-    loc === 'ko'
-      ? '아라미드 방염 작업복 전문 · NFPA 2112 · HRC2 · EN ISO 11612 국제 인증. 1992년부터 나정엔터프라이즈.'
-      : 'Aramid flame-resistant workwear · NFPA 2112 · HRC2 · EN ISO 11612 certified. By Najung Enterprise since 1992.';
+  // The share/search blurb lives in the dictionary so it's editable from
+  // /admin/text (사이트 메타) — this is the line Naver prints under the
+  // search result, and it used to be a string literal only a deploy could
+  // change. Falls back to the page description if it's ever left blank.
+  const ogDesc = dict.meta.shareDescription || dict.meta.description;
   // Full openGraph/twitter re-declared here (Next.js does not deep-merge the
   // parent openGraph, so images must be repeated for locale pages to keep
   // the share card image).
