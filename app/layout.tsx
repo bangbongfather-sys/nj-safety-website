@@ -1,10 +1,15 @@
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import { SITE_URL } from '@/lib/site';
+import { defaultLocale, getDictionary } from '@/lib/i18n';
 import './globals.css';
 
-const OG_DESC =
-  '아라미드 방염 작업복 전문 · NFPA 2112 · HRC2 · EN ISO 11612 국제 인증. 1992년부터 나정엔터프라이즈.';
+// Title and blurb come from the Korean dictionary (meta.*) so both are
+// editable from /admin/text (사이트 메타) rather than requiring a code
+// change — this is what Naver prints for the bare domain.
+const koMeta = getDictionary(defaultLocale).meta;
+const OG_TITLE = koMeta.title;
+const OG_DESC = koMeta.shareDescription || koMeta.description;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -12,7 +17,7 @@ export const metadata: Metadata = {
   // customers search for on Naver, and the previous njfashion.co.kr site
   // ranked on it. The brand follows in parentheses so both queries land.
   title: {
-    default: '나정엔터프라이즈 (NJ SAFETY) — 산업 안전복 전문',
+    default: OG_TITLE,
     template: '%s | NJ SAFETY',
   },
   description: OG_DESC,
@@ -22,13 +27,13 @@ export const metadata: Metadata = {
     siteName: 'NJ SAFETY',
     locale: 'ko_KR',
     url: '/',
-    title: '나정엔터프라이즈 (NJ SAFETY) — 산업 안전복 전문',
+    title: OG_TITLE,
     description: OG_DESC,
-    images: [{ url: '/og.jpg', width: 1200, height: 630, alt: '나정엔터프라이즈 (NJ SAFETY) — 산업 안전복 전문' }],
+    images: [{ url: '/og.jpg', width: 1200, height: 630, alt: OG_TITLE }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: '나정엔터프라이즈 (NJ SAFETY) — 산업 안전복 전문',
+    title: OG_TITLE,
     description: OG_DESC,
     images: ['/og.jpg'],
   },

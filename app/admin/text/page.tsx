@@ -26,6 +26,7 @@ const SECTION_LABELS: Record<string, string> = {
 
 const FIELD_LABELS: Record<string, string> = {
   title: '제목', description: '설명',
+  shareDescription: '검색·공유 설명문 (네이버/구글 검색결과 · 카톡 링크)',
   eyebrow: '아이브로우 (작은 라벨)',
   headline: '헤드라인', headlineLine1: '헤드라인 1행', headlineLine2Pre: '헤드라인 2행 앞', headlineLine2Em: '헤드라인 2행 강조',
   sub: '부제', tagline: '태그라인',
