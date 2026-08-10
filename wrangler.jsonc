@@ -35,10 +35,23 @@
 
   // Static export (`out/`) served via the ASSETS binding. The Worker
   // delegates to env.ASSETS.fetch(req) for any path it doesn't handle.
+  // `not_found_handling` is deliberately "none".
+  //
+  // With "404-page" Cloudflare's asset layer answered browser NAVIGATION
+  // requests for a missing path itself — the Worker never ran, so every
+  // legacy /pages/* redirect 404'd in a real browser while curl and fetch
+  // (non-navigation requests, which do fall through) got the 301. That
+  // mismatch is why the old Naver sitelinks looked broken to visitors but
+  // fine to every command-line check.
+  //
+  // "none" sends every asset miss to the Worker instead, which runs the
+  // legacy redirects and serves the styled 404 page itself when nothing
+  // matches. Asset HITS still bypass the Worker, so normal page views
+  // stay off the Workers request quota.
   "assets": {
     "directory": "./out",
     "binding": "ASSETS",
-    "not_found_handling": "404-page"
+    "not_found_handling": "none"
   },
 
   // R2 bucket for admin-uploaded images. Bucket MUST be created in the
