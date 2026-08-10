@@ -8,7 +8,10 @@
       "titleKo": "홈페이지 리뉴얼 안내",
       "titleEn": "New notice",
       "bodyKo": "나정엔터프라이즈(NJ SAFETY) 홈페이지 리뉴얼 했습니다.",
-      "bodyEn": ""
+      "bodyEn": "",
+      "popup": {
+        "enabled": true
+      }
     },
     {
       "id": "njww26-winter-jacket-launch",
