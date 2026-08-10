@@ -397,14 +397,84 @@ const LEGACY_REDIRECTS: Record<string, string> = {
   '/pages/news':    '/ko/notices',
 };
 
+/**
+ * Keyword fallback for the old addresses we never had an exact list of.
+ *
+ * The previous site's sitelinks are still in Naver (SERVICE · 회사소개 ·
+ * 자료실 · 춘/하계 방염복 · 추/동계 방염복 · HISTORY) and those URLs
+ * weren't all `/pages/<name>` — a visitor clicking them landed on a dead
+ * page. Rather than guess every path shape, match on the words that
+ * appear in it: old Korean site builders put the section name in the
+ * path or the query (`/bbs/board.php?bo_table=data`, `/sub/company`,
+ * percent-encoded Hangul, …), so a keyword hit is a reliable signal of
+ * what the visitor was looking for.
+ *
+ * Ordered — first match wins, so the specific rules sit above the
+ * general ones (사이즈 before 자료실, 하계 before 제품).
+ */
+const LEGACY_KEYWORD_RULES: Array<[RegExp, string]> = [
+  [/size|사이즈|치수/i,                              '/ko/resources/size-guide'],
+  [/test.?report|성적서|시험/i,                      '/ko/resources/test-reports'],
+  [/dealer|agency|store|대리점|판매|매장/i,           '/ko/dealers'],
+  // 자료실 before 공지사항: board builders route every board through the
+  // same `/bbs/board.php`, so the generic word "board" says nothing —
+  // the table name in the query (`bo_table=data`) is the real signal.
+  [/data|pds|download|catalog|자료|다운로드|카탈로그/i, '/ko/resources'],
+  [/notice|news|공지|소식|뉴스/i,                    '/ko/notices'],
+  [/contact|inquir|estimate|qna|문의|견적|상담/i,     '/ko/contact'],
+  [/histor|연혁/i,                                   '/ko/about'],
+  [/about|company|intro|greeting|ceo|회사|소개|인사/i, '/ko/about'],
+  // Season lines and every other product-ish word land on the catalogue.
+  [/summer|winter|spring|하계|동계|춘추|방한|여름|겨울/i, '/ko/products'],
+  [/product|item|goods|service|shop|제품|상품|방염|작업복|용접/i, '/ko/products'],
+];
+
+/**
+ * Percent-encoded Hangul is the norm in these old URLs; decode before
+ * matching so `%EC%9E%90%EB%A3%8C%EC%8B%A4` reads as `자료실`.
+ */
+function decodePath(s: string): string {
+  try {
+    return decodeURIComponent(s);
+  } catch {
+    return s; // malformed escape — match against the raw form instead
+  }
+}
+
 function legacyRedirect(url: URL): Response | null {
   const p = url.pathname.replace(/\/+$/, '') || '/';
+  // Never rewrite the new site's own pages, the API, or asset requests.
+  if (p === '/' || p.startsWith('/ko') || p.startsWith('/en') || p.startsWith('/api')) {
+    return null;
+  }
   const mapped = LEGACY_REDIRECTS[p];
   // Old category pages used opaque numeric ids that don't map onto the
   // new catalogue, so they all land on the products index.
-  const target = mapped ?? (/^\/categories\/\d+$/.test(p) ? '/ko/products' : null);
+  let target = mapped ?? (/^\/categories\/\d+$/.test(p) ? '/ko/products' : null);
+  if (!target) {
+    const haystack = decodePath(p + url.search);
+    for (const [re, dest] of LEGACY_KEYWORD_RULES) {
+      if (re.test(haystack)) {
+        target = dest;
+        break;
+      }
+    }
+  }
   if (!target) return null;
   return Response.redirect(`${url.origin}${target}/`, 301);
+}
+
+/**
+ * True for requests that render a page (as opposed to fetching a script,
+ * stylesheet or image). Used to decide whether an unmatched 404 should
+ * bounce to the homepage: doing that to a missing `.js` would hand the
+ * browser HTML where it expects code, so extension-bearing paths and
+ * non-HTML Accept headers are left to 404 honestly.
+ */
+function isPageRequest(req: Request, url: URL): boolean {
+  if (url.pathname.startsWith('/api/')) return false;
+  if (/\.[a-z0-9]{2,5}$/i.test(url.pathname)) return false;
+  return (req.headers.get('accept') ?? '').includes('text/html');
 }
 
 /* ─── Admin inbox ────────────────────────────────────────────────── */
@@ -545,6 +615,19 @@ export default {
     }
 
     // Everything else — static assets passthrough.
-    return env.ASSETS.fetch(req);
+    const res = await env.ASSETS.fetch(req);
+
+    // Safety net for the old site's addresses that neither the exact
+    // table nor the keyword rules recognise. Search engines still list
+    // them, so a visitor clicking through would otherwise hit a dead
+    // page on a domain that used to work. Send them to the homepage
+    // instead — 302, not 301: this is a "we couldn't place you" bounce,
+    // and caching it permanently in browsers would mask a page we may
+    // add later at that same address.
+    if (res.status === 404 && (req.method === 'GET' || req.method === 'HEAD') && isPageRequest(req, url)) {
+      return Response.redirect(`${url.origin}/`, 302);
+    }
+
+    return res;
   },
 };
