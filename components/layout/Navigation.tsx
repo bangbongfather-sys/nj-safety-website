@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import type { Dictionary, Locale } from '@/lib/i18n';
 import EditableText, { type EditorApi } from '@/components/admin/EditableText';
 import MobileNav from '@/components/layout/MobileNav';
+import SearchOverlay from './SearchOverlay';
 import categoriesData from '@/data/product-categories.json';
 
 type Props = { locale: Locale; dict: Dictionary; editor?: EditorApi };
@@ -238,6 +239,11 @@ export default function Navigation({ locale, dict, editor }: Props) {
             <span>→</span>
           </Link>
         </div>
+
+        {/* Search sits outside .nav-right on purpose: that container is
+            hidden below 1100px and search has to stay reachable on
+            phones. */}
+        <SearchOverlay locale={locale} />
 
         {/* Mobile hamburger + right-slide drawer. The component owns
             its own visibility via `nav:hidden` so it disappears on
