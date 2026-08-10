@@ -8,6 +8,12 @@
    ============================================================ */
 
 :root {
+  /* Page content width, shared by the nav and every section below it.
+   * These used to disagree — the nav ran to 1600px while `.wrap` stopped
+   * at 1440px, so on wide screens every section sat 80px further in than
+   * the logo above it and the page read as pushed to the right. One
+   * variable keeps the whole column on the same edge. */
+  --page-max: 1600px;
   --bg: #1c1c1e;
   --bg-2: #2a2a2c;
   --bg-3: #0d0d0e;
@@ -63,7 +69,7 @@ button { font-family: inherit; background: none; border: 0; color: inherit; curs
 ::selection { background: var(--accent); color: #0d0d0e; }
 
 /* ---------- Helpers ---------- */
-.wrap { max-width: 1440px; margin: 0 auto; padding: 0 56px; }
+.wrap { max-width: var(--page-max); margin: 0 auto; padding: 0 56px; }
 
 .eyebrow {
   font-family: var(--mono);
@@ -121,7 +127,7 @@ p { line-height: 1.65; }
 .nav-inner {
   display: flex; align-items: center; justify-content: space-between;
   height: 112px; padding: 0 56px;
-  max-width: 1600px; margin: 0 auto;
+  max-width: var(--page-max); margin: 0 auto;
 }
 .logo {
   display: inline-flex; align-items: center;
@@ -644,8 +650,8 @@ section { position: relative; }
 /* The rail is full-bleed, so the arrows track the wrap inset rather than
  * the rail's own edge — otherwise they'd float out in the empty margin
  * on a wide monitor, far from the cards they scroll. */
-.pl-nav-prev { left: max(10px, calc((100% - 1440px) / 2 + 10px)); }
-.pl-nav-next { right: max(10px, calc((100% - 1440px) / 2 + 10px)); }
+.pl-nav-prev { left: max(10px, calc((100% - var(--page-max)) / 2 + 10px)); }
+.pl-nav-next { right: max(10px, calc((100% - var(--page-max)) / 2 + 10px)); }
 .pl-nav.is-hidden { opacity: 0; pointer-events: none; }
 @media (max-width: 767px) {
   /* On phones the rail is a 1-up flick scroller — arrows just crowd it. */
@@ -658,18 +664,18 @@ section { position: relative; }
   /* Full-bleed track. The rail sits outside .wrap, so this padding
    * re-creates the wrap's inset — first card lines up under the section
    * title, and everything past the last visible card runs off the
-   * viewport edge instead of being clipped by a 1440px container.
+   * viewport edge instead of being clipped by the page container.
    * `100%` here is the section width, not 100vw, so a vertical
    * scrollbar can't push the page sideways. */
-  padding-left: max(56px, calc((100% - 1440px) / 2 + 56px));
-  padding-right: max(56px, calc((100% - 1440px) / 2 + 56px));
+  padding-left: max(56px, calc((100% - var(--page-max)) / 2 + 56px));
+  padding-right: max(56px, calc((100% - var(--page-max)) / 2 + 56px));
   padding-bottom: 16px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   /* Must mirror padding-left. Snap positions are measured from the
    * scrollport edge, so without this the first card snaps flush to the
    * viewport edge on load and the inset above is silently undone. */
-  scroll-padding-left: max(56px, calc((100% - 1440px) / 2 + 56px));
+  scroll-padding-left: max(56px, calc((100% - var(--page-max)) / 2 + 56px));
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, .25) transparent;
 }
@@ -1354,7 +1360,7 @@ section { position: relative; }
 }
 .product-detail .pd-section h3 em { font-style: normal; color: var(--accent); }
 .product-detail .pd-section h3 span[style] { color: inherit !important; }
-.pd-section { padding: 80px 56px; border-bottom: 1px solid var(--border-soft); max-width: 1440px; margin: 0 auto; }
+.pd-section { padding: 80px 56px; border-bottom: 1px solid var(--border-soft); max-width: var(--page-max); margin: 0 auto; }
 .pd-section:last-child { border-bottom: 0; }
 .pd-section-head { margin-bottom: 36px; max-width: 680px; }
 .pd-section-head .pd-eyebrow { display: block; }
@@ -1394,7 +1400,7 @@ section { position: relative; }
   display: grid; grid-template-columns: 1fr 1fr;
   min-height: 560px;
   border-bottom: 1px solid var(--border-soft);
-  max-width: 1440px;
+  max-width: var(--page-max);
   margin: 0 auto;
 }
 .pd-hero-media { position: relative; background: var(--bg-3); min-height: 460px; }
