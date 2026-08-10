@@ -394,8 +394,28 @@ const LEGACY_REDIRECTS: Record<string, string> = {
   '/pages/history': '/ko/about',
   '/pages/service': '/ko/products',
   '/pages/contact': '/ko/contact',
-  '/pages/news':    '/ko/notices',
+  // Named "news" by the page builder but titled 자료실 on the old site —
+  // a board of 시험성적서 · 사이즈표 · E-카탈로그. The Naver sitelink for it
+  // still reads 자료실, so it has to land on the resources page, not
+  // 공지사항. (Verified against the pre-migration capture in
+  // ~/클로드/njfashion-backup/screenshots/pages-news.png.)
+  '/pages/news':    '/ko/resources',
+  // The old builder's home. Not covered by any keyword rule below —
+  // "main" says nothing about what the visitor wanted.
+  '/main':          '/ko',
+  // Shop/account pages that no longer exist. The footer linked the two
+  // policy pages on every page, so they are the likeliest to be indexed;
+  // privacy is the only equivalent the new site has.
+  '/members/policy': '/ko/privacy',
+  '/members/terms':  '/ko/privacy',
 };
+
+/**
+ * Whole path families from the old shop that have no counterpart: login,
+ * signup, mypage, cart. Nothing to map them onto, so they go home rather
+ * than dead-end on a 404.
+ */
+const LEGACY_DEAD_PREFIXES = ['/members', '/mypages', '/cart'];
 
 /**
  * Keyword fallback for the old addresses we never had an exact list of.
@@ -451,6 +471,9 @@ function legacyRedirect(url: URL): Response | null {
   // Old category pages used opaque numeric ids that don't map onto the
   // new catalogue, so they all land on the products index.
   let target = mapped ?? (/^\/categories\/\d+$/.test(p) ? '/ko/products' : null);
+  if (!target && LEGACY_DEAD_PREFIXES.some((d) => p === d || p.startsWith(`${d}/`))) {
+    target = '/ko';
+  }
   if (!target) {
     const haystack = decodePath(p + url.search);
     for (const [re, dest] of LEGACY_KEYWORD_RULES) {
