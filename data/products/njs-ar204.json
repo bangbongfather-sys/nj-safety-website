@@ -138,7 +138,7 @@
       },
       {
         "n": "03",
-        "title": "다크 그레이 컬러",
+        "title": "멜란지 차콜 컬러",
         "body": "햇빛이나 땀에 의한 변색(일광/땀 견뢰도)에도 강해, 뜨거운 야외 현장에서도 처음의 단정한 외관이 무너지지 않습니다.",
         "featured": true
       },
@@ -168,7 +168,7 @@
       },
       {
         "label": "평량",
-        "value": "185 g/m²"
+        "value": "-"
       },
       {
         "label": "컬러",
@@ -403,7 +403,7 @@
       "size": "0.95em"
     },
     "spec.rows[5].value": {
-      "width": "32%",
+      "width": "34%",
       "align": "left"
     },
     "features.items[2].body": {
@@ -430,10 +430,11 @@
     "category": "ARAMID FR SERIES · Vol.04",
     "name": "아라미드 PK 티셔츠",
     "subtitle": "전기·설비 현장의 일상을 위한 난연 워크웨어",
+    "tagline": "신뢰할 수 있는 아라미드 원단과 뛰어난 신축성으로 완성한, <div style=\"\">하루 종일 입을 수 있는 PK 티셔츠.</div><div style=\"color: rgb(255, 255, 255); font-weight: 400;\"><span style=\"font-size: clamp(13px, 1.3vw, 15px); letter-spacing: 0.01em; font-weight: 700; color: rgb(29, 29, 31);\"></span></div><div style=\"color: rgb(255, 255, 255);\"><span style=\"font-size: clamp(13px, 1.3vw, 15px); letter-spacing: 0.01em; font-weight: 700; color: rgb(29, 29, 31);\"></span></div><div style=\"color: rgb(255, 255, 255);\"></div><div style=\"color: rgb(255, 255, 255);\"></div><div><span style=\"font-size: clamp(13px, 1.3vw, 15px); letter-spacing: 0.01em; font-weight: 700; color: rgb(29, 29, 31);\"><br></span></div>",
     "summarySpecs": [
       {
         "label": "원단 구성",
-        "value": "Aramid 63.8% / FR Rayon(Lenzing FR) 33.9%/Spandex 2.3%"
+        "value": "Aramid 63.8% / FR Rayon(Lenzing FR) 33.9%/ Anti  2.3%"
       },
       {
         "label": "컬러",
@@ -464,6 +465,16 @@
       {
         "label": "made in",
         "value": "Korea"
+      }
+    ]
+  },
+  "testReports": {
+    "files": [
+      {
+        "url": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njs-ar204/reports/1779286023957-pk-afk185900-dark-grey.pdf?v=1779286025781",
+        "name": "PK방염 니트AFK185900 Dark Grey",
+        "size": 1483118,
+        "uploadedAt": "2026-05-20T14:07:05.781Z"
       }
     ]
   },
@@ -522,16 +533,6 @@
       {
         "label": "AS책임자와 전화번호",
         "value": "02-777-3079"
-      }
-    ]
-  },
-  "testReports": {
-    "files": [
-      {
-        "url": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/products/njs-ar204/reports/1779286023957-pk-afk185900-dark-grey.pdf?v=1779286025781",
-        "name": "PK방염 니트AFK185900 Dark Grey",
-        "size": 1483118,
-        "uploadedAt": "2026-05-20T14:07:05.781Z"
       }
     ]
   }
