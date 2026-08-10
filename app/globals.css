@@ -622,7 +622,16 @@ section { position: relative; }
 
 /* Rail wrapper hosts the absolutely-positioned prev/next arrows over the
  * scroll container. */
-.products-light-rail { position: relative; }
+/* The rail is capped at the page container and centred, so the cards are
+ * clipped at the same inset the left edge starts from. It used to run
+ * full-bleed to the viewport edge, which on a wide monitor left a large
+ * empty margin on the left while cards ran off the right — the whole
+ * section read as pushed to the right. */
+.products-light-rail {
+  position: relative;
+  max-width: var(--page-max);
+  margin: 0 auto;
+}
 
 /* Prev/next carousel arrows. Hidden (faded + non-interactive) at each end
  * and when the rail doesn't overflow, via the .is-hidden modifier. */
@@ -650,8 +659,9 @@ section { position: relative; }
 /* The rail is full-bleed, so the arrows track the wrap inset rather than
  * the rail's own edge — otherwise they'd float out in the empty margin
  * on a wide monitor, far from the cards they scroll. */
-.pl-nav-prev { left: max(10px, calc((100% - var(--page-max)) / 2 + 10px)); }
-.pl-nav-next { right: max(10px, calc((100% - var(--page-max)) / 2 + 10px)); }
+/* Positioned against the rail, which is already the container's width. */
+.pl-nav-prev { left: 10px; }
+.pl-nav-next { right: 10px; }
 .pl-nav.is-hidden { opacity: 0; pointer-events: none; }
 @media (max-width: 767px) {
   /* On phones the rail is a 1-up flick scroller — arrows just crowd it. */
@@ -661,21 +671,19 @@ section { position: relative; }
 /* Horizontal scroll rail — snap-aligned so users can flick / arrow
  * through one card at a time without overshooting. */
 .products-light-scroll {
-  /* Full-bleed track. The rail sits outside .wrap, so this padding
-   * re-creates the wrap's inset — first card lines up under the section
-   * title, and everything past the last visible card runs off the
-   * viewport edge instead of being clipped by the page container.
-   * `100%` here is the section width, not 100vw, so a vertical
-   * scrollbar can't push the page sideways. */
-  padding-left: max(56px, calc((100% - var(--page-max)) / 2 + 56px));
-  padding-right: max(56px, calc((100% - var(--page-max)) / 2 + 56px));
+  /* The parent rail already carries the page container's width, so the
+   * track only needs the container's own 56px gutter. That lines the
+   * first card up under the section title and clips the overflow at the
+   * container's right edge, keeping both margins equal. */
+  padding-left: 56px;
+  padding-right: 56px;
   padding-bottom: 16px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   /* Must mirror padding-left. Snap positions are measured from the
    * scrollport edge, so without this the first card snaps flush to the
    * viewport edge on load and the inset above is silently undone. */
-  scroll-padding-left: max(56px, calc((100% - var(--page-max)) / 2 + 56px));
+  scroll-padding-left: 56px;
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, .25) transparent;
 }
