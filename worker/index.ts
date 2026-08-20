@@ -53,6 +53,23 @@ interface Env {
   R2_PUBLIC_BASE: string;
   /** GitHub login allowed to upload / read the inquiry inbox. Defaults to bangbongfather-sys. */
   ADMIN_GH_LOGIN?: string;
+
+  /**
+   * 문의 알림 메일 (선택). Set as a secret:
+   * `wrangler secret put RESEND_API_KEY` — or via the dashboard.
+   * Absent ⇒ no mail is sent and the inbox behaves exactly as before,
+   * so the site keeps working untouched until a key is added.
+   */
+  RESEND_API_KEY?: string;
+  /** Where notifications go. Defaults to the company address. */
+  CONTACT_TO?: string;
+  /**
+   * Sender. Defaults to Resend's shared sandbox address, which needs no
+   * DNS setup but only delivers to the address the Resend account was
+   * registered with. Point this at an address on a domain verified in
+   * Resend (e.g. noreply@njfashion.co.kr) for reliable delivery.
+   */
+  RESEND_FROM?: string;
 }
 
 // Allow only safe path characters in R2 keys. Reject "..", absolute paths,
@@ -196,6 +213,115 @@ type Inquiry = {
   attachments: { name: string; url: string; size: number }[];
 };
 
+/* ─── 문의 알림 메일 ─────────────────────────────────────────────── */
+
+const DEFAULT_CONTACT_TO = 'njsafety91@naver.com';
+/** Resend's shared sandbox sender — no DNS setup, but it only delivers
+ *  to the address the Resend account itself was registered with. */
+const DEFAULT_RESEND_FROM = 'NJ SAFETY 문의 <onboarding@resend.dev>';
+
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/**
+ * Best-effort notification that a new inquiry landed.
+ *
+ * The inbox in R2 stays the source of truth — this is a heads-up so the
+ * operator doesn't have to poll /admin/inquiries. It therefore never
+ * throws: a mail failure must not turn a stored submission into an
+ * error for the visitor. Skipped entirely when RESEND_API_KEY is unset.
+ */
+async function notifyNewInquiry(env: Env, r: Inquiry): Promise<void> {
+  if (!env.RESEND_API_KEY) return;
+
+  const rows: Array<[string, string]> = [
+    ['문의 유형', r.inquiryLabel],
+    ['회사명', r.company],
+    ['담당자', r.contactName],
+    ['연락처', r.phone],
+    ['이메일', r.email],
+  ];
+  const when = new Date(r.receivedAt).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+  const inboxUrl = 'https://njfashion.co.kr/admin/inquiries/';
+
+  const textBody = [
+    `새 문의가 접수되었습니다 — ${r.inquiryLabel}`,
+    '',
+    ...rows.map(([k, v]) => `${k}: ${v}`),
+    `접수 시각: ${when}`,
+    '',
+    '── 문의 내용 ──',
+    r.message,
+    ...(r.attachments.length
+      ? ['', '── 첨부 ──', ...r.attachments.map((a) => `${a.name}: ${a.url}`)]
+      : []),
+    '',
+    `접수함에서 보기: ${inboxUrl}`,
+  ].join('\n');
+
+  const htmlBody =
+    `<!doctype html><html><body style="margin:0;padding:24px;background:#f4f4f5;` +
+    `font-family:-apple-system,BlinkMacSystemFont,'Pretendard',sans-serif;color:#1c1c1e">` +
+    `<div style="max-width:640px;margin:0 auto;background:#fff;border:1px solid #e4e4e7;border-radius:8px;overflow:hidden">` +
+    `<div style="background:#1c1c1e;color:#fff;padding:20px 24px">` +
+    `<div style="font-size:12px;letter-spacing:.18em;color:#ff6b1a">NEW INQUIRY</div>` +
+    `<div style="font-size:20px;font-weight:700;margin-top:6px">${escapeHtml(r.inquiryLabel)}</div>` +
+    `</div><div style="padding:24px"><table style="width:100%;border-collapse:collapse;font-size:14px">` +
+    rows
+      .map(
+        ([k, v]) =>
+          `<tr><td style="padding:8px 0;color:#71717a;width:96px">${escapeHtml(k)}</td>` +
+          `<td style="padding:8px 0;font-weight:600">${escapeHtml(v)}</td></tr>`,
+      )
+      .join('') +
+    `<tr><td style="padding:8px 0;color:#71717a">접수 시각</td>` +
+    `<td style="padding:8px 0">${escapeHtml(when)}</td></tr></table>` +
+    `<div style="margin-top:20px;padding:16px;background:#fafafa;border:1px solid #e4e4e7;border-radius:6px;` +
+    `white-space:pre-wrap;font-size:14px;line-height:1.6">${escapeHtml(r.message)}</div>` +
+    (r.attachments.length
+      ? `<div style="margin-top:16px;font-size:13px"><b>첨부</b><br>` +
+        r.attachments
+          .map(
+            (a) =>
+              `<a href="${escapeHtml(a.url)}" style="color:#ff6b1a">${escapeHtml(a.name)}</a>`,
+          )
+          .join('<br>') +
+        `</div>`
+      : '') +
+    `<a href="${inboxUrl}" style="display:inline-block;margin-top:24px;background:#ff6b1a;color:#fff;` +
+    `text-decoration:none;font-weight:700;padding:12px 20px;border-radius:4px">접수함에서 보기 →</a>` +
+    `</div></div></body></html>`;
+
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${env.RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: env.RESEND_FROM || DEFAULT_RESEND_FROM,
+        to: [env.CONTACT_TO || DEFAULT_CONTACT_TO],
+        subject: `[NJ SAFETY 문의] ${r.company} · ${r.inquiryLabel}`,
+        text: textBody,
+        html: htmlBody,
+        // Replying in the mail client goes straight to the customer.
+        reply_to: `${r.contactName} <${r.email}>`,
+      }),
+    });
+    if (!res.ok) {
+      console.error('inquiry mail failed:', res.status, (await res.text()).slice(0, 300));
+    }
+  } catch (e: unknown) {
+    console.error('inquiry mail error:', e instanceof Error ? e.message : String(e));
+  }
+}
+
 /**
  * Public inquiry submission.
  *
@@ -206,7 +332,7 @@ type Inquiry = {
  * than take on a third-party mail provider, submissions are stored in
  * R2 and read from /admin/inquiries.
  */
-async function handleContact(req: Request, env: Env): Promise<Response> {
+async function handleContact(req: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
   let form: FormData;
   try {
     form = await req.formData();
@@ -326,6 +452,10 @@ async function handleContact(req: Request, env: Env): Promise<Response> {
     // submission can still be found from the Worker logs if the admin
     // list ever misbehaves.
     console.log('inquiry stored:', `${INBOX_PREFIX}${id}.json`);
+    // Fire-and-forget: the visitor's response shouldn't wait on an
+    // outbound API call, and a mail failure must not fail the
+    // submission — it's already safely in the inbox.
+    ctx.waitUntil(notifyNewInquiry(env, record));
   } catch (e: unknown) {
     // Unlike the old email path there is no other copy of the text
     // fields, so a failed write means the inquiry is genuinely lost —
@@ -587,7 +717,7 @@ async function handleInquiryDelete(req: Request, env: Env): Promise<Response> {
 }
 
 export default {
-  async fetch(req: Request, env: Env): Promise<Response> {
+  async fetch(req: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(req.url);
 
     if (req.method === 'OPTIONS' && url.pathname.startsWith('/api/')) {
@@ -622,7 +752,7 @@ export default {
     }
 
     if (url.pathname === '/api/contact' && req.method === 'POST') {
-      return handleContact(req, env);
+      return handleContact(req, env, ctx);
     }
 
     // Machine-readable product directory (built by
