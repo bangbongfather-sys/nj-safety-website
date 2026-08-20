@@ -66,16 +66,30 @@
     }
   ],
 
-  // NOTE — no email binding, on purpose.
+  // 문의 알림 메일 — 설정하면 켜지고, 안 하면 조용히 꺼져 있다.
   //
-  // 문의 폼 submissions are stored in R2 under `inquiries/` and read
-  // from /admin/inquiries. Emailing them out was tried and dropped:
-  // Cloudflare's send_email binding refuses any sender whose domain
-  // the account doesn't own ("email from naver.com not allowed because
-  // domain is not owned by the same account"), and this account has no
-  // zones with Email Routing. Reviving it would mean moving a domain
-  // onto Cloudflare (or paying for a third-party mail API) — see git
-  // history for the working Resend implementation if that day comes.
+  // Submissions are stored in R2 under `inquiries/` and read from
+  // /admin/inquiries; that inbox stays the source of truth. On top of
+  // it the Worker sends a heads-up mail through Resend's HTTP API so
+  // the operator doesn't have to poll the inbox.
+  //
+  // Cloudflare's own send_email binding is still NOT used: it needs
+  // Email Routing enabled on the zone, which repoints njfashion.co.kr's
+  // MX records at Cloudflare and would break any mailbox hosted on that
+  // domain elsewhere. Resend needs no MX change.
+  //
+  // Setup (one-time, dashboard → Workers & Pages → nj-safety-website
+  // → Settings → Variables and Secrets):
+  //   RESEND_API_KEY  (Secret)   — from resend.com. Absent ⇒ no mail,
+  //                                everything else unchanged.
+  //   CONTACT_TO      (optional) — defaults to njsafety91@naver.com.
+  //   RESEND_FROM     (optional) — defaults to Resend's sandbox sender,
+  //                                which only delivers to the address
+  //                                the Resend account was registered
+  //                                with. Once njfashion.co.kr is
+  //                                verified in Resend, set this to e.g.
+  //                                "NJ SAFETY <noreply@njfashion.co.kr>"
+  //                                for reliable delivery to Naver.
 
   // Public-facing R2 URL. After the bucket's Public Access is enabled,
   // copy the `https://pub-<hash>.r2.dev` URL from the bucket Settings
