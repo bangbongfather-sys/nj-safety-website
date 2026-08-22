@@ -6,6 +6,39 @@ import { cacheLogin, getCachedLogin } from './offline';
 
 const PAT_KEY = 'nj_admin_github_pat';
 
+/**
+ * iOS Safari throws a SecurityError on `window.localStorage` when site
+ * data is blocked (Settings → Safari → 모든 쿠키 차단, Lockdown Mode,
+ * some MDM profiles). The unguarded read below used to throw inside the
+ * mount effect, so `setState` never ran and the gate sat on
+ * "인증 정보 확인 중..." forever — which is exactly what an iPad showed
+ * while the same account worked on a laptop.
+ *
+ * Storage being unavailable must degrade to "not logged in", never to a
+ * dead screen. Sign-in still works; the token just isn't remembered.
+ */
+function readStored(key: string): string | null {
+  try {
+    return window.localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+function writeStored(key: string, value: string): void {
+  try {
+    window.localStorage.setItem(key, value);
+  } catch {
+    // Session-only login — nothing more we can do here.
+  }
+}
+function removeStored(key: string): void {
+  try {
+    window.localStorage.removeItem(key);
+  } catch {
+    // Nothing was stored in the first place.
+  }
+}
+
 export type PatState =
   | { status: 'unknown' }                // initial mount before checking localStorage
   | { status: 'unauthenticated' }        // no token saved
@@ -35,7 +68,7 @@ export function usePat(): PatApi {
   // returns. Only a definitive auth failure (e.g. 401) clears the token.
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const saved = window.localStorage.getItem(PAT_KEY);
+    const saved = readStored(PAT_KEY);
     if (!saved) {
       setState({ status: 'unauthenticated' });
       return;
@@ -55,7 +88,7 @@ export function usePat(): PatApi {
           offline: true,
         });
       } else {
-        window.localStorage.removeItem(PAT_KEY);
+        removeStored(PAT_KEY);
         setState({ status: 'unauthenticated' });
       }
     });
@@ -88,14 +121,14 @@ export function usePat(): PatApi {
     setState({ status: 'verifying', pat: v });
     const r = await ghWhoami(v);
     if (r.ok && r.login) {
-      window.localStorage.setItem(PAT_KEY, v);
+      writeStored(PAT_KEY, v);
       cacheLogin(r.login);
       setState({ status: 'authenticated', pat: v, login: r.login });
       return { ok: true };
     } else if (r.offline) {
       // Can't verify without a network — accept provisionally so the
       // editor is usable; the next online verification settles it.
-      window.localStorage.setItem(PAT_KEY, v);
+      writeStored(PAT_KEY, v);
       setState({
         status: 'authenticated',
         pat: v,
@@ -110,7 +143,7 @@ export function usePat(): PatApi {
   }, []);
 
   const logout = useCallback(() => {
-    window.localStorage.removeItem(PAT_KEY);
+    removeStored(PAT_KEY);
     setState({ status: 'unauthenticated' });
   }, []);
 

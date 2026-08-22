@@ -50,7 +50,14 @@ function safeParse<T>(raw: string | null, fallback: T): T {
 }
 
 function hasStorage(): boolean {
-  return typeof window !== 'undefined' && !!window.localStorage;
+  // Touching the property throws (not returns null) when iOS Safari has
+  // site data blocked, so this probe has to be inside try/catch or every
+  // caller that relies on it takes the exception instead.
+  try {
+    return typeof window !== 'undefined' && !!window.localStorage;
+  } catch {
+    return false;
+  }
 }
 
 /** True when the browser reports no network (airplane mode). */

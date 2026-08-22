@@ -66,17 +66,30 @@ function headers(pat: string): HeadersInit {
 export async function ghWhoami(
   pat: string,
 ): Promise<{ ok: boolean; login?: string; error?: string; offline?: boolean }> {
+  // Without a deadline a stalled request (captive-portal Wi-Fi, a phone
+  // that slept mid-flight) leaves usePat parked on `verifying` forever,
+  // which renders as a permanent "인증 정보 확인 중..." screen. Treat a
+  // timeout the same as being offline: keep the saved token and let the
+  // editor open in offline mode rather than logging the operator out.
+  const abort = new AbortController();
+  const timer = setTimeout(() => abort.abort(), 12_000);
   try {
-    const r = await fetch('https://api.github.com/user', { headers: headers(pat) });
+    const r = await fetch('https://api.github.com/user', {
+      headers: headers(pat),
+      signal: abort.signal,
+    });
     if (!r.ok) return { ok: false, error: `${r.status} ${r.statusText}` };
     const data = await r.json();
     return { ok: true, login: data.login };
   } catch (e: unknown) {
+    const timedOut = e instanceof Error && e.name === 'AbortError';
     return {
       ok: false,
-      offline: isNetworkError(e),
-      error: e instanceof Error ? e.message : String(e),
+      offline: timedOut || isNetworkError(e),
+      error: timedOut ? '인증 서버 응답 없음 (12초 초과)' : e instanceof Error ? e.message : String(e),
     };
+  } finally {
+    clearTimeout(timer);
   }
 }
 
