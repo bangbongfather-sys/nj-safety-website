@@ -1894,8 +1894,8 @@ section { position: relative; }
 }
 
 .admin-page {
-  max-width: 1080px;
-  padding: 48px 56px 80px;
+  max-width: 1600px;
+  padding: 34px 40px 56px;
 }
 .admin-page-head {
   padding-bottom: 28px;
@@ -2508,7 +2508,8 @@ section { position: relative; }
 @media (max-width: 900px) {
   .admin-app { grid-template-columns: 1fr; }
   .admin-sidebar { position: static; height: auto; }
-  .admin-page { padding: 32px 24px 64px; }
+  .admin-page { padding: 24px 18px 48px; }
+  .inq-page { padding: 20px 16px 24px; }
   .admin-stat-grid { grid-template-columns: 1fr; }
   .admin-action-grid { grid-template-columns: 1fr; }
   .admin-field-pair { grid-template-columns: 1fr; }
@@ -4907,7 +4908,7 @@ section { position: relative; }
 .adm-home-main {
   flex: 1;
   width: 100%;
-  max-width: 1080px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 34px 32px 30px;
   display: flex; flex-direction: column; gap: 20px;
@@ -4949,9 +4950,15 @@ section { position: relative; }
 }
 .adm-intro-close:hover { color: var(--muted); }
 
+/* 남는 높이를 타일이 나눠 갖는다 — 안 그러면 타일 아래로 빈 띠가
+   크게 남는다. 상한을 둬서 큰 모니터에서 카드가 우스꽝스럽게
+   길어지지는 않게 한다. */
 .adm-tiles {
+  flex: 1;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: minmax(128px, 200px);
+  align-content: start;
   gap: 15px;
 }
 .adm-tile {
@@ -5174,16 +5181,25 @@ section { position: relative; }
    메일함으로 나눈 의미가 없어진다.
    ══════════════════════════════════════════════════════════════════ */
 
-.inq-page { display: flex; flex-direction: column; height: 100%; min-height: 0; min-width: 0; }
+/* 접수함은 상한 없이 화면을 다 쓴다 — 목록과 본문을 나란히 놓는
+   작업 화면이라 폭이 넓을수록 한 번에 보이는 양이 늘어난다. */
+.inq-page {
+  display: flex; flex-direction: column;
+  height: 100%; min-height: 0; min-width: 0;
+  max-width: none;
+  padding: 26px 30px 30px;
+}
 
+/* 제목·필터·검색을 한 줄에 둔다. 따로 쌓으면 목록에 쓸 세로가
+   한 줄만큼 줄어든다. */
 .inq-head {
-  display: flex; align-items: flex-end; justify-content: space-between;
-  gap: 16px; flex-wrap: wrap;
-  margin-bottom: 16px;
+  display: flex; align-items: flex-end;
+  gap: 10px 20px; flex-wrap: wrap;
+  margin-bottom: 12px;
 }
 .inq-head-l { display: flex; flex-direction: column; gap: 6px; }
 .inq-head-l h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.025em; }
-.inq-head-r { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.inq-head-r { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-left: auto; }
 
 .inq-search {
   display: flex; align-items: center; gap: 8px;
@@ -5211,7 +5227,7 @@ section { position: relative; }
 }
 .inq-search-clear:hover { color: var(--text); }
 
-.inq-tabs { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; margin-bottom: 14px; }
+.inq-tabs { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; padding-bottom: 2px; }
 .inq-tabs-note { margin-left: 4px; }
 
 /* 두 칸을 붙여 하나의 카드처럼 보이게 한다. */
@@ -5219,7 +5235,7 @@ section { position: relative; }
   flex: 1;
   min-height: 0;
   display: grid;
-  grid-template-columns: 330px 1fr;
+  grid-template-columns: minmax(300px, 24%) 1fr;
   background: var(--card);
   border: 1px solid var(--border-soft);
   border-radius: 14px;

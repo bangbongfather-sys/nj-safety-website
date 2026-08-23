@@ -249,6 +249,23 @@ export default function InquiriesAdminPage() {
           <span className="eyebrow">— Inquiries</span>
           <h1>문의 접수함</h1>
         </div>
+        <div className="inq-tabs">
+          {TABS.map((t) => (
+            <button
+              key={t.key}
+              type="button"
+              className={`btn ${filter === t.key ? 'primary' : ''} small`}
+              onClick={() => setFilter(t.key)}
+            >
+              {t.label}
+            </button>
+          ))}
+          {query ? (
+            <span className="admin-meta inq-tabs-note">
+              &lsquo;{query}&rsquo; {shown.length}건
+            </span>
+          ) : null}
+        </div>
         <div className="inq-head-r">
           <div className="inq-search">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.7}>
@@ -268,24 +285,6 @@ export default function InquiriesAdminPage() {
           <Link href="/admin" className="btn">← 홈</Link>
         </div>
       </header>
-
-      <div className="inq-tabs">
-        {TABS.map((t) => (
-          <button
-            key={t.key}
-            type="button"
-            className={`btn ${filter === t.key ? 'primary' : ''} small`}
-            onClick={() => setFilter(t.key)}
-          >
-            {t.label}
-          </button>
-        ))}
-        {query ? (
-          <span className="admin-meta inq-tabs-note">
-            &lsquo;{query}&rsquo; 검색 결과 {shown.length}건
-          </span>
-        ) : null}
-      </div>
 
       {err ? <p className="admin-err">에러: {err}</p> : null}
 
