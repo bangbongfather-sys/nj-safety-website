@@ -15,22 +15,30 @@ import readline from 'node:readline';
 /** Must match DEFAULT_ITERATIONS in worker/auth.ts. */
 const ITERATIONS = 100000;
 
+/* 질문마다 readline 인터페이스를 새로 만들면 앞서 만든 것이 stdin 을
+ * 이미 소비해 버려 두 번째 질문이 입력을 못 받는 경우가 있다. 하나만
+ * 만들어 끝까지 쓴다. */
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+  terminal: true,
+});
+let muted = false;
+const writeOut = rl._writeToOutput.bind(rl);
+rl._writeToOutput = (s) => {
+  if (!muted) writeOut(s);
+};
+
 function ask(query) {
-  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-  return new Promise((resolve) => rl.question(query, (a) => { rl.close(); resolve(a); }));
+  return new Promise((resolve) => rl.question(query, resolve));
 }
 
-/** Same as ask(), with the echo suppressed so the password never appears
- *  on screen or in the terminal scrollback. */
+/** ask() 와 같지만 입력한 글자가 화면에 찍히지 않는다 — 비밀번호가
+ *  터미널 스크롤백에 남지 않도록. */
 function askHidden(query) {
-  const rl = readline.createInterface({ input: process.stdin, output: process.stdout, terminal: true });
   return new Promise((resolve) => {
-    let muted = false;
-    rl._writeToOutput = function (s) {
-      if (!muted) rl.output.write(s);
-    };
     rl.question(query, (a) => {
-      rl.close();
+      muted = false;
       process.stdout.write('\n');
       resolve(a);
     });
@@ -38,22 +46,21 @@ function askHidden(query) {
   });
 }
 
-const id = (await ask('아이디: ')).trim();
-if (!id) {
-  console.error('아이디를 입력해 주세요.');
+function fail(message) {
+  rl.close();
+  console.error(message);
   process.exit(1);
 }
 
+const id = (await ask('아이디: ')).trim();
+if (!id) fail('아이디를 입력해 주세요.');
+
 const pw = await askHidden('비밀번호 (8자 이상): ');
-if (pw.length < 8) {
-  console.error('비밀번호는 8자 이상으로 해주세요.');
-  process.exit(1);
-}
+if (pw.length < 8) fail('비밀번호는 8자 이상으로 해주세요.');
 const pw2 = await askHidden('비밀번호 확인: ');
-if (pw !== pw2) {
-  console.error('두 비밀번호가 다릅니다. 처음부터 다시 실행해 주세요.');
-  process.exit(1);
-}
+if (pw !== pw2) fail('두 비밀번호가 다릅니다. 처음부터 다시 실행해 주세요.');
+
+rl.close();
 
 const salt = crypto.randomBytes(16);
 const hash = crypto.pbkdf2Sync(pw, salt, ITERATIONS, 32, 'sha256');
