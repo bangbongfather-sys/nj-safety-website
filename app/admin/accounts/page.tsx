@@ -76,7 +76,7 @@ export default function AccountsPage() {
       ) : (
         <>
           {isOwner && tokenSaved === false ? (
-            <TokenCard token={token} onDone={reload} urgent />
+            <TokenCard token={token} me={view?.me} onDone={reload} urgent />
           ) : null}
 
           <MyAccountCard
@@ -89,7 +89,7 @@ export default function AccountsPage() {
             <StaffCard token={token} view={view} onDone={reload} />
           ) : null}
 
-          {isOwner && tokenSaved ? <TokenCard token={token} onDone={reload} /> : null}
+          {isOwner && tokenSaved ? <TokenCard token={token} me={view?.me} onDone={reload} /> : null}
         </>
       )}
     </div>
@@ -374,9 +374,10 @@ function StaffCard({
 /* ─── GitHub 토큰 ─────────────────────────────────────────────────── */
 
 function TokenCard({
-  token, onDone, urgent,
+  token, me, onDone, urgent,
 }: {
   token: string;
+  me: AccountsView['me'] | undefined;
   onDone: () => void;
   urgent?: boolean;
 }) {
@@ -386,8 +387,11 @@ function TokenCard({
   const [msg, setMsg] = useState<string | null>(null);
   const [open, setOpen] = useState(Boolean(urgent));
 
-  async function submit(e: React.FormEvent) {
-    e.preventDefault();
+  // GitHub 토큰으로 로그인해 있다면 그 토큰이 이미 이 브라우저에 있다.
+  // 어딘가에서 찾아 붙여넣게 할 이유가 없으므로 버튼 하나로 끝낸다.
+  const canReuse = me?.mode === 'pat';
+
+  async function save(value: string) {
     setErr(null); setMsg(null); setBusy(true);
     const r = await saveGitHubToken(token, value);
     setBusy(false);
@@ -395,6 +399,11 @@ function TokenCard({
     setMsg('서버에 저장했습니다. 이제 아이디·비밀번호로 로그인해도 수정 내용이 저장됩니다.');
     setValue('');
     onDone();
+  }
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    await save(value);
   }
 
   return (
@@ -412,7 +421,17 @@ function TokenCard({
         </p>
       )}
 
-      {!urgent && !open ? (
+      {canReuse ? (
+        <>
+          <button type="button" className="btn primary" disabled={busy}
+            onClick={() => save(token)}>
+            {busy ? '확인 중...' : '지금 쓰는 토큰 그대로 저장'}
+          </button>
+          <p className="admin-help">
+            지금 로그인에 쓰고 계신 토큰을 그대로 서버에 넣습니다. 따로 찾아오실 필요 없습니다.
+          </p>
+        </>
+      ) : !urgent && !open ? (
         <button type="button" className="btn" onClick={() => setOpen(true)}>토큰 교체</button>
       ) : (
         <form onSubmit={submit} className="admin-form">
