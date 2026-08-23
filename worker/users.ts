@@ -100,6 +100,44 @@ export async function listUsers(db: D1Database): Promise<AdminAccount[]> {
   return results.map(toAccount);
 }
 
+/* ─── 표 준비 ─────────────────────────────────────────────────────────
+ *
+ * 스키마는 worker/schema/admin.sql 에 있고 wrangler d1 execute 로도
+ * 넣을 수 있지만, 그 한 줄을 실행하려면 터미널과 wrangler 로그인이
+ * 필요하다. 계정 설정은 사장님이 관리자 페이지만 열어서 끝낼 수 있어야
+ * 하므로, 표가 없으면 Worker 가 스스로 만든다.
+ *
+ * CREATE TABLE IF NOT EXISTS 라 이미 있으면 아무 일도 하지 않는다.
+ * isolate 하나당 한 번만 돌도록 플래그를 둬서 매 요청 비용은 없다.
+ */
+const SCHEMA_SQL = [
+  `CREATE TABLE IF NOT EXISTS admin_users (
+    id            TEXT PRIMARY KEY,
+    display_name  TEXT NOT NULL DEFAULT '',
+    salt          TEXT NOT NULL,
+    hash          TEXT NOT NULL,
+    iterations    INTEGER NOT NULL,
+    role          TEXT NOT NULL DEFAULT 'staff',
+    created_at    TEXT NOT NULL,
+    updated_at    TEXT NOT NULL,
+    last_login_at TEXT
+  )`,
+  `CREATE TABLE IF NOT EXISTS admin_settings (
+    key   TEXT PRIMARY KEY,
+    value TEXT NOT NULL
+  )`,
+];
+
+let schemaReady = false;
+
+export async function ensureSchema(db: D1Database): Promise<void> {
+  if (schemaReady) return;
+  for (const sql of SCHEMA_SQL) {
+    await db.prepare(sql).run();
+  }
+  schemaReady = true;
+}
+
 export async function countUsers(db: D1Database): Promise<number> {
   const row = await db.prepare('SELECT COUNT(*) AS n FROM admin_users').first<{ n: number }>();
   return row?.n ?? 0;
