@@ -35,6 +35,7 @@ import {
   setGitHubToken,
   createUser,
   deleteUser,
+  ensureSchema,
   findUser,
   getSessionSecret,
   listUsers,
@@ -1153,6 +1154,17 @@ export default {
     if (req.method === 'GET' || req.method === 'HEAD') {
       const redirect = legacyRedirect(url);
       if (redirect) return redirect;
+    }
+
+    // 계정 표는 Worker 가 스스로 만든다 — 그래야 D1 콘솔이나 wrangler
+    // 없이 관리자 페이지만으로 첫 계정을 만들 수 있다. 이미 있으면
+    // 아무 일도 하지 않고, isolate 당 한 번만 돈다.
+    if (url.pathname.startsWith('/api/admin/') && env.ADMIN_DB) {
+      try {
+        await ensureSchema(env.ADMIN_DB);
+      } catch (e: unknown) {
+        console.error('admin schema init failed:', e);
+      }
     }
 
     if (url.pathname === '/api/admin/login' && req.method === 'POST') {
