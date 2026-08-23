@@ -107,6 +107,13 @@ export default function InquiriesAdminPage() {
   const [filter, setFilter] = useState<Filter>('all');
   const [query, setQuery] = useState('');
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  /**
+   * 휴대폰에서는 목록과 본문을 같이 못 보여 준다 — 둘 다 넣으면 목록은
+   * 손바닥만 한 스크롤 창이 되고 본문은 화면 밖으로 밀린다. 메일 앱처럼
+   * 목록 → (탭) → 본문 → (뒤로) 로 오간다. 넓은 화면에서는 이 값이
+   * 무엇이든 둘 다 보이므로 아무 영향이 없다.
+   */
+  const [mobileDetail, setMobileDetail] = useState(false);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [copied, setCopied] = useState<string | null>(null);
 
@@ -291,7 +298,7 @@ export default function InquiriesAdminPage() {
       {items === null ? (
         <p className="admin-meta">로딩 중...</p>
       ) : (
-        <div className="inq-split">
+        <div className={`inq-split${mobileDetail ? ' is-detail' : ''}`}>
           <div className="inq-list">
             {rows.length === 0 ? (
               <div className="inq-empty">
@@ -310,7 +317,10 @@ export default function InquiriesAdminPage() {
                     type="button"
                     key={r.item.id}
                     className={`inq-row${r.item.id === selectedId ? ' is-sel' : ''}${r.item.status === 'new' ? ' is-new' : ''}`}
-                    onClick={() => setSelectedId(r.item.id)}
+                    onClick={() => {
+                      setSelectedId(r.item.id);
+                      setMobileDetail(true);
+                    }}
                   >
                     <span className="inq-row-top">
                       {r.item.status === 'new' ? (
@@ -335,6 +345,10 @@ export default function InquiriesAdminPage() {
             ) : (
               <>
                 <div className="inq-detail-head">
+                  <button type="button" className="inq-back" onClick={() => setMobileDetail(false)}>
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M10 3L5 8l5 5" /></svg>
+                    목록
+                  </button>
                   <div className="inq-detail-title">
                     <div className="inq-detail-name">
                       <strong>{selected.company || selected.contactName}</strong>
