@@ -4688,3 +4688,4 @@ section { position: relative; }
   .acct-row { grid-template-columns: 1fr; }
   .acct-actions { grid-column: 1; grid-row: auto; }
 }
+.acct-btn-row { display: flex; gap: 8px; flex-wrap: wrap; }

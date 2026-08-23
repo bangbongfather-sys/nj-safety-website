@@ -76,7 +76,7 @@ export default function AccountsPage() {
       ) : (
         <>
           {isOwner && tokenSaved === false ? (
-            <TokenCard token={token} me={view?.me} onDone={reload} urgent />
+            <TokenCard token={token} me={view?.me} onDone={reload} saved={false} urgent />
           ) : null}
 
           <MyAccountCard
@@ -89,7 +89,9 @@ export default function AccountsPage() {
             <StaffCard token={token} view={view} onDone={reload} />
           ) : null}
 
-          {isOwner && tokenSaved ? <TokenCard token={token} me={view?.me} onDone={reload} /> : null}
+          {isOwner && tokenSaved ? (
+            <TokenCard token={token} me={view?.me} onDone={reload} saved />
+          ) : null}
         </>
       )}
     </div>
@@ -374,11 +376,13 @@ function StaffCard({
 /* ─── GitHub 토큰 ─────────────────────────────────────────────────── */
 
 function TokenCard({
-  token, me, onDone, urgent,
+  token, me, onDone, saved, urgent,
 }: {
   token: string;
   me: AccountsView['me'] | undefined;
   onDone: () => void;
+  /** 서버에 이미 토큰이 있는지. 있으면 아무것도 하실 필요가 없다. */
+  saved: boolean;
   urgent?: boolean;
 }) {
   const [value, setValue] = useState('');
@@ -417,11 +421,13 @@ function TokenCard({
         </p>
       ) : (
         <p className="admin-help">
-          서버에 토큰이 저장되어 있습니다. 토큰을 새로 발급했을 때만 여기서 교체하세요.
+          <strong className="admin-ok">저장되어 있습니다 — 더 하실 일이 없습니다.</strong>
+          <br />
+          GitHub 에서 토큰을 새로 발급했을 때만 아래에서 교체하세요.
         </p>
       )}
 
-      {canReuse ? (
+      {canReuse && !saved ? (
         <>
           <button type="button" className="btn primary" disabled={busy}
             onClick={() => save(token)}>
@@ -431,7 +437,7 @@ function TokenCard({
             지금 로그인에 쓰고 계신 토큰을 그대로 서버에 넣습니다. 따로 찾아오실 필요 없습니다.
           </p>
         </>
-      ) : !urgent && !open ? (
+      ) : !open ? (
         <button type="button" className="btn" onClick={() => setOpen(true)}>토큰 교체</button>
       ) : (
         <form onSubmit={submit} className="admin-form">
@@ -442,9 +448,21 @@ function TokenCard({
               placeholder="ghp_xxxx 또는 github_pat_xxxx"
               onChange={(e) => setValue(e.target.value)} />
           </div>
-          <button className="btn primary" type="submit" disabled={busy || !value}>
-            {busy ? '확인 중...' : '서버에 저장'}
-          </button>
+          <div className="acct-btn-row">
+            <button className="btn primary" type="submit" disabled={busy || !value}>
+              {busy ? '확인 중...' : '서버에 저장'}
+            </button>
+            {canReuse ? (
+              <button type="button" className="btn" disabled={busy} onClick={() => save(token)}>
+                지금 쓰는 토큰으로
+              </button>
+            ) : null}
+            {saved ? (
+              <button type="button" className="btn" disabled={busy} onClick={() => setOpen(false)}>
+                취소
+              </button>
+            ) : null}
+          </div>
         </form>
       )}
 
