@@ -47,7 +47,7 @@ const GROUPS: { key: NavItem['group']; title: string | null }[] = [
   { key: 'manage', title: '관리' },
 ];
 
-const BADGE_CACHE_KEY = 'nj_admin_inq_badge';
+export const BADGE_CACHE_KEY = 'nj_admin_inq_badge';
 
 /**
  * 새 문의 개수 배지. 접수함 전체를 읽어 세는데, 화면을 옮길 때마다

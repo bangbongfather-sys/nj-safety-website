@@ -1,22 +1,31 @@
 'use client';
 
 /**
- * Admin: 문의 접수함
+ * Admin: 문의 접수함 — 메일함형 (2026-08 개편).
  *
- * Reads the submissions the public 문의 폼 writes to R2 (`inquiries/`
- * prefix) through the Worker's `/api/admin/inquiries` routes. Unlike
- * every other admin screen this one does NOT go through GitHub — the
- * data is runtime submissions, not repo content, so there's nothing to
- * commit and nothing to wait for a build on. Changes here are live the
- * moment R2 acknowledges.
+ * 왼쪽 목록 / 오른쪽 상세. 예전에는 모든 문의가 펼쳐진 채 세로로
+ * 쌓여서, 스무 건만 넘어가도 스크롤이 끝없이 길어지고 어느 것이
+ * 처리됐는지 훑을 수가 없었다. 목록과 내용을 나누면 건수가 늘어도
+ * 스크롤은 왼쪽 목록에만 생긴다.
  *
- * Auth is the same GitHub PAT the rest of the admin holds; the Worker
- * verifies it against the allowed login before touching the bucket.
+ * 함께 들어온 것:
+ *   · 검색 — 회사·담당자·전화·이메일·본문·유형을 한 번에. 한글 초성도
+ *     받는다("ㅇㄹㅁㄷ" → 아라미드). lib/search 의 헬퍼를 재사용한다.
+ *   · 「메일로 회신」 — 가장 자주 하는 일이 가장 큰 버튼이 되도록.
+ *     예전에는 본문 속 이메일 글자 하나가 전부였다.
+ *   · 전화·이메일 복사 버튼 — 견적서 쓰려고 옮겨 적을 때 쓴다.
+ *
+ * 데이터 경로는 그대로다. 다른 관리자 화면과 달리 GitHub 을 거치지
+ * 않고 Worker 의 `/api/admin/inquiries` 로 R2 를 직접 읽고 쓴다 —
+ * 저장소 내용이 아니라 런타임 접수분이라 커밋할 것도, 빌드를 기다릴
+ * 것도 없다. 여기서의 변경은 R2 가 응답하는 순간 반영된다.
  */
 
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAdmin } from '@/components/admin/AdminContext';
+import { BADGE_CACHE_KEY } from '@/components/admin/Sidebar';
+import { normalize, toChosung } from '@/lib/search';
 
 type Attachment = { name: string; url: string; size: number };
 
@@ -38,18 +47,55 @@ type Filter = 'all' | 'new' | 'done';
 
 const API = '/api/admin/inquiries';
 
+/** 접수 시각은 한국 고객이 보낸 것이므로 관리자가 어디 있든 KST. */
 function fmtWhen(iso: string): string {
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return iso;
-  // Submissions come from Korean customers — show KST regardless of
-  // where the admin happens to be.
   return d.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul', dateStyle: 'medium', timeStyle: 'short' });
+}
+
+/** 목록용 짧은 시각 — 오늘이면 시:분, 아니면 월.일. */
+function fmtShort(iso: string): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return '';
+  const now = new Date();
+  const sameDay = d.toDateString() === now.toDateString();
+  if (sameDay) {
+    return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+  }
+  return `${d.getMonth() + 1}.${d.getDate()}`;
+}
+
+/** 목록을 오늘 / 지난 7일 / 그 이전으로 묶는다. */
+function bucketOf(iso: string): '오늘' | '지난 7일' | '이전' {
+  const d = new Date(iso).getTime();
+  if (Number.isNaN(d)) return '이전';
+  const now = new Date();
+  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+  if (d >= startOfToday) return '오늘';
+  if (d >= startOfToday - 6 * 86400_000) return '지난 7일';
+  return '이전';
 }
 
 function fmtSize(n: number): string {
   if (n < 1024) return `${n} B`;
   if (n < 1024 * 1024) return `${(n / 1024).toFixed(0)} KB`;
   return `${(n / 1024 / 1024).toFixed(1)} MB`;
+}
+
+/** 한 문의에서 검색 대상이 되는 모든 글자. */
+function haystack(i: Inquiry): string {
+  return [i.company, i.contactName, i.phone, i.email, i.inquiryLabel, i.message].join(' ');
+}
+
+function matches(i: Inquiry, q: string): boolean {
+  const nq = normalize(q);
+  if (!nq) return true;
+  const hay = normalize(haystack(i));
+  if (hay.includes(nq)) return true;
+  // 초성만 친 경우("ㅇㅊㅈㄹ")도 받아 준다.
+  if (/^[ㄱ-ㅎ]+$/.test(nq)) return toChosung(hay).includes(nq);
+  return false;
 }
 
 export default function InquiriesAdminPage() {
@@ -59,7 +105,10 @@ export default function InquiriesAdminPage() {
   const [items, setItems] = useState<Inquiry[] | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [filter, setFilter] = useState<Filter>('all');
+  const [query, setQuery] = useState('');
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [copied, setCopied] = useState<string | null>(null);
 
   const reload = useCallback(async () => {
     if (!pat) return;
@@ -114,6 +163,7 @@ export default function InquiriesAdminPage() {
         const payload = (await r.json().catch(() => ({}))) as { ok?: boolean; error?: string };
         if (!r.ok || !payload.ok) throw new Error(payload.error || `요청 실패 (${r.status})`);
         setItems((prev) => (prev ?? []).filter((it) => it.id !== item.id));
+        setSelectedId((cur) => (cur === item.id ? null : cur));
       } catch (e: unknown) {
         setErr(e instanceof Error ? e.message : String(e));
       } finally {
@@ -123,142 +173,246 @@ export default function InquiriesAdminPage() {
     [pat],
   );
 
+  async function copy(text: string, key: string) {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(key);
+      window.setTimeout(() => setCopied((c) => (c === key ? null : c)), 1600);
+    } catch {
+      // 클립보드가 막힌 브라우저 — 글자는 화면에 그대로 있으니 직접 긁으면 된다.
+    }
+  }
+
   const newCount = useMemo(() => (items ?? []).filter((i) => i.status === 'new').length, [items]);
+
+  // 사이드바의 "새 문의" 배지는 60초 캐시를 본다. 여기서 처리완료로
+  // 바꿨는데 옆 배지가 옛 숫자를 들고 있으면 방금 한 일이 안 먹은
+  // 것처럼 보이므로, 목록이 바뀔 때마다 캐시를 갱신해 둔다.
+  useEffect(() => {
+    if (items === null) return;
+    try {
+      window.sessionStorage.setItem(
+        BADGE_CACHE_KEY,
+        JSON.stringify({ n: newCount, at: Date.now() }),
+      );
+    } catch {
+      // 저장소가 막혀 있으면 배지가 조금 늦게 맞춰질 뿐이다.
+    }
+  }, [items, newCount]);
+
   const shown = useMemo(
-    () => (items ?? []).filter((i) => (filter === 'all' ? true : i.status === filter)),
-    [items, filter],
+    () =>
+      (items ?? [])
+        .filter((i) => (filter === 'all' ? true : i.status === filter))
+        .filter((i) => matches(i, query)),
+    [items, filter, query],
   );
 
+  // 목록이 바뀌면 고른 문의가 사라질 수 있다. 그럴 땐 맨 위로.
+  useEffect(() => {
+    if (shown.length === 0) {
+      setSelectedId(null);
+      return;
+    }
+    if (!selectedId || !shown.some((i) => i.id === selectedId)) {
+      setSelectedId(shown[0].id);
+    }
+  }, [shown, selectedId]);
+
+  const selected = shown.find((i) => i.id === selectedId) ?? null;
+
+  // 날짜 묶음 머리글을 목록 중간에 끼워 넣기 위한 전처리.
+  const rows = useMemo(() => {
+    const out: ({ kind: 'head'; label: string } | { kind: 'item'; item: Inquiry })[] = [];
+    let last = '';
+    for (const item of shown) {
+      const b = bucketOf(item.receivedAt);
+      if (b !== last) {
+        out.push({ kind: 'head', label: b });
+        last = b;
+      }
+      out.push({ kind: 'item', item });
+    }
+    return out;
+  }, [shown]);
+
   const TABS: { key: Filter; label: string }[] = [
-    { key: 'all', label: `전체 ${items ? `(${items.length})` : ''}` },
-    { key: 'new', label: `신규 ${items ? `(${newCount})` : ''}` },
-    { key: 'done', label: `처리완료 ${items ? `(${items.length - newCount})` : ''}` },
+    { key: 'all', label: `전체 ${items ? items.length : ''}` },
+    { key: 'new', label: `신규 ${items ? newCount : ''}` },
+    { key: 'done', label: `처리완료 ${items ? items.length - newCount : ''}` },
   ];
 
   return (
-    <div className="admin-page">
-      <header className="admin-page-head">
-        <span className="eyebrow">— Inquiries</span>
-        <h1>문의 <em>접수함</em></h1>
-        <p>
-          사이트 <strong>문의</strong> 페이지에서 들어온 문의가 여기에 쌓입니다.
-          별도 메일 알림은 없으니 주기적으로 확인해 주세요. 처리한 문의는{' '}
-          <strong>처리완료</strong>로 표시해 두면 신규 건만 골라 볼 수 있습니다.
-        </p>
-        <div style={{ marginTop: 18, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-          <button type="button" className="btn ghost" onClick={() => void reload()}>
-            새로고침
-          </button>
-          <Link href="/admin" className="btn ghost">← 대시보드</Link>
+    <div className="admin-page inq-page">
+      <header className="inq-head">
+        <div className="inq-head-l">
+          <span className="eyebrow">— Inquiries</span>
+          <h1>문의 접수함</h1>
+        </div>
+        <div className="inq-head-r">
+          <div className="inq-search">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.7}>
+              <circle cx="7" cy="7" r="4.5" /><path d="M10.5 10.5L14 14" />
+            </svg>
+            <input
+              type="text"
+              value={query}
+              placeholder="회사·담당자·전화·내용 검색"
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            {query ? (
+              <button type="button" className="inq-search-clear" onClick={() => setQuery('')} aria-label="검색어 지우기">✕</button>
+            ) : null}
+          </div>
+          <button type="button" className="btn" onClick={() => void reload()}>새로고침</button>
+          <Link href="/admin" className="btn">← 홈</Link>
         </div>
       </header>
 
-      {err ? <p className="admin-err">에러: {err}</p> : null}
-
-      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 16 }}>
+      <div className="inq-tabs">
         {TABS.map((t) => (
           <button
             key={t.key}
             type="button"
-            className={`btn ${filter === t.key ? 'primary' : 'ghost'} small`}
+            className={`btn ${filter === t.key ? 'primary' : ''} small`}
             onClick={() => setFilter(t.key)}
           >
             {t.label}
           </button>
         ))}
+        {query ? (
+          <span className="admin-meta inq-tabs-note">
+            &lsquo;{query}&rsquo; 검색 결과 {shown.length}건
+          </span>
+        ) : null}
       </div>
+
+      {err ? <p className="admin-err">에러: {err}</p> : null}
 
       {items === null ? (
         <p className="admin-meta">로딩 중...</p>
-      ) : shown.length === 0 ? (
-        <div className="admin-card admin-card-flat" style={{ textAlign: 'center', padding: 48 }}>
-          <p style={{ color: 'var(--muted)' }}>
-            {items.length === 0 ? '아직 접수된 문의가 없습니다.' : '이 조건에 해당하는 문의가 없습니다.'}
-          </p>
-        </div>
       ) : (
-        <div style={{ display: 'grid', gap: 16 }}>
-          {shown.map((item) => (
-            <InquiryCard
-              key={item.id}
-              item={item}
-              busy={busyId === item.id}
-              onToggle={() => void setStatus(item.id, item.status === 'new' ? 'done' : 'new')}
-              onDelete={() => void remove(item)}
-            />
-          ))}
+        <div className="inq-split">
+          <div className="inq-list">
+            {rows.length === 0 ? (
+              <div className="inq-empty">
+                {query
+                  ? '검색 결과가 없습니다.'
+                  : items.length === 0
+                    ? '아직 접수된 문의가 없습니다.'
+                    : '이 조건에 해당하는 문의가 없습니다.'}
+              </div>
+            ) : (
+              rows.map((r, idx) =>
+                r.kind === 'head' ? (
+                  <div className="inq-list-head" key={`h-${r.label}-${idx}`}>{r.label}</div>
+                ) : (
+                  <button
+                    type="button"
+                    key={r.item.id}
+                    className={`inq-row${r.item.id === selectedId ? ' is-sel' : ''}${r.item.status === 'new' ? ' is-new' : ''}`}
+                    onClick={() => setSelectedId(r.item.id)}
+                  >
+                    <span className="inq-row-top">
+                      {r.item.status === 'new' ? (
+                        <span className="inq-dot" aria-label="신규" />
+                      ) : (
+                        <svg className="inq-check" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" aria-label="처리완료"><path d="M3 8.5l3.5 3.5L13 5" /></svg>
+                      )}
+                      <span className="inq-row-co">{r.item.company || r.item.contactName}</span>
+                      <span className="inq-row-when">{fmtShort(r.item.receivedAt)}</span>
+                    </span>
+                    <span className="inq-row-type">{r.item.inquiryLabel}</span>
+                    <span className="inq-row-msg">{r.item.message}</span>
+                  </button>
+                ),
+              )
+            )}
+          </div>
+
+          <div className="inq-detail">
+            {!selected ? (
+              <div className="inq-empty">왼쪽에서 문의를 선택하세요.</div>
+            ) : (
+              <>
+                <div className="inq-detail-head">
+                  <div className="inq-detail-title">
+                    <div className="inq-detail-name">
+                      <strong>{selected.company || selected.contactName}</strong>
+                      <span className={`inq-badge${selected.status === 'new' ? ' is-new' : ''}`}>
+                        {selected.status === 'new' ? '신규' : '처리완료'}
+                      </span>
+                    </div>
+                    <div className="admin-meta">
+                      {selected.inquiryLabel} · {fmtWhen(selected.receivedAt)}
+                      {selected.company && selected.contactName ? ` · ${selected.contactName}` : ''}
+                    </div>
+                  </div>
+                  <div className="inq-detail-actions">
+                    <a
+                      className="btn primary"
+                      href={`mailto:${selected.email}?subject=${encodeURIComponent(`[NJ SAFETY] ${selected.inquiryLabel} 회신`)}&body=${encodeURIComponent(`${selected.contactName || selected.company} 님, 안녕하세요.\nNJ SAFETY 입니다.\n\n문의 주신 내용에 대해 회신드립니다.\n\n\n─────────────────\n보내신 내용\n${selected.message}\n`)}`}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.7}><path d="M2 4h12v8H2z" /><path d="M2 4.5l6 4 6-4" /></svg>
+                      메일로 회신
+                    </a>
+                    <button
+                      type="button"
+                      className="btn"
+                      disabled={busyId === selected.id}
+                      onClick={() => void setStatus(selected.id, selected.status === 'new' ? 'done' : 'new')}
+                    >
+                      {selected.status === 'new' ? '처리완료' : '신규로 되돌리기'}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="inq-contacts">
+                  <div className="inq-contact">
+                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.6}><path d="M3 3h3l1 3-2 1a7 7 0 0 0 4 4l1-2 3 1v3a11 11 0 0 1-10-10z" /></svg>
+                    <a href={`tel:${selected.phone.replace(/[^0-9+]/g, '')}`}>{selected.phone}</a>
+                    <button type="button" onClick={() => void copy(selected.phone, 'phone')}>
+                      {copied === 'phone' ? '복사됨' : '복사'}
+                    </button>
+                  </div>
+                  <div className="inq-contact">
+                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.6}><path d="M2 4h12v8H2z" /><path d="M2 4.5l6 4 6-4" /></svg>
+                    <a href={`mailto:${selected.email}`}>{selected.email}</a>
+                    <button type="button" onClick={() => void copy(selected.email, 'email')}>
+                      {copied === 'email' ? '복사됨' : '복사'}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="inq-body">{selected.message}</div>
+
+                <div className="inq-foot">
+                  {selected.attachments.length > 0 ? (
+                    <div className="inq-files">
+                      {selected.attachments.map((a) => (
+                        <a key={a.url} href={a.url} target="_blank" rel="noreferrer" className="inq-file">
+                          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.6}><path d="M9 2.5L4 7.5a2.5 2.5 0 0 0 3.5 3.5l5-5a4 4 0 0 0-5.5-5.5l-5 5" /></svg>
+                          {a.name} <span className="admin-meta">({fmtSize(a.size)})</span>
+                        </a>
+                      ))}
+                    </div>
+                  ) : (
+                    <span className="admin-meta">첨부 없음</span>
+                  )}
+                  <button
+                    type="button"
+                    className="btn danger small"
+                    disabled={busyId === selected.id}
+                    onClick={() => void remove(selected)}
+                  >
+                    삭제
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       )}
-    </div>
-  );
-}
-
-function InquiryCard({
-  item, busy, onToggle, onDelete,
-}: {
-  item: Inquiry;
-  busy: boolean;
-  onToggle: () => void;
-  onDelete: () => void;
-}) {
-  const isNew = item.status === 'new';
-  return (
-    <div
-      className="admin-card admin-card-flat"
-      style={{ padding: 20, opacity: busy ? 0.55 : 1, borderLeft: isNew ? '3px solid var(--accent)' : undefined }}
-    >
-      <div style={{ display: 'flex', gap: 12, alignItems: 'baseline', flexWrap: 'wrap' }}>
-        <strong style={{ fontSize: 16 }}>{item.company}</strong>
-        <span className="admin-meta">{item.inquiryLabel}</span>
-        <span className="admin-meta" style={{ marginLeft: 'auto' }}>{fmtWhen(item.receivedAt)}</span>
-        <span
-          className="admin-meta"
-          style={{ color: isNew ? 'var(--accent)' : 'var(--muted)', fontWeight: 600 }}
-        >
-          {isNew ? '● 신규' : '✓ 처리완료'}
-        </span>
-      </div>
-
-      <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', margin: '12px 0', fontSize: 14 }}>
-        <span>{item.contactName}</span>
-        <a href={`tel:${item.phone.replace(/[^0-9+]/g, '')}`}>{item.phone}</a>
-        <a href={`mailto:${item.email}?subject=${encodeURIComponent(`[NJ SAFETY] ${item.inquiryLabel} 회신`)}`}>
-          {item.email}
-        </a>
-      </div>
-
-      <div
-        style={{
-          background: 'var(--bg, #111)',
-          border: '1px solid var(--border, #333)',
-          padding: 14,
-          whiteSpace: 'pre-wrap',
-          fontSize: 14,
-          lineHeight: 1.7,
-        }}
-      >
-        {item.message}
-      </div>
-
-      {item.attachments.length > 0 ? (
-        <ul style={{ listStyle: 'none', padding: 0, margin: '12px 0 0', display: 'grid', gap: 6 }}>
-          {item.attachments.map((a) => (
-            <li key={a.url} style={{ fontSize: 13 }}>
-              <a href={a.url} target="_blank" rel="noreferrer">📎 {a.name}</a>{' '}
-              <span className="admin-meta">({fmtSize(a.size)})</span>
-            </li>
-          ))}
-        </ul>
-      ) : null}
-
-      <div style={{ marginTop: 16, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-        <button type="button" className="btn ghost small" onClick={onToggle} disabled={busy}>
-          {isNew ? '처리완료로 표시' : '신규로 되돌리기'}
-        </button>
-        <button type="button" className="btn danger small" onClick={onDelete} disabled={busy}>
-          삭제
-        </button>
-      </div>
     </div>
   );
 }
