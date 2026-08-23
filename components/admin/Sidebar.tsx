@@ -4,6 +4,9 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { useAdmin } from './AdminContext';
+import { useAdminTheme } from './AdminShell';
+import AdminBrand from './AdminBrand';
+import ThemeToggle from './ThemeToggle';
 import {
   IcHome, IcInbox, IcNotice, IcProduct, IcFolder, IcStore, IcPen, IcUser, IcGear,
 } from './AdminIcons';
@@ -87,6 +90,7 @@ function useNewInquiryCount(pat: string): number | null {
 
 export default function Sidebar() {
   const { state, logout } = useAdmin();
+  const { pref, resolved, cycle } = useAdminTheme();
   const pathname = usePathname() ?? '';
   const login = state.status === 'authenticated' ? state.login : '';
   const pat = state.status === 'authenticated' ? state.pat : '';
@@ -108,10 +112,7 @@ export default function Sidebar() {
   return (
     <aside className="admin-sidebar">
       <div className="admin-brand">
-        <Link href="/admin" className="admin-brand-logo" aria-label="NJ SAFETY 어드민 홈">
-          <span className="adm-logo-mark">N</span>
-          <span className="adm-logo-name">NJ SAFETY</span>
-        </Link>
+        <AdminBrand dark={resolved === 'dark'} />
       </div>
 
       <nav className="admin-nav">
@@ -144,6 +145,7 @@ export default function Sidebar() {
           <a href="/ko/" target="_blank" rel="noreferrer" className="adm-foot-link">사이트 보기 ↗</a>
           <button type="button" className="adm-foot-link" onClick={logout}>로그아웃</button>
         </div>
+        <ThemeToggle pref={pref} onCycle={cycle} />
       </div>
     </aside>
   );

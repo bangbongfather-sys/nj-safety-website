@@ -1,9 +1,10 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { useEffect } from 'react';
+import { createContext, useContext, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { AdminProvider, useAdmin } from './AdminContext';
+import { useTheme, type Resolved, type ThemePref } from '@/lib/admin/useTheme';
 import PatLoginForm from './PatLoginForm';
 import Sidebar from './Sidebar';
 import OfflineBar from './OfflineBar';
@@ -21,9 +22,12 @@ import SwRegistrar from './SwRegistrar';
  *                       미리보기가 실제 사이트(어두운 테마)와 달라
  *                       보이면 편집기의 의미가 없다.
  *
- * `.admin-light` 는 관리자 크롬 전용 밝은 테마 스코프다. 이 래퍼 안에서
- * 사이트 CSS 변수(--bg, --card, --text …)를 밝은 값으로 재정의하므로,
- * 사이트 컴포넌트를 품는 전체 화면 편집기에는 절대 씌우면 안 된다.
+ * `.admin-light` / `.admin-dark` 는 관리자 크롬 전용 테마 스코프다.
+ * 이 래퍼 안에서 사이트 CSS 변수(--bg, --card, --text …)를 재정의하므로,
+ * 사이트 컴포넌트를 품는 전체 화면 편집기에는 절대 씌우면 안 된다 —
+ * 미리보기가 실제 사이트와 달라 보이면 편집기의 의미가 없다.
+ *
+ * 밤 작업용 다크모드는 lib/admin/useTheme 이 관리한다 (자동/밝게/어둡게).
  */
 
 /** 홈의 "이어서 하기" 칩이 가리킬 수 있는 작업 화면들. */
@@ -42,9 +46,21 @@ const RESUMABLE: { prefix: string; label: string }[] = [
 
 export const RESUME_KEY = 'nj_admin_last_work';
 
+/**
+ * 테마를 화면 전체가 같이 본다 — 사이드바·홈의 전환 버튼과 로고가
+ * 같은 값을 써야 하므로 훅을 각자 부르지 않고 여기서 한 번만 부른다.
+ */
+type ThemeCtx = { pref: ThemePref; resolved: Resolved; cycle: () => void };
+const AdminThemeCtx = createContext<ThemeCtx>({ pref: 'auto', resolved: 'light', cycle: () => {} });
+export function useAdminTheme(): ThemeCtx {
+  return useContext(AdminThemeCtx);
+}
+
 function Gate({ children }: { children: ReactNode }) {
   const { state } = useAdmin();
+  const { resolved } = useAdminTheme();
   const pathname = usePathname() ?? '';
+  const themeClass = resolved === 'dark' ? 'admin-dark' : 'admin-light';
   const isFullBleed =
     pathname.startsWith('/admin/edit') ||
     pathname.startsWith('/admin/about/edit') ||
@@ -69,7 +85,7 @@ function Gate({ children }: { children: ReactNode }) {
 
   if (state.status === 'unknown' || state.status === 'verifying') {
     return (
-      <div className="admin-light">
+      <div className={themeClass}>
         <div className="admin-login-wrap">
           <div className="admin-login-card">
             <p className="admin-meta">인증 정보 확인 중...</p>
@@ -81,7 +97,7 @@ function Gate({ children }: { children: ReactNode }) {
 
   if (state.status !== 'authenticated') {
     return (
-      <div className="admin-light">
+      <div className={themeClass}>
         <PatLoginForm />
       </div>
     );
@@ -98,7 +114,7 @@ function Gate({ children }: { children: ReactNode }) {
 
   if (isHome) {
     return (
-      <div className="admin-light adm-home-root">
+      <div className={`${themeClass} adm-home-root`}>
         {children}
         <OfflineBar />
       </div>
@@ -106,7 +122,7 @@ function Gate({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="admin-light">
+    <div className={themeClass}>
       <div className="admin-app">
         <Sidebar />
         <main className="admin-main">{children}</main>
@@ -116,11 +132,22 @@ function Gate({ children }: { children: ReactNode }) {
   );
 }
 
+function ThemeProvider({ children }: { children: ReactNode }) {
+  const { pref, resolved, cycle } = useTheme();
+  return (
+    <AdminThemeCtx.Provider value={{ pref, resolved, cycle }}>
+      {children}
+    </AdminThemeCtx.Provider>
+  );
+}
+
 export default function AdminShell({ children }: { children: ReactNode }) {
   return (
     <AdminProvider>
-      <SwRegistrar />
-      <Gate>{children}</Gate>
+      <ThemeProvider>
+        <SwRegistrar />
+        <Gate>{children}</Gate>
+      </ThemeProvider>
     </AdminProvider>
   );
 }

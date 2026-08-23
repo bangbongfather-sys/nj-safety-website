@@ -18,7 +18,9 @@
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { useAdmin } from '@/components/admin/AdminContext';
-import { RESUME_KEY } from '@/components/admin/AdminShell';
+import { RESUME_KEY, useAdminTheme } from '@/components/admin/AdminShell';
+import AdminBrand from '@/components/admin/AdminBrand';
+import ThemeToggle from '@/components/admin/ThemeToggle';
 import AdminSearch from '@/components/admin/AdminSearch';
 import {
   IcInbox, IcNotice, IcProduct, IcFolder, IcPen, IcUser, IcStore,
@@ -72,6 +74,7 @@ function relTime(iso: string): string {
 
 export default function AdminHome() {
   const { state, logout } = useAdmin();
+  const { pref, resolved, cycle } = useAdminTheme();
   const pat = state.status === 'authenticated' ? state.pat : '';
   const login = state.status === 'authenticated' ? state.login : '';
 
@@ -195,16 +198,14 @@ export default function AdminHome() {
       <div className="adm-stripe" aria-hidden="true" />
 
       <header className="adm-topbar">
-        <Link href="/admin" className="adm-topbar-brand">
-          <span className="adm-logo-mark">N</span>
-          <span className="adm-logo-name">NJ SAFETY 관리자</span>
-        </Link>
+        <AdminBrand dark={resolved === 'dark'} suffix="관리자" />
         <button type="button" className="adm-searchbox" onClick={() => setSearchOpen(true)}>
           <IcSearch />
           <span>공지·제품·화면 검색</span>
           <kbd>⌘K</kbd>
         </button>
         <div className="adm-topbar-user">
+          <ThemeToggle pref={pref} onCycle={cycle} compact />
           <span className="adm-avatar">{(login || '?').slice(0, 1).toUpperCase()}</span>
           <span className="adm-user-name">{login}</span>
           <button type="button" className="adm-foot-link" onClick={logout}>로그아웃</button>

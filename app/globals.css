@@ -4719,7 +4719,25 @@ section { position: relative; }
   min-height: 100vh;
 }
 
-/* ── 하드코딩 어둠 교정 ─────────────────────────────────────────── */
+/* 다크모드 — 밤 작업용. 사이트 기본값과 같은 계열이되 관리자 크롬에
+   맞게 카드가 한 단계 밝다. */
+.admin-dark {
+  --bg: #1c1c1e;
+  --bg-2: #2a2a2c;
+  --bg-3: #0d0d0e;
+  --card: #252527;
+  --text: #ffffff;
+  --muted: #a1a1a6;
+  --muted-2: #6b6b70;
+  --border: #3a3a3c;
+  --border-soft: #2f2f31;
+  --adm-tint: rgba(255,107,26,.14);
+  background: #1c1c1e;
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── 하드코딩 어둠 교정 (밝은 테마에서만) ───────────────────────── */
 .admin-light .btn.primary { color: #ffffff; }
 .admin-light .btn.primary:hover:not(:disabled) { color: #ffffff; }
 .admin-light .admin-product-thumb,
@@ -4732,52 +4750,57 @@ section { position: relative; }
 
 /* ── 시안의 둥근 모서리·그림자 ──────────────────────────────────── */
 .admin-light .admin-app { background: #f5f5f7; }
-.admin-light .admin-sidebar { background: #f5f5f7; border-right-color: var(--border-soft); }
-.admin-light .admin-nav-link {
+.admin-dark .admin-app { background: var(--bg); }
+.admin-light .admin-sidebar { background: #f5f5f7; }
+.admin-dark .admin-sidebar { background: var(--bg-3); }
+:is(.admin-light, .admin-dark) .admin-sidebar { border-right-color: var(--border-soft); }
+:is(.admin-light, .admin-dark) .admin-nav-link {
   border-radius: 8px;
   font-size: 13.5px;
   display: flex;
   align-items: center;
   gap: 11px;
 }
-.admin-light .admin-nav-link.is-active {
-  background: #e8e8ed;
+.admin-light .admin-nav-link.is-active { background: #e8e8ed; }
+.admin-dark .admin-nav-link.is-active { background: rgba(255,255,255,.07); }
+:is(.admin-light, .admin-dark) .admin-nav-link.is-active {
   color: var(--text);
   border-left: none;
   font-weight: 600;
 }
-.admin-light .admin-nav-link.is-sub { padding-left: 40px; font-size: 12.5px; }
-.admin-light .admin-nav-grouphead {
+:is(.admin-light, .admin-dark) .admin-nav-link.is-sub { padding-left: 40px; font-size: 12.5px; }
+:is(.admin-light, .admin-dark) .admin-nav-grouphead {
   font-family: var(--sans);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: .02em;
   text-transform: none;
 }
-.admin-light .admin-card {
+:is(.admin-light, .admin-dark) .admin-card {
   border-radius: 14px;
   border-color: var(--border-soft);
   box-shadow: 0 1px 3px rgba(0,0,0,.05);
 }
-.admin-light .admin-card input[type="text"],
-.admin-light .admin-card input[type="password"],
-.admin-light .admin-card textarea,
-.admin-light .admin-login-card input[type="text"],
-.admin-light .admin-login-card input[type="password"] {
+:is(.admin-light, .admin-dark) .admin-card input[type="text"],
+:is(.admin-light, .admin-dark) .admin-card input[type="password"],
+:is(.admin-light, .admin-dark) .admin-card textarea,
+:is(.admin-light, .admin-dark) .admin-login-card input[type="text"],
+:is(.admin-light, .admin-dark) .admin-login-card input[type="password"] {
   border-radius: 8px;
-  background: #f5f5f7;
+  background: var(--bg-3);
   font-family: var(--sans);
 }
-.admin-light .btn { border-radius: 8px; }
-.admin-light .admin-stat,
-.admin-light .acct-row { border-radius: 12px; background: var(--card); box-shadow: 0 1px 3px rgba(0,0,0,.05); border-color: var(--border-soft); }
+:is(.admin-light, .admin-dark) .btn { border-radius: 8px; }
+:is(.admin-light, .admin-dark) .admin-stat,
+:is(.admin-light, .admin-dark) .acct-row { border-radius: 12px; background: var(--card); box-shadow: 0 1px 3px rgba(0,0,0,.05); border-color: var(--border-soft); }
 .admin-light .admin-login-wrap { background: #f5f5f7; }
-.admin-light .admin-login-card {
+.admin-dark .admin-login-wrap { background: var(--bg-3); }
+:is(.admin-light, .admin-dark) .admin-login-card {
   border-radius: 18px;
   box-shadow: 0 1px 3px rgba(0,0,0,.05), 0 12px 32px rgba(0,0,0,.06);
   border-color: var(--border-soft);
 }
-.admin-light .acct-reset-row input { border-radius: 8px; background: #f5f5f7; font-family: var(--sans); }
+:is(.admin-light, .admin-dark) .acct-reset-row input { border-radius: 8px; background: var(--bg-3); font-family: var(--sans); }
 
 /* ── 공용 조각: 로고, 아바타, 배지 ──────────────────────────────── */
 .adm-logo-mark {
@@ -4836,6 +4859,7 @@ section { position: relative; }
   pointer-events: none;
 }
 .adm-topbar {
+  z-index: 1;
   height: 60px;
   background: rgba(255,255,255,.85);
   backdrop-filter: blur(12px);
@@ -4845,7 +4869,6 @@ section { position: relative; }
   position: relative;
   flex-shrink: 0;
 }
-.adm-topbar-brand { display: flex; align-items: center; gap: 10px; }
 .adm-searchbox {
   margin-left: auto;
   display: flex; align-items: center; gap: 8px;
@@ -5063,8 +5086,72 @@ section { position: relative; }
 }
 @media (max-width: 600px) {
   .adm-tiles { grid-template-columns: 1fr; }
-  .adm-topbar .adm-logo-name { display: none; }
   .adm-topbar { padding: 0 18px; }
   .adm-home-main { padding: 24px 18px 22px; }
   .adm-statusbar .adm-status-site { margin-left: 0; }
+}
+
+/* ── 다크모드 보정 ──────────────────────────────────────────────── */
+/* 밝은 배경을 전제로 박아 둔 값들을 어두운 화면에 맞춘다. */
+.admin-dark .adm-topbar { background: rgba(37,37,39,.85); }
+.admin-dark .adm-searchbox { background: var(--bg-2); }
+.admin-dark .adm-searchbox kbd,
+.admin-dark .adm-search-input kbd { background: var(--bg-3); border-color: var(--border); color: var(--muted-2); }
+.admin-dark .adm-home { background: var(--bg); }
+.admin-dark .adm-home::before {
+  background: radial-gradient(760px 300px at 18% -20px, rgba(255,107,26,.10), transparent 70%);
+}
+.admin-dark .adm-intro { background: rgba(255,107,26,.10); border-color: rgba(255,107,26,.34); }
+.admin-dark .adm-intro-steps { color: var(--text); }
+.admin-dark .adm-tile { box-shadow: 0 1px 3px rgba(0,0,0,.4); }
+.admin-dark .adm-tile:hover {
+  box-shadow: 0 3px 6px rgba(0,0,0,.45), 0 12px 28px rgba(0,0,0,.5);
+}
+.admin-dark .adm-tile.is-hot { box-shadow: 0 1px 2px rgba(0,0,0,.4), 0 6px 22px rgba(255,107,26,.18); }
+.admin-dark .adm-tile-live { background: rgba(255,255,255,.05); color: var(--text); }
+.admin-dark .adm-status-ok { color: var(--text); }
+.admin-dark .adm-statusbar,
+.admin-dark .adm-resume-chip { box-shadow: 0 1px 3px rgba(0,0,0,.4); }
+.admin-dark .adm-avatar { background: var(--bg-2); color: var(--muted); }
+.admin-dark .adm-search-panel { box-shadow: 0 24px 64px rgba(0,0,0,.6); }
+.admin-dark .adm-search-row.is-sel { background: rgba(255,255,255,.07); }
+.admin-dark .adm-search-kind { background: rgba(255,255,255,.07); }
+.admin-dark .adm-search-row.is-sel .adm-search-kind { background: rgba(255,255,255,.12); }
+.admin-dark .adm-search-overlay { background: rgba(0,0,0,.55); }
+/* 주황 위 글자는 어두운 화면에서 검정이 더 선명하다 — 사이트와 같은 규칙. */
+.admin-dark .btn.primary { color: #0d0d0e; }
+.admin-dark .btn.primary:hover:not(:disabled) { color: #0d0d0e; }
+.admin-dark .adm-badge { color: #0d0d0e; }
+
+/* ── 로고 ───────────────────────────────────────────────────────── */
+.adm-brand { display: inline-flex; align-items: center; gap: 10px; }
+.adm-brand-logo { height: 21px; width: auto; display: block; }
+.adm-brand-mark { height: 24px; width: auto; display: block; }
+.adm-brand-suffix {
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  white-space: nowrap;
+}
+.admin-brand .adm-brand-logo { height: 22px; }
+
+/* ── 밝기 전환 버튼 ─────────────────────────────────────────────── */
+.adm-theme-btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 11px;
+  font-size: 12px;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: var(--sans);
+}
+.adm-theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+.adm-theme-btn.is-compact { padding: 7px; border-radius: 50%; }
+.admin-sidebar-foot .adm-theme-btn { align-self: flex-start; }
+
+@media (max-width: 600px) {
+  .adm-brand-suffix { display: none; }
 }
