@@ -303,13 +303,6 @@ async function handleGitHubProxy(req: Request, env: Env, url: URL): Promise<Resp
   return new Response(upstream.body, { status: upstream.status, headers: out });
 }
 
-function json(data: unknown, status = 200): Response {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: { ...corsHeaders(), 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
-  });
-}
-
 async function handleUpload(req: Request, env: Env): Promise<Response> {
   const denied = await requireAdmin(req, env);
   if (denied) return denied;
@@ -817,7 +810,8 @@ const INQUIRY_ID_RE = /^[0-9TZa-z-]{1,80}$/;
 function json(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { ...corsHeaders(), 'Content-Type': 'application/json' },
+    // no-store: 로그인 응답과 접수함 목록 모두 캐시되면 곤란하다.
+    headers: { ...corsHeaders(), 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
   });
 }
 
