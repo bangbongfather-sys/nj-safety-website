@@ -28,6 +28,23 @@ import {
   readSession,
   verifyCredentials,
 } from './auth';
+import {
+  countOwners,
+  countUsers,
+  getGitHubToken,
+  setGitHubToken,
+  createUser,
+  deleteUser,
+  findUser,
+  getSessionSecret,
+  listUsers,
+  setPassword,
+  touchLogin,
+  validateId,
+  validatePassword,
+  type D1Database,
+  type Role,
+} from './users';
 
 interface R2ObjectMeta {
   key: string;
@@ -63,15 +80,22 @@ interface Env {
   ADMIN_GH_LOGIN?: string;
 
   /* ── 아이디/비밀번호 로그인 ──────────────────────────────────────
-   * Set all three to switch the admin off pasted GitHub tokens:
-   *   ADMIN_USERS    JSON array from `node scripts/make-admin-user.mjs`
-   *   SESSION_SECRET any long random string (`openssl rand -base64 32`)
-   *   ADMIN_GH_PAT   the GitHub token, now held server-side only
-   * Until they exist the Worker still accepts a GitHub PAT directly, so
-   * the old way keeps working and nobody is locked out mid-migration. */
+   *
+   * ADMIN_DB   관리자 계정 표 (D1). 계정 추가·비밀번호 변경이 전부
+   *            관리자 페이지 안에서 끝나도록 여기에 둔다. 세션
+   *            서명키도 처음 필요할 때 여기 만들어 넣는다.
+   * ADMIN_GH_PAT  GitHub 토큰. 사람이 한 번 넣어 줘야 하는 유일한
+   *            시크릿 — 사장님만 발급할 수 있는 값이라 어쩔 수 없다.
+   *            아이디 로그인으로 저장할 때 이 토큰이 쓰인다.
+   *
+   * 아래 둘은 예전 방식의 잔재로 남겨 둔다. 있으면 그쪽이 이긴다.
+   * ADMIN_USERS     계정을 시크릿에 JSON 으로 넣던 방식
+   * SESSION_SECRET  세션 서명키를 손으로 넣던 방식 (모두 강제
+   *                 로그아웃시키고 싶을 때 쓸 수 있다) */
+  ADMIN_DB?: D1Database;
+  ADMIN_GH_PAT?: string;
   ADMIN_USERS?: string;
   SESSION_SECRET?: string;
-  ADMIN_GH_PAT?: string;
 
   /**
    * 문의 알림 메일 (선택). Set as a secret:
@@ -145,7 +169,18 @@ type AdminAuth = {
   /** 이 요청에서 GitHub 를 호출할 때 쓸 토큰. */
   ghToken: string;
   mode: 'session' | 'pat';
+  /** owner 만 다른 직원의 계정을 만들거나 지울 수 있다. */
+  role: Role;
 };
+
+/** 계정 표가 없으면 아이디 로그인 자체가 성립하지 않는다. */
+function requireDb(env: Env): D1Database | null {
+  return env.ADMIN_DB ?? null;
+}
+
+function nowIso(): string {
+  return new Date().toISOString();
+}
 
 function bearerToken(req: Request): string | null {
   const auth = req.headers.get('Authorization');
@@ -172,8 +207,10 @@ async function authenticate(
     };
   }
 
-  if (env.SESSION_SECRET && looksLikeSession(token)) {
-    const id = await readSession(env.SESSION_SECRET, token);
+  const db = requireDb(env);
+  if (db && looksLikeSession(token)) {
+    const secret = await getSessionSecret(db, env.SESSION_SECRET);
+    const id = await readSession(secret, token);
     if (!id) {
       return {
         ok: false,
@@ -183,18 +220,35 @@ async function authenticate(
         }),
       };
     }
-    if (!env.ADMIN_GH_PAT) {
-      // 로그인은 맞는데 서버에 GitHub 토큰이 없다. 설정 실수이지
-      // 사용자 잘못이 아니므로 500 으로 분명히 알린다.
+    // 역할은 토큰에 넣지 않고 매번 표에서 읽는다. 계정을 지우거나
+    // 권한을 내리면 그 즉시 반영되어야 하기 때문 — 토큰에 박아 두면
+    // 30일 동안 살아 있는 세션이 예전 권한을 그대로 들고 다닌다.
+    const found = await findUser(db, id);
+    if (!found) {
       return {
         ok: false,
-        res: new Response('서버 설정 오류: ADMIN_GH_PAT 시크릿이 없습니다.', {
-          status: 500,
+        res: new Response('계정을 찾을 수 없습니다. 다시 로그인해 주세요.', {
+          status: 401,
           headers: corsHeaders(),
         }),
       };
     }
-    return { ok: true, auth: { id, ghToken: env.ADMIN_GH_PAT, mode: 'session' } };
+    const ghToken = await getGitHubToken(db, env.ADMIN_GH_PAT);
+    if (!ghToken) {
+      // 로그인은 맞는데 서버에 GitHub 토큰이 없다. 설정이 덜 된 것이지
+      // 사용자 잘못이 아니므로 무엇을 해야 하는지까지 알려 준다.
+      return {
+        ok: false,
+        res: new Response(
+          '서버에 GitHub 토큰이 저장되어 있지 않아 수정 내용을 저장할 수 없습니다. 관리자 설정에서 토큰을 한 번 저장해 주세요.',
+          { status: 500, headers: corsHeaders() },
+        ),
+      };
+    }
+    return {
+      ok: true,
+      auth: { id: found.account.id, ghToken, mode: 'session', role: found.account.role },
+    };
   }
 
   const verify = await verifyGitHubPat(token);
@@ -214,7 +268,8 @@ async function authenticate(
       }),
     };
   }
-  return { ok: true, auth: { id: verify.login, ghToken: token, mode: 'pat' } };
+  // 예전 방식으로 들어온 사람은 곧 첫 계정을 만들어야 하므로 owner.
+  return { ok: true, auth: { id: verify.login, ghToken: token, mode: 'pat', role: 'owner' } };
 }
 
 /**
@@ -228,7 +283,8 @@ async function requireAdmin(req: Request, env: Env): Promise<Response | null> {
 
 /** `POST /api/admin/login` — {id, password} → 세션 토큰. */
 async function handleLogin(req: Request, env: Env): Promise<Response> {
-  if (!env.SESSION_SECRET || !env.ADMIN_USERS) {
+  const db = requireDb(env);
+  if (!db) {
     return json({ ok: false, error: '아이디 로그인이 아직 설정되지 않았습니다.' }, 503);
   }
   let body: { id?: string; password?: string };
@@ -243,22 +299,210 @@ async function handleLogin(req: Request, env: Env): Promise<Response> {
     return json({ ok: false, error: '아이디와 비밀번호를 입력해 주세요.' }, 400);
   }
 
-  const users = parseUsers(env.ADMIN_USERS);
-  const matched = await verifyCredentials(users, id, password);
+  // 표에서 찾고, 없으면 예전 ADMIN_USERS 시크릿도 본다. 시크릿으로
+  // 쓰던 설정이 있으면 그대로 로그인되게 남겨 둔 것.
+  const found = await findUser(db, id);
+  const candidates = found ? [found.credentials] : parseUsers(env.ADMIN_USERS);
+  const matched = await verifyCredentials(candidates, id, password);
   if (!matched) {
     // 아이디가 없는 것과 비밀번호가 틀린 것을 구분해서 알려주지 않는다.
     return json({ ok: false, error: '아이디 또는 비밀번호가 올바르지 않습니다.' }, 401);
   }
 
-  const token = await issueSession(env.SESSION_SECRET, matched);
-  return json({ ok: true, token, id: matched, days: SESSION_TTL_DAYS });
+  const secret = await getSessionSecret(db, env.SESSION_SECRET);
+  const token = await issueSession(secret, matched);
+  if (found) await touchLogin(db, matched, nowIso());
+  return json({
+    ok: true,
+    token,
+    id: matched,
+    role: found?.account.role ?? 'owner',
+    days: SESSION_TTL_DAYS,
+  });
+}
+
+/* ─── 계정 관리 ──────────────────────────────────────────────────────
+ *
+ * 예전에는 계정을 바꾸려면 터미널에서 해시를 만들어 시크릿에 다시
+ * 넣어야 했다. 아래 라우트들이 그 일을 관리자 페이지 안으로 옮긴다.
+ *
+ * 권한은 두 가지뿐이다. owner 는 직원을 추가·삭제하고 아무 비밀번호나
+ * 재설정할 수 있고, staff 는 자기 비밀번호만 바꿀 수 있다.
+ */
+
+async function handleUserList(req: Request, env: Env): Promise<Response> {
+  const r = await authenticate(req, env);
+  if (!r.ok) return r.res;
+  const db = requireDb(env);
+  if (!db) return json({ ok: false, error: '계정 저장소가 없습니다.' }, 503);
+  return json({
+    ok: true,
+    me: { id: r.auth.id, role: r.auth.role, mode: r.auth.mode },
+    users: await listUsers(db),
+  });
+}
+
+async function handleUserCreate(req: Request, env: Env): Promise<Response> {
+  const r = await authenticate(req, env);
+  if (!r.ok) return r.res;
+  const db = requireDb(env);
+  if (!db) return json({ ok: false, error: '계정 저장소가 없습니다.' }, 503);
+
+  let body: { id?: string; password?: string; displayName?: string; role?: string };
+  try {
+    body = (await req.json()) as typeof body;
+  } catch {
+    return json({ ok: false, error: '잘못된 요청입니다.' }, 400);
+  }
+
+  const id = (body.id ?? '').trim();
+  const password = body.password ?? '';
+  const idErr = validateId(id);
+  if (idErr) return json({ ok: false, error: idErr }, 400);
+  const pwErr = validatePassword(password);
+  if (pwErr) return json({ ok: false, error: pwErr }, 400);
+
+  const existing = await countUsers(db);
+  // 표가 비어 있으면 첫 계정이다. 이때는 예전 GitHub 토큰으로 들어온
+  // 사람도 만들 수 있어야 한다 — 그러지 않으면 첫 계정을 만들 방법이
+  // 없어 다시 터미널로 돌아가야 한다.
+  if (existing > 0 && r.auth.role !== 'owner') {
+    return json({ ok: false, error: '직원 계정은 대표 계정만 추가할 수 있습니다.' }, 403);
+  }
+  if (await findUser(db, id)) {
+    return json({ ok: false, error: '이미 있는 아이디입니다.' }, 409);
+  }
+
+  const role: Role = existing === 0 ? 'owner' : body.role === 'owner' ? 'owner' : 'staff';
+  const account = await createUser(
+    db,
+    { id, password, displayName: body.displayName, role },
+    nowIso(),
+  );
+  return json({ ok: true, user: account });
+}
+
+async function handleUserPassword(req: Request, env: Env): Promise<Response> {
+  const r = await authenticate(req, env);
+  if (!r.ok) return r.res;
+  const db = requireDb(env);
+  if (!db) return json({ ok: false, error: '계정 저장소가 없습니다.' }, 503);
+
+  let body: { id?: string; currentPassword?: string; password?: string };
+  try {
+    body = (await req.json()) as typeof body;
+  } catch {
+    return json({ ok: false, error: '잘못된 요청입니다.' }, 400);
+  }
+
+  const target = (body.id ?? r.auth.id).trim();
+  const password = body.password ?? '';
+  const pwErr = validatePassword(password);
+  if (pwErr) return json({ ok: false, error: pwErr }, 400);
+
+  const isSelf = target.toLowerCase() === r.auth.id.toLowerCase();
+  if (!isSelf && r.auth.role !== 'owner') {
+    return json({ ok: false, error: '다른 사람의 비밀번호는 대표 계정만 바꿀 수 있습니다.' }, 403);
+  }
+
+  const found = await findUser(db, target);
+  if (!found) return json({ ok: false, error: '없는 계정입니다.' }, 404);
+
+  // 자기 비밀번호를 바꿀 때는 현재 비밀번호를 확인한다. 로그인한
+  // 자리를 잠깐 비운 사이 누가 비밀번호를 바꿔 버리는 걸 막는다.
+  // (GitHub 토큰으로 들어온 경우는 확인할 기존 비밀번호가 없다.)
+  if (isSelf && r.auth.mode === 'session') {
+    const ok = await verifyCredentials([found.credentials], target, body.currentPassword ?? '');
+    if (!ok) return json({ ok: false, error: '현재 비밀번호가 올바르지 않습니다.' }, 401);
+  }
+
+  await setPassword(db, target, password, nowIso());
+  return json({ ok: true });
+}
+
+/**
+ * `POST /api/admin/gh-token` — 서버에 GitHub 토큰을 넣어 둔다.
+ *
+ * 이 한 번으로 터미널 작업이 사라진다. 저장 전에 GitHub 에 실제로
+ * 물어봐서 쓸 수 있는 토큰인지 확인한다 — 오타난 값을 넣어 두고
+ * 나중에 "저장이 안 돼요" 로 만나는 일이 없도록.
+ */
+async function handleGhTokenSave(req: Request, env: Env): Promise<Response> {
+  const r = await authenticate(req, env);
+  if (!r.ok) return r.res;
+  const db = requireDb(env);
+  if (!db) return json({ ok: false, error: '계정 저장소가 없습니다.' }, 503);
+  if (r.auth.role !== 'owner') {
+    return json({ ok: false, error: '대표 계정만 할 수 있습니다.' }, 403);
+  }
+
+  let body: { token?: string };
+  try {
+    body = (await req.json()) as typeof body;
+  } catch {
+    return json({ ok: false, error: '잘못된 요청입니다.' }, 400);
+  }
+  const token = (body.token ?? '').trim();
+  if (!token) return json({ ok: false, error: '토큰을 입력해 주세요.' }, 400);
+
+  const verify = await verifyGitHubPat(token);
+  if (!verify.ok) {
+    return json({ ok: false, error: `GitHub 이 이 토큰을 거부했습니다: ${verify.reason}` }, 400);
+  }
+  const allowed = env.ADMIN_GH_LOGIN || 'bangbongfather-sys';
+  if (verify.login !== allowed) {
+    return json({ ok: false, error: `이 저장소의 토큰이 아닙니다 (${verify.login}).` }, 400);
+  }
+
+  await setGitHubToken(db, token);
+  return json({ ok: true, login: verify.login });
+}
+
+/** `GET /api/admin/gh-token` — 저장돼 있는지만 알려준다. 값은 안 준다. */
+async function handleGhTokenStatus(req: Request, env: Env): Promise<Response> {
+  const r = await authenticate(req, env);
+  if (!r.ok) return r.res;
+  const db = requireDb(env);
+  if (!db) return json({ ok: false, error: '계정 저장소가 없습니다.' }, 503);
+  const token = await getGitHubToken(db, env.ADMIN_GH_PAT);
+  return json({
+    ok: true,
+    saved: Boolean(token),
+    source: env.ADMIN_GH_PAT ? 'secret' : token ? 'database' : null,
+  });
+}
+
+async function handleUserDelete(req: Request, env: Env, url: URL): Promise<Response> {
+  const r = await authenticate(req, env);
+  if (!r.ok) return r.res;
+  const db = requireDb(env);
+  if (!db) return json({ ok: false, error: '계정 저장소가 없습니다.' }, 503);
+  if (r.auth.role !== 'owner') {
+    return json({ ok: false, error: '계정 삭제는 대표 계정만 할 수 있습니다.' }, 403);
+  }
+
+  const target = (url.searchParams.get('id') ?? '').trim();
+  if (!target) return json({ ok: false, error: '지울 계정을 지정해 주세요.' }, 400);
+  if (target.toLowerCase() === r.auth.id.toLowerCase()) {
+    return json({ ok: false, error: '자기 계정은 지울 수 없습니다.' }, 400);
+  }
+
+  const found = await findUser(db, target);
+  if (!found) return json({ ok: false, error: '없는 계정입니다.' }, 404);
+  // 대표가 하나도 없는 상태가 되면 아무도 계정을 관리할 수 없다.
+  if (found.account.role === 'owner' && (await countOwners(db)) <= 1) {
+    return json({ ok: false, error: '마지막 대표 계정은 지울 수 없습니다.' }, 400);
+  }
+
+  await deleteUser(db, target);
+  return json({ ok: true });
 }
 
 /** `GET /api/admin/session` — 저장된 토큰이 아직 유효한지 확인. */
 async function handleSession(req: Request, env: Env): Promise<Response> {
   const r = await authenticate(req, env);
   if (!r.ok) return r.res;
-  return json({ ok: true, id: r.auth.id, mode: r.auth.mode });
+  return json({ ok: true, id: r.auth.id, mode: r.auth.mode, role: r.auth.role });
 }
 
 /**
@@ -917,6 +1161,21 @@ export default {
 
     if (url.pathname === '/api/admin/session' && req.method === 'GET') {
       return handleSession(req, env);
+    }
+
+    if (url.pathname === '/api/admin/users') {
+      if (req.method === 'GET') return handleUserList(req, env);
+      if (req.method === 'POST') return handleUserCreate(req, env);
+      if (req.method === 'DELETE') return handleUserDelete(req, env, url);
+    }
+
+    if (url.pathname === '/api/admin/gh-token') {
+      if (req.method === 'GET') return handleGhTokenStatus(req, env);
+      if (req.method === 'POST') return handleGhTokenSave(req, env);
+    }
+
+    if (url.pathname === '/api/admin/users/password' && req.method === 'POST') {
+      return handleUserPassword(req, env);
     }
 
     if (url.pathname.startsWith('/api/admin/gh/')) {

@@ -53,10 +53,14 @@ export function base64ToUtf8(b64: string): string {
  * 그래서 아래 `pat` 인자는 이제 대부분 로그인 세션 토큰이다 — 예전
  * GitHub PAT 을 넣어도 Worker 가 그대로 받아준다.
  */
-const WORKER_ORIGIN =
-  typeof window !== 'undefined' && /^localhost$|^127\./.test(window.location.hostname)
-    ? 'https://njfashion.co.kr' // next dev 로컬 실행용
-    : '';
+/**
+ * 항상 같은 도메인. 처음에는 `next dev` 로컬 실행 편의를 위해
+ * localhost 면 실서버를 가리키게 해 뒀는데, 로컬에서 만지는 내용이
+ * 실제 사이트에 저장돼 버릴 수 있어서 뺐다. 관리자 기능을 확인할
+ * 때는 `npx wrangler dev` 로 띄우면 Worker 와 화면이 한 주소에서 같이
+ * 뜬다.
+ */
+export const WORKER_ORIGIN = '';
 
 function api(path: string): string {
   return `${WORKER_ORIGIN}/api/admin/gh${path}`;

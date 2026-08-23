@@ -13,9 +13,14 @@
  * HMAC-SHA256 over SESSION_SECRET. There is no session store to keep, and
  * revoking everyone at once is just rotating that one secret.
  *
- * Passwords are stored as PBKDF2-SHA256 hashes (per-user random salt) in
- * the ADMIN_USERS secret. Generate it with `node scripts/make-admin-user.mjs`
- * — the plaintext password never leaves the machine that runs it.
+ * Passwords are stored as PBKDF2-SHA256 hashes with a per-user random
+ * salt. They live in the ADMIN_DB (D1) `admin_users` table — see
+ * worker/users.ts — so accounts can be created and changed from the admin
+ * page instead of the terminal. The plaintext password is never stored
+ * anywhere, which also means a forgotten one can only be replaced.
+ *
+ * The older ADMIN_USERS secret is still read as a fallback so an existing
+ * setup keeps working.
  */
 
 export type AdminUser = {
@@ -145,3 +150,26 @@ export async function readSession(secret: string, token: string): Promise<string
 }
 
 export const SESSION_TTL_DAYS = SESSION_DAYS;
+export const PBKDF2_ITERATIONS = DEFAULT_ITERATIONS;
+
+/** 새 비밀번호 → 저장할 salt/hash. 계정 생성·비밀번호 변경에서 쓴다. */
+export async function hashNewPassword(
+  password: string,
+): Promise<{ salt: string; hash: string; iterations: number }> {
+  const saltBytes = crypto.getRandomValues(new Uint8Array(16));
+  let bin = '';
+  for (const b of saltBytes) bin += String.fromCharCode(b);
+  const salt = btoa(bin);
+  const derived = await derivePasswordHash(password, salt, DEFAULT_ITERATIONS);
+  let dbin = '';
+  for (const b of derived) dbin += String.fromCharCode(b);
+  return { salt, hash: btoa(dbin), iterations: DEFAULT_ITERATIONS };
+}
+
+/** 무작위 시크릿 한 개 — 세션 서명키를 처음 만들 때. */
+export function randomSecret(): string {
+  const bytes = crypto.getRandomValues(new Uint8Array(32));
+  let bin = '';
+  for (const b of bytes) bin += String.fromCharCode(b);
+  return btoa(bin);
+}
