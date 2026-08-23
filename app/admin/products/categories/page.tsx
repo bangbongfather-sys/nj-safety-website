@@ -106,7 +106,7 @@ export default function CategoriesAdminPage() {
 
       // Product list — name + slug only, for the assignment picker.
       const dirRes = await fetch(
-        `https://api.github.com/repos/bangbongfather-sys/nj-safety-website/contents/data/products?ref=main`,
+        `/api/admin/gh/contents/data/products?ref=main`,
         { headers: { Authorization: `token ${pat}`, Accept: 'application/vnd.github+json' } },
       );
       const dirJson = (await dirRes.json()) as Array<{ path: string; type: string }>;

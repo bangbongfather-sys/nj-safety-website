@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { ghWhoami } from './github';
+import { adminLogin, ghWhoami } from './github';
 import { cacheLogin, getCachedLogin } from './offline';
 
 const PAT_KEY = 'nj_admin_github_pat';
@@ -55,7 +55,10 @@ export type PatState =
 
 export type PatApi = {
   state: PatState;
-  login: (pat: string) => Promise<{ ok: boolean; error?: string }>;
+  /** 정상 경로 — 아이디·비밀번호. 서버가 세션 토큰을 돌려준다. */
+  login: (id: string, password: string) => Promise<{ ok: boolean; error?: string }>;
+  /** 비상구 — GitHub 토큰을 직접 넣는 예전 방식. */
+  loginWithToken: (token: string) => Promise<{ ok: boolean; error?: string }>;
   logout: () => void;
 };
 
@@ -115,7 +118,7 @@ export function usePat(): PatApi {
     return () => window.removeEventListener('online', onOnline);
   }, [state]);
 
-  const login = useCallback(async (pat: string) => {
+  const loginWithToken = useCallback(async (pat: string) => {
     const v = pat.trim();
     if (!v) return { ok: false, error: '토큰이 비어 있습니다' };
     setState({ status: 'verifying', pat: v });
@@ -142,10 +145,24 @@ export function usePat(): PatApi {
     }
   }, []);
 
+  /**
+   * 아이디·비밀번호 로그인. 서버가 돌려준 세션 토큰을 그 뒤로는 예전
+   * PAT 자리에 그대로 넣어 쓴다 — 호출부 입장에서는 달라지는 게 없고,
+   * 달라진 건 브라우저에 GitHub 토큰이 더 이상 없다는 점이다.
+   */
+  const login = useCallback(
+    async (id: string, password: string) => {
+      const r = await adminLogin(id.trim(), password);
+      if (!r.ok || !r.token) return { ok: false, error: r.error ?? '로그인 실패' };
+      return loginWithToken(r.token);
+    },
+    [loginWithToken],
+  );
+
   const logout = useCallback(() => {
     removeStored(PAT_KEY);
     setState({ status: 'unauthenticated' });
   }, []);
 
-  return { state, login, logout };
+  return { state, login, loginWithToken, logout };
 }

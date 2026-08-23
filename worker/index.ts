@@ -21,6 +21,14 @@
  *      site had before this Worker existed.
  */
 
+import {
+  SESSION_TTL_DAYS,
+  issueSession,
+  parseUsers,
+  readSession,
+  verifyCredentials,
+} from './auth';
+
 interface R2ObjectMeta {
   key: string;
   size: number;
@@ -53,6 +61,17 @@ interface Env {
   R2_PUBLIC_BASE: string;
   /** GitHub login allowed to upload / read the inquiry inbox. Defaults to bangbongfather-sys. */
   ADMIN_GH_LOGIN?: string;
+
+  /* ── 아이디/비밀번호 로그인 ──────────────────────────────────────
+   * Set all three to switch the admin off pasted GitHub tokens:
+   *   ADMIN_USERS    JSON array from `node scripts/make-admin-user.mjs`
+   *   SESSION_SECRET any long random string (`openssl rand -base64 32`)
+   *   ADMIN_GH_PAT   the GitHub token, now held server-side only
+   * Until they exist the Worker still accepts a GitHub PAT directly, so
+   * the old way keeps working and nobody is locked out mid-migration. */
+  ADMIN_USERS?: string;
+  SESSION_SECRET?: string;
+  ADMIN_GH_PAT?: string;
 
   /**
    * 문의 알림 메일 (선택). Set as a secret:
@@ -103,32 +122,192 @@ async function verifyGitHubPat(pat: string): Promise<{ ok: true; login: string }
   }
 }
 
-/**
- * Gate for every `/api/admin/*` route. Reuses the GitHub PAT the admin
- * UI already holds, so there's no second credential to manage.
- * Resolves to null when the caller is allowed, or to the Response that
- * should be returned instead.
+/* ─── 관리자 인증 ────────────────────────────────────────────────────
+ *
+ * 두 가지 방식을 모두 받는다.
+ *
+ *   1. 세션 토큰 — /api/admin/login 에서 아이디·비밀번호로 받아온 것.
+ *      직원이 쓰는 정상 경로. 이 경우 GitHub 토큰은 브라우저에 없고
+ *      Worker 의 ADMIN_GH_PAT 시크릿에만 있다.
+ *
+ *   2. GitHub PAT — 예전 방식. ADMIN_USERS/SESSION_SECRET 를 아직
+ *      설정하지 않았거나 세션에 문제가 생겼을 때를 위한 비상구.
+ *
+ * 어느 쪽이든 통과하면 GitHub 를 호출할 토큰(ghToken)을 함께 돌려준다.
  */
-async function requireAdmin(req: Request, env: Env): Promise<Response | null> {
+
+const GH_REPO_OWNER = 'bangbongfather-sys';
+const GH_REPO_NAME = 'nj-safety-website';
+
+type AdminAuth = {
+  /** 로그인한 사람 (세션이면 아이디, PAT 이면 GitHub 로그인). */
+  id: string;
+  /** 이 요청에서 GitHub 를 호출할 때 쓸 토큰. */
+  ghToken: string;
+  mode: 'session' | 'pat';
+};
+
+function bearerToken(req: Request): string | null {
   const auth = req.headers.get('Authorization');
-  if (!auth?.startsWith('token ')) {
-    return new Response('Missing token (Authorization: token <PAT>)', {
-      status: 401,
-      headers: corsHeaders(),
-    });
+  if (!auth?.startsWith('token ')) return null;
+  const t = auth.slice(6).trim();
+  return t || null;
+}
+
+/** 세션 토큰은 `payload.signature` 형태라 점이 들어 있다. GitHub PAT
+ *  (ghp_…, github_pat_…) 에는 점이 없어서 이것만으로 구분된다. */
+function looksLikeSession(token: string): boolean {
+  return token.includes('.');
+}
+
+async function authenticate(
+  req: Request,
+  env: Env,
+): Promise<{ ok: true; auth: AdminAuth } | { ok: false; res: Response }> {
+  const token = bearerToken(req);
+  if (!token) {
+    return {
+      ok: false,
+      res: new Response('로그인이 필요합니다.', { status: 401, headers: corsHeaders() }),
+    };
   }
-  const verify = await verifyGitHubPat(auth.slice(6).trim());
+
+  if (env.SESSION_SECRET && looksLikeSession(token)) {
+    const id = await readSession(env.SESSION_SECRET, token);
+    if (!id) {
+      return {
+        ok: false,
+        res: new Response('세션이 만료되었습니다. 다시 로그인해 주세요.', {
+          status: 401,
+          headers: corsHeaders(),
+        }),
+      };
+    }
+    if (!env.ADMIN_GH_PAT) {
+      // 로그인은 맞는데 서버에 GitHub 토큰이 없다. 설정 실수이지
+      // 사용자 잘못이 아니므로 500 으로 분명히 알린다.
+      return {
+        ok: false,
+        res: new Response('서버 설정 오류: ADMIN_GH_PAT 시크릿이 없습니다.', {
+          status: 500,
+          headers: corsHeaders(),
+        }),
+      };
+    }
+    return { ok: true, auth: { id, ghToken: env.ADMIN_GH_PAT, mode: 'session' } };
+  }
+
+  const verify = await verifyGitHubPat(token);
   if (!verify.ok) {
-    return new Response(`Auth failed: ${verify.reason}`, { status: 401, headers: corsHeaders() });
+    return {
+      ok: false,
+      res: new Response(`인증 실패: ${verify.reason}`, { status: 401, headers: corsHeaders() }),
+    };
   }
   const allowed = env.ADMIN_GH_LOGIN || 'bangbongfather-sys';
   if (verify.login !== allowed) {
-    return new Response(`Forbidden: ${verify.login} (need ${allowed})`, {
-      status: 403,
-      headers: corsHeaders(),
-    });
+    return {
+      ok: false,
+      res: new Response(`권한 없음: ${verify.login} (필요: ${allowed})`, {
+        status: 403,
+        headers: corsHeaders(),
+      }),
+    };
   }
-  return null;
+  return { ok: true, auth: { id: verify.login, ghToken: token, mode: 'pat' } };
+}
+
+/**
+ * Gate for every `/api/admin/*` route. Resolves to null when the caller
+ * is allowed, or to the Response that should be returned instead.
+ */
+async function requireAdmin(req: Request, env: Env): Promise<Response | null> {
+  const r = await authenticate(req, env);
+  return r.ok ? null : r.res;
+}
+
+/** `POST /api/admin/login` — {id, password} → 세션 토큰. */
+async function handleLogin(req: Request, env: Env): Promise<Response> {
+  if (!env.SESSION_SECRET || !env.ADMIN_USERS) {
+    return json({ ok: false, error: '아이디 로그인이 아직 설정되지 않았습니다.' }, 503);
+  }
+  let body: { id?: string; password?: string };
+  try {
+    body = (await req.json()) as { id?: string; password?: string };
+  } catch {
+    return json({ ok: false, error: '잘못된 요청입니다.' }, 400);
+  }
+  const id = (body.id ?? '').trim();
+  const password = body.password ?? '';
+  if (!id || !password) {
+    return json({ ok: false, error: '아이디와 비밀번호를 입력해 주세요.' }, 400);
+  }
+
+  const users = parseUsers(env.ADMIN_USERS);
+  const matched = await verifyCredentials(users, id, password);
+  if (!matched) {
+    // 아이디가 없는 것과 비밀번호가 틀린 것을 구분해서 알려주지 않는다.
+    return json({ ok: false, error: '아이디 또는 비밀번호가 올바르지 않습니다.' }, 401);
+  }
+
+  const token = await issueSession(env.SESSION_SECRET, matched);
+  return json({ ok: true, token, id: matched, days: SESSION_TTL_DAYS });
+}
+
+/** `GET /api/admin/session` — 저장된 토큰이 아직 유효한지 확인. */
+async function handleSession(req: Request, env: Env): Promise<Response> {
+  const r = await authenticate(req, env);
+  if (!r.ok) return r.res;
+  return json({ ok: true, id: r.auth.id, mode: r.auth.mode });
+}
+
+/**
+ * `/api/admin/gh/*` — GitHub Contents API 대리 호출.
+ *
+ * 브라우저는 GitHub 토큰을 갖지 않고 이 경로로만 요청한다. Worker 가
+ * 세션을 확인한 뒤 서버에 있는 토큰을 붙여 GitHub 로 넘긴다. 경로는
+ * 이 저장소 안으로 고정되어 있어서, 세션이 있다고 다른 저장소를 건드릴
+ * 수는 없다.
+ */
+async function handleGitHubProxy(req: Request, env: Env, url: URL): Promise<Response> {
+  const r = await authenticate(req, env);
+  if (!r.ok) return r.res;
+
+  const rest = url.pathname.slice('/api/admin/gh'.length); // 앞에 / 포함
+  if (rest.includes('..')) {
+    return new Response('Invalid path', { status: 400, headers: corsHeaders() });
+  }
+  const target = `https://api.github.com/repos/${GH_REPO_OWNER}/${GH_REPO_NAME}${rest}${url.search}`;
+
+  const headers = new Headers({
+    Authorization: `token ${r.auth.ghToken}`,
+    Accept: req.headers.get('Accept') || 'application/vnd.github+json',
+    'User-Agent': 'nj-safety-admin',
+  });
+  const ct = req.headers.get('Content-Type');
+  if (ct) headers.set('Content-Type', ct);
+
+  const hasBody = req.method !== 'GET' && req.method !== 'HEAD';
+  const upstream = await fetch(target, {
+    method: req.method,
+    headers,
+    body: hasBody ? await req.arrayBuffer() : undefined,
+  });
+
+  const out = new Headers(corsHeaders());
+  const upstreamCt = upstream.headers.get('Content-Type');
+  if (upstreamCt) out.set('Content-Type', upstreamCt);
+  // 브라우저·프록시가 오래된 파일 내용을 재사용하면 저장이 충돌하므로
+  // 캐시를 명시적으로 끈다.
+  out.set('Cache-Control', 'no-store');
+  return new Response(upstream.body, { status: upstream.status, headers: out });
+}
+
+function json(data: unknown, status = 200): Response {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: { ...corsHeaders(), 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
+  });
 }
 
 async function handleUpload(req: Request, env: Env): Promise<Response> {
@@ -736,6 +915,18 @@ export default {
     if (req.method === 'GET' || req.method === 'HEAD') {
       const redirect = legacyRedirect(url);
       if (redirect) return redirect;
+    }
+
+    if (url.pathname === '/api/admin/login' && req.method === 'POST') {
+      return handleLogin(req, env);
+    }
+
+    if (url.pathname === '/api/admin/session' && req.method === 'GET') {
+      return handleSession(req, env);
+    }
+
+    if (url.pathname.startsWith('/api/admin/gh/')) {
+      return handleGitHubProxy(req, env, url);
     }
 
     if (url.pathname === '/api/admin/upload-image' && req.method === 'PUT') {

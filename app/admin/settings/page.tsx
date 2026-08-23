@@ -15,19 +15,19 @@ export default function SettingsPage() {
       </header>
 
       <section className="admin-card">
-        <h2>GitHub 인증</h2>
+        <h2>로그인 정보</h2>
         <div className="admin-kv-grid">
-          <span className="k">로그인</span><span className="v"><code>{login || '—'}</code></span>
+          <span className="k">아이디</span><span className="v"><code>{login || '—'}</code></span>
           <span className="k">저장소</span><span className="v"><code>{REPO_OWNER}/{REPO_NAME}</code></span>
           <span className="k">브랜치</span><span className="v"><code>{REPO_BRANCH}</code></span>
         </div>
         <p className="admin-help">
-          토큰은 이 기기 브라우저(localStorage)에만 저장되어 있습니다. 다른 기기에서는 다시 입력해야 합니다.
-          토큰이 노출되거나 분실되었다면 <a href="https://github.com/settings/tokens" target="_blank" rel="noreferrer">github.com/settings/tokens</a>에서 폐기 후 새로 발급하세요.
+          로그인 상태는 이 기기에만 30일간 저장됩니다. 다른 기기에서는 다시 로그인해야 합니다.
+          공용 컴퓨터에서 작업했다면 끝나고 반드시 로그아웃하세요.
         </p>
         <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
           <button type="button" className="btn ghost" onClick={logout}>
-            로그아웃 (토큰 삭제)
+            로그아웃
           </button>
           <a
             href={`https://github.com/${REPO_OWNER}/${REPO_NAME}`}

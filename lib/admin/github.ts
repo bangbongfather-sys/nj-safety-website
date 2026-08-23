@@ -47,8 +47,19 @@ export function base64ToUtf8(b64: string): string {
   return new TextDecoder('utf-8').decode(bytes);
 }
 
+/**
+ * 브라우저는 GitHub 를 직접 부르지 않는다. 같은 도메인의 Worker 로
+ * 보내면 Worker 가 서버에 있는 GitHub 토큰을 붙여 대신 호출한다.
+ * 그래서 아래 `pat` 인자는 이제 대부분 로그인 세션 토큰이다 — 예전
+ * GitHub PAT 을 넣어도 Worker 가 그대로 받아준다.
+ */
+const WORKER_ORIGIN =
+  typeof window !== 'undefined' && /^localhost$|^127\./.test(window.location.hostname)
+    ? 'https://njfashion.co.kr' // next dev 로컬 실행용
+    : '';
+
 function api(path: string): string {
-  return `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}${path}`;
+  return `${WORKER_ORIGIN}/api/admin/gh${path}`;
 }
 
 function headers(pat: string): HeadersInit {
@@ -56,6 +67,27 @@ function headers(pat: string): HeadersInit {
     Authorization: `token ${pat}`,
     Accept: 'application/vnd.github+json',
   };
+}
+
+/** 아이디·비밀번호로 세션 토큰을 받아온다. */
+export async function adminLogin(
+  id: string,
+  password: string,
+): Promise<{ ok: boolean; token?: string; error?: string }> {
+  try {
+    const r = await fetch(`${WORKER_ORIGIN}/api/admin/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, password }),
+    });
+    const data = (await r.json().catch(() => ({}))) as { ok?: boolean; token?: string; error?: string };
+    if (!r.ok || !data.token) {
+      return { ok: false, error: data.error || `로그인 실패 (${r.status})` };
+    }
+    return { ok: true, token: data.token };
+  } catch (e: unknown) {
+    return { ok: false, error: e instanceof Error ? e.message : String(e) };
+  }
 }
 
 /**
@@ -74,13 +106,16 @@ export async function ghWhoami(
   const abort = new AbortController();
   const timer = setTimeout(() => abort.abort(), 12_000);
   try {
-    const r = await fetch('https://api.github.com/user', {
+    const r = await fetch(`${WORKER_ORIGIN}/api/admin/session`, {
       headers: headers(pat),
       signal: abort.signal,
     });
-    if (!r.ok) return { ok: false, error: `${r.status} ${r.statusText}` };
+    if (!r.ok) {
+      const detail = await r.text().catch(() => '');
+      return { ok: false, error: detail.trim() || `${r.status} ${r.statusText}` };
+    }
     const data = await r.json();
-    return { ok: true, login: data.login };
+    return { ok: true, login: data.id };
   } catch (e: unknown) {
     const timedOut = e instanceof Error && e.name === 'AbortError';
     return {

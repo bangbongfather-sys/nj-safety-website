@@ -25,7 +25,7 @@ async function fetchNewInquiryCount(pat: string): Promise<number | null> {
 async function fetchLastCommit(pat: string): Promise<{ sha: string; date: string; message: string } | null> {
   try {
     const r = await fetch(
-      `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/commits?sha=${REPO_BRANCH}&per_page=1`,
+      `/api/admin/gh/commits?sha=${REPO_BRANCH}&per_page=1`,
       { headers: { Authorization: `token ${pat}`, Accept: 'application/vnd.github+json' } },
     );
     if (!r.ok) return null;
