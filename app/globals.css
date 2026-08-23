@@ -5187,17 +5187,20 @@ section { position: relative; }
   display: flex; flex-direction: column;
   height: 100%; min-height: 0; min-width: 0;
   max-width: none;
-  padding: 26px 30px 30px;
+  padding: 32px 32px 30px;
 }
 
 /* 제목·필터·검색을 한 줄에 둔다. 따로 쌓으면 목록에 쓸 세로가
-   한 줄만큼 줄어든다. */
+   한 줄만큼 줄어든다. 대신 제목이 옆 버튼에 붙어 보이지 않도록
+   가로 간격을 넉넉히 준다 — 굵은 큰 글자는 작은 컨트롤보다 훨씬
+   넓은 여백을 요구한다. */
 .inq-head {
-  display: flex; align-items: flex-end;
-  gap: 10px 20px; flex-wrap: wrap;
-  margin-bottom: 12px;
+  display: flex; align-items: center;
+  gap: 16px 36px; flex-wrap: wrap;
+  margin-bottom: 20px;
 }
-.inq-head-l { display: flex; flex-direction: column; gap: 6px; }
+.inq-head-l { padding-right: 4px; }
+.inq-head-l { display: flex; flex-direction: column; gap: 7px; }
 .inq-head-l h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.025em; }
 .inq-head-r { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-left: auto; }
 
