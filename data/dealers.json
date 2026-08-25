@@ -57,7 +57,7 @@
       "id": "dealer-gaon",
       "regionId": "metropolitan",
       "name": "주식회사 가온",
-      "manager": "강해구",
+      "manager": "",
       "addr": "경기도 남양주시 홍유릉로 221 (금곡동) 가온빌딩",
       "tel": "031-574-7220",
       "email": "gaon0901@wehago.com"
@@ -66,41 +66,47 @@
       "id": "dealer-jeil-hydraulic",
       "regionId": "metropolitan",
       "name": "제일유압안전",
-      "manager": "고승권",
+      "manager": "",
       "addr": "서울특별시 구로구 구로중앙로 198 (구로동) 구로기계공구상가 26동 106호",
       "email": "imt7220@naver.com",
-      "siteUrl": "https://www.jeil09.co.kr/product/search.html?banner_action=&keyword=%EB%82%98%EC%A0%95"
+      "siteUrl": "https://www.jeil09.co.kr/product/search.html?banner_action=&keyword=%EB%82%98%EC%A0%95",
+      "tel": "02-2273-0493"
     },
     {
       "id": "dealer-hyundai-jeonseol",
       "regionId": "honam",
       "name": "현대전설공구",
-      "manager": "백현화",
+      "manager": "",
       "addr": "광주광역시 서구 매월동 948 광주산업용재유통센타 10-107",
-      "email": "bhh65@hanmail.net"
+      "email": "bhh65@hanmail.net",
+      "tel": "062-603-3309"
     },
     {
       "id": "dealer-junghyun-industry",
       "regionId": "metropolitan",
       "name": "정현인더스트리(주)",
-      "manager": "조윤호",
+      "manager": "",
       "addr": "서울특별시 금천구 시흥동 984 시흥유통상가 31-107",
       "email": "junghyun2046@naver.com",
-      "siteUrl": "https://www.junghyun.kr/product/search.html?banner_action=&keyword=%EB%82%98%EC%A0%95"
+      "siteUrl": "https://www.junghyun.kr/product/search.html?banner_action=&keyword=%EB%82%98%EC%A0%95",
+      "tel": "02-891-1409"
     },
     {
       "id": "dealer-hansol-emt",
       "regionId": "metropolitan",
       "name": "(주)한솔이엠티",
-      "manager": "백원섭",
+      "manager": "",
       "addr": "경기도 화성시 송산동 183-57",
-      "email": "hansolemt@naver.com"
+      "email": "hansolemt@naver.com",
+      "siteUrl": "http://hansolemt.com/",
+      "tel": "031-236-4330"
     },
     {
       "id": "dealer-mslyryej-fyh4",
       "regionId": "metropolitan",
       "name": "삼원툴",
-      "addr": "서울특별시 강동구 양재대로124길 32,1동 1층 132호(길동, 동서울오네뜨)"
+      "addr": "서울특별시 강동구 양재대로124길 32,1동 1층 132호(길동, 동서울오네뜨)",
+      "tel": "02-474-3109"
     },
     {
       "id": "dealer-mt7ybzfi-ht35",
@@ -120,20 +126,6 @@
       "addr": "서울특별시 구로구 경인로53가길10 대명벨리온506호",
       "tel": "1644-0946",
       "email": ""
-    },
-    {
-      "id": "dealer-mt7yzmxo-rqp6",
-      "regionId": "chungcheong",
-      "name": "현대산전",
-      "addr": "대전광역시 대덕구 오정로 75번길 89-11",
-      "tel": "042-624-8832"
-    },
-    {
-      "id": "dealer-mt7z1kwx-iola",
-      "regionId": "yeongnam",
-      "name": "성목실업",
-      "addr": "부산시 금정구 구서중앙로20",
-      "tel": "051-611-0985"
     }
   ]
 }
