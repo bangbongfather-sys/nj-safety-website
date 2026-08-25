@@ -40,7 +40,10 @@
       "regionId": "metropolitan",
       "name": "주식회사 다인산업안전",
       "addr": "경기도 남양주시 순화궁로 282 (별내동) 에이스하이엔드타워 별내1동 제209, 210호",
-      "tel": "031-573-5526"
+      "tel": "031-573-5526",
+      "siteUrl": "http://www.thine.kr/goods/goods_list.php?cateCd=003",
+      "fax": "031-573-5529",
+      "email": "thine2011@naver.com"
     },
     {
       "id": "dealer-daerim-jeonseol",
@@ -97,11 +100,14 @@
       "addr": "서울특별시 강동구 양재대로124길 32,1동 1층 132호(길동, 동서울오네뜨)"
     },
     {
-      "id": "dealer-mt7yfuab-w9sj",
-      "regionId": "chungcheong",
-      "name": "현대산전",
-      "tel": "042-624-8832",
-      "addr": "대전광역시 대덕구 오정로 75번길 89-11"
+      "id": "dealer-mt7ybzfi-ht35",
+      "regionId": "metropolitan",
+      "name": "코리아테크",
+      "siteUrl": "https://cableprice.net/",
+      "tel": "1670-8180",
+      "fax": "02-6499-3111",
+      "email": "koreatechs@naver.com",
+      "addr": "경기도 용인시 기흥구 동백중앙로16번길 16-25"
     }
   ]
 }
