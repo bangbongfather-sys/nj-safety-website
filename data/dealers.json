@@ -50,7 +50,8 @@
       "regionId": "metropolitan",
       "name": "대림전설(주)",
       "addr": "경기도 구리시 갈매중앙로 190 휴밸나인지식산업센터 A동 2층 2003",
-      "tel": "02-966-8783"
+      "tel": "02-966-8783",
+      "siteUrl": "https://smartstore.naver.com/029668783/search?q=%EB%82%98%EC%A0%95"
     },
     {
       "id": "dealer-gaon",
@@ -67,7 +68,8 @@
       "name": "제일유압안전",
       "manager": "고승권",
       "addr": "서울특별시 구로구 구로중앙로 198 (구로동) 구로기계공구상가 26동 106호",
-      "email": "imt7220@naver.com"
+      "email": "imt7220@naver.com",
+      "siteUrl": "https://www.jeil09.co.kr/product/search.html?banner_action=&keyword=%EB%82%98%EC%A0%95"
     },
     {
       "id": "dealer-hyundai-jeonseol",
@@ -83,7 +85,8 @@
       "name": "정현인더스트리(주)",
       "manager": "조윤호",
       "addr": "서울특별시 금천구 시흥동 984 시흥유통상가 31-107",
-      "email": "junghyun2046@naver.com"
+      "email": "junghyun2046@naver.com",
+      "siteUrl": "https://www.junghyun.kr/product/search.html?banner_action=&keyword=%EB%82%98%EC%A0%95"
     },
     {
       "id": "dealer-hansol-emt",
