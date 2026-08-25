@@ -95,6 +95,16 @@
       "regionId": "metropolitan",
       "name": "삼원툴",
       "addr": "서울특별시 강동구 양재대로124길 32,1동 1층 132호(길동, 동서울오네뜨)"
+    },
+    {
+      "id": "dealer-mt7ybzfi-ht35",
+      "regionId": "metropolitan",
+      "name": "코리아테크",
+      "siteUrl": "https://cableprice.net/",
+      "tel": "1670-8180",
+      "fax": "02-6499-3111",
+      "email": "koreatechs@naver.com",
+      "addr": "경기도 용인시 기흥구 동백중앙로16번길 16-25"
     }
   ]
 }
