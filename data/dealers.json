@@ -40,14 +40,18 @@
       "regionId": "metropolitan",
       "name": "주식회사 다인산업안전",
       "addr": "경기도 남양주시 순화궁로 282 (별내동) 에이스하이엔드타워 별내1동 제209, 210호",
-      "tel": "031-573-5526"
+      "tel": "031-573-5526",
+      "siteUrl": "http://www.thine.kr/goods/goods_list.php?cateCd=003",
+      "fax": "031-573-5529",
+      "email": "thine2011@naver.com"
     },
     {
       "id": "dealer-daerim-jeonseol",
       "regionId": "metropolitan",
       "name": "대림전설(주)",
       "addr": "경기도 구리시 갈매중앙로 190 휴밸나인지식산업센터 A동 2층 2003",
-      "tel": "02-966-8783"
+      "tel": "02-966-8783",
+      "siteUrl": "https://smartstore.naver.com/029668783/search?q=%EB%82%98%EC%A0%95"
     },
     {
       "id": "dealer-gaon",
@@ -64,7 +68,8 @@
       "name": "제일유압안전",
       "manager": "고승권",
       "addr": "서울특별시 구로구 구로중앙로 198 (구로동) 구로기계공구상가 26동 106호",
-      "email": "imt7220@naver.com"
+      "email": "imt7220@naver.com",
+      "siteUrl": "https://www.jeil09.co.kr/product/search.html?banner_action=&keyword=%EB%82%98%EC%A0%95"
     },
     {
       "id": "dealer-hyundai-jeonseol",
@@ -80,7 +85,8 @@
       "name": "정현인더스트리(주)",
       "manager": "조윤호",
       "addr": "서울특별시 금천구 시흥동 984 시흥유통상가 31-107",
-      "email": "junghyun2046@naver.com"
+      "email": "junghyun2046@naver.com",
+      "siteUrl": "https://www.junghyun.kr/product/search.html?banner_action=&keyword=%EB%82%98%EC%A0%95"
     },
     {
       "id": "dealer-hansol-emt",
@@ -97,18 +103,23 @@
       "addr": "서울특별시 강동구 양재대로124길 32,1동 1층 132호(길동, 동서울오네뜨)"
     },
     {
-      "id": "dealer-mt7yfuab-w9sj",
-      "regionId": "chungcheong",
-      "name": "현대산전",
-      "tel": "042-624-8832",
-      "addr": "대전광역시 대덕구 오정로 75번길 89-11"
+      "id": "dealer-mt7ybzfi-ht35",
+      "regionId": "metropolitan",
+      "name": "코리아테크",
+      "siteUrl": "https://cableprice.net/",
+      "tel": "1670-8180",
+      "fax": "02-6499-3111",
+      "email": "koreatechs@naver.com",
+      "addr": "경기도 용인시 기흥구 동백중앙로16번길 16-25"
     },
     {
-      "id": "dealer-mt7yqsvj-fvjr",
-      "regionId": "yeongnam",
-      "name": "성목실업",
-      "addr": "부산시 금정구 구서중앙로20,",
-      "tel": "051-611-0985"
+      "id": "dealer-mt7yset4-xtxa",
+      "regionId": "metropolitan",
+      "name": "(주)네오",
+      "siteUrl": "https://neotool.co.kr/goods/goods_search.php?keyword=%EB%82%98%EC%A0%95&recentCount=10",
+      "addr": "서울특별시 구로구 경인로53가길10 대명벨리온506호",
+      "tel": "1644-0946",
+      "email": ""
     }
   ]
 }
