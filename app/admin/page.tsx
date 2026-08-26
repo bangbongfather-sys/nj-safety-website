@@ -23,7 +23,7 @@ import AdminBrand from '@/components/admin/AdminBrand';
 import ThemeToggle from '@/components/admin/ThemeToggle';
 import AdminSearch from '@/components/admin/AdminSearch';
 import {
-  IcInbox, IcNotice, IcProduct, IcFolder, IcPen, IcUser, IcStore,
+  IcInbox, IcNotice, IcProduct, IcFolder, IcPen, IcUser, IcStore, IcChart,
   IcArrowRight, IcExternal, IcResume, IcSearch,
 } from '@/components/admin/AdminIcons';
 import { ghGetFile, ghListDir } from '@/lib/admin/github';
@@ -297,6 +297,14 @@ export default function AdminHome() {
             </div>
             <span className="adm-tile-name">페이지 편집</span>
             <span className="adm-tile-desc">메인 · 회사소개 · 문의 페이지 글을 고칩니다</span>
+          </Link>
+
+          <Link href="/admin/analytics" className="adm-tile">
+            <div className="adm-tile-top">
+              <span className="adm-tile-ic"><IcChart size={19} stroke="var(--accent)" /></span>
+            </div>
+            <span className="adm-tile-name">방문자 통계</span>
+            <span className="adm-tile-desc">일별·월별 방문자 추이를 그래프와 표로 봅니다</span>
           </Link>
 
           <Link href="/admin/accounts" className="adm-tile">

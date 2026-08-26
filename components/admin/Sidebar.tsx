@@ -8,7 +8,7 @@ import { useAdminTheme } from './AdminShell';
 import AdminBrand from './AdminBrand';
 import ThemeToggle from './ThemeToggle';
 import {
-  IcHome, IcInbox, IcNotice, IcProduct, IcFolder, IcStore, IcPen, IcUser, IcGear,
+  IcHome, IcInbox, IcNotice, IcProduct, IcFolder, IcStore, IcPen, IcUser, IcGear, IcChart,
 } from './AdminIcons';
 
 type NavItem = {
@@ -36,6 +36,7 @@ const ITEMS: NavItem[] = [
   { href: '/admin/products-page/edit', label: '제품 라인업', group: 'pages', sub: true },
   { href: '/admin/text',       label: '텍스트 편집 (폼)', group: 'pages', sub: true },
 
+  { href: '/admin/analytics',  label: '방문자 통계',     group: 'manage', icon: <IcChart /> },
   { href: '/admin/accounts',   label: '계정 관리',       group: 'manage', icon: <IcUser /> },
   { href: '/admin/settings',   label: '설정',           group: 'manage', icon: <IcGear /> },
 ];

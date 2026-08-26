@@ -46,6 +46,17 @@ import {
   type D1Database,
   type Role,
 } from './users';
+import {
+  dailyStats,
+  ensureAnalyticsSchema,
+  isBot,
+  kstDay,
+  monthlyStats,
+  pruneSeen,
+  recordView,
+  summary as viewSummary,
+  visitorId,
+} from './analytics';
 
 interface R2ObjectMeta {
   key: string;
@@ -893,6 +904,81 @@ async function handleContact(req: Request, env: Env, ctx: ExecutionContext): Pro
   );
 }
 
+/* ─── 방문자 통계 ────────────────────────────────────────────────── */
+
+/**
+ * `POST /api/pv` — 공개 페이지가 보내는 방문 기록.
+ *
+ * 공개 라우트다. 인증을 걸 수 없는 자리(방문자는 로그인하지 않는다)라
+ * 대신 저장하는 내용을 최소로 둔다: 날짜와, 되돌릴 수 없는 방문자
+ * 식별자뿐이다. 본문도 읽지 않는다.
+ *
+ * 실패하더라도 방문자 화면에는 아무 영향이 없어야 하므로 어떤 경우든
+ * 204 로 답하고, 오류는 로그로만 남긴다.
+ */
+async function handlePageView(req: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+  const done = new Response(null, { status: 204, headers: corsHeaders() });
+  const db = requireDb(env);
+  if (!db) return done;
+
+  const ua = req.headers.get('user-agent') ?? '';
+  if (isBot(ua)) return done;
+
+  // 관리자 화면을 우리가 들여다보는 것은 방문이 아니다. 비콘 쪽에서도
+  // 막지만, 주소를 직접 불러 호출하는 경우까지 여기서 잘라낸다.
+  const from = req.headers.get('referer') ?? '';
+  if (/\/admin(\/|$|\?)/.test(from)) return done;
+
+  const ip = req.headers.get('cf-connecting-ip') ?? '';
+  const day = kstDay();
+
+  ctx.waitUntil(
+    (async () => {
+      try {
+        await ensureAnalyticsSchema(db);
+        // 세션 서명키를 소금으로 재사용한다. 식별자만 보고 IP 를
+        // 되짚어 보려는 시도를 막기 위한 것 — 서버만 아는 값이면 된다.
+        const salt = await getSessionSecret(db, env.SESSION_SECRET);
+        const vid = await visitorId(ip, ua, day, salt);
+        await recordView(db, day, vid);
+        // 오래된 식별자 정리는 가끔만. 매 방문마다 DELETE 를 돌릴
+        // 이유가 없다.
+        if (Math.random() < 0.01) await pruneSeen(db, day);
+      } catch (e: unknown) {
+        console.error('pageview record failed:', e);
+      }
+    })(),
+  );
+  return done;
+}
+
+/** `GET /api/admin/stats` — 관리자 화면이 그릴 숫자들. */
+async function handleStats(req: Request, env: Env, url: URL): Promise<Response> {
+  const r = await authenticate(req, env);
+  if (!r.ok) return r.res;
+  const db = requireDb(env);
+  if (!db) return json({ ok: false, error: '통계 저장소가 없습니다.' }, 503);
+
+  const days = Math.min(Math.max(Number(url.searchParams.get('days') ?? 30) || 30, 7), 365);
+  const months = Math.min(Math.max(Number(url.searchParams.get('months') ?? 12) || 12, 3), 60);
+  const today = kstDay();
+
+  try {
+    await ensureAnalyticsSchema(db);
+    const [sum, daily, monthly] = await Promise.all([
+      viewSummary(db, today),
+      dailyStats(db, days, today),
+      monthlyStats(db, months),
+    ]);
+    return json({ ok: true, today, summary: sum, daily, monthly });
+  } catch (e: unknown) {
+    return json(
+      { ok: false, error: e instanceof Error ? e.message : String(e) },
+      500,
+    );
+  }
+}
+
 /* ─── Canonical host ─────────────────────────────────────────────── */
 
 /**
@@ -1167,6 +1253,11 @@ export default {
       }
     }
 
+    // 공개 — 방문자가 보내는 방문 기록. 인증 없음.
+    if (url.pathname === '/api/pv' && req.method === 'POST') {
+      return handlePageView(req, env, ctx);
+    }
+
     if (url.pathname === '/api/admin/login' && req.method === 'POST') {
       return handleLogin(req, env);
     }
@@ -1179,6 +1270,10 @@ export default {
       if (req.method === 'GET') return handleUserList(req, env);
       if (req.method === 'POST') return handleUserCreate(req, env);
       if (req.method === 'DELETE') return handleUserDelete(req, env, url);
+    }
+
+    if (url.pathname === '/api/admin/stats' && req.method === 'GET') {
+      return handleStats(req, env, url);
     }
 
     if (url.pathname === '/api/admin/gh-token') {

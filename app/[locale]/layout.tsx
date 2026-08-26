@@ -8,6 +8,7 @@ import HtmlLang from '@/components/layout/HtmlLang';
 import StyleInjector from '@/components/admin/StyleInjector';
 import NoticePopup from '@/components/sections/notices/NoticePopup';
 import { getAllNotices } from '@/lib/notices';
+import ViewBeacon from '@/components/analytics/ViewBeacon';
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -79,6 +80,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       <main>{children}</main>
       <Footer locale={locale} dict={dict} />
       <NoticePopup locale={locale} candidates={popupNotices} />
+      <ViewBeacon />
     </>
   );
 }
