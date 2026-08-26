@@ -1942,6 +1942,119 @@ section { position: relative; }
   margin-bottom: 16px;
   display: flex; flex-direction: column; gap: 14px;
 }
+/* ─── 방문자 통계 (/admin/analytics) ───────────────────────────── */
+.admin-error {
+  background: rgba(255, 107, 107, .10);
+  border: 1px solid rgba(255, 107, 107, .45);
+  color: #ff9b9b;
+  padding: 12px 14px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+.stat-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+.stat-card {
+  border: 1px solid var(--border-soft);
+  background: var(--bg-2);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.stat-card.is-accent { border-color: rgba(255, 107, 26, .45); }
+.stat-card-l {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+.stat-card-v {
+  font-family: var(--display);
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.stat-card.is-accent .stat-card-v { color: var(--accent); }
+.stat-card-s { font-size: 12px; color: var(--muted); }
+
+.stat-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.stat-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 3px;
+  border: 1px solid var(--border-soft);
+  border-radius: 4px;
+}
+.stat-tabs button {
+  background: none; border: 0; border-radius: 3px;
+  color: var(--muted); cursor: pointer;
+  font-family: inherit; font-size: 12.5px; font-weight: 600;
+  padding: 5px 14px;
+}
+.stat-tabs button.on { background: var(--accent); color: #fff; }
+.stat-ranges { display: flex; gap: 6px; flex-wrap: wrap; }
+
+.stat-chart { margin-top: 4px; }
+/* viewBox 로만 그리므로 폭은 컨테이너에 맡긴다. 좁은 화면에서도
+ * 가로 스크롤 없이 전체 추이가 한눈에 들어온다. */
+.stat-chart svg { width: 100%; height: auto; display: block; }
+.stat-grid { stroke: var(--border-soft); stroke-width: 1; }
+.stat-axis {
+  fill: var(--muted-2);
+  font-family: var(--mono);
+  font-size: 10px;
+}
+.stat-bar { fill: rgba(255, 107, 26, .35); }
+.stat-bar:hover { fill: rgba(255, 107, 26, .6); }
+.stat-line { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; }
+.stat-dot { fill: var(--accent); }
+.stat-legend {
+  display: flex; gap: 18px; justify-content: flex-end;
+  font-size: 11.5px; color: var(--muted); margin-top: 6px;
+}
+.stat-legend i { display: inline-block; width: 14px; height: 3px; margin-right: 6px; vertical-align: middle; }
+.stat-legend .sw-bar { background: rgba(255, 107, 26, .45); height: 10px; }
+.stat-legend .sw-line { background: var(--accent); }
+
+/* 표는 길어질 수 있으니 스크롤 영역 안에 두고 머리글을 고정한다. */
+.stat-table-wrap { margin-top: 18px; max-height: 420px; overflow-y: auto; }
+.stat-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.stat-table th, .stat-table td {
+  text-align: right;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border-soft);
+  white-space: nowrap;
+}
+.stat-table th:first-child, .stat-table td:first-child { text-align: left; }
+.stat-table thead th {
+  position: sticky; top: 0;
+  background: var(--card);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  font-weight: 600;
+}
+.stat-table tbody tr:hover { background: var(--bg-2); }
+.stat-table tfoot td {
+  position: sticky; bottom: 0;
+  background: var(--card);
+  font-weight: 700;
+  border-top: 1px solid var(--border);
+}
+
 .admin-card.admin-card-flat {
   background: transparent;
   border-color: var(--border-soft);
