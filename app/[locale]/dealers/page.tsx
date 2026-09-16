@@ -7,11 +7,28 @@ import DealersLocator from '@/components/sections/dealers/DealersLocator';
 
 type Props = { params: Promise<{ locale: string }> | { locale: string } };
 
-// Kakao Maps JavaScript appkey (domain-restricted in the Kakao
-// Developers console → public by design). Read from the build env;
-// once provisioned it can also be hardcoded here as a fallback the
-// way NaverMap does, since Cloudflare's auto-build has no .env.local.
-const KAKAO_APPKEY = process.env.NEXT_PUBLIC_KAKAO_MAP_APPKEY ?? '';
+/**
+ * Kakao Maps JavaScript appkey.
+ *
+ * Committed as a fallback on purpose, the same way NaverMap holds its
+ * NCP client ID. `NEXT_PUBLIC_*` values are baked in at build time, and
+ * Cloudflare rebuilds from GitHub on every push with no access to
+ * `.env.local` (gitignored) — so a key that lives only in `.env.local`
+ * works on a locally built deploy and silently vanishes on the next
+ * push. That is exactly how the dealer map ended up blank.
+ *
+ * A Kakao *JavaScript* key is public by design: it ships in browser
+ * code and is protected by the domain whitelist in the Kakao Developers
+ * console (Web 플랫폼 → njfashion.co.kr + the workers.dev fallback),
+ * not by secrecy. The REST/Admin keys are different and never belong
+ * here.
+ *
+ * Empty string ⇒ the locator renders its list-only state instead of a
+ * broken map. Paste the JavaScript key between the quotes to switch the
+ * map on; .env.local still overrides for local experiments.
+ */
+const FALLBACK_KAKAO_APPKEY = '';
+const KAKAO_APPKEY = process.env.NEXT_PUBLIC_KAKAO_MAP_APPKEY || FALLBACK_KAKAO_APPKEY;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;

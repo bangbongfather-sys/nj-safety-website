@@ -52,7 +52,12 @@ function labelsFor(locale: 'ko' | 'en') {
     km: 'km',
     count: (n: number) => (ko ? `${n}개 매장` : `${n} store${n === 1 ? '' : 's'}`),
     empty: ko ? '조건에 맞는 대리점이 없습니다.' : 'No dealers match your search.',
-    noKey: ko ? '지도 API 키가 아직 설정되지 않았습니다. (목록·검색은 정상 작동)' : 'Map API key not set yet. (List & search still work.)',
+    // 이 문구는 공개 대리점 페이지에 그대로 노출된다. 방문자에게
+    // 환경변수 이름이나 'API 키' 같은 내부 사정을 보여 줄 이유가
+    // 없으므로, 목록으로 안내하는 말만 남긴다.
+    noKey: ko
+      ? '지도는 준비 중입니다. 아래 목록에서 지역별 대리점을 확인하실 수 있습니다.'
+      : 'The map is being prepared. Please use the dealer list below.',
     mapRoad: ko ? '지도' : 'Map',
     mapSky: ko ? '스카이뷰' : 'Sky',
   };
@@ -333,7 +338,6 @@ export default function DealersLocator({ locale, regions, dealers, appkey }: Pro
           <div className="dl-map-fallback">
             <span className="dl-map-fallback-badge">MAP</span>
             <p>{labels.noKey}</p>
-            <p className="dl-map-fallback-hint"><code>NEXT_PUBLIC_KAKAO_MAP_APPKEY</code></p>
           </div>
         ) : (
           <>
