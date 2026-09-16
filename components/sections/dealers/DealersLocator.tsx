@@ -58,6 +58,11 @@ function labelsFor(locale: 'ko' | 'en') {
     noKey: ko
       ? '지도는 준비 중입니다. 아래 목록에서 지역별 대리점을 확인하실 수 있습니다.'
       : 'The map is being prepared. Please use the dealer list below.',
+    // SDK 가 안 뜨는 경우(도메인 미등록, 카카오맵 제품 미활성화 등).
+    // 방문자에게는 목록으로 안내하고, 원인은 콘솔에 남긴다.
+    loadError: ko
+      ? '지도를 불러올 수 없습니다. 아래 목록에서 대리점을 확인하실 수 있습니다.'
+      : 'The map could not be loaded. Please use the dealer list below.',
     mapRoad: ko ? '지도' : 'Map',
     mapSky: ko ? '스카이뷰' : 'Sky',
   };
@@ -235,7 +240,12 @@ export default function DealersLocator({ locale, regions, dealers, appkey }: Pro
         if (any) map.setBounds(bounds);
         setStatus('ready');
       })
-      .catch(() => { if (!cancelled) setStatus('error'); });
+      .catch((e: unknown) => {
+        // 여기서 조용히 넘기면 화면에도 콘솔에도 근거가 남지 않아,
+        // 검은 사각형만 보고 원인을 짚을 수 없다. 실제 이유를 찍는다.
+        console.error('[dealers] 카카오 지도 초기화 실패:', e);
+        if (!cancelled) setStatus('error');
+      });
 
     return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -334,10 +344,10 @@ export default function DealersLocator({ locale, regions, dealers, appkey }: Pro
     <div className="dl-locator">
       {/* ── Map ─────────────────────────────────────────────────── */}
       <div className="dl-map-wrap">
-        {status === 'no-key' ? (
+        {status === 'no-key' || status === 'error' ? (
           <div className="dl-map-fallback">
             <span className="dl-map-fallback-badge">MAP</span>
-            <p>{labels.noKey}</p>
+            <p>{status === 'error' ? labels.loadError : labels.noKey}</p>
           </div>
         ) : (
           <>
