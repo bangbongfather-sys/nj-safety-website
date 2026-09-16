@@ -27,7 +27,7 @@ type Props = { params: Promise<{ locale: string }> | { locale: string } };
  * broken map. Paste the JavaScript key between the quotes to switch the
  * map on; .env.local still overrides for local experiments.
  */
-const FALLBACK_KAKAO_APPKEY = '';
+const FALLBACK_KAKAO_APPKEY = 'fbd59535ff75a0834c2cc3e235464baa';
 const KAKAO_APPKEY = process.env.NEXT_PUBLIC_KAKAO_MAP_APPKEY || FALLBACK_KAKAO_APPKEY;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
