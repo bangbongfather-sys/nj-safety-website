@@ -9,6 +9,8 @@ import StyleInjector from '@/components/admin/StyleInjector';
 import NoticePopup from '@/components/sections/notices/NoticePopup';
 import { getAllNotices } from '@/lib/notices';
 import ViewBeacon from '@/components/analytics/ViewBeacon';
+import JsonLd from '@/components/seo/JsonLd';
+import { organizationSchema, webSiteSchema } from '@/lib/seo';
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -74,6 +76,10 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <>
+      {/* 회사·사이트 정보는 모든 페이지에 실어 둔다. 크롤러가 어느
+          페이지로 들어오든 같은 회사임을 알아보게 하기 위한 것. */}
+      <JsonLd data={organizationSchema(dict.company ?? {})} />
+      <JsonLd data={webSiteSchema()} />
       <HtmlLang locale={locale} />
       <StyleInjector styles={dict.styles} />
       <Navigation locale={locale} dict={dict} />
