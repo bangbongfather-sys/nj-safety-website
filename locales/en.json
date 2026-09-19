@@ -15,7 +15,7 @@
     "notices": "Notices"
   },
   "hero": {
-    "eyebrow": "Industrial Safety Wear · Since 1992",
+    "eyebrow": "Industrial Safety Wear · Since 1987",
     "headlineLine1": "Aramid integrity.",
     "headlineLine2Pre": "",
     "headlineLine2Em": "Safety, beyond assurance.",
@@ -42,7 +42,7 @@
       },
       {
         "image": "https://pub-586a8dd3a5484370b45c7ace72da8dc4.r2.dev/hero/slide-01.jpg?v=1779116571353",
-        "eyebrow": "ARAMID WORKWEAR · Since 1992",
+        "eyebrow": "ARAMID WORKWEAR · Since 1987",
         "headlineLine1": "Aramid integrity.",
         "headlineLine2Pre": "",
         "headlineLine2Em": "Safety, beyond assurance.",
@@ -108,7 +108,7 @@
     "heroTitlePre": "Thirty-four years of one focus —",
     "heroTitleEm": "six lines built by ",
     "heroTitleEmAccent": "that time.",
-    "heroSub": "Meta-aramid since 1992. Certifications verified every season, patterns refined by site data, and a quietness that has not changed.",
+    "heroSub": "Meta-aramid since 1987. Certifications verified every season, patterns refined by site data, and a quietness that has not changed.",
     "statsLabel": [
       "Products",
       "Seasons",
@@ -162,7 +162,7 @@
     "quoteEm": "We engineer protection systems",
     "quoteMid": " that",
     "quoteEnd": "preserve life.",
-    "sigNumber": "No. 1992 — 2026",
+    "sigNumber": "No. 1987 — 2026",
     "sigName": "— NJ Safety, Najung Enterprise Co., Ltd."
   },
   "certifications": {
@@ -210,7 +210,7 @@
     "copyright": "© 2026 NAJUNG ENTERPRISE CO., LTD."
   },
   "footer": {
-    "brandDesc": "Najung Enterprise has manufactured industrial safety wear since 1992. We supply OEM/ODM production with NFPA, EN and KS certifications, sourcing premium fabrics globally to protect workers in the harshest industrial environments.",
+    "brandDesc": "Najung Enterprise has manufactured industrial safety wear since 1987. We supply OEM/ODM production with NFPA, EN and KS certifications, sourcing premium fabrics globally to protect workers in the harshest industrial environments.",
     "productsHead": "Products",
     "companyHead": "Company",
     "connectHead": "Connect",
@@ -461,7 +461,7 @@
   "about": {
     "meta": {
       "title": "About — NJ SAFETY",
-      "description": "Founded as Najung ETP in 1992, Najung Enterprise has focused on industrial safety wear for 34 years. From fabric R&D to despatch — every stage handled in-house."
+      "description": "Founded as Najung ETP in 1987, Najung Enterprise has focused on industrial safety wear for 39 years. From fabric R&D to despatch — every stage handled in-house."
     },
     "hero": {
       "eyebrow": "About · Company",
@@ -477,7 +477,7 @@
       "asidePullEm": "<em>We engineer protection systems that preserve life</em>",
       "asidePullPost": ".",
       "corpName": "NAJUNG ENTERPRISE CO., LTD.",
-      "corpEst": "EST. 1992"
+      "corpEst": "EST. 1987"
     },
     "stats": [
       {
@@ -520,22 +520,22 @@
       "portraitImage": "/about/ceo-portrait.jpg?v=1784126847232"
     },
     "heritage": {
-      "eyebrow": "— Heritage / 1992 → Present",
-      "titlePre": "34 years, ",
+      "eyebrow": "— Heritage / 1987 → Present",
+      "titlePre": "39 years, ",
       "titleEm": "one path.",
-      "no": "No. 1992 — 2026",
+      "no": "No. 1987 — 2026",
       "phases": [
         {
           "yearPre": "",
-          "yearEm": "1992",
+          "yearEm": "1987",
           "yearPost": " — 2010",
           "yearSub": "Foundation Era",
           "h3Line1": "Najung ETP founded.",
           "h3Line2": "The base for FR manufacturing.",
-          "lede": "On 5 July 1992, Najung ETP was founded to manufacture office wear, workwear, uniforms and flame-resistant garments.",
+          "lede": "On 5 July 1987, Najung ETP was founded to manufacture office wear, workwear, uniforms and flame-resistant garments.",
           "items": [
             {
-              "y": "1992",
+              "y": "1987",
               "t": "Najung ETP established · in-house sewing line"
             },
             {
@@ -1175,7 +1175,7 @@
           "items": "KOGAS · renewable infrastructure"
         }
       ],
-      "heritageMeta": "EST. 1992 ─── 2026",
+      "heritageMeta": "EST. 1987 ─── 2026",
       "bandLabel": "— TRUSTED ACROSS INDUSTRIES"
     }
   }

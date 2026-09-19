@@ -6,7 +6,7 @@
  *
  * Choreography (~2.5s total, pure CSS keyframes):
  *   0.0s  dark curtain + orange hairline grows
- *   0.3s  eyebrow line fades up (SINCE 1992 · INDUSTRIAL SAFETY WEAR)
+ *   0.3s  eyebrow line fades up (SINCE 1987 · INDUSTRIAL SAFETY WEAR)
  *   0.5s  NJ SAFETY logo wipes in (clip-path reveal) + subtle scale settle
  *   1.0s  tagline fades up
  *   1.85s curtain wipes upward, revealing the hero — at this moment we
@@ -105,7 +105,7 @@ export default function BrandIntro({ locale }: { locale: 'ko' | 'en' }) {
           <div className="nj-intro-stage">
             <span className="nj-intro-hairline" />
             <span className="nj-intro-eyebrow">
-              SINCE 1992 · INDUSTRIAL SAFETY WEAR
+              SINCE 1987 · INDUSTRIAL SAFETY WEAR
             </span>
             <div className="nj-intro-logo-wrap">
               <img src="/nj-logo.png" alt="" className="nj-intro-logo" />
