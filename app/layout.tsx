@@ -38,6 +38,22 @@ export const metadata: Metadata = {
     images: ['/og.jpg'],
   },
   robots: { index: true, follow: true },
+  /**
+   * 네이버 서치어드바이저 소유확인.
+   *
+   * 등록한 주소(https://njfashion.co.kr)의 HTML 에 이 태그가 있어야
+   * 네이버가 "이 사이트의 주인이 맞다"고 인정하고 수집을 시작한다.
+   * 루트 레이아웃에 두어 모든 페이지에 실리게 한다 — 확인이 끝난 뒤에도
+   * 지워서는 안 된다. 태그가 사라지면 소유확인이 풀린다.
+   *
+   * 값 자체는 공개돼도 무방하다. 소유 확인에만 쓰이고 계정 접근
+   * 권한은 없다.
+   */
+  verification: {
+    other: {
+      'naver-site-verification': '95039b7c54fe4ae22c5fb486ce80e98d98393aae',
+    },
+  },
 };
 
 export const viewport: Viewport = {
