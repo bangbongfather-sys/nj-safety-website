@@ -5,7 +5,7 @@
  *
  * Full-bleed editorial hero with three vertical bands:
  *
- *   ┌─ TOP META ───── eyebrow ······· EST. 1992 ─── 2026 ─┐
+ *   ┌─ TOP META ───── eyebrow ······· EST. 1987 ─── 2026 ─┐
  *   │                                                       │
  *   │  HEADLINE                                             │
  *   │  현장에서 매일,                                         │
@@ -111,7 +111,7 @@ export default function InField({ dict, editor }: Props) {
               as="span"
               className="infield-heritage"
               path="home.field.heritageMeta"
-              value={f.heritageMeta ?? 'EST. 1992 ─── 2026'}
+              value={f.heritageMeta ?? 'EST. 1987 ─── 2026'}
               editor={editor}
             />
           </div>
