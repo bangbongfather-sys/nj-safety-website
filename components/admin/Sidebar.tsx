@@ -90,6 +90,44 @@ function useNewInquiryCount(pat: string): number | null {
   return count;
 }
 
+/**
+ * 실시간 상담 배지.
+ *
+ * 문의 배지와 달리 캐시를 오래 두지 않는다 — 상담은 방문자가 기다리는
+ * 중이라 1분 늦은 숫자는 쓸모가 없다. 15초마다 확인하고, 탭을 가려
+ * 두면 멈춘다. 목록 전체가 아니라 숫자만 주는 엔드포인트를 쓴다.
+ */
+const CHAT_BADGE_POLL_MS = 15_000;
+
+function useChatWaitingCount(pat: string): number | null {
+  const [count, setCount] = useState<number | null>(null);
+  useEffect(() => {
+    if (!pat) return;
+    let cancelled = false;
+    const load = async () => {
+      try {
+        const r = await fetch('/api/admin/chat/summary', {
+          headers: { Authorization: `token ${pat}` },
+        });
+        if (!r.ok) return;
+        const p = (await r.json()) as { ok?: boolean; attention?: number };
+        if (!cancelled && p.ok) setCount(p.attention ?? 0);
+      } catch {
+        /* 오프라인이면 배지 없이 */
+      }
+    };
+    void load();
+    const t = window.setInterval(() => {
+      if (!document.hidden) void load();
+    }, CHAT_BADGE_POLL_MS);
+    return () => {
+      cancelled = true;
+      window.clearInterval(t);
+    };
+  }, [pat]);
+  return count;
+}
+
 export default function Sidebar() {
   const { state, logout } = useAdmin();
   const { pref, resolved, cycle } = useAdminTheme();
@@ -97,6 +135,7 @@ export default function Sidebar() {
   const login = state.status === 'authenticated' ? state.login : '';
   const pat = state.status === 'authenticated' ? state.pat : '';
   const newInquiries = useNewInquiryCount(pat);
+  const chatWaiting = useChatWaitingCount(pat);
 
   function isActive(href: string): boolean {
     if (href === '/admin') return pathname === '/admin' || pathname === '/admin/';
@@ -129,6 +168,9 @@ export default function Sidebar() {
               >
                 {i.icon ? <span className="adm-nav-ic">{i.icon}</span> : null}
                 <span>{i.label}</span>
+                {i.href === '/admin/chat' && chatWaiting ? (
+                  <span className="adm-badge">{chatWaiting}</span>
+                ) : null}
                 {i.href === '/admin/inquiries' && newInquiries ? (
                   <span className="adm-badge">{newInquiries}</span>
                 ) : null}
