@@ -264,6 +264,28 @@ export async function markRead(db: D1Database, sessionId: string): Promise<void>
     .run();
 }
 
+/**
+ * 사이드바 배지용 — "지금 내가 봐야 할 대화가 몇 개인지" 한 숫자.
+ *
+ * 대기 중이거나, 방문자가 보낸 메시지를 아직 안 읽은 대화를 센다.
+ * 둘을 따로 보여 주면(대기 2 · 안읽음 5) 무엇을 눌러야 하는지 알기
+ * 어렵고, 메시지 수를 세면 한 사람이 다섯 줄 보낸 것과 다섯 사람이
+ * 기다리는 것이 같은 5 로 보인다. 종료된 대화는 제외한다.
+ */
+export async function attentionCount(db: D1Database): Promise<number> {
+  const row = await db
+    .prepare(
+      `SELECT COUNT(*) AS n FROM chat_sessions s
+        WHERE s.status != 'closed'
+          AND (s.status = 'waiting'
+               OR EXISTS (SELECT 1 FROM chat_messages m
+                           WHERE m.session_id = s.id AND m.role = 'visitor'
+                             AND m.id > s.last_read_by_staff))`,
+    )
+    .first<{ n: number }>();
+  return row?.n ?? 0;
+}
+
 /** 대시보드 배지용 — 대기 중 대화 수와 안 읽은 방문자 메시지 수. */
 export async function waitingSummary(db: D1Database): Promise<{ waiting: number; unread: number }> {
   const w = await db

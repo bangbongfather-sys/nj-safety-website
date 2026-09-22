@@ -60,6 +60,7 @@ import {
 import {
   MAX_TEXT_LEN,
   addMessage,
+  attentionCount,
   countMessages,
   createSession,
   ensureChatSchema,
@@ -1181,6 +1182,21 @@ async function handleAdminChatSessions(req: Request, env: Env): Promise<Response
   return json({ ok: true, sessions, summary });
 }
 
+/**
+ * `GET /api/admin/chat/summary` — 배지용 숫자만.
+ *
+ * 사이드바가 주기적으로 두드리는 자리라 목록 전체를 내려보내지
+ * 않는다. 세 숫자면 배지를 그리는 데 충분하다.
+ */
+async function handleAdminChatSummary(req: Request, env: Env): Promise<Response> {
+  const r = await authenticate(req, env);
+  if (!r.ok) return r.res;
+  const db = await chatDb(env);
+  if (!db) return json({ ok: false, error: '상담 저장소가 없습니다.' }, 503);
+  const [attention, s] = await Promise.all([attentionCount(db), waitingSummary(db)]);
+  return json({ ok: true, attention, waiting: s.waiting, unread: s.unread });
+}
+
 /** `GET /api/admin/chat/messages?session=…&after=…` — 대화 내용. */
 async function handleAdminChatMessages(req: Request, env: Env, url: URL): Promise<Response> {
   const r = await authenticate(req, env);
@@ -1569,6 +1585,9 @@ export default {
 
     if (url.pathname === '/api/admin/chat/sessions' && req.method === 'GET') {
       return handleAdminChatSessions(req, env);
+    }
+    if (url.pathname === '/api/admin/chat/summary' && req.method === 'GET') {
+      return handleAdminChatSummary(req, env);
     }
     if (url.pathname === '/api/admin/chat/messages' && req.method === 'GET') {
       return handleAdminChatMessages(req, env, url);
