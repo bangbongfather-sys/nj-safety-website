@@ -156,6 +156,14 @@
       "name": "한우테크(주)",
       "addr": "경기도 안양시 동안구 시민대로 365번길 40 c-3607(관양동, 동일테크노타운)",
       "siteUrl": "https://smartstore.naver.com/hanwoot"
+    },
+    {
+      "id": "dealer-mubzj3ha-9zbo",
+      "regionId": "metropolitan",
+      "name": "(주)공구장터",
+      "addr": "서울 구로구 경인로53가길 10, 9층 918호(구로동, 구로 대명벨리온 지식산업센터)",
+      "tel": "1661-0961",
+      "siteUrl": "https://smartstore.naver.com/thehim09/search?q=%EB%82%98%EC%A0%95"
     }
   ]
 }
