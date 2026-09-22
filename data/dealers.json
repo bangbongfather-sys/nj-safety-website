@@ -149,6 +149,13 @@
       "tel": "01051659694",
       "email": "inho2026@naver.com",
       "siteUrl": "https://smartstore.naver.com/inho2026"
+    },
+    {
+      "id": "dealer-mubzfrpq-qjkn",
+      "regionId": "metropolitan",
+      "name": "한우테크(주)",
+      "addr": "경기도 안양시 동안구 시민대로 365번길 40 c-3607(관양동, 동일테크노타운)",
+      "siteUrl": "https://smartstore.naver.com/hanwoot"
     }
   ]
 }
