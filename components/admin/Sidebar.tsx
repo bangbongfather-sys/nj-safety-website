@@ -8,7 +8,7 @@ import { useAdminTheme } from './AdminShell';
 import AdminBrand from './AdminBrand';
 import ThemeToggle from './ThemeToggle';
 import {
-  IcHome, IcInbox, IcNotice, IcProduct, IcFolder, IcStore, IcPen, IcUser, IcGear, IcChart,
+  IcHome, IcInbox, IcNotice, IcProduct, IcFolder, IcStore, IcPen, IcUser, IcGear, IcChart, IcChat,
 } from './AdminIcons';
 
 type NavItem = {
@@ -24,6 +24,7 @@ const ITEMS: NavItem[] = [
   { href: '/admin',            label: '홈 (전체 메뉴)', group: 'top',  icon: <IcHome /> },
 
   { href: '/admin/inquiries',  label: '문의 접수함',    group: 'work', icon: <IcInbox /> },
+  { href: '/admin/chat',       label: '실시간 상담',    group: 'work', icon: <IcChat /> },
   { href: '/admin/notices',    label: '공지사항',       group: 'work', icon: <IcNotice /> },
   { href: '/admin/products',   label: '제품 관리',      group: 'work', icon: <IcProduct /> },
   { href: '/admin/products/categories', label: '카테고리 (하위탭)', group: 'work', sub: true },

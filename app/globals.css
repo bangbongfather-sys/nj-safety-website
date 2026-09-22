@@ -1942,6 +1942,156 @@ section { position: relative; }
   margin-bottom: 16px;
   display: flex; flex-direction: column; gap: 14px;
 }
+/* ─── 실시간 상담 (/admin/chat) ────────────────────────────────── */
+.ch-badge, .ch-badge-hot {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  padding: 2px 7px;
+  border-radius: 100px;
+  background: var(--accent);
+  color: #fff;
+}
+.ch-badge-hot { margin-left: 10px; vertical-align: middle; animation: edPulse 1.4s ease-in-out infinite; }
+
+.ch-wrap {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+.ch-list, .ch-thread {
+  background: var(--card);
+  border: 1px solid var(--border-soft);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.ch-list { max-height: 70vh; overflow-y: auto; }
+.ch-list-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border-soft);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  position: sticky; top: 0; background: var(--card); z-index: 1;
+}
+.ch-list ul { list-style: none; margin: 0; padding: 0; }
+.ch-item {
+  width: 100%;
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 12px 14px;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--border-soft);
+  border-left: 3px solid transparent;
+  color: inherit;
+  text-align: left;
+  font-family: inherit;
+  cursor: pointer;
+}
+.ch-item:hover { background: var(--bg-2); }
+.ch-item.is-on { background: var(--bg-2); border-left-color: var(--accent); }
+/* 대기 중인 대화는 목록에서 바로 눈에 띄어야 한다. */
+.ch-item.is-waiting { border-left-color: var(--accent); }
+.ch-item-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 13px; }
+.ch-item-last {
+  font-size: 12px; color: var(--muted);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.ch-item-meta {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  font-family: var(--mono); font-size: 10px; color: var(--muted-2);
+}
+
+.ch-status {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: .08em;
+  padding: 2px 6px;
+  border-radius: 2px;
+  border: 1px solid var(--border);
+  color: var(--muted-2);
+  white-space: nowrap;
+}
+.ch-status-waiting { color: var(--accent); border-color: rgba(255,107,26,.5); background: rgba(255,107,26,.1); }
+.ch-status-live { color: #6bcf6b; border-color: rgba(107,207,107,.45); }
+.ch-status-closed { color: var(--muted-2); }
+
+.ch-thread { display: flex; flex-direction: column; min-height: 420px; max-height: 70vh; }
+.ch-thread-head {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border-soft);
+  flex-wrap: wrap;
+}
+.ch-thread-who { display: flex; flex-direction: column; gap: 2px; font-size: 13px; flex: 1; min-width: 0; }
+.ch-thread-who a { color: var(--accent); text-decoration: none; font-size: 12px; }
+.ch-thread-who span { font-size: 12px; color: var(--muted-2); }
+.ch-thread-act { display: flex; align-items: center; gap: 8px; }
+/* 넓은 화면에서는 목록이 항상 보이므로 뒤로 버튼이 필요 없다. */
+.ch-back { display: none; }
+
+.ch-msgs {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.ch-msg { max-width: 76%; display: flex; flex-direction: column; gap: 3px; }
+.ch-msg p {
+  padding: 9px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.ch-msg-me { align-self: flex-end; align-items: flex-end; }
+.ch-msg-me p { background: var(--accent); color: #fff; border-bottom-right-radius: 3px; }
+.ch-msg-them { align-self: flex-start; }
+.ch-msg-them p { background: var(--bg-2); border: 1px solid var(--border-soft); border-bottom-left-radius: 3px; }
+.ch-msg-time { font-family: var(--mono); font-size: 9.5px; color: var(--muted-2); }
+
+.ch-send {
+  display: flex; gap: 8px; align-items: flex-end;
+  padding: 12px 14px;
+  border-top: 1px solid var(--border-soft);
+}
+.ch-send textarea {
+  flex: 1;
+  padding: 9px 11px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+  resize: vertical;
+  outline: none;
+}
+.ch-send textarea:focus { border-color: var(--accent); }
+
+/* 좁은 화면 — 목록과 대화를 탭처럼 번갈아 보여 준다. 둘을 같이 넣으면
+ * 목록은 손바닥만 한 스크롤 창이 되고 대화는 화면 밖으로 밀린다. */
+@media (max-width: 860px) {
+  .ch-wrap { grid-template-columns: 1fr; }
+  .ch-wrap .ch-thread { display: none; }
+  .ch-wrap.is-thread .ch-list { display: none; }
+  .ch-wrap.is-thread .ch-thread { display: flex; }
+  .ch-back {
+    display: inline-block;
+    background: none; border: 1px solid var(--border-soft); border-radius: 4px;
+    color: var(--muted); font-family: inherit; font-size: 12px;
+    padding: 5px 10px; cursor: pointer;
+  }
+  .ch-list { max-height: none; }
+}
+
 /* ─── 방문자 통계 (/admin/analytics) ───────────────────────────── */
 .admin-error {
   background: rgba(255, 107, 107, .10);

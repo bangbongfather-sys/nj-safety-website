@@ -1,0 +1,199 @@
+/* 상담 챗봇 위젯. 사이트 전역 토큰(--accent 등)을 그대로 쓴다. */
+
+.cw-fab {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 900;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 18px;
+  border: 0;
+  border-radius: 100px;
+  background: var(--accent);
+  color: #fff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, .35);
+  transition: transform .15s, filter .15s;
+}
+.cw-fab:hover { filter: brightness(1.07); transform: translateY(-1px); }
+/* 닫기 상태에서는 동그란 버튼만 남긴다. */
+.cw-fab.is-open { padding: 13px; border-radius: 50%; }
+
+.cw-panel {
+  position: fixed;
+  right: 20px;
+  bottom: 84px;
+  z-index: 900;
+  width: 360px;
+  max-width: calc(100vw - 32px);
+  /* 화면이 짧아도 입력칸이 잘리지 않도록 뷰포트에 맞춰 줄인다. */
+  max-height: min(560px, calc(100vh - 120px));
+  display: flex;
+  flex-direction: column;
+  background: var(--card);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, .45);
+}
+
+.cw-head {
+  padding: 14px 16px;
+  background: var(--bg-3);
+  border-bottom: 1px solid var(--border-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.cw-head-brand {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .18em;
+  color: var(--accent);
+}
+.cw-head-sub { font-size: 13px; color: var(--muted); }
+
+.cw-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.cw-lead { font-size: 14px; font-weight: 700; }
+.cw-hint { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+.cw-faqs { display: flex; flex-direction: column; gap: 6px; }
+.cw-faq-q {
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  background: var(--bg-2);
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.4;
+  cursor: pointer;
+}
+.cw-faq-q:hover { border-color: var(--accent); }
+.cw-faq-q.is-open { border-color: var(--accent); color: var(--accent); font-weight: 700; }
+.cw-faq-a {
+  padding: 10px 12px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--muted);
+  white-space: pre-wrap;
+}
+
+.cw-form { display: flex; flex-direction: column; gap: 8px; }
+.cw-form input, .cw-form textarea, .cw-send input {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+}
+.cw-form input:focus, .cw-form textarea:focus, .cw-send input:focus { border-color: var(--accent); }
+.cw-form textarea { resize: vertical; }
+
+.cw-msgs { display: flex; flex-direction: column; gap: 10px; }
+.cw-msg { max-width: 82%; }
+.cw-msg p {
+  padding: 9px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.cw-msg-me { align-self: flex-end; }
+.cw-msg-me p { background: var(--accent); color: #fff; border-bottom-right-radius: 3px; }
+.cw-msg-them { align-self: flex-start; }
+.cw-msg-them p { background: var(--bg-2); border: 1px solid var(--border-soft); border-bottom-left-radius: 3px; }
+.cw-msg-who {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .12em;
+  color: var(--muted-2);
+  margin-bottom: 3px;
+}
+
+.cw-sys {
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+  padding: 6px 10px;
+  background: var(--bg-2);
+  border-radius: 6px;
+}
+.cw-err { font-size: 12px; color: #ff9b9b; }
+
+.cw-foot {
+  padding: 12px 16px;
+  border-top: 1px solid var(--border-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.cw-primary {
+  padding: 11px 14px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.cw-primary:hover { filter: brightness(1.07); }
+.cw-primary:disabled { opacity: .5; cursor: default; }
+.cw-ghost {
+  padding: 9px 12px;
+  background: none;
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 12.5px;
+  cursor: pointer;
+}
+.cw-ghost:hover { color: var(--text); border-color: var(--border); }
+
+.cw-send { display: flex; gap: 6px; }
+.cw-send input { flex: 1; }
+.cw-send .cw-primary { padding: 10px 14px; white-space: nowrap; }
+
+.cw-tel {
+  font-size: 12px;
+  color: var(--muted-2);
+  text-decoration: none;
+  text-align: center;
+}
+.cw-tel:hover { color: var(--accent); }
+
+/* 좁은 화면에서는 거의 전체를 덮는다 — 360px 패널이 화면 밖으로
+ * 밀리면 입력 자체가 안 된다. */
+@media (max-width: 480px) {
+  .cw-fab { right: 14px; bottom: 14px; }
+  .cw-panel {
+    right: 10px;
+    left: 10px;
+    bottom: 76px;
+    width: auto;
+    max-height: calc(100vh - 110px);
+  }
+}

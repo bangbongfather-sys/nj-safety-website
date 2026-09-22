@@ -11,6 +11,7 @@ import { getAllNotices } from '@/lib/notices';
 import ViewBeacon from '@/components/analytics/ViewBeacon';
 import JsonLd from '@/components/seo/JsonLd';
 import { organizationSchema, webSiteSchema } from '@/lib/seo';
+import ChatWidget from '@/components/chat/ChatWidget';
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -86,6 +87,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       <main>{children}</main>
       <Footer locale={locale} dict={dict} />
       <NoticePopup locale={locale} candidates={popupNotices} />
+      <ChatWidget locale={locale} dict={dict} />
       <ViewBeacon />
     </>
   );
