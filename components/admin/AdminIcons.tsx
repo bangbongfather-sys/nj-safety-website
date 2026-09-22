@@ -42,6 +42,10 @@ export const IcUser = ({ size = 17, stroke = 'currentColor' }: P) => (
 export const IcGear = ({ size = 17, stroke = 'currentColor' }: P) => (
   <svg {...base(size)} stroke={stroke}><circle cx="8" cy="8" r="2.5" /><path d="M8 1.5v2M8 12.5v2M1.5 8h2M12.5 8h2M3.4 3.4l1.4 1.4M11.2 11.2l1.4 1.4M12.6 3.4l-1.4 1.4M4.8 11.2l-1.4 1.4" /></svg>
 );
+export const IcChat = ({ size = 17, stroke = 'currentColor' }: P) => (
+  <svg {...base(size)} stroke={stroke}><path d="M14 9.5A1.5 1.5 0 0 1 12.5 11H5.5L3 13V3.5A1.5 1.5 0 0 1 4.5 2h8A1.5 1.5 0 0 1 14 3.5z" /></svg>
+);
+
 export const IcChart = ({ size = 17, stroke = 'currentColor' }: P) => (
   <svg {...base(size)} stroke={stroke}><path d="M2 13.5V2.5" /><path d="M2 13.5h12" /><rect x="4" y="8" width="2.4" height="4" rx="0.5" /><rect x="7.8" y="5" width="2.4" height="7" rx="0.5" /><rect x="11.6" y="9.5" width="2.4" height="2.5" rx="0.5" /></svg>
 );

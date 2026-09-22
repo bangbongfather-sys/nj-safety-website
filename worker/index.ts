@@ -57,6 +57,25 @@ import {
   summary as viewSummary,
   visitorId,
 } from './analytics';
+import {
+  MAX_TEXT_LEN,
+  addMessage,
+  countMessages,
+  createSession,
+  ensureChatSchema,
+  getSession,
+  hashIp,
+  listSessions,
+  markRead,
+  messagesAfter,
+  newSessionId,
+  overMessageLimit,
+  overSessionLimit,
+  requestStaff,
+  sessionsToday,
+  setStatus,
+  waitingSummary,
+} from './chat';
 
 interface R2ObjectMeta {
   key: string;
@@ -979,6 +998,263 @@ async function handleStats(req: Request, env: Env, url: URL): Promise<Response> 
   }
 }
 
+/* ─── 실시간 상담 채팅 ───────────────────────────────────────────── */
+
+/**
+ * 공개 채팅 엔드포인트.
+ *
+ * 방문자는 로그인하지 않으므로 인증을 걸 수 없다. 대신 세션 id 를
+ * 추측 불가한 난수로 두고(남의 대화를 열 수 없게), 한 사람이 열 수
+ * 있는 대화 수와 한 대화의 메시지 수에 상한을 둔다.
+ */
+
+function chatText(v: unknown): string {
+  return String(v ?? '').replace(/\s+/g, ' ').trim().slice(0, MAX_TEXT_LEN);
+}
+
+/** 채팅 저장소가 준비됐는지 확인하고 db 를 준다. */
+async function chatDb(env: Env): Promise<D1Database | null> {
+  const db = requireDb(env);
+  if (!db) return null;
+  await ensureChatSchema(db);
+  return db;
+}
+
+/** `POST /api/chat/start` → 새 대화 id. */
+async function handleChatStart(req: Request, env: Env): Promise<Response> {
+  const ua = req.headers.get('user-agent') ?? '';
+  if (isBot(ua)) return json({ ok: false, error: 'bot' }, 403);
+  const db = await chatDb(env);
+  if (!db) return json({ ok: false, error: '상담 저장소가 준비되지 않았습니다.' }, 503);
+
+  const salt = await getSessionSecret(db, env.SESSION_SECRET);
+  const ipHash = await hashIp(req.headers.get('cf-connecting-ip') ?? '', salt);
+  const today = kstDay();
+  if (overSessionLimit(await sessionsToday(db, ipHash, today))) {
+    return json({ ok: false, error: '오늘 상담 요청이 너무 많습니다. 전화로 문의해 주세요.' }, 429);
+  }
+
+  const id = newSessionId();
+  await createSession(db, id, ipHash, nowIso());
+  return json({ ok: true, sessionId: id });
+}
+
+/** `POST /api/chat/send` — 방문자 메시지. */
+async function handleChatSend(req: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+  const db = await chatDb(env);
+  if (!db) return json({ ok: false, error: '상담 저장소가 준비되지 않았습니다.' }, 503);
+
+  let body: { sessionId?: string; text?: string };
+  try {
+    body = (await req.json()) as typeof body;
+  } catch {
+    return json({ ok: false, error: '잘못된 요청입니다.' }, 400);
+  }
+  const sessionId = String(body.sessionId ?? '');
+  const text = chatText(body.text);
+  if (!sessionId || !text) return json({ ok: false, error: '내용이 비어 있습니다.' }, 400);
+
+  const session = await getSession(db, sessionId);
+  if (!session) return json({ ok: false, error: '대화를 찾을 수 없습니다.' }, 404);
+  if (session.status === 'closed') {
+    return json({ ok: false, error: '종료된 상담입니다. 새로 시작해 주세요.' }, 409);
+  }
+  if (overMessageLimit(await countMessages(db, sessionId))) {
+    return json({ ok: false, error: '대화가 너무 길어졌습니다. 전화로 문의해 주세요.' }, 429);
+  }
+
+  await addMessage(db, sessionId, 'visitor', text, nowIso());
+
+  // 대기 상태에서 방문자가 말을 더 얹으면 직원에게 다시 알린다 —
+  // 첫 호출만 알리면 "연결 눌러놓고 질문을 이어 적은" 경우를 놓친다.
+  if (session.status === 'waiting') {
+    ctx.waitUntil(notifyStaffWaiting(env, sessionId, session.visitorName, session.visitorContact, text));
+  }
+  return json({ ok: true });
+}
+
+/**
+ * `POST /api/chat/staff` — 상담사 연결 요청.
+ *
+ * 이름·연락처를 함께 받는다. 직원이 자리에 없을 때 대화만 남으면
+ * 되돌려 줄 방법이 없기 때문 — 연락처가 있으면 나중에라도 회신할 수
+ * 있다.
+ */
+async function handleChatStaff(req: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+  const db = await chatDb(env);
+  if (!db) return json({ ok: false, error: '상담 저장소가 준비되지 않았습니다.' }, 503);
+
+  let body: { sessionId?: string; name?: string; contact?: string; text?: string };
+  try {
+    body = (await req.json()) as typeof body;
+  } catch {
+    return json({ ok: false, error: '잘못된 요청입니다.' }, 400);
+  }
+  const sessionId = String(body.sessionId ?? '');
+  const name = chatText(body.name).slice(0, 40);
+  const contact = chatText(body.contact).slice(0, 80);
+  if (!sessionId) return json({ ok: false, error: '대화를 찾을 수 없습니다.' }, 400);
+
+  const session = await getSession(db, sessionId);
+  if (!session) return json({ ok: false, error: '대화를 찾을 수 없습니다.' }, 404);
+
+  const now = nowIso();
+  await requestStaff(db, sessionId, name, contact, now);
+  const first = chatText(body.text);
+  if (first) await addMessage(db, sessionId, 'visitor', first, now);
+
+  ctx.waitUntil(notifyStaffWaiting(env, sessionId, name, contact, first));
+  return json({ ok: true });
+}
+
+/** `GET /api/chat/poll?session=…&after=…` — 새 메시지만. */
+async function handleChatPoll(req: Request, env: Env, url: URL): Promise<Response> {
+  const db = await chatDb(env);
+  if (!db) return json({ ok: false, error: '상담 저장소가 준비되지 않았습니다.' }, 503);
+
+  const sessionId = url.searchParams.get('session') ?? '';
+  const after = Number(url.searchParams.get('after') ?? 0) || 0;
+  if (!sessionId) return json({ ok: false, error: '대화를 찾을 수 없습니다.' }, 400);
+
+  const session = await getSession(db, sessionId);
+  if (!session) return json({ ok: false, error: 'gone' }, 404);
+  const messages = await messagesAfter(db, sessionId, after);
+  return json({ ok: true, status: session.status, messages });
+}
+
+/**
+ * 직원에게 "상담 대기 중" 메일. RESEND_API_KEY 가 없으면 조용히
+ * 넘어간다 — 알림이 없어도 관리자 화면에서는 보이므로 상담 자체는
+ * 막히지 않는다.
+ */
+async function notifyStaffWaiting(
+  env: Env,
+  sessionId: string,
+  name: string,
+  contact: string,
+  text: string,
+): Promise<void> {
+  if (!env.RESEND_API_KEY) return;
+  const url = 'https://njfashion.co.kr/admin/chat/';
+  const lines = [
+    '홈페이지에서 상담사 연결을 요청했습니다.',
+    '',
+    `이름: ${name || '(미입력)'}`,
+    `연락처: ${contact || '(미입력)'}`,
+    '',
+    '── 첫 질문 ──',
+    text || '(없음)',
+    '',
+    `상담 화면에서 답하기: ${url}`,
+  ].join('\n');
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${env.RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: env.RESEND_FROM || 'NJ SAFETY 상담 <onboarding@resend.dev>',
+        to: [env.CONTACT_TO || 'njsafety91@naver.com'],
+        subject: `[NJ SAFETY 상담 대기] ${name || '방문자'}`,
+        text: lines,
+      }),
+    });
+    if (!res.ok) {
+      console.error('chat notify failed:', res.status, (await res.text()).slice(0, 200));
+    }
+  } catch (e: unknown) {
+    console.error('chat notify error:', e instanceof Error ? e.message : String(e));
+  }
+}
+
+/* ── 상담사(관리자) 쪽 ─────────────────────────────────────────── */
+
+/** `GET /api/admin/chat/sessions` — 대화 목록. */
+async function handleAdminChatSessions(req: Request, env: Env): Promise<Response> {
+  const r = await authenticate(req, env);
+  if (!r.ok) return r.res;
+  const db = await chatDb(env);
+  if (!db) return json({ ok: false, error: '상담 저장소가 없습니다.' }, 503);
+  const [sessions, summary] = await Promise.all([listSessions(db), waitingSummary(db)]);
+  return json({ ok: true, sessions, summary });
+}
+
+/** `GET /api/admin/chat/messages?session=…&after=…` — 대화 내용. */
+async function handleAdminChatMessages(req: Request, env: Env, url: URL): Promise<Response> {
+  const r = await authenticate(req, env);
+  if (!r.ok) return r.res;
+  const db = await chatDb(env);
+  if (!db) return json({ ok: false, error: '상담 저장소가 없습니다.' }, 503);
+
+  const sessionId = url.searchParams.get('session') ?? '';
+  const after = Number(url.searchParams.get('after') ?? 0) || 0;
+  if (!sessionId) return json({ ok: false, error: '대화를 지정해 주세요.' }, 400);
+  const session = await getSession(db, sessionId);
+  if (!session) return json({ ok: false, error: '대화를 찾을 수 없습니다.' }, 404);
+
+  const messages = await messagesAfter(db, sessionId, after);
+  // 직원이 내용을 받아 갔으면 읽은 것으로 본다. after=0(대화를 새로
+  // 연 경우)일 때만 — 폴링마다 갱신하면 다른 탭의 미읽음 배지가 계속
+  // 지워진다.
+  if (after === 0) await markRead(db, sessionId);
+  return json({
+    ok: true,
+    status: session.status,
+    visitorName: session.visitorName,
+    visitorContact: session.visitorContact,
+    messages,
+  });
+}
+
+/** `POST /api/admin/chat/reply` — 직원 답장. */
+async function handleAdminChatReply(req: Request, env: Env): Promise<Response> {
+  const r = await authenticate(req, env);
+  if (!r.ok) return r.res;
+  const db = await chatDb(env);
+  if (!db) return json({ ok: false, error: '상담 저장소가 없습니다.' }, 503);
+
+  let body: { sessionId?: string; text?: string };
+  try {
+    body = (await req.json()) as typeof body;
+  } catch {
+    return json({ ok: false, error: '잘못된 요청입니다.' }, 400);
+  }
+  const sessionId = String(body.sessionId ?? '');
+  const text = chatText(body.text);
+  if (!sessionId || !text) return json({ ok: false, error: '내용이 비어 있습니다.' }, 400);
+  if (!(await getSession(db, sessionId))) {
+    return json({ ok: false, error: '대화를 찾을 수 없습니다.' }, 404);
+  }
+
+  const now = nowIso();
+  await addMessage(db, sessionId, 'staff', text, now);
+  // 직원이 답한 순간부터는 대기가 아니라 상담 중이다.
+  await setStatus(db, sessionId, 'live', now);
+  await markRead(db, sessionId);
+  return json({ ok: true });
+}
+
+/** `POST /api/admin/chat/close` — 상담 종료. */
+async function handleAdminChatClose(req: Request, env: Env): Promise<Response> {
+  const r = await authenticate(req, env);
+  if (!r.ok) return r.res;
+  const db = await chatDb(env);
+  if (!db) return json({ ok: false, error: '상담 저장소가 없습니다.' }, 503);
+
+  let body: { sessionId?: string };
+  try {
+    body = (await req.json()) as typeof body;
+  } catch {
+    return json({ ok: false, error: '잘못된 요청입니다.' }, 400);
+  }
+  const sessionId = String(body.sessionId ?? '');
+  if (!sessionId) return json({ ok: false, error: '대화를 지정해 주세요.' }, 400);
+  await setStatus(db, sessionId, 'closed', nowIso());
+  return json({ ok: true });
+}
+
 /* ─── Canonical host ─────────────────────────────────────────────── */
 
 /**
@@ -1258,6 +1534,21 @@ export default {
       return handlePageView(req, env, ctx);
     }
 
+    // 공개 — 상담 채팅. 방문자는 로그인하지 않으므로 인증이 없다.
+    // 세션 id 가 난수라 남의 대화는 열 수 없고, 한도는 핸들러에서 본다.
+    if (url.pathname === '/api/chat/start' && req.method === 'POST') {
+      return handleChatStart(req, env);
+    }
+    if (url.pathname === '/api/chat/send' && req.method === 'POST') {
+      return handleChatSend(req, env, ctx);
+    }
+    if (url.pathname === '/api/chat/staff' && req.method === 'POST') {
+      return handleChatStaff(req, env, ctx);
+    }
+    if (url.pathname === '/api/chat/poll' && req.method === 'GET') {
+      return handleChatPoll(req, env, url);
+    }
+
     if (url.pathname === '/api/admin/login' && req.method === 'POST') {
       return handleLogin(req, env);
     }
@@ -1274,6 +1565,19 @@ export default {
 
     if (url.pathname === '/api/admin/stats' && req.method === 'GET') {
       return handleStats(req, env, url);
+    }
+
+    if (url.pathname === '/api/admin/chat/sessions' && req.method === 'GET') {
+      return handleAdminChatSessions(req, env);
+    }
+    if (url.pathname === '/api/admin/chat/messages' && req.method === 'GET') {
+      return handleAdminChatMessages(req, env, url);
+    }
+    if (url.pathname === '/api/admin/chat/reply' && req.method === 'POST') {
+      return handleAdminChatReply(req, env);
+    }
+    if (url.pathname === '/api/admin/chat/close' && req.method === 'POST') {
+      return handleAdminChatClose(req, env);
     }
 
     if (url.pathname === '/api/admin/gh-token') {
