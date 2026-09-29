@@ -23,14 +23,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {
       title: 'Products — Aramid Flame-Resistant Workwear | NJ SAFETY',
       description:
-        'FR jackets, pants, shirts and vests made from aramid fabric. NFPA 2112 · HRC2 · EN ISO 11612 certified.',
+        'FR jackets, pants, shirts and vests made from aramid fabric, designed to NFPA 2112. Per-product flame test reports.',
     };
   }
   return {
     title: '제품 라인업 — 아라미드 방염복 · 방염 작업복 | NJ SAFETY',
     description:
       '아라미드 방염복 전 제품. 방염 자켓 · 방염 바지 · 방염 셔츠 · 방염 조끼를 계절별로 구성했습니다. ' +
-      'NFPA 2112 · HRC2 · EN ISO 11612 인증, 나정엔터프라이즈 제작.',
+      'NFPA 2112 기준 설계, 제품별 방염 시험성적서 제공. 나정엔터프라이즈 제작.',
   };
 }
 

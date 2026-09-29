@@ -53,8 +53,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description:
       dict.resources?.testReports?.desc ??
       (locale === 'ko'
-        ? '제품별 KC / NFPA / EN ISO 인증 시험성적서 PDF.'
-        : 'Per-product KC / NFPA / EN ISO certification test reports.'),
+        ? '제품별 방염 · ARC · 혼용률 시험성적서 PDF.'
+        : 'Per-product flame, ARC and fibre-content test reports.'),
   };
 }
 
@@ -88,8 +88,8 @@ export default async function TestReportsPage({ params }: Props) {
         <p style={{ marginTop: 16, maxWidth: 760 }}>
           {dict.resources?.testReports?.desc ??
             (loc === 'ko'
-              ? '제품별 KC / NFPA / EN ISO 인증 시험성적서 PDF. 발주 검토 / 사내 회람용으로 자유롭게 다운로드하세요.'
-              : 'Per-product KC / NFPA / EN ISO certification reports. Download freely for order review or internal circulation.')}
+              ? '제품별 방염 · ARC · 혼용률 시험성적서 PDF. 발주 검토 / 사내 회람용으로 자유롭게 다운로드하세요.'
+              : 'Per-product flame, ARC and fibre-content reports. Download freely for order review or internal circulation.')}
         </p>
         <p style={{ marginTop: 8, color: 'var(--muted)', fontSize: 14 }}>
           ←{' '}
