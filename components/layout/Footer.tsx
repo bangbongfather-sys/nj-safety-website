@@ -41,6 +41,11 @@ export default function Footer({ locale, dict, editor }: Props) {
           <Link href={`/${locale}/about`}>
             <EditableText as="span" path="footer.bottomNav.about" value={nav.about} editor={editor} />
           </Link>
+          {/* 모든 페이지 하단에서 가이드로 이어지게 한다 — 사이트 전체가
+           * 가리키는 문서여야 검색엔진이 중요한 페이지로 본다. */}
+          <Link href={`/${locale}/guide/`}>
+            <EditableText as="span" path="footer.bottomNav.guide" value={nav.guide} editor={editor} />
+          </Link>
           {/* No 이용약관(terms) page authored yet — render as plain text so we
            * don't point the label at a non-existent route. Flip to a
            * <Link href={`/${locale}/terms/`}> once that page exists. */}
