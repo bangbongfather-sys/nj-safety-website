@@ -65,8 +65,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${name} | ${kw} · 방염 작업복 — NJ SAFETY`,
     description:
-      `${lede}${lede.endsWith('.') ? '' : '.'} NFPA 2112 · HRC2 · EN ISO 11612 인증 ` +
-      `아라미드 ${kw}. 나정엔터프라이즈(NJ SAFETY) 제작.`,
+      // 인증 표현은 전 제품에 공통으로 참인 것만 쓴다. NFPA 2112 는 UL
+      // 인증 진행 중이라 '기준 설계'로, EN ISO 11612 는 일부 제품에만
+      // 자료가 있어 제품 공통 문구에서는 뺀다.
+      `${lede}${lede.endsWith('.') ? '' : '.'} NFPA 2112 기준 설계 아라미드 ${kw}, ` +
+      `제품별 방염 시험성적서 제공. 나정엔터프라이즈(NJ SAFETY) 제작.`,
   };
 }
 

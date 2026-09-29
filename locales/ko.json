@@ -2,7 +2,7 @@
   "meta": {
     "title": "나정엔터프라이즈 (NJ SAFETY) — 아라미드 방염복 · 방염 작업복 전문",
     "description": "아라미드 원단으로 만드는 산업용 방염복·전기 방염복 전문. 한전 협력업체 방염복 제작, 방염 작업복 · 용접복 · 난연 작업복, 제품별 ARC 시험성적서 제공.",
-    "shareDescription": "아라미드 방염복 · 방염 작업복 제작 전문 · NFPA 2112 · HRC2 · EN ISO 11612 국제 인증. 나정엔터프라이즈."
+    "shareDescription": "아라미드 방염복 · 방염 작업복 제작 전문 · NFPA 2112 기준 설계 · HRC2 · EN ISO 11612 국제 인증. 나정엔터프라이즈."
   },
   "nav": {
     "about": "회사소개",
@@ -20,7 +20,7 @@
     "headlineLine2Pre": "",
     "headlineLine2Em": "안전, 그 이상의 확신.",
     "tagline": "Your Flame Shield for Safer Work.",
-    "sub": "아라미드 원단으로 설계된 산업용 방염 작업복. NFPA 2112 · HRC2 · EN ISO 11612 국제 인증.",
+    "sub": "아라미드 원단으로 설계된 산업용 방염 작업복. NFPA 2112 기준 설계 · HRC2 · EN ISO 11612 국제 인증.",
     "ctaPrimary": "제품 보기",
     "ctaSecondary": "견적 문의",
     "scroll": "Scroll to explore",
@@ -175,7 +175,7 @@
       {
         "id": "NFPA · US",
         "name": "NFPA 2112",
-        "note": "Flash Fire Protection"
+        "note": "기준 설계 · UL 인증 진행 중"
       },
       {
         "id": "NFPA · US",
@@ -210,7 +210,7 @@
     "copyright": "© 2026 NAJUNG ENTERPRISE CO., LTD."
   },
   "footer": {
-    "brandDesc": "나정엔터프라이즈는 1987년 설립된 산업안전복 전문 제조사입니다. NFPA·EN·KS 인증 기반의 OEM/ODM 생산과 글로벌 프리미엄 원단 공급을 통해 극한의 산업 현장을 보호합니다.",
+    "brandDesc": "나정엔터프라이즈는 1987년 설립된 산업안전복 전문 제조사입니다. NFPA 2112 기준 설계와 EN·KS 인증 기반의 OEM/ODM 생산과 글로벌 프리미엄 원단 공급을 통해 극한의 산업 현장을 보호합니다.",
     "productsHead": "Products",
     "companyHead": "Company",
     "connectHead": "Connect",
@@ -266,7 +266,7 @@
       "eyebrow": "— Certifications / 인증",
       "titlePre": "국제 ",
       "titleEm": "인증 체계.",
-      "body": "인증 상세 페이지는 곧 공개됩니다. NFPA 2112, HRC Level 2, EN ISO 11612 등 8개 인증의 시험 기준과 성적서를 다룹니다."
+      "body": "인증 상세 페이지는 곧 공개됩니다. NFPA 2112(UL 인증 진행 중), HRC Level 2, EN ISO 11612 등의 시험 기준과 성적서를 다룹니다."
     }
   },
   "styles": {
@@ -625,7 +625,7 @@
           "n": "02 / 05",
           "en": "QUALITY",
           "ko": "품질 · 인증 / 시험",
-          "body": "모든 원단 로트와 완제품은 자체 시험과 제3자 시험기관 검증을 거칩니다. NFPA 2112, 아크테스트, 시험성적서 등 시험 결과로 입증합니다."
+          "body": "모든 원단 로트와 완제품은 자체 시험과 제3자 시험기관 검증을 거칩니다. 아크테스트, 시험성적서 등 시험 결과로 입증합니다. NFPA 2112 UL 인증은 진행 중입니다."
         },
         {
           "n": "03 / 05",
@@ -998,7 +998,7 @@
     },
     "testReports": {
       "title": "시험성적서",
-      "desc": "제품별 KC / NFPA / EN ISO 인증 시험성적서.",
+      "desc": "제품별 방염 · ARC · 혼용률 시험성적서.",
       "empty": "아직 등록된 시험성적서가 없습니다. 곧 추가 예정입니다."
     }
   },

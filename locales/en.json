@@ -1,8 +1,8 @@
 {
   "meta": {
     "title": "NJ SAFETY (Najung Enterprise) — Aramid Flame-Resistant Workwear",
-    "description": "Industrial flame-resistant workwear made from aramid fabric. FR jackets, pants and welding wear. NFPA 2112 · HRC2 · EN ISO 11612 certified.",
-    "shareDescription": "Aramid flame-resistant workwear · NFPA 2112 · HRC2 · EN ISO 11612 certified. By Najung Enterprise."
+    "description": "Industrial flame-resistant workwear made from aramid fabric. FR jackets, pants and welding wear. HRC2 · EN ISO 11612 certified, designed to NFPA 2112.",
+    "shareDescription": "Aramid flame-resistant workwear · HRC2 · EN ISO 11612 certified, designed to NFPA 2112. By Najung Enterprise."
   },
   "nav": {
     "about": "About",
@@ -20,7 +20,7 @@
     "headlineLine2Pre": "",
     "headlineLine2Em": "Safety, beyond assurance.",
     "tagline": "Your Flame Shield for Safer Work.",
-    "sub": "Aramid-engineered flame-resistant workwear for extreme industrial environments. NFPA 2112 · HRC2 · EN ISO 11612 certified.",
+    "sub": "Aramid-engineered flame-resistant workwear for extreme industrial environments. HRC2 · EN ISO 11612 certified, designed to NFPA 2112.",
     "ctaPrimary": "View products",
     "ctaSecondary": "Request a quote",
     "scroll": "Scroll to explore",
@@ -47,7 +47,7 @@
         "headlineLine2Pre": "",
         "headlineLine2Em": "Safety, beyond assurance.",
         "tagline": "Your Flame Shield for Safer Work.",
-        "sub": "Aramid-engineered flame-resistant workwear for extreme industrial environments. NFPA 2112 · HRC2 · EN ISO 11612 certified.",
+        "sub": "Aramid-engineered flame-resistant workwear for extreme industrial environments. HRC2 · EN ISO 11612 certified, designed to NFPA 2112.",
         "ctaPrimary": "View products",
         "ctaSecondary": "Request a quote",
         "linkHref": "https://njfashion.co.kr/ko/products/"
@@ -175,7 +175,7 @@
       {
         "id": "NFPA · US",
         "name": "NFPA 2112",
-        "note": "Flash Fire Protection"
+        "note": "Designed to standard · UL cert in progress"
       },
       {
         "id": "NFPA · US",
@@ -210,7 +210,7 @@
     "copyright": "© 2026 NAJUNG ENTERPRISE CO., LTD."
   },
   "footer": {
-    "brandDesc": "Najung Enterprise has manufactured industrial safety wear since 1987. We supply OEM/ODM production with NFPA, EN and KS certifications, sourcing premium fabrics globally to protect workers in the harshest industrial environments.",
+    "brandDesc": "Najung Enterprise has manufactured industrial safety wear since 1987. We supply OEM/ODM production designed to NFPA 2112 and backed by EN and KS certifications, sourcing premium fabrics globally to protect workers in the harshest industrial environments.",
     "productsHead": "Products",
     "companyHead": "Company",
     "connectHead": "Connect",
@@ -266,7 +266,7 @@
       "eyebrow": "— Certifications",
       "titlePre": "International ",
       "titleEm": "standards.",
-      "body": "The certifications page is launching shortly. It will cover the testing criteria and reports for our 8 standards including NFPA 2112, HRC Level 2 and EN ISO 11612."
+      "body": "The certifications page is launching shortly. It will cover the testing criteria and reports for standards including NFPA 2112 (UL certification in progress), HRC Level 2 and EN ISO 11612."
     }
   },
   "styles": {
@@ -625,7 +625,7 @@
           "n": "02 / 05",
           "en": "QUALITY",
           "ko": "Certification & Testing",
-          "body": "Every fabric lot and finished garment is verified by our in-house lab and accredited third-party labs. Proof is delivered in NFPA 2112, HRC2 and Arc Flash test results."
+          "body": "Every fabric lot and finished garment is verified by our in-house lab and accredited third-party labs. Proof is delivered in HRC2 and Arc Flash test results; NFPA 2112 UL certification is in progress."
         },
         {
           "n": "03 / 05",
@@ -989,7 +989,7 @@
     },
     "testReports": {
       "title": "Test Reports",
-      "desc": "Per-product KC / NFPA / EN ISO certification test reports.",
+      "desc": "Per-product flame, ARC and fibre-content test reports.",
       "empty": "No test reports listed yet — coming soon."
     }
   },
