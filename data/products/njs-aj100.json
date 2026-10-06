@@ -123,7 +123,7 @@
   "statement": {
     "eyebrow": "ENGINEERED FOR WINTER",
     "headline": "겨울 현장은 <em>보온과 안전</em>이 생명입니다.",
-    "body": "<blockquote data-path-to-node=\"8\"><p data-path-to-node=\"8,0\">영하의 새벽, 전기와 플랜트 점검 현장은 매 순간이 추위 및 위험과의 싸움입니다. 일반적인 두꺼운 패딩으로는 방염 성능과 정전기 차단까지 챙기기 어렵습니다.</p><p data-path-to-node=\"8,1\"><br></p><p data-path-to-node=\"8,1\">본 자켓은 검증된 메타-아라미드 65%와 Lenzing FR 35% 블렌드 외피를 사용해 작업자를 안전하게 보호합니다. 내부에는 체크 패턴 누빔 안감과 니트 커프스를 적용하여 찬 바람을 완벽히 차단하고 체온을 유지해 줍니다.</p></blockquote><ul data-path-to-node=\"9\"><li><p data-path-to-node=\"9,0,0\"></p></li></ul>",
+    "body": "<blockquote data-path-to-node=\"8\"><p data-path-to-node=\"8,0\">영하의 새벽, 전기와 플랜트 점검 현장은 매 순간이 추위 및 위험과의 싸움입니다. 일반적인 두꺼운 패딩으로는 방염 성능과 정전기 차단까지 챙기기 어렵습니다.</p><p data-path-to-node=\"8,1\"><br></p><p data-path-to-node=\"8,1\">본 자켓은 검증된 메타-아라미드 64%와 Lenzing FR 35% 블렌드 외피를 사용해 작업자를 안전하게 보호합니다. 내부에는 체크 패턴 누빔 안감과 니트 커프스를 적용하여 찬 바람을 완벽히 차단하고 체온을 유지해 줍니다.</p></blockquote><ul data-path-to-node=\"9\"><li><p data-path-to-node=\"9,0,0\"></p></li></ul>",
     "sign": "NJ SAFETY PRODUCT TEAM"
   },
   "material": {
@@ -155,7 +155,7 @@
       {
         "n": "01",
         "title": "검증된 아라미드 블렌드",
-        "body": "메타-아라미드 65% + LENZING FR 34% + Anti-Static Fiber 1%"
+        "body": "메타-아라미드 64% + LENZING FR 35% + Anti-Static Fiber 1%"
       },
       {
         "n": "02",
@@ -191,7 +191,7 @@
     "rows": [
       {
         "label": "원단 구성",
-        "value": "Meta-Aramid 65% / Lenzing FR 35% / Anti-Static 1%"
+        "value": "Aramid 64.0% / Lenzing FR 35.0% / Anti 1.0%"
       },
       {
         "label": "조직",
@@ -427,7 +427,7 @@
     "summarySpecs": [
       {
         "label": "원단 구성",
-        "value": "Meta-Aramid 65% / Lenzing FR 35%"
+        "value": "Aramid 64.0% / Lenzing FR 35.0% / Anti 1.0%"
       },
       {
         "label": "컬러",
@@ -479,7 +479,7 @@
     "disclosure": [
       {
         "label": "제품소재",
-        "value": "Meta-Aramid 65% / Lenzing FR 35% / Anti-Static 1%"
+        "value": "Aramid 64.0% / Lenzing FR 35.0% / Anti 1.0%"
       },
       {
         "label": "색상",

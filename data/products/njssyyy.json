@@ -17,17 +17,17 @@
     ],
     "counters": [
       {
-        "value": "64.6",
+        "value": "62.9",
         "unit": "%",
         "label": "META ARAMID"
       },
       {
-        "value": "34.2",
+        "value": "35.5",
         "unit": "%",
         "label": "FR RAYON"
       },
       {
-        "value": "1.2",
+        "value": "1.6",
         "unit": "%",
         "label": "anti-static fiber"
       }
@@ -141,7 +141,7 @@
     "rows": [
       {
         "label": "원단 구성",
-        "value": "Meta-Aramid 65% / FR Rayon 33% / Antistatic 2%"
+        "value": "Aramid 62.9% / Lenzing FR 35.5% / Anti 1.6%"
       },
       {
         "label": "조직",
@@ -384,7 +384,7 @@
     "summarySpecs": [
       {
         "label": "원단 구성",
-        "value": "Meta-Aramid 65% / FR Rayon 33% / Antistatic 2%"
+        "value": "Aramid 62.9% / Lenzing FR 35.5% / Anti 1.6%"
       },
       {
         "label": "컬러",
@@ -440,7 +440,7 @@
     "disclosure": [
       {
         "label": "제품소재",
-        "value": "Meta-Aramid 65% / FR Rayon 33% / Antistatic 2%"
+        "value": "Aramid 62.9% / Lenzing FR 35.5% / Anti 1.6%"
       },
       {
         "label": "색상",

@@ -4,7 +4,7 @@
   "category": "ARAMID FR SERIES · MID-SEASON JACKET",
   "name": "아라미드 <br><span style=\"color: rgb(198, 90, 30);\">춘추</span> 자켓",
   "subtitle": "환절기 외근의 보호 성능과 가벼움, 한 벌의 자켓에",
-  "tagline": "메타-아라미드 65% 블렌드를 본체 원단에 그대로 가져왔습니다. 인디고 멜란지 상단 + 차콜 네이비 하단의 투톤 분할 + 가슴 트윈 리플렉티브로 봄·가을 외근 현장의 시인성을 확보했습니다.",
+  "tagline": "메타-아라미드 65.7% 블렌드를 본체 원단에 적용했습니다. 인디고 멜란지 상단 + 차콜 네이비 하단의 투톤 분할 + 가슴 트윈 리플렉티브로 봄·가을 외근 현장의 시인성을 확보했습니다.",
   "flavor": "tactical",
   "hero": {
     "image": "/api/images/njs-aj200-hero-image-1779375568239-ee0d7b96544f.png",
@@ -13,12 +13,12 @@
     "corner": "INDIGO MELANGE + CHARCOAL NAVY",
     "counters": [
       {
-        "value": "65",
+        "value": "65.7",
         "unit": "%",
         "label": "META ARAMID"
       },
       {
-        "value": "35",
+        "value": "31.8",
         "unit": "%",
         "label": "LENZING FR"
       },
@@ -95,7 +95,7 @@
   "statement": {
     "eyebrow": "ENGINEERED FOR MID-SEASON",
     "headline": "환절기 현장은 <em>변화의 폭</em>이 가장 큽니다.",
-    "body": "전기·플랜트 점검의 봄·가을은 새벽엔 손이 시리고, 한낮엔 땀이 차오릅니다. 패딩이 들어간 동계 자켓은 무겁고, 셔츠 한 장으로 견디기엔 바람이 찹니다. AJ200은 동계 AJ100과 동일한 메타-아라미드 65% / 리오셀 FR 35% 블렌드를 본체 원단에 적용했습니다. 안감 누빔과 니트 커프 대신 단순한 안감 + 벨크로 커프로 본체 평량을 230 g/m² 까지 낮춰, 환절기 일교차에 핏을 조절할 수 있도록 설계했습니다. 가슴 트윈 리플렉티브 2조 + 등 상단 50mm 가로 리플렉티브로 야간 외근 시인성은 동계와 동등하게 확보했습니다.",
+    "body": "전기·플랜트 점검의 봄·가을은 새벽엔 손이 시리고, 한낮엔 땀이 차오릅니다. 패딩이 들어간 동계 자켓은 무겁고, 셔츠 한 장으로 견디기엔 바람이 찹니다. AJ200은 메타-아라미드 65.7% / Lenzing FR 31.8% / 정전기 방지사 2.5% 블렌드를 본체 원단에 적용했습니다. 안감 누빔과 니트 커프 대신 단순한 안감 + 벨크로 커프로 본체 평량을 230 g/m² 까지 낮춰, 환절기 일교차에 핏을 조절할 수 있도록 설계했습니다. 가슴 트윈 리플렉티브 2조 + 등 상단 50mm 가로 리플렉티브로 야간 외근 시인성은 동계와 동등하게 확보했습니다.",
     "sign": "NJ SAFETY PRODUCT TEAM"
   },
   "material": {
@@ -105,12 +105,12 @@
     "callouts": [
       {
         "tag": "A",
-        "title": "META ARAMID 65%",
+        "title": "META ARAMID 65.7%",
         "body": "Teijin Conex® 계열 메타-아라미드. LOI 30 이상 · 영구 난연 · EN ISO 11612 A1·B1·C1·F1 통과."
       },
       {
         "tag": "B",
-        "title": "LENZING™ FR 35%",
+        "title": "LENZING™ FR 31.8%",
         "body": "리오셀 기반 보호복 전용 FR 섬유. 흡습성 + EN 1149-5 전하 반감기 0.2초."
       },
       {
@@ -127,7 +127,7 @@
       {
         "n": "01",
         "title": "동계와 동일한 아라미드 블렌드",
-        "body": "메타-아라미드 65% · 리오셀 FR 35%. EN ISO 11612 / KS K 0585 통과."
+        "body": "메타-아라미드 65.7% · Lenzing FR 31.8% · 정전기 방지사 2.5%. EN ISO 11612 / KS K 0585 통과."
       },
       {
         "n": "02",
@@ -163,7 +163,7 @@
     "rows": [
       {
         "label": "원단 구성",
-        "value": "Meta-Aramid 65% / Lenzing FR 35%"
+        "value": "Aramid 65.7% / Lenzing FR 31.8% / Anti 2.5%"
       },
       {
         "label": "조직",
@@ -396,11 +396,11 @@
     "category": "ARAMID FR SERIES · spring/fall JACKET",
     "name": "아라미드 <br><span style=\"color: rgb(198, 90, 30);\">춘추</span> 자켓",
     "subtitle": "환절기 외근의 보호 성능과 가벼움, 한 벌의 자켓에",
-    "tagline": "메타-아라미드 65% 블렌드를 본체 원단에 그대로 가져왔습니다. 인디고 멜란지 상단 + 차콜 네이비 하단의 투톤 분할 + 가슴 트윈 리플렉티브로 봄·가을 외근 현장의 시인성을 확보했습니다.",
+    "tagline": "메타-아라미드 65.7% 블렌드를 본체 원단에 적용했습니다. 인디고 멜란지 상단 + 차콜 네이비 하단의 투톤 분할 + 가슴 트윈 리플렉티브로 봄·가을 외근 현장의 시인성을 확보했습니다.",
     "summarySpecs": [
       {
         "label": "원단 구성",
-        "value": "Meta-Aramid 65% / Lenzing FR 35%"
+        "value": "Aramid 65.7% / Lenzing FR 31.8% / Anti 2.5%"
       },
       {
         "label": "컬러",
@@ -474,7 +474,7 @@
     "disclosure": [
       {
         "label": "제품소재",
-        "value": "Meta-Aramid 65% / Lenzing FR 35%"
+        "value": "Aramid 65.7% / Lenzing FR 31.8% / Anti 2.5%"
       },
       {
         "label": "색상",

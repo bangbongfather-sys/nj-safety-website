@@ -19,19 +19,24 @@
     ],
     "counters": [
       {
-        "value": "62.9",
+        "value": "61.4",
         "unit": "%",
         "label": "ARAMID"
       },
       {
-        "value": "35.5",
+        "value": "33.8",
         "unit": "%",
         "label": "FR RAYON"
       },
       {
-        "value": "1.6",
+        "value": "1.4",
         "unit": "%",
         "label": "ANTI-STATIC"
+      },
+      {
+        "value": "3.4",
+        "unit": "%",
+        "label": "SPANDEX"
       }
     ]
   },
@@ -76,17 +81,17 @@
     "callouts": [
       {
         "tag": "A",
-        "title": "Aramid 62.9% · 본체",
+        "title": "Aramid 61.4% · 본체",
         "body": "메타-아라미드 주력 혼방. 한여름용 경량 조직으로 난연 성능은 그대로."
       },
       {
         "tag": "B",
-        "title": "FR Rayon 35.5% · 통기",
+        "title": "Lenzing FR 33.8% · 통기",
         "body": "FR 레이온으로 땀 흡수와 통기성을 높여 장시간 착용에도 쾌적한 촉감."
       },
       {
         "tag": "C",
-        "title": "Anti-Static 1.6% · 정전기",
+        "title": "Anti-Static 1.4% · 정전기",
         "body": "정전기 방지사 혼입. 전기·설비 작업 환경에서 스파크 위험을 낮춤."
       }
     ]
@@ -134,7 +139,7 @@
     "rows": [
       {
         "label": "원단 구성",
-        "value": "Aramid 62.9% / FR Rayon 35.5% / Anti-Static 1.6%"
+        "value": "Aramid 61.4% / Lenzing FR 33.8% / Spandex 3.4% / Anti 1.4%"
       },
       {
         "label": "조직",
@@ -251,7 +256,7 @@
         "n": "03",
         "tag": "ELEC.",
         "title": "전기 배전 점검",
-        "body": "정전기 방지사 1.6% 함유 — 여름 전기 작업의 경량 하의로 안전."
+        "body": "정전기 방지사 1.4% 함유 — 여름 전기 작업의 경량 하의로 안전."
       },
       {
         "n": "04",
@@ -386,7 +391,7 @@
     "disclosure": [
       {
         "label": "제품소재",
-        "value": "Aramid 62.9% / FR Rayon 35.5% / Anti-Static 1.6%"
+        "value": "Aramid 61.4% / Lenzing FR 33.8% / Spandex 3.4% / Anti 1.4%"
       },
       {
         "label": "색상",

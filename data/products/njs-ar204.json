@@ -160,7 +160,7 @@
     "rows": [
       {
         "label": "원단 구성",
-        "value": "Aramid 63.8% / FR Rayon(Lenzing FR) 33.9%/Spandex 2.3%"
+        "value": "Aramid 63.8% / Lenzing FR 33.9% / Anti 2.3%"
       },
       {
         "label": "조직",
@@ -434,7 +434,7 @@
     "summarySpecs": [
       {
         "label": "원단 구성",
-        "value": "Aramid 63.8% / FR Rayon(Lenzing FR) 33.9%/ Anti 2.3%"
+        "value": "Aramid 63.8% / Lenzing FR 33.9% / Anti 2.3%"
       },
       {
         "label": "컬러",
@@ -490,7 +490,7 @@
     "disclosure": [
       {
         "label": "제품소재",
-        "value": "Aramid 63.8% / FR Rayon(Lenzing FR) 33.9% / Spandex 2.3%"
+        "value": "Aramid 63.8% / Lenzing FR 33.9% / Anti 2.3%"
       },
       {
         "label": "색상",

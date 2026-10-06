@@ -85,7 +85,7 @@
   "statement": {
     "eyebrow": "ENGINEERED FOR FIELD",
     "headline": "매일 입는 <em>작업 바지</em>가 곧 안전입니다.",
-    "body": "전기·설비·정비 현장에서 가장 오래 몸에 닿는 옷은 바지입니다. NJFWP25는 아라미드 63.5% 혼방으로 자켓과 동일한 난연·정전기 방지 성능을 유지하면서, 밴딩 허리와 플리츠 프론트로 하루 종일 쪼그려 앉고 사다리를 오르는 동작까지 편하게 받아냅니다. 카고 플랩 포켓과 트윈 리플렉티브는 공구 수납과 야간 시인성을, 단정한 실루엣은 출퇴근까지 책임집니다.",
+    "body": "전기·설비·정비 현장에서 가장 오래 몸에 닿는 옷은 바지입니다. NJFWP25는 아라미드 49.9% 혼방으로 자켓과 동일한 난연·정전기 방지 성능을 유지하면서, 밴딩 허리와 플리츠 프론트로 하루 종일 쪼그려 앉고 사다리를 오르는 동작까지 편하게 받아냅니다. 카고 플랩 포켓과 트윈 리플렉티브는 공구 수납과 야간 시인성을, 단정한 실루엣은 출퇴근까지 책임집니다.",
     "sign": "NJ SAFETY PRODUCT TEAM"
   },
   "material": {
@@ -153,7 +153,7 @@
     "rows": [
       {
         "label": "원단 구성",
-        "value": "ARAMID 49.9% / FR rayon 45.5% / Spandex 3% / Anti 1.7%"
+        "value": "Aramid 49.9% / Lenzing FR 45.4% / Spandex 3.0% / Anti 1.7%"
       },
       {
         "label": "조직",
@@ -461,7 +461,7 @@
     "summarySpecs": [
       {
         "label": "원단 구성",
-        "value": "ARAMID 49.9% / FR rayon 45.5% / Spandex 3% / Anti 1.7%"
+        "value": "Aramid 49.9% / Lenzing FR 45.4% / Spandex 3.0% / Anti 1.7%"
       },
       {
         "label": "중량",
@@ -517,7 +517,7 @@
     "disclosure": [
       {
         "label": "제품소재",
-        "value": "<span style=\"color: rgb(236, 230, 216); font-size: 13px; letter-spacing: -0.176px; white-space: normal;\">ARAMID 49.9% / FR rayon 45.5% / Spandex 3% / Anti 1.7%</span>\n"
+        "value": "<span style=\"color: rgb(236, 230, 216); font-size: 13px; letter-spacing: -0.176px; white-space: normal;\">Aramid 49.9% / Lenzing FR 45.4% / Spandex 3.0% / Anti 1.7%</span>\n"
       },
       {
         "label": "색상",
