@@ -164,7 +164,7 @@
     "rows": [
       {
         "label": "원단 구성",
-        "value": "Aramid 65% / Polyester 33% / Antistatic 2%"
+        "value": "Aramid 62.3% / Lenzing FR 36.6% / Anti 1.1%"
       },
       {
         "label": "조직",
@@ -277,7 +277,7 @@
         "n": "03",
         "tag": "ELEC.",
         "title": "전기 공사",
-        "body": "정전기 방지사 2% 함유 — 전기 작업의 일상복으로 안전."
+        "body": "정전기 방지사 1.1% 함유 — 전기 작업의 일상복으로 안전."
       },
       {
         "n": "04",
@@ -415,7 +415,7 @@
     "summarySpecs": [
       {
         "label": "원단 구성",
-        "value": "Aramid 65% / Polyester 33% / Antistatic 2%"
+        "value": "Aramid 62.3% / Lenzing FR 36.6% / Anti 1.1%"
       },
       {
         "label": "중량",
@@ -485,7 +485,7 @@
     "disclosure": [
       {
         "label": "제품소재",
-        "value": "Aramid 65% / Polyester 33% / Antistatic 2%"
+        "value": "Aramid 62.3% / Lenzing FR 36.6% / Anti 1.1%"
       },
       {
         "label": "색상",
