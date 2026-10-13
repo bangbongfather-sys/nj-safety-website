@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NJ SAFETY 시험성적서</title>
+<meta name="description" content="NJ SAFETY 아라미드 방염 작업복 제품별 KOTITI 시험성적서 원본 열람">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=Saira+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one narrow column built for a phone held on site — brand bar, search, three season groups of tappable report rows, verification note. Follows the catalog's charcoal + safety-orange identity. */
+:root{
+  --bg:#17181a; --panel:#202124; --line:#2f3034; --fg:#ecebe8; --muted:#9a9894; --accent:#ec5a24; --accent-ink:#ffffff;
+  --display:"Saira Condensed","Arial Narrow",Impact,sans-serif;
+  --body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{background:var(--bg)}
+body{color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.6;margin:0;padding-inline:16px;padding-block:0 48px}
+.wrap{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+header{padding-top:28px;display:flex;flex-direction:column;gap:14px}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:.06em}
+.logo b{color:var(--accent);font-weight:700}
+.tag{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+h1{font-size:26px;line-height:1.3;margin:0;font-weight:600;text-wrap:balance}
+h1 span{display:block;font-family:var(--display);font-size:15px;letter-spacing:.14em;color:var(--accent);font-weight:600;margin-bottom:4px}
+.lede{color:var(--muted);margin:0;max-width:60ch}
+.search{position:relative}
+.search input{width:100%;background:var(--panel);border:1px solid var(--line);color:var(--fg);font:inherit;padding:12px 14px;border-radius:6px}
+.search input::placeholder{color:var(--muted)}
+.search input:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+section{display:flex;flex-direction:column;gap:10px}
+.season{display:flex;align-items:baseline;gap:10px;border-bottom:1px solid var(--line);padding-bottom:8px}
+.season h2{font-family:var(--display);font-size:22px;letter-spacing:.1em;margin:0;font-weight:700}
+.season small{color:var(--muted);font-size:13px}
+.list{display:flex;flex-direction:column;gap:8px}
+a.row{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center;text-decoration:none;color:inherit;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:14px 14px 13px}
+a.row:hover{border-color:#4a4b50}
+a.row:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+a.row.hit{border-color:var(--accent)}
+.name{font-weight:600;font-size:16px;min-width:0}
+.code{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:.04em;margin-left:6px;font-weight:500}
+.meta{grid-column:1;font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums;display:flex;flex-wrap:wrap;gap:2px 12px;min-width:0}
+.meta em{font-style:normal;font-family:var(--mono);color:var(--fg)}
+.open{grid-column:2;grid-row:1 / span 2;font-size:12px;font-weight:600;color:var(--accent-ink);background:var(--accent);padding:7px 11px;border-radius:4px;white-space:nowrap}
+.empty{color:var(--muted);font-size:14px;padding:6px 2px}
+.note{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:16px;font-size:13.5px;color:var(--muted);display:flex;flex-direction:column;gap:8px}
+.note strong{color:var(--fg);font-weight:600}
+.note .url{font-family:var(--mono);color:var(--fg)}
+footer{font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:2px;border-top:1px solid var(--line);padding-top:16px}
+@media (prefers-reduced-motion:no-preference){a.row{transition:border-color .15s}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="logo">NJ <b>SAFETY</b></div>
+      <div class="tag">Aramid FR Workwear</div>
+    </div>
+    <h1><span>TEST REPORTS</span>시험성적서 원본 열람</h1>
+    <p class="lede">제품을 누르면 KOTITI 시험연구원이 발행한 성적서 원본(PDF)이 열립니다. 각 성적서는 해당 제품 겉감 원단의 시험 결과입니다.</p>
+    <div class="search">
+      <label for="q" class="tag" style="display:block;margin-bottom:6px">제품 찾기</label>
+      <input id="q" type="search" placeholder="제품명 또는 모델코드 (예: 점퍼, NWWJ26)" autocomplete="off">
+    </div>
+  </header>
+
+  <main id="groups" class="wrap" style="gap:28px"></main>
+
+  <div class="note">
+    <strong>성적서 진위 확인</strong>
+    <span>성적서 1페이지 우측 하단 QR을 찍거나, <span class="url">cs.kotiti-global.com</span> 에서 성적서 번호를 입력하면 KOTITI가 직접 위변조 여부를 확인해 줍니다.</span>
+    <span>성적서는 의뢰자가 제시한 원단 시료의 시험 결과이며, 완제품 전체의 성능을 보증하는 인증서가 아닙니다.</span>
+  </div>
+
+  <footer>
+    <span>주식회사 엔제이세이프티 · 나정엔터프라이즈</span>
+    <span>서울특별시 중랑구</span>
+  </footer>
+</div>
+
+<script>
+const D=[
+ {s:"SUMMER",k:"하계",items:[
+  {c:"NSSJ25",n:"하계 아라미드 자켓",f:"AFP160996",no:"82251053100372",d:"2025.02.13",p:"NSSJ25_AFP160996.pdf"},
+  {c:"NSSP25",n:"하계 아라미드 팬츠",f:"AFL165995",no:"82251053100370",d:"2025.02.13",p:"NSSP25_AFL165995.pdf"},
+  {c:"NSSY26",n:"하계 아라미드 남방",f:"AFP155537",no:"82241053101081",d:"2024.04.26",p:"NSSY26_AFP155537.pdf"},
+  {c:"NSST26",n:"아라미드 PK 티셔츠",f:"AFK185900",no:"82251053104202",d:"2025.10.13",p:"NSST26_AFK185900.pdf"},
+  {c:"NSSV26",n:"아라미드 메시 유틸리티 조끼",f:"AFN115966",no:"82251053100373",d:"2025.02.14",p:"NSSV26_AFN115966.pdf"}]},
+ {s:"SPRING / FALL",k:"춘추",items:[
+  {c:"NFWJ25",n:"춘추 아라미드 자켓",f:"AFR225948",no:"82251053103777",d:"2025.09.11",p:"NFWJ25_AFR225948.pdf"},
+  {c:"NFWP25",n:"춘추 아라미드 팬츠",f:"AFL300847",no:"82251053103784",d:"2025.09.11",p:"NFWP25_AFL300847.pdf"}]},
+ {s:"WINTER",k:"동계",items:[
+  {c:"NFWF25",n:"동계 아라미드 플리스",f:"후리스(3단)",no:"82241053100909",d:"2024.04.11",p:"NFWF25_FLEECE.pdf"},
+  {c:"NWWJ26",n:"동계 아라미드 점퍼",f:"AFR205947",no:"82251053104532",d:"2025.10.24",p:"NWWJ26_AFR205947.pdf"},
+  {c:"NWWP26",n:"동계 아라미드 방한 팬츠",f:"AFR205947",no:"82251053104532",d:"2025.10.24",p:"NWWJ26_AFR205947.pdf"}]},
+ {s:"ACCESSORY",k:"액세서리",items:[
+  {c:"NWWB26",n:"아라미드 버프",f:"AFK1401018",no:"82251053104533",d:"2025.10.24",p:"NWWB26_AFK1401018.pdf"}]}
+];
+const G=document.getElementById("groups"),Q=document.getElementById("q");
+function render(term){
+  term=(term||"").trim().toLowerCase();G.innerHTML="";let total=0;
+  D.forEach(g=>{
+    const its=g.items.filter(i=>!term||(i.n+i.c+i.f+g.k+i.no).toLowerCase().includes(term));
+    if(!its.length)return;total+=its.length;
+    const sec=document.createElement("section");
+    sec.innerHTML=`<div class="season"><h2>${g.s}</h2><small>${g.k}</small></div><div class="list"></div>`;
+    const L=sec.querySelector(".list");
+    its.forEach(i=>{const a=document.createElement("a");a.className="row";a.id=i.c;a.href="pdf/"+i.p;a.target="_blank";a.rel="noopener";
+      a.innerHTML=`<div class="name">${i.n}<span class="code">${i.c}</span></div><span class="open">성적서 보기</span><div class="meta"><span>원단 <em>${i.f}</em></span><span>성적서 No. <em>${i.no}</em></span><span>발행 ${i.d}</span></div>`;
+      L.appendChild(a);});
+    G.appendChild(sec);});
+  if(!total)G.innerHTML='<p class="empty">찾는 제품이 없습니다. 모델코드나 제품명을 다시 확인해 주세요.</p>';
+  const h=location.hash.slice(1);if(h){const el=document.getElementById(h);if(el){el.classList.add("hit");if(!term)el.scrollIntoView({block:"center"});}}
+}
+Q.addEventListener("input",e=>render(e.target.value));
+render("");
+</script>
+
+</body>
+</html>

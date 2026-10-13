@@ -1,0 +1,11 @@
+# 시험성적서 QR 모아보기 — cert.njfashion.co.kr
+#
+# 메인 사이트(../wrangler.jsonc, Workers)와 별개인 Cloudflare Pages 프로젝트.
+# 라벨·카탈로그에 인쇄된 QR이 이 주소를 가리키므로, 메인 사이트를
+# 리뉴얼하거나 옮겨도 이 프로젝트는 건드리지 않는다.
+#
+# 배포 (cert/ 폴더에서):
+#   npx wrangler pages deploy
+name = "nj-cert"
+pages_build_output_dir = "./site"
+compatibility_date = "2025-04-01"
