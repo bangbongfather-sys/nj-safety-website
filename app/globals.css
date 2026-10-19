@@ -5836,3 +5836,10 @@ section { position: relative; }
   .admin-card { padding: 18px 16px; border-radius: 12px; }
   .admin-login-card { padding: 30px 22px; }
 }
+
+/* 제품 상세 하단 — 전기 방염복 안내로 이어 주는 띠 */
+.pd-use-strip { padding-block: 22px; border-top: 1px solid var(--border-soft); border-bottom: 1px solid var(--border-soft); background: var(--bg-2); }
+.pd-use-strip .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+.pd-use-strip span { font-size: 14px; color: var(--muted); }
+.pd-use-strip a { color: var(--accent); font-weight: 700; font-size: 15px; text-decoration: none; }
+.pd-use-strip a:hover { text-decoration: underline; }

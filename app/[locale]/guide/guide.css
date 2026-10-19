@@ -52,3 +52,6 @@
 .gd-cta { margin-top: 72px; padding: 32px; border: 1px solid var(--border-soft); background: var(--card); }
 .gd-cta p { margin-top: 10px; color: var(--muted); font-size: 15px; line-height: 1.7; }
 .gd-cta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.gd-more { margin-top: 16px; }
+.gd-more a { color: var(--accent); font-weight: 700; font-size: 14.5px; text-decoration: none; }
+.gd-more a:hover { text-decoration: underline; }

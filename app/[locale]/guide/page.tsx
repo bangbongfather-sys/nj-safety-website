@@ -276,6 +276,13 @@ export default async function GuidePage({ params }: Props) {
                 </li>
               ))}
             </ul>
+            {s.id === 'electric' ? (
+              <p className="gd-more">
+                <Link href={`/${loc}/guide/electric/`}>
+                  {loc === 'en' ? 'More on electrical FR workwear →' : '전기 방염복 자세히 보기 →'}
+                </Link>
+              </p>
+            ) : null}
           </article>
         ))}
 
