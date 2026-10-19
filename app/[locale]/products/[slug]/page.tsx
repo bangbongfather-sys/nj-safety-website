@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { locales, isLocale } from '@/lib/i18n';
@@ -82,6 +83,17 @@ export default async function ProductDetailRoute({ params }: Props) {
     <>
       <JsonLd data={productSchema(product, locale)} />
       <ProductPage data={product} locale={locale} />
+      {/* 전 제품의 현장 태그에 전기가 있어, 상세페이지마다 전기 방염복
+       * 안내로 이어 준다. 같은 글자로 여러 페이지가 가리켜야 검색엔진이
+       * 그 페이지를 해당 검색어의 대표 문서로 본다. */}
+      <aside className="pd-use-strip">
+        <div className="wrap">
+          <span>{locale === 'en' ? 'For electrical & utility sites' : '전기·전력 현장에서 입으신다면'}</span>
+          <Link href={`/${locale}/guide/electric/`}>
+            {locale === 'en' ? 'Electrical FR workwear guide →' : '전기 방염복 선택 가이드 →'}
+          </Link>
+        </div>
+      </aside>
     </>
   );
 }
