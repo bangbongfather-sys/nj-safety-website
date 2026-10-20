@@ -1,0 +1,15 @@
+/* 방염복 · 방염작업복 대표 페이지 — guide.css / electric.css 위에 비교표와 현장 카드만 더한다. */
+.fw-table-wrap { margin-top: 20px; overflow-x: auto; }
+.fw-table { width: 100%; min-width: 520px; border-collapse: collapse; font-size: 14px; }
+.fw-table th, .fw-table td { padding: 12px 14px; border-bottom: 1px solid var(--border-soft); text-align: left; vertical-align: top; word-break: keep-all; }
+.fw-table thead th { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; color: var(--muted-2); font-weight: 500; }
+.fw-table tbody th { color: var(--muted); font-weight: 500; white-space: nowrap; }
+.fw-table td { color: var(--muted); }
+/* 아라미드 칸을 첫 열로 둔다 — 좁은 화면에서 가로 스크롤 없이 바로 보이게. */
+.fw-table td:nth-child(2) { color: var(--text); background: rgba(255,107,26,.06); }
+.fw-table td b { color: var(--accent); }
+
+.fw-site { color: var(--text); text-decoration: none; display: flex; flex-direction: column; transition: border-color .15s; }
+.fw-site:hover { border-color: var(--accent); }
+.fw-site-more { margin-top: 10px; font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: .08em; }
+.gd-lede a { color: var(--accent); }

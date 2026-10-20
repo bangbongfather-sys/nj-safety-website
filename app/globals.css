@@ -5843,3 +5843,4 @@ section { position: relative; }
 .pd-use-strip span { font-size: 14px; color: var(--muted); }
 .pd-use-strip a { color: var(--accent); font-weight: 700; font-size: 15px; text-decoration: none; }
 .pd-use-strip a:hover { text-decoration: underline; }
+.pd-use-strip .pd-use-links { display: flex; flex-wrap: wrap; gap: 18px; }

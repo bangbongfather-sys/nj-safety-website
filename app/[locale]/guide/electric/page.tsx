@@ -18,31 +18,20 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { isLocale, type Locale } from '@/lib/i18n';
-import { getProduct } from '@/lib/products';
 import JsonLd from '@/components/seo/JsonLd';
+import LineupCards from '@/components/guide/LineupCards';
 import { SITE_URL } from '@/lib/site';
-import { absoluteImage, plain } from '@/lib/seo';
 import '../guide.css';
 import './electric.css';
 
 type Props = { params: Promise<{ locale: string }> | { locale: string } };
-
-const ARC_TESTED = ['njs-aj200', 'njs-ar204'];
-const ARC_NOTE_KO = 'EN IEC 61482-1-1, 약 11.4 cal/cm² 노출 조건 아크 시험';
-const ARC_NOTE_EN = 'Arc tested to EN IEC 61482-1-1 at approx. 11.4 cal/cm² exposure';
-
-const LINEUP: { season: { ko: string; en: string }; slugs: string[] }[] = [
-  { season: { ko: '춘추용', en: 'Mid-season' }, slugs: ['njs-aj200', 'njfwp25'] },
-  { season: { ko: '하계용', en: 'Summer' }, slugs: ['njs-ar204', 'njs-ar301', 'njssyyy', 'njssp', 'njs-av100'] },
-  { season: { ko: '동계용', en: 'Winter' }, slugs: ['njs-aj100', 'njwwp26'] },
-];
 
 const KO = {
   metaTitle: '전기 방염복 — 한전 협력업체 방염복 · 아크 플래시 대비 아라미드 방염복 | NJ SAFETY',
   metaDesc:
     '전기·전력 현장용 전기 방염복. 원사 자체가 방염인 아라미드 원단, EN IEC 61482-1-1 아크 시험, ' +
     '한전 협력업체 방염복 제작. 춘추·하계·동계 라인업과 시험성적서 제공 — 나정엔터프라이즈.',
-  crumbGuide: '방염복 선택 가이드',
+  crumbGuide: '방염복 · 방염작업복',
   eyebrow: '— Electrical FR Wear',
   title: '전기 방염복',
   intro:
@@ -100,7 +89,7 @@ const EN: typeof KO = {
   metaDesc:
     'Flame-resistant workwear for electrical and utility sites. Inherently FR aramid, arc tested to ' +
     'EN IEC 61482-1-1, supplied to KEPCO contractors. Seasonal lineup with test reports.',
-  crumbGuide: 'FR wear guide',
+  crumbGuide: 'FR workwear',
   title: 'Electrical FR workwear',
   intro:
     'Workwear that protects people on distribution, transmission and substation work from arc flash. ' +
@@ -173,7 +162,7 @@ export default async function ElectricGuidePage({ params }: Props) {
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'NJ SAFETY', item: `${SITE_URL}/${loc}/` },
-      { '@type': 'ListItem', position: 2, name: c.crumbGuide, item: `${SITE_URL}/${loc}/guide/` },
+      { '@type': 'ListItem', position: 2, name: c.crumbGuide, item: `${SITE_URL}/${loc}/fr-workwear/` },
       { '@type': 'ListItem', position: 3, name: c.title, item: `${SITE_URL}/${loc}/guide/electric/` },
     ],
   };
@@ -186,7 +175,7 @@ export default async function ElectricGuidePage({ params }: Props) {
         <nav className="el-crumb" aria-label="breadcrumb">
           <Link href={`/${loc}/`}>NJ SAFETY</Link>
           <span>/</span>
-          <Link href={`/${loc}/guide/`}>{c.crumbGuide}</Link>
+          <Link href={`/${loc}/fr-workwear/`}>{c.crumbGuide}</Link>
           <span>/</span>
           <b>{c.title}</b>
         </nav>
@@ -216,41 +205,7 @@ export default async function ElectricGuidePage({ params }: Props) {
         <article className="gd-sec">
           <h2>{c.lineupTitle}</h2>
           <p className="gd-lede">{c.lineupLede}</p>
-          {LINEUP.map((group) => (
-            <div key={group.season.ko} className="el-group">
-              <h3>{group.season[loc === 'en' ? 'en' : 'ko']}</h3>
-              <ul className="el-cards">
-                {group.slugs.map((slug) => {
-                  const p = getProduct(slug);
-                  if (!p) return null;
-                  const name = plain(p.name).replace(/\.$/, '');
-                  // 제품 사진은 카탈로그 앱이 호스팅한다 — 상세페이지·검색
-                  // 데이터와 같은 규칙으로 절대 주소로 바꾼다.
-                  const img = absoluteImage((p.hero as { image?: string } | undefined)?.image);
-                  const arc = ARC_TESTED.includes(slug);
-                  return (
-                    <li key={slug}>
-                      <Link href={`/${loc}/products/${slug}/`} className="el-card">
-                        <span className="el-card-img">
-                          {img ? (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img src={img} alt={name} loading="lazy" />
-                          ) : null}
-                        </span>
-                        <span className="el-card-body">
-                          <b>{name}</b>
-                          {arc ? (
-                            <span className="el-card-arc">{loc === 'en' ? ARC_NOTE_EN : ARC_NOTE_KO}</span>
-                          ) : null}
-                          <span className="el-card-view">{c.view} →</span>
-                        </span>
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          ))}
+          <LineupCards locale={loc} />
         </article>
 
         <article className="gd-sec">
