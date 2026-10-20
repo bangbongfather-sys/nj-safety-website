@@ -43,10 +43,22 @@ function getDropdownItems(
   baseHref: string,
 ): Array<{ href: string; label: string }> {
   if (key === 'products') {
-    return CATEGORIES.map((c) => ({
-      href: `/${locale}/products/category/${c.id}`,
-      label: locale === 'en' ? (c.nameEn || c.nameKo || c.id) : (c.nameKo || c.nameEn || c.id),
-    }));
+    // 카테고리 뒤에 방염작업복 안내 페이지를 붙인다. 모든 페이지 머리에
+    // 실리는 링크라, 검색엔진이 이 두 페이지를 사이트의 대표 문서로 본다.
+    return [
+      ...CATEGORIES.map((c) => ({
+        href: `/${locale}/products/category/${c.id}`,
+        label: locale === 'en' ? (c.nameEn || c.nameKo || c.id) : (c.nameKo || c.nameEn || c.id),
+      })),
+      {
+        href: `/${locale}/fr-workwear/`,
+        label: locale === 'ko' ? '방염복 · 방염작업복 안내' : 'About FR workwear',
+      },
+      {
+        href: `/${locale}/guide/electric/`,
+        label: locale === 'ko' ? '전기 방염복' : 'Electrical FR wear',
+      },
+    ];
   }
   if (key === 'resources') {
     // /resources is now a unified library with classification sub-tabs

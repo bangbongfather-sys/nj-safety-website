@@ -245,6 +245,11 @@ export default async function GuidePage({ params }: Props) {
         <span className="eyebrow">{c.eyebrow}</span>
         <h1 className="gd-title">{c.title}</h1>
         <p className="gd-intro">{c.intro}</p>
+        <p className="gd-more">
+          <Link href={`/${loc}/fr-workwear/`}>
+            {loc === 'en' ? 'What is FR workwear? →' : '방염복 · 방염작업복 기본 안내 →'}
+          </Link>
+        </p>
 
         <nav className="gd-toc">
           {c.sections.map((s) => (

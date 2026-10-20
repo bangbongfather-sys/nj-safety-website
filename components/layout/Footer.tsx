@@ -43,6 +43,9 @@ export default function Footer({ locale, dict, editor }: Props) {
           </Link>
           {/* 모든 페이지 하단에서 가이드로 이어지게 한다 — 사이트 전체가
            * 가리키는 문서여야 검색엔진이 중요한 페이지로 본다. */}
+          <Link href={`/${locale}/fr-workwear/`}>
+            <EditableText as="span" path="footer.bottomNav.frwear" value={nav.frwear} editor={editor} />
+          </Link>
           <Link href={`/${locale}/guide/`}>
             <EditableText as="span" path="footer.bottomNav.guide" value={nav.guide} editor={editor} />
           </Link>

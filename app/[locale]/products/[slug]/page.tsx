@@ -88,10 +88,15 @@ export default async function ProductDetailRoute({ params }: Props) {
        * 그 페이지를 해당 검색어의 대표 문서로 본다. */}
       <aside className="pd-use-strip">
         <div className="wrap">
-          <span>{locale === 'en' ? 'For electrical & utility sites' : '전기·전력 현장에서 입으신다면'}</span>
-          <Link href={`/${locale}/guide/electric/`}>
-            {locale === 'en' ? 'Electrical FR workwear guide →' : '전기 방염복 선택 가이드 →'}
-          </Link>
+          <span>{locale === 'en' ? 'Choosing FR workwear' : '방염작업복 고르기'}</span>
+          <span className="pd-use-links">
+            <Link href={`/${locale}/fr-workwear/`}>
+              {locale === 'en' ? 'FR workwear guide →' : '방염복 · 방염작업복 안내 →'}
+            </Link>
+            <Link href={`/${locale}/guide/electric/`}>
+              {locale === 'en' ? 'Electrical FR wear →' : '전기 방염복 →'}
+            </Link>
+          </span>
         </div>
       </aside>
     </>
