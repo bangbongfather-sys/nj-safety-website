@@ -18,6 +18,7 @@ import type { ProductCategory } from '@/lib/product-categories';
 import SeasonTabs, { type SeasonTab } from './SeasonTabs';
 import ImageOrPlaceholder from '@/components/product/ImageOrPlaceholder';
 import EditableText, { type EditorApi } from '@/components/admin/EditableText';
+import { catalogImage } from '@/lib/catalog-image';
 
 function stripTags(s: string | undefined): string {
   return (s ?? '').replace(/<[^>]+>/g, '').trim();
@@ -25,13 +26,13 @@ function stripTags(s: string | undefined): string {
 
 function getCardImages(p: Product): { main?: string; hover?: string } {
   const shop = (p.shopHeader?.images ?? []).filter((s): s is string => !!s);
-  if (shop.length > 0) return { main: shop[0], hover: shop[1] };
+  if (shop.length > 0) return { main: catalogImage(shop[0]), hover: catalogImage(shop[1]) };
   const fallback: string[] = [];
   if (p.hero?.image) fallback.push(p.hero.image);
   for (const it of p.gallery?.items ?? []) {
     if (it.image && !fallback.includes(it.image)) fallback.push(it.image);
   }
-  return { main: fallback[0], hover: fallback[1] };
+  return { main: catalogImage(fallback[0]), hover: catalogImage(fallback[1]) };
 }
 
 type SeasonCopy = { headline?: string; lede?: string };
