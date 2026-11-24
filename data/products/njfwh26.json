@@ -1,0 +1,380 @@
+{
+  "slug": "njfwh26",
+  "model": "NJFWH26",
+  "category": "ARAMID FR SERIES · FALL/WINTER HOODIE",
+  "name": "아라미드 후드 집업",
+  "subtitle": "가을·겨울 현장의 일상복, 방염 성능을 그대로 담은 후드 집업",
+  "tagline": "400g/m²급 메타-아라미드 니트 + 후드 + 풀집업. 가슴 NJ SAFETY 리플렉티브 라인과 세로 지퍼 포켓을 더한 NJ Safety의 F/W 후드 집업.",
+  "flavor": "tactical",
+  "hero": {
+    "image": "/products/njfwh26/front.jpg",
+    "imageAlt": "아라미드 후드 집업 — 정면 풀샷 (후드·풀집업·가슴 NJ SAFETY 리플렉티브 라인)",
+    "tag": "FIG. 00 · FALL/WINTER HOODIE",
+    "corner": "MELANGE GREY",
+    "counters": [
+      {
+        "value": "63.8",
+        "unit": "%",
+        "label": "META ARAMID"
+      },
+      {
+        "value": "34.5",
+        "unit": "%",
+        "label": "LENZING FR"
+      },
+      {
+        "value": "404",
+        "unit": "G/M²",
+        "label": "WEIGHT"
+      }
+    ]
+  },
+  "gallery": {
+    "eyebrow": "PRODUCT VIEWS",
+    "headline": "한 벌의 후드 집업, <em>모든 디테일</em>까지.",
+    "note": "스튜디오 촬영 · 실물 컬러는 모니터에 따라 차이가 있을 수 있습니다.",
+    "items": [
+      {
+        "image": "/products/njfwh26/front.jpg",
+        "imageAlt": "아라미드 후드 집업 — 정면 풀샷",
+        "tag": "FIG. 01 · FRONT",
+        "label": "정면 풀샷",
+        "caption": "후드 + 풀집업 메인 지퍼 + 가슴 NJ SAFETY 리플렉티브 라인.",
+        "span": "xl"
+      },
+      {
+        "image": "/products/njfwh26/back.jpg",
+        "imageAlt": "아라미드 후드 집업 — 후면 풀샷",
+        "tag": "FIG. 02 · BACK",
+        "label": "후면 풀샷",
+        "caption": "군더더기 없는 후면. 후드 중앙 봉제선으로 형태를 잡았습니다.",
+        "span": "xl"
+      },
+      {
+        "image": "/products/njfwh26/chest.jpg",
+        "imageAlt": "가슴 디테일 — NJ SAFETY 워드마크가 들어간 두 줄 리플렉티브 라인",
+        "tag": "FIG. 03 · CHEST REFLECTIVE",
+        "label": "가슴 리플렉티브 라인",
+        "caption": "NJ SAFETY 워드마크가 들어간 두 줄 리플렉티브. 저조도 현장의 시인성을 확보합니다.",
+        "span": "l"
+      },
+      {
+        "image": "/products/njfwh26/pocket.jpg",
+        "imageAlt": "우측 가슴 세로 지퍼 포켓과 ARAMID 직조 라벨",
+        "tag": "FIG. 04 · ZIP POCKET",
+        "label": "세로 지퍼 포켓",
+        "caption": "우측 가슴 세로 지퍼 포켓. 포켓 옆 오렌지 ARAMID 라벨로 방염 제품을 식별합니다.",
+        "span": "l"
+      },
+      {
+        "image": "/products/njfwh26/sleeve.jpg",
+        "imageAlt": "왼팔 오렌지 NJ SAFETY 러버 패치와 ARAMID 라벨",
+        "tag": "FIG. 05 · SLEEVE PATCH",
+        "label": "소매 NJ SAFETY 패치",
+        "caption": "왼팔 상단 오렌지 NJ SAFETY 러버 패치.",
+        "span": "l"
+      }
+    ]
+  },
+  "statement": {
+    "eyebrow": "ENGINEERED FOR FALL/WINTER",
+    "headline": "편하게 입는 옷도 <em>방염</em>이어야 합니다.",
+    "body": "쌀쌀한 계절의 현장에서는 작업복 위에 후드 티나 집업을 겹쳐 입는 일이 많습니다. 일반 면·폴리 소재는 불꽃과 열에 취약합니다. NJFWH26은 메타-아라미드 기반 원단을 400g/m²급 니트로 짜서, 평소 입던 후드 집업의 편안함에 방염 성능을 더했습니다. 가슴 리플렉티브 라인과 지퍼 포켓은 NJ SAFETY 작업복과 같은 규격을 따릅니다.",
+    "sign": "NJ SAFETY PRODUCT TEAM"
+  },
+  "material": {
+    "eyebrow": "FABRIC ENGINEERING",
+    "headline": "<em>400g</em>급 아라미드 니트.",
+    "image": "/products/njfwh26/chest.jpg",
+    "callouts": [
+      {
+        "tag": "A",
+        "title": "META ARAMID KNIT",
+        "body": "메타-아라미드 63.8% 니트 원단. KS K 0585 방염 시험에서 10회 세탁 후에도 잔염 0초 · 탄화길이 3cm를 기록했습니다."
+      },
+      {
+        "tag": "B",
+        "title": "403.6 g/m² MELANGE",
+        "body": "가을·겨울용 403.6g/m² 중량(시험성적서 실측). 멜란지 그레이 컬러로 오염이 덜 두드러집니다."
+      },
+      {
+        "tag": "C",
+        "title": "REFLECTIVE LINE",
+        "body": "가슴의 두 줄 리플렉티브 라인에 NJ SAFETY 워드마크를 넣었습니다."
+      }
+    ]
+  },
+  "features": {
+    "eyebrow": "WHY THIS HOODIE",
+    "headline": "현장에서 입는 <em>다섯 가지</em> 장치.",
+    "items": [
+      {
+        "n": "01",
+        "title": "아라미드 니트 원단",
+        "body": "메타-아라미드 63.8% · 400g/m²급 니트. 10회 세탁 후 방염 시험 통과."
+      },
+      {
+        "n": "02",
+        "title": "후드 + 풀집업",
+        "body": "후드로 목과 머리를 보호하고, 풀집업으로 입고 벗기 편합니다."
+      },
+      {
+        "n": "03",
+        "title": "가슴 NJ SAFETY 리플렉티브",
+        "body": "두 줄 리플렉티브 라인으로 야간·저조도 시인성을 확보합니다.",
+        "featured": true
+      },
+      {
+        "n": "04",
+        "title": "세로 지퍼 포켓",
+        "body": "우측 가슴 세로 지퍼 포켓에 소지품을 안전하게 보관합니다."
+      },
+      {
+        "n": "05",
+        "title": "ARAMID 라벨 + 러버 패치",
+        "body": "오렌지 ARAMID 라벨과 소매 NJ SAFETY 패치로 방염 제품임을 바로 알아볼 수 있습니다."
+      }
+    ]
+  },
+  "spec": {
+    "eyebrow": "TECHNICAL SHEET",
+    "headline": "한 페이지에 담은 <em>스펙</em>.",
+    "rows": [
+      {
+        "label": "품번",
+        "value": "NJFWH26"
+      },
+      {
+        "label": "원단 구성",
+        "value": "Aramid 63.8% / LENZING FR 34.5% / Anti 1.7%"
+      },
+      {
+        "label": "평량",
+        "value": "403.6 g/m² (KS K 0514 실측)"
+      },
+      {
+        "label": "시즌",
+        "value": "가을 / 겨울 (F/W)"
+      },
+      {
+        "label": "메인 여밈",
+        "value": "풀집업 지퍼 (네이비)"
+      },
+      {
+        "label": "포켓",
+        "value": "가슴 세로 지퍼 1 · 하단 포켓"
+      },
+      {
+        "label": "반사",
+        "value": "가슴 NJ SAFETY 리플렉티브 라인 2줄"
+      },
+      {
+        "label": "컬러",
+        "value": "MELANGE GREY"
+      },
+      {
+        "label": "사이즈",
+        "value": "90 / 95 / 100 / 105 / 110 / 115 / 120"
+      },
+      {
+        "label": "원산지",
+        "value": "MADE IN KOREA"
+      },
+      {
+        "label": "방염",
+        "value": "KS K 0585:2025 · 10회 세탁 후 잔염 0초 · 탄화길이 3cm"
+      },
+      {
+        "label": "견뢰도",
+        "value": "일광 4급 · 세탁 4~4-5급"
+      },
+      {
+        "label": "내열 치수변화",
+        "value": "-1.5% / -0.7% (200℃ · 5분)"
+      },
+      {
+        "label": "시험기관",
+        "value": "KOTITI 시험연구원 · 2026.11.23"
+      }
+    ]
+  },
+  "field": {
+    "eyebrow": "WHERE IT LIVES",
+    "headline": "쌀쌀한 현장의 <em>일상복</em>.",
+    "items": [
+      {
+        "n": "01",
+        "tag": "ELECTRICAL",
+        "title": "전기 · 설비 점검",
+        "body": "가을·겨울 외근 점검. 작업복 위에 겹쳐 입어도 방염 성능은 그대로입니다."
+      },
+      {
+        "n": "02",
+        "tag": "PLANT",
+        "title": "플랜트 · 정비",
+        "body": "실내외를 오가는 정비 작업. 가볍게 입고 벗는 풀집업."
+      },
+      {
+        "n": "03",
+        "tag": "DAILY",
+        "title": "현장 대기 · 출퇴근",
+        "body": "현장 대기와 이동 중에도 편하게 입는 후드 집업."
+      }
+    ]
+  },
+  "care": {
+    "eyebrow": "KEEP IT SAFE",
+    "items": [
+      {
+        "icon": "세탁",
+        "title": "손세탁 권장",
+        "body": "세탁은 중성세제로 손세탁으로 하고 가볍게 털어서 응달에 건조."
+      },
+      {
+        "icon": "✕",
+        "title": "표백제 및 건조기 금지",
+        "body": "아라미드 섬유 손상 방지",
+        "warn": true
+      },
+      {
+        "icon": "↓",
+        "title": "저온 텀블 / 자연건조",
+        "body": "그늘 건조 권장"
+      },
+      {
+        "icon": "≡",
+        "title": "중간 온도 다림질",
+        "body": "다림질은 울 종류나 면 종류의 온도로 가능."
+      }
+    ]
+  },
+  "certs": [
+    {
+      "mark": "FR",
+      "title": "방염성 시험",
+      "sub": "시험성적서 - KS K 0585:2025 · 10회 세탁 후 잔염 0초",
+      "highlight": true
+    },
+    {
+      "mark": "CF",
+      "title": "견뢰도 TEST",
+      "sub": "시험성적서 - KS K ISO 105 B02·C06, 4급 이상"
+    },
+    {
+      "mark": "HD",
+      "title": "내열 치수변화율",
+      "sub": "시험성적서 - FIS 006.9, 200℃ 5분 -1.5% / -0.7%"
+    },
+    {
+      "mark": "FB",
+      "title": "혼용률",
+      "sub": "시험성적서 - KS K 0210, 아라미드 63.8%"
+    }
+  ],
+  "order": {
+    "headline": "공식 대리점에서 <br><span style=\"color: rgb(255, 255, 255);\">판매 안내 및 출고 </span>가능합니다.",
+    "cells": [
+      {
+        "label": "서비스",
+        "value": "특정사이즈 및 수선 제작.",
+        "body": "*소형 및 대형 사이즈 제작, 소매길이 추가 가능."
+      },
+      {
+        "label": "납기",
+        "value": "재고 확인 후 출고",
+        "body": "재고 보유 사이즈 기준 / 가공 시 +7일."
+      },
+      {
+        "label": "대리점",
+        "value": "전국 대리점 안내",
+        "body": "유선 및 메일 문의 시 안내."
+      }
+    ],
+    "contact": [
+      {
+        "label": "tel.",
+        "value": "02-777-3079"
+      },
+      {
+        "label": "FAX.",
+        "value": "02-774-1841"
+      },
+      {
+        "label": "WEB",
+        "value": "www.njfashion.co.kr"
+      },
+      {
+        "label": "Email.",
+        "value": "njsafety91@naver.com"
+      }
+    ]
+  },
+  "basicInfo": {
+    "primary": [
+      {
+        "label": "브랜드",
+        "value": "NJ SAFETY"
+      },
+      {
+        "label": "모델명",
+        "value": "아라미드 후드 집업"
+      },
+      {
+        "label": "제조사",
+        "value": "나정엔터프라이즈"
+      },
+      {
+        "label": "원산지",
+        "value": "대한민국"
+      }
+    ],
+    "disclosure": [
+      {
+        "label": "제품소재",
+        "value": "Aramid 63.8% / LENZING FR 34.5% / Anti 1.7%"
+      },
+      {
+        "label": "색상",
+        "value": "MELANGE GREY"
+      },
+      {
+        "label": "치수",
+        "value": "90 / 95 / 100 / 105 / 110 / 115 / 120"
+      },
+      {
+        "label": "제조자, 수입품의 경우 수입자를 함께 표시",
+        "value": "나정엔터프라이즈 / 주식회사 엔제이세이프티"
+      },
+      {
+        "label": "제조국",
+        "value": "대한민국"
+      },
+      {
+        "label": "세탁방법 및 취급시 주의사항",
+        "value": "손세탁 권장/건조기 사용금지"
+      },
+      {
+        "label": "제조년월",
+        "value": "2026"
+      },
+      {
+        "label": "품질보증기준",
+        "value": "관련 법령 및 전자상거래법에 준함"
+      },
+      {
+        "label": "AS책임자와 전화번호",
+        "value": "02-777-3079"
+      }
+    ]
+  },
+  "testReports": {
+    "files": [
+      {
+        "url": "/reports/njfwh26/kotiti-82261053105191.pdf",
+        "name": "후드집업 겉감 KOTITI 82261053105191 (방염·혼용률·견뢰도)",
+        "size": 1426330,
+        "uploadedAt": "2026-11-24T00:00:00.000Z"
+      }
+    ]
+  }
+}
