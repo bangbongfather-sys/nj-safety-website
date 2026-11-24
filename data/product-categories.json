@@ -18,7 +18,8 @@
       "nameEn": "Spring / Fall",
       "productSlugs": [
         "njs-aj200",
-        "njfwp25"
+        "njfwp25",
+        "njfwh26"
       ]
     },
     {
@@ -27,8 +28,7 @@
       "nameEn": "Winter Season",
       "productSlugs": [
         "njs-aj100",
-        "njwwp26",
-        "njfwh26"
+        "njwwp26"
       ]
     }
   ],
