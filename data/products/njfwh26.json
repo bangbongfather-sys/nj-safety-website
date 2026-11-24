@@ -359,5 +359,16 @@
         "uploadedAt": "2026-11-24T00:00:00.000Z"
       }
     ]
+  },
+  "shopHeader": {
+    "images": [
+      "/media/njfwh26/card-main.jpg",
+      "/media/njfwh26/card-hover.jpg",
+      "/products/njfwh26/front.jpg",
+      "/products/njfwh26/back.jpg",
+      "/products/njfwh26/chest.jpg",
+      "/products/njfwh26/pocket.jpg",
+      "/products/njfwh26/sleeve.jpg"
+    ]
   }
 }
