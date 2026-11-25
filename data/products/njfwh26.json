@@ -370,6 +370,7 @@
       "/products/njfwh26/pocket.jpg",
       "/products/njfwh26/sleeve.jpg"
     ],
-    "cardHover": "/products/njfwh26/front.jpg"
+    "cardHover": "/products/njfwh26/front.jpg",
+    "featuredImage": "/media/njfwh26/featured.jpg"
   }
 }
