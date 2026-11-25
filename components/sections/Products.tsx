@@ -30,7 +30,7 @@ function stripTags(s: string | undefined): string {
  */
 function getCardImages(p: Product): { main?: string; hover?: string } {
   const shop = (p.shopHeader?.images ?? []).filter((s): s is string => !!s);
-  if (shop.length > 0) return { main: catalogImage(shop[0]), hover: catalogImage(shop[1]) };
+  if (shop.length > 0) return { main: catalogImage(shop[0]), hover: catalogImage(p.shopHeader?.cardHover || shop[1]) };
   const fallback: string[] = [];
   if (p.hero?.image) fallback.push(p.hero.image);
   for (const it of p.gallery?.items ?? []) {

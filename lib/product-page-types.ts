@@ -217,6 +217,13 @@ export type ProductShopHeaderData = {
   summarySpecs?: ProductShopHeaderSpecRow[];
   /** Bottom meta line — tel / email / origin etc. */
   contactInfo?: ProductShopHeaderSpecRow[];
+  /**
+   * Optional: the product-list card's hover photo. When unset the card
+   * uses images[1] as before. Lets the detail gallery order differ from
+   * the card's main → hover pair (e.g. a model shot second in the
+   * gallery while the card still hovers to the flat product photo).
+   */
+  cardHover?: string;
 };
 
 /**
@@ -423,6 +430,7 @@ export function withShopHeaderDefaults(data: ProductPageData): ProductPageData {
     contactInfo:  existing.contactInfo && existing.contactInfo.length > 0
       ? existing.contactInfo
       : seedContact,
+    ...(existing.cardHover ? { cardHover: existing.cardHover } : {}),
   };
   return { ...data, shopHeader: filled };
 }
