@@ -233,7 +233,7 @@ export default function ProductsListing({
               const fBody = (
                 <>
                   <div className="pl-featured-media">
-                    <ImageOrPlaceholder src={getCardImages(featured).main} alt={fName} />
+                    <ImageOrPlaceholder src={catalogImage(featured.shopHeader?.featuredImage) || getCardImages(featured).main} alt={fName} />
                     <span className="pl-featured-stamp">
                       {featured.model ?? featured.slug.toUpperCase()}
                       {featured.category ? ` · ${featured.category.split('·')[0].trim()}` : ''}

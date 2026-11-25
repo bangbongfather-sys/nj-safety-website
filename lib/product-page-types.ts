@@ -224,6 +224,11 @@ export type ProductShopHeaderData = {
    * gallery while the card still hovers to the flat product photo).
    */
   cardHover?: string;
+  /**
+   * Optional: photo for the products page "NJ SAFETY의 신제품" (featured)
+   * block only. When unset the block uses the card main photo.
+   */
+  featuredImage?: string;
 };
 
 /**
@@ -431,6 +436,7 @@ export function withShopHeaderDefaults(data: ProductPageData): ProductPageData {
       ? existing.contactInfo
       : seedContact,
     ...(existing.cardHover ? { cardHover: existing.cardHover } : {}),
+    ...(existing.featuredImage ? { featuredImage: existing.featuredImage } : {}),
   };
   return { ...data, shopHeader: filled };
 }
